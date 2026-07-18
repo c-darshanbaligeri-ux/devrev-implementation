@@ -9,6 +9,7 @@ This document tracks the source lineage and adaptations for all artifacts in the
 - **S3** = `/Users/q15137/Documents/The one/Dashboard and Widget Creation` — working plug-and-play workspace
 - **S4** = `/Users/q15137/Documents/The one/aai-custom-computer-capabilities/3-computer-capabilities-nxt/agent-building-toolkit` — agent-building toolkit
 - **S5** = `/Users/q15137/Documents/The one/plan-skill-workspace/devrev-solution-architect` — standalone design-phase skill (2026-07-18 merge; built independently of S1–S4, with zero prior shared authorship)
+- **S6** = `/Users/q15137/Documents/The one/devrev-snapins-main` (repo `QK-SnapIn/devrev-qk-agents`) — standalone Claude Code plugin for snap-in/AirSync connector development (2026-07-18 merge; third-party org, not `devrev/aai-skills`)
 
 ## Provenance Table
 
@@ -18,10 +19,10 @@ This document tracks the source lineage and adaptations for all artifacts in the
 | `.gitignore` | Authored new | Combines patterns from S3 with repo-specific exclusions (repos/*, plans/, templates/, dashboards/, datasets/) |
 | `.mcp.json` | S3 `.mcp.json` | Verbatim copy; proven hosted DevRev MCP configuration |
 | `.env.example` | Authored new | Standardized on `DEVREV_PAT` (canonical) + `DEVREV_ENDPOINT`; added optional `ORG_PAT` for skills/7-agent-building |
-| `repos.txt` | Authored new | Lists 3 repos (aai-skills, dashboard-sync-cli, api-specs); documents 2 deliberate exclusions |
+| `repos.txt` | Authored new | Lists 4 repos (aai-skills, dashboard-sync-cli, api-specs, devrev-qk-agents — the 4th added 2026-07-18 for skills/9); documents 2 deliberate exclusions |
 | `.devrev/repo.yml` | Authored new | Single line: `deployable: false` |
 | **`.claude/` infrastructure** | | |
-| `.claude/settings.json` | Authored new | SessionStart hook + `extraKnownMarketplaces` (github-source to devrev/aai-skills) + `enabledPlugins` (dashboard-dev, dataset-builder) |
+| `.claude/settings.json` | Authored new | SessionStart hook + `extraKnownMarketplaces` (github-source to devrev/aai-skills AND QK-SnapIn/devrev-qk-agents, added 2026-07-18) + `enabledPlugins` (dashboard-dev, dataset-builder — deliberately excludes the `devrev` plugin from devrev-qk-agents; third-party org, manual opt-in only, see skills/9) |
 | `.claude/hooks/bootstrap-workspace.sh` | S3 bootstrap hook | Extended with: (1) `.env` gate, (2) workspace dirs creation, (3) repos/ initial clone (background, once, writes to CLONE_RESULTS.md), (4) dashboard-sync CLI install via pipx (background, once) |
 | `.claude/skills/update-repos/SKILL.md` | S3 `update-repos/SKILL.md` | Updated post-run note: restart Claude Code or `/plugin marketplace update devrev-aai-plugins` if aai-skills changed; removed clone_repos.sh reference |
 | `.claude/skills/update-repos/update_repos.sh` | S3 `update-repos/update_repos.sh` | Verbatim copy; idempotent shallow clone with dirty-check skip |
@@ -36,6 +37,8 @@ This document tracks the source lineage and adaptations for all artifacts in the
 | `skills/8-devrev-api/references/` (10 files) | S1 (9 .md files) | Verbatim copies: 00_API_Catalog.md, Work_Items_Timeline_Tags_Links_API.md, Customers_Users_and_Orgs_API.md, Support_Knowledge_and_SLAs_API.md, Platform_and_Admin_API.md, Custom_Objects_and_Links_API.md, Stock_Object_Modification_and_Schemas_API.md, Stages_States_and_StageDiagrams_API.md, DevRev_Building_Org_Using_API_v1.md |
 | `skills/8-devrev-api/references/devrev-mcp-claude-code-setup.md` | S1 (same filename) | Copied + PREPENDED superseded notice (hosted MCP via .mcp.json supersedes npx @devrev/mcp-server) |
 | `skills/8-devrev-api/SKILL.md` | S1 `SKILL.md` | Path updates (doc references → references/); token guidance updated (DEVREV_PAT from .env, alias DEVREV_TOKEN); added "When not to use" line (workflows/agents/dashboards/datasets → other skills) |
+| **skills/9-snapin-development** | | |
+| `SKILL.md` | Authored new | Router-only; a fourth species (external-plugin router — see docs/ARCHITECTURE.md). Routes to the `devrev` plugin (`devrev-qk-agents`, S6) for the snap-in vertical only. Documents 2 required MCP servers as manual opt-in (not wired into `.mcp.json`); flags a 3rd MCP ("devrev-sdk MCP") as NOT VERIFIED (setup command undocumented in S6). Explicitly excludes S6's own "Implementation" (dashboard) vertical — it hand-writes widget JSON, violating skills/4's hard rule. Notes the plugin's own self-learning command (`/devrev:improve-skill`) patches `repos/devrev-qk-agents/`, which conflicts with this repo's never-edit-`repos/` rule — resolved by requiring a duplicate Field-notes entry here. Also flags a `connector-dev` plugin gap in the already-cloned `repos/aai-skills` (declared in that repo's own marketplace.json but its source directory doesn't exist at the pinned SHA — upstream drift, not introduced here). |
 | **skills/1-object-schema-customization** | | |
 | `references/` (2 files) | S1 | Verbatim copies: Custom_Objects_and_Links_API.md, Stock_Object_Modification_and_Schemas_API.md |
 | `SKILL.md` | Authored new | Grounded in the 2 reference files; playbooks for custom objects, tenant fields, subtypes, custom link types; every endpoint/scope/field cited from references |
@@ -202,3 +205,44 @@ via skill-creation tooling, so nothing there was removed wholesale). What happen
 
 Net effect: `plan-skill-workspace` stays independently publishable with no duplicate API-mechanics
 content, and `devrev-implementation` gains a design phase that precedes its 8 execution skills.
+
+## Sixth-source merge: `devrev-snapins-main` (2026-07-18)
+
+Unlike S1–S5, **S6 (`devrev-snapins-main`, repo `QK-SnapIn/devrev-qk-agents`) is a fully-built Claude
+Code plugin**, not reference material — 7 agents, 11 commands, 7 skills across two verticals (snap-in
+development; dashboard/widget development). Nothing from S6 was copied into `devrev-implementation`;
+the merge is architectural — a new router skill plus repo-level registration:
+
+1. **`skills/9-snapin-development` authored new** — a router in the same spirit as skills 4/5, but a
+   distinct fourth species: it delegates to a plugin from a **different marketplace and a different
+   GitHub org** than `devrev/aai-skills` (see docs/ARCHITECTURE.md "Four Skill Species").
+2. **Only the snap-in vertical is routed to.** S6's "Implementation" vertical (dashboard PM/Architect/
+   Tester) is explicitly excluded — its Architect agent generates widget JSON by hand, which is exactly
+   what `skills/4-dashboards-and-widgets`'s HARD RULE forbids (that rule exists because hand-authored
+   widget JSON produced unreliable output in this repo's own build history — see
+   `skills/0-solution-architecture/references/estimation-and-delivery.md` §7). Routing to it would
+   silently violate an existing safety rule.
+3. **Plugin registered but deliberately not auto-enabled.** `.claude/settings.json` gained a new
+   `extraKnownMarketplaces` entry (`devrev-qk-agents` → `QK-SnapIn/devrev-qk-agents`) so the plugin is
+   installable, but `enabledPlugins` was NOT extended to include it — auto-activating a third-party
+   org's code on every session (unlike DevRev's own `dashboard-dev`/`dataset-builder`) is a trust
+   boundary this repo doesn't cross without an explicit, visible `/plugin install` from the user.
+   `repos.txt` gained a matching clone entry for reading/grounding only.
+4. **Three MCP-server dependencies documented as manual opt-in**, per this repo's existing "no
+   unattended network installs beyond the confirmed bootstrap" guardrail — `snapin-builder-mcp` and
+   `chef-cli mcp` setup commands are given verbatim in the skill; a third ("devrev-sdk MCP") is flagged
+   as NOT VERIFIED because S6 references it without ever documenting its setup command.
+5. **A pre-existing upstream gap surfaced during comparison, not introduced by this merge**: the
+   already-cloned `repos/aai-skills` declares a `connector-dev` plugin in its own marketplace.json, but
+   that plugin's source directory doesn't exist in the clone at the pinned SHA. Recorded in
+   `docs/ARCHITECTURE.md` and `skills/9`'s SKILL.md so a future `update-repos` refresh that picks up
+   `connector-dev` gets compared against skill 9 rather than assumed redundant or superior.
+6. **A design tension named, not silently resolved**: S6's own `/devrev:improve-skill` self-learning
+   command patches files inside the plugin, which (once cloned) live under `repos/devrev-qk-agents/` —
+   this repo's own rule says never edit `repos/`. Skill 9 resolves this by treating any such patch as
+   disposable (it's overwritten on the next `update-repos` refresh) and requiring the same learning to
+   also be recorded in skill 9's own Field notes, which does survive a refresh.
+
+Net effect: this repo's Identity line no longer needs to say "apart from snap-in development" — that
+gap is now covered, but via routing and manual opt-in, not by building or auto-activating new
+first-party tooling for it.

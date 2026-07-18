@@ -1,4 +1,4 @@
-# skills/ — the 9 DevRev implementation domains
+# skills/ — the 10 DevRev implementation domains
 
 Numbered in **implementation-flow order** — the order a fresh org is built in, and the order to
 reason in when a request spans domains (start at the lowest number involved; greenfield/cross-domain
@@ -15,6 +15,7 @@ requests start at 0):
 | 6 | `6-workflows` | WorkflowTemplateV2 authoring, import debugging, agent-callable skills (four-block pattern), workflow CRUD/trigger | Knowledge-owner (130 op schemas, working examples) |
 | 7 | `7-agent-building` | Agent Studio create/debug/improve/test, guardrails, feature flags, NL2SQL annotations | Knowledge-owner (8 commands, 10 KB articles) |
 | 8 | `8-devrev-api` | Every public REST endpoint — catalog + per-domain payload docs | Knowledge-owner (horizontal foundation) |
+| 9 | `9-snapin-development` | Routes into the third-party `devrev` (`devrev-qk-agents`) plugin's snap-in vertical (PM/Architect/Tester); excludes that plugin's dashboard vertical | Router (knowledge lives in `repos/devrev-qk-agents`; plugin NOT auto-enabled — manual install) |
 
 **Working rules**
 - Always open the domain's `SKILL.md` first; it names the reference files that carry the exact

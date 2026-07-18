@@ -27,7 +27,8 @@ devrev-implementation/
 │   ├── 5-datasets/SKILL.md
 │   ├── 6-workflows/{SKILL.md, operations/, references/, examples/, scripts/}
 │   ├── 7-agent-building/{SKILL.md, commands/, knowledge/, references/, scripts/}
-│   └── 8-devrev-api/{SKILL.md, references/}
+│   ├── 8-devrev-api/{SKILL.md, references/}
+│   └── 9-snapin-development/SKILL.md
 ├── repos/.gitkeep                  (Clone target, gitignored after population)
 └── docs/{ARCHITECTURE.md, SUMMARY.md, CLONE_RESULTS.md}
 ```
@@ -57,7 +58,10 @@ The skills are numbered to reflect the natural dependency order of DevRev implem
 **Horizontal Foundation (8)**: The REST API layer
 - **8-devrev-api**: Direct API knowledge base, used by all other skills when they need to make raw API calls
 
-### Three Skill Species
+**Extensibility Layer (9)**: The one gap not covered natively
+- **9-snapin-development**: Snap-in and AirSync connector development — the area `CLAUDE.md`'s Identity line used to name as explicitly out of scope, now covered by routing to a third-party plugin rather than building native tooling for it. Depends on nothing upstream (a snap-in can be planned/built independently of any other skill), but its Architect phase often produces connectors that feed data into the object model skills 1–3 manage.
+
+### Four Skill Species
 
 **Design skill** (0): A full SKILL.md + inline `references/`/`templates/`/`examples/`, but distinct from the knowledge-owners below because it never calls the live API — it's pure design reasoning that hands off to the others
 - `skills/0-solution-architecture`: Produces the blueprint; its reference files cross-reference skills 1, 2, 6, 7, 8 for exact API mechanics rather than duplicating them (a design-time index over the same knowledge, not a third copy)
@@ -72,6 +76,9 @@ The skills are numbered to reflect the natural dependency order of DevRev implem
 - Self-contained: everything needed to execute is present in the skill folder
 - No external plugin dependencies
 - Skill 0's references point INTO these rather than restating their mechanics
+
+**External-plugin router** (9): Minimal SKILL.md delegating to a plugin from a different marketplace/org than 4 and 5
+- `skills/9-snapin-development`: Routes to the `devrev` plugin (source `QK-SnapIn/devrev-qk-agents`, a third-party org — not `devrev/aai-skills`). Differs from the router species above in one deliberate way: the plugin is registered as a known marketplace but **not auto-enabled** (`enabledPlugins` excludes it) — a third-party org's code doesn't auto-activate the way DevRev's own plugins do. The skill also explicitly excludes half of the routed plugin's own surface (its dashboard vertical), because that half violates skill 4's validation-pipeline rule by hand-writing widget JSON.
 
 ### `repos/` Directory
 
@@ -118,4 +125,13 @@ The repo enforces deterministic, validator-driven workflows:
 - Ponos integration tests via `make int-test` (port-forwarded to dev/qa)
 - Schema design follows published patterns (partition columns must be `TIMESTAMP`-typed)
 
+**Snap-ins**: Research-then-decide-then-generate, with a two-mode test gate
+- Architect never writes code before 15 documented engineering decisions and real API research (web search, never hallucinated)
+- AirSync builds clone-and-rewrite a production template rather than generating 20+ files from a blank scaffold
+- Tester runs unit tests (Jest, 70%+ coverage target) before UI automation (install → configure → sync → verify field-by-field) — nothing ships on unit tests alone
+
 **General principle**: Model reasoning produces plans; deterministic scripts/templates/validators execute them. If it's not in a reference file or a tool result, look it up — never fabricate API fields, DON ids, tokens, or file contents.
+
+### A known upstream gap (2026-07-18)
+
+`repos/aai-skills`'s own marketplace manifest (`.claude-plugin/marketplace.json`) declares a `connector-dev` plugin (AirSync connector development, same `@devrev/ts-adaas` framework) pointing at `./plugins/connector-dev` — but that directory doesn't exist in the cloned repo at the pinned SHA. This is drift in the upstream `devrev/aai-skills` repo itself, not a fault introduced here. Until it appears, `skills/9-snapin-development`'s separate `devrev-qk-agents` plugin is the only working snap-in build pipeline available in this repo. If `connector-dev` materializes in a future `aai-skills` update, compare its pipeline against skill 9's before recommending either over the other.

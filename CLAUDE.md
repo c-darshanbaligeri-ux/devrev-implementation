@@ -2,7 +2,7 @@
 
 ## Identity
 
-This is the unified operating environment for all DevRev implementation work apart from snap-in development. It is not a buildable software project — it's a workspace containing skills + references + cloned toolchains (`repos/`) + a hosted DevRev MCP. Everything needed to design a solution, customize DevRev organizations, upload data, build dashboards, create datasets, author workflows, and develop AI agents lives here in a plug-and-play configuration, spanning design (skill 0) through build (skills 1–8).
+This is the unified operating environment for all DevRev implementation work, including snap-in development (via a routed third-party plugin, `skills/9` — the one area not covered by this repo's own native skills). It is not a buildable software project — it's a workspace containing skills + references + cloned toolchains (`repos/`) + a hosted DevRev MCP. Everything needed to design a solution, customize DevRev organizations, upload data, build dashboards, create datasets, author workflows, develop AI agents, and build snap-ins/AirSync connectors lives here in a plug-and-play configuration, spanning design (skill 0) through build (skills 1–9).
 
 ## Routing table
 
@@ -19,6 +19,7 @@ When the user asks to work with DevRev, match the request to a skill and **read 
 | Work with workflows, automations, or agent-callable skills ("when a ticket comes in, notify…", "the agent should be able to look up order status") | `skills/6-workflows` |
 | Build, debug, improve, or test AI agents ("configure the agent", "add a skill to the agent", "test the agent's guardrails") | `skills/7-agent-building` |
 | Make any raw DevRev REST API call ("call works.list", "get account details", "create a ticket via API") | `skills/8-devrev-api` |
+| Build, plan, update, or test a snap-in or AirSync connector ("build a HubSpot connector", "sync Asana into DevRev", "add pagination to the Trello connector") | `skills/9-snapin-development` (routes to a third-party plugin, manual install required — never `skills/4`'s dashboard vertical) |
 | "Update the repos" / "pull latest" / "sync repos to main" / "refresh the cloned repos" (explicit request only — never automatically) | `.claude/skills/update-repos` |
 
 **Rule**: open the matched SKILL.md file and follow its playbook. Do not reconstruct API endpoint formats, payload structures, scope names, or JSON schemas from training data — every API fact must come from the skill's reference files.
@@ -84,6 +85,7 @@ The following operations are **destructive or irreversible**. State the impact c
 - `web-crawler-jobs.control` with `stop` or `reset` actions
 - Dataset or PaaS/Ponos job deletion (destructive via `/dataset-builder:delete`)
 - Workflow deletion (destructive via workflows skill)
+- `devrev snap_in_version delete-one` (required before creating a new version — only one non-published version per package — but destroys the deleted version's state)
 
 After any change, **verify with the matching read endpoint** (`*.get`, `*.list`, or `schemas.aggregated.get`). If the change involves custom fields or fragments, re-read an affected record to confirm the fields appear.
 
@@ -123,7 +125,7 @@ files. Never record secrets or real customer DON ids.
 
 ## Guardrails
 
-- **Dashboard validation loop**: never bypass the `/create-dashboard` pipeline for new dashboards. That pipeline (generate widgets in parallel → 3-stage validation: structure → semantic → live API, with auto-fix retries → assemble dashboard → deploy via `dashboard-sync` → Playwright verify) is the only supported path to reliably valid output. Never hand-write widget JSON — it skips all validation.
+- **Dashboard validation loop**: never bypass the `/create-dashboard` pipeline for new dashboards. That pipeline (generate widgets in parallel → 3-stage validation: structure → semantic → live API, with auto-fix retries → assemble dashboard → deploy via `dashboard-sync` → Playwright verify) is the only supported path to reliably valid output. Never hand-write widget JSON — it skips all validation. This also means: never route to `skills/9-snapin-development`'s plugin's own "Implementation" vertical (`/devrev:plan-implementation` etc.) — it hand-writes widget JSON directly, violating this same rule.
 - **No unattended network installs** beyond the confirmed bootstrap (`pipx` CLI install + `repos/` clone) which the user has pre-approved as part of this workspace model. Don't extend auto-config to other unattended network installs.
 - **Never fabricate**: if an API field name, DON id format, scope name, JSON structure, or file path doesn't appear in a reference file or tool result, look it up or stop. Do not reconstruct from memory.
 - **Determinism first**: model reasoning produces plans; deterministic scripts, templates, and validators execute them. Same input → same output. Re-runs are safe. Failures are loud (non-zero exit, clear error message).

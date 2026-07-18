@@ -18,6 +18,12 @@
         "source": "github",
         "repo": "devrev/aai-skills"
       }
+    },
+    "devrev-qk-agents": {
+      "source": {
+        "source": "github",
+        "repo": "QK-SnapIn/devrev-qk-agents"
+      }
     }
   },
   "enabledPlugins": {

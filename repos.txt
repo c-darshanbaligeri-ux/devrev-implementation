@@ -12,7 +12,13 @@ https://github.com/devrev/dashboard-sync-cli
 # GROUNDING — OpenAPI contracts (specs/next/openapi-internal.yaml) used by skills/7-agent-building
 https://github.com/devrev/api-specs
 
+# PLUGIN — devrev-qk-agents: PM/Architect/Tester snap-in build pipeline (marketplace: devrev-qk-agents),
+# routed to by skills/9-snapin-development. Third-party (QK-SnapIn org, not devrev org) — reviewed and
+# secret-scanned before adoption (2026-07-18). Only the snap-in vertical is used; the plugin's own
+# "Implementation" (dashboard) vertical is out of scope (conflicts with skills/4's hand-written-JSON ban).
+https://github.com/QK-SnapIn/devrev-qk-agents
+
 # Deliberately excluded (see docs/CLONE_RESULTS.md):
-#   https://github.com/devrev/devrev-snap-ins  — snap-in source is out of scope for this repo
+#   https://github.com/devrev/devrev-snap-ins  — snap-in SOURCE (not tooling) is out of scope for this repo
 #   https://github.com/devrev/mcp-server       — archived; superseded by the hosted MCP in .mcp.json
 # devrev/auto-annotations is auto-cloned on demand by skills/7-agent-building/scripts/check-annotations.sh

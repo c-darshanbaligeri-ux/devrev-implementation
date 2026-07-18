@@ -12,3 +12,8 @@ Start with `SKILL.md` (workflows, principles, API contract compliance). This fol
 **Auth**: `DEVREV_PAT` (repo-root `.env`) for public API (knowledge sync, annotations);
 `ORG_PAT` (optional in `.env`) for internal API (agent configs, guardrails). Scripts resolve `.env`
 from the repo root. **Never** POST to a mutating internal endpoint without explicit user approval.
+
+**Knowledge freshness**: before designing an agent from `knowledge/`, check the `Synced:` timestamp
+in `knowledge/INDEX.md`; if it's more than a few days old, offer to refresh via
+`bash skills/7-agent-building/scripts/sync-knowledge.sh` first. (The upstream plugin enforced this
+with a session hook; here it's a manual check.)

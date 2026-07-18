@@ -146,3 +146,29 @@ private repo fails in a given environment.
 - `skills/6-workflows/SKILL.md` frontmatter `name:` changed `devrev-workflow-admin` → `workflows` (stale name).
 - Bootstrap hook `dashboard-sync init` idempotency uses a `.claude/.auto-setup/init.done` marker instead of
   checking `dashboards/` existence (this repo pre-creates that directory, so existence can't signal init state).
+
+## Completeness check vs the four source projects (2026-07-18)
+
+Verified file-by-file. Everything carried over or deliberately excluded:
+
+- **`API's`**: all 10 reference .md files copied (skills/8 + duplicated into skills/1–3 per design);
+  CLAUDE.md/SKILL.md adapted into root CLAUDE.md + skills/8 SKILL.md. Excluded:
+  `DevRev_Building_Org_Using_API_v1.docx` (exact duplicate of the .md).
+- **`devrev-workflow-admin`**: 100% carried (SKILL.md, 3 references, 5 operations files + 130
+  schemas, 13 examples, trigger script) with path/count fixups.
+- **`Dashboard and Widget Creation`**: mechanics adapted (.mcp.json, .gitignore, settings.json,
+  bootstrap hook, update-repos, devrev-dashboards router → skills/4); context/OVERVIEW.md and
+  context/API_AND_JSON.md added to `skills/4-dashboards-and-widgets/references/` (completeness
+  pass). Excluded: START_HERE.md, SUMMARY.md, CLONE_RESULTS.md, clone_repos.sh, repos.txt
+  (project-specific task-package artifacts superseded by this repo's own equivalents), repos/
+  clones (re-cloned here).
+- **`aai-custom-computer-capabilities`**: agent-building-toolkit fully carried (SKILL.md, 8
+  commands, knowledge, references, 7 scripts; CLAUDE.md → references/toolkit-guide.md; README's
+  auth table folded into skills/7 README; hooks' knowledge-freshness check documented as a manual
+  step in skills/7 README). Excluded by design: `.env`/`.env.example` (real secrets), LICENSE,
+  `.claude-plugin/` + `hooks/` (plugin-install machinery — not a plugin here), presentations/
+  (slide deck), `agent-instructions-ai_agent-1.md` + `dependent-objects-bridge-skill-guide.md`
+  (client-specific artifacts), `references/IMPROVEMENTS.md` (historical changelog), `.claude/`
+  command dupes. All snap-in dirs (1-*, 2-*, 4-*) and non-agent nxt skills: out of scope.
+  `workflow-skill` (workflow-builder plugin): not consolidated — skills/6 covers the domain;
+  known upstream alternative.

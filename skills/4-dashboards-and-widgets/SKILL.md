@@ -53,6 +53,13 @@ If any precondition is unmet, surface it to the user rather than proceeding — 
 
 The actual domain knowledge lives in `repos/aai-skills/plugins/dashboard-dev/skills/`. This file intentionally does not duplicate that content — it only routes and states the hard rules. Read the target skill's `SKILL.md` for the real implementation details.
 
+## Background references (local)
+
+| File | When to read it |
+| --- | --- |
+| `references/plugin-and-toolchain-overview.md` | Background on how the dashboard-dev toolchain works: plugin structure, the 7-step end-to-end flow, the local DuckDB/Parquet widget validator, federated skill architecture, manual preview surfaces |
+| `references/widget-api-and-dashboard-json.md` | The raw `widgets.create`/`widgets.get` API shapes and dashboard JSON skeleton — for understanding what the pipeline produces (NOT for hand-writing widget JSON; the HARD RULE above still applies) |
+
 ## Field notes (live-learned; see docs/LEARNINGS.md)
 
 Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that

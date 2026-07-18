@@ -1,18 +1,19 @@
 #!/bin/bash
 # sync-knowledge.sh — Fetch all AI Agent Guide articles from DevRev KB
-# Usage: ./sync-knowledge.sh [output_dir]
-# Default output_dir: ./knowledge (relative to current working directory)
+# Usage: bash skills/7-agent-building/scripts/sync-knowledge.sh [output_dir]
+# Default output_dir: the skill's own knowledge/ folder (skills/7-agent-building/knowledge)
 #
 # Requires DEVREV_PAT (environment, ~/.openclaw-autoclaw/.env, or plugin/.env)
 
 set -euo pipefail
 
-OUTPUT_DIR="${1:-knowledge}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+
+OUTPUT_DIR="${1:-$SCRIPT_DIR/../knowledge}"
 mkdir -p "$OUTPUT_DIR"
 
 # Load PATs (check project-local .env first, then ~/.openclaw-autoclaw/.env)
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
 load_pat() {
   local name="$1"

@@ -8,7 +8,7 @@
 
 Guardrails are **not first-class resources** with standalone CRUD endpoints. They are **embedded** in AI agent and AI agent version payloads. Only one guardrail type exists today (`topic_boundary`), but the schema uses a discriminated union and is designed for extensibility.
 
-Retrieval behavior (**FetchObjectContext**, **HybridSearch**, NL2SQL) is configured elsewhere (goal, instructions, skills, knowledge). When you ship a full agent design, see `/agent-create` and `CLAUDE.md` — search-like skills should name **HybridSearch** where applicable, and **FetchObjectContext** must be covered when object ids appear.
+Retrieval behavior (**FetchObjectContext**, **HybridSearch**, NL2SQL) is configured elsewhere (goal, instructions, skills, knowledge). When you ship a full agent design, see `agent-create.md` and `../references/toolkit-guide.md` — search-like skills should name **HybridSearch** where applicable, and **FetchObjectContext** must be covered when object ids appear.
 
 ## Schemas
 

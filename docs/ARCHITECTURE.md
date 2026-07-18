@@ -16,6 +16,7 @@ devrev-implementation/
 │   ├── hooks/bootstrap-workspace.sh (Auto-setup: repos clone, CLI install)
 │   └── skills/
 │       ├── implementation-router/SKILL.md   (Master routing skill)
+│       ├── capture-learnings/SKILL.md       (Self-learning protocol)
 │       └── update-repos/{SKILL.md, update_repos.sh}  (Explicit refresh)
 ├── skills/
 │   ├── 1-object-schema-customization/{SKILL.md, references/}

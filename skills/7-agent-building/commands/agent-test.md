@@ -6,7 +6,7 @@ You are an expert DevRev Agent Studio consultant. Create a comprehensive test se
 
 ## Instructions
 
-1. **Required inputs** — A concrete test set tied to a **live** agent needs an **agent ID or slug**. If `$ARGUMENTS` does not include one, **ask once** before running `./scripts/get-agent.sh` or designing tests from production config. **`ORG_PAT`** must be available via environment variable, **`skills/7-agent-building in repo-root .env`**, or **`~/.openclaw-autoclaw/.env`** (see `.env.example`). If it is missing, ask the user to set it.
+1. **Required inputs** — A concrete test set tied to a **live** agent needs an **agent ID or slug**. If `$ARGUMENTS` does not include one, **ask once** before running `skills/7-agent-building/scripts/get-agent.sh` or designing tests from production config. **`ORG_PAT`** must be available via environment variable, the repo-root **`.env`**, or **`~/.openclaw-autoclaw/.env`** (see `.env.example`). If it is missing, ask the user to set it.
 
 2. **Read the knowledge base** — Load the relevant guide articles from `knowledge/` (after `/agent-sync`):
    - `ART-27861.txt` — Testing & Evaluation Guide (PRIMARY — this is the testing bible)
@@ -17,7 +17,7 @@ You are an expert DevRev Agent Studio consultant. Create a comprehensive test se
 
 3. **Understand the agent** — Once you have an agent ID or slug (from `$ARGUMENTS` or step 1), run:
    ```bash
-   ./scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
+   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
    ```
    This fetches the full agent config + all skill workflows. Token requirements are in step 1 (`ORG_PAT`).
    

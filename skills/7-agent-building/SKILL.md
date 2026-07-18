@@ -538,3 +538,11 @@ Use this skill when:
 - Use `scripts/validate-schema.sh check <type> payload.json` to validate payloads
 
 **For detailed troubleshooting, see `references/troubleshooting.md`**
+
+## Capturing new learnings
+
+`references/api-contracts.md` is this domain's designated live-verified contract file — when a real
+API call reveals a schema difference, restriction, or new behavior, add a dated entry there (and fix
+any wrong claim in place). Guardrails/feature-flag discoveries go in `references/guardrails-api.md`
+/ `references/feature-flags.md`. Then append a row to `docs/LEARNINGS.md` and commit — full
+protocol: `.claude/skills/capture-learnings/SKILL.md`.

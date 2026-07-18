@@ -52,10 +52,10 @@ NL2SQL performance depends entirely on schema annotations. Without them, the mod
 
 ```bash
 # Check annotation quality for a specific table
-./scripts/check-annotations.sh "<table-id>" /tmp/annotations
+skills/7-agent-building/scripts/check-annotations.sh "<table-id>" /tmp/annotations
 
 # List all available tables first (if you don't know the ID)
-./scripts/check-annotations.sh list
+skills/7-agent-building/scripts/check-annotations.sh list
 ```
 
 Requires `DEVREV_PAT` in `.env`. This will:
@@ -160,7 +160,7 @@ Guardrails restrict agents to specific topics and are checked at input and/or ou
 
 **Via API** (recommended until UI exposes this):
 - Guardrails are embedded in agent/version payloads — no standalone endpoints
-- See `references/guardrails-api.md` for full schema, examples, and update patterns
+- See `guardrails-api.md` (this folder) for full schema, examples, and update patterns
 
 **Via Feature Flags** (neuron.rego):
 - `agent_guardrails_enabled` — controls whether guardrails are active per org/agent
@@ -212,14 +212,14 @@ If `ORG_PAT` is not set, agent/workflow operations will fail with a clear error 
 
 When changing agents **via API** (not only advice):
 
-1. **Ask before any mutating call** — No `POST` to internal create/update/delete/deploy/execute endpoints without **explicit user approval** in-session (endpoint + ids + what changes). See **`references/api-specs-and-api-safety.md`**.
-2. **Ground requests in `api-specs`** — Clone **`https://github.com/devrev/api-specs`**, set **`DEVREV_API_SPECS`**, and use **`specs/next/openapi-internal.yaml`** for `/internal/ai-agents.*` request shapes and `$ref` schemas.
+1. **Ask before any mutating call** — No `POST` to internal create/update/delete/deploy/execute endpoints without **explicit user approval** in-session (endpoint + ids + what changes). See **`api-specs-and-api-safety.md`** (this folder).
+2. **Ground requests in `api-specs`** — The spec repo is already cloned at **`repos/api-specs`** (repo root); use **`repos/api-specs/specs/next/openapi-internal.yaml`** for `/internal/ai-agents.*` request shapes and `$ref` schemas. (`DEVREV_API_SPECS` may point at it: `DEVREV_API_SPECS=repos/api-specs`.)
 3. **Persist drafts first** — Write proposed JSON/diff to a file, then call the API after approval; save snapshots after successful changes if the user wants audit history.
-4. **Validate before calling** — Use `scripts/create-agent.sh check` on every payload before sending.
+4. **Validate before calling** — Use `../scripts/create-agent.sh check` (i.e. `skills/7-agent-building/scripts/create-agent.sh check` from repo root) on every payload before sending.
 
 ### API Contract Compliance
 
-> **Always read `references/api-contracts.md` before building any create/update payload.**
+> **Always read `api-contracts.md` (this folder) before building any create/update payload.**
 
 Key schema differences:
 - **CREATE**: `guardrails` = plain array, `skills` = plain array, no `slug` field
@@ -227,18 +227,19 @@ Key schema differences:
 - **BOTH**: `topic_name`/`description` must be FLAT in guardrails (not nested under `topic_boundary`); trigger fields must be STRING IDs, not objects
 
 ### Additional References
-- [API Contracts](references/api-contracts.md) — Comprehensive API schema details and pitfalls
-- [Troubleshooting Guide](references/troubleshooting.md) — Common issues and solutions from real-world usage
-- [Guardrails API](references/guardrails-api.md) — Full guardrail schema and examples
-- [Feature Flags](references/feature-flags.md) — archon-policy feature flag reference
+- [API Contracts](api-contracts.md) — Comprehensive API schema details and pitfalls
+- [Troubleshooting Guide](troubleshooting.md) — Common issues and solutions from real-world usage
+- [Guardrails API](guardrails-api.md) — Full guardrail schema and examples
+- [Feature Flags](feature-flags.md) — archon-policy feature flag reference
 
-## Custom Commands
+## Command playbooks
 
-Use `/agent-sync` to refresh the knowledge base, then:
-- `/agent-debug <issue>` — Debug an agent problem
-- `/agent-create <requirements>` — Create a new agent
-- `/agent-improve <agent-id-or-config>` — Analyze and improve an existing agent
-- `/agent-test <agent-id-or-config>` — Create a comprehensive test set
-- `/agent-ask <question>` — Ask anything about DevRev agents
-- `/guardrails-api` — Guardrail configuration via API (schema, examples, feature flag control)
-- `/feature-flags` — archon-policy feature flag reference (model overrides, agent config, snap-in enablement)
+These are **read-and-follow playbooks** in `../commands/` (not registered slash commands in this
+repo — see `../commands/README.md`). Use `agent-sync.md` to refresh the knowledge base, then:
+- `agent-debug.md <issue>` — Debug an agent problem
+- `agent-create.md <requirements>` — Create a new agent
+- `agent-improve.md <agent-id-or-config>` — Analyze and improve an existing agent
+- `agent-test.md <agent-id-or-config>` — Create a comprehensive test set
+- `agent-ask.md <question>` — Ask anything about DevRev agents
+- `guardrails-api.md` — Guardrail configuration via API (schema, examples, feature flag control)
+- `feature-flags.md` — archon-policy feature flag reference (model overrides, agent config, snap-in enablement)

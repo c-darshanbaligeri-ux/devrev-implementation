@@ -173,7 +173,7 @@ curl -X POST 'https://api.devrev.ai/links.create' \
 
 Common built-in link types: `serves`, `is_part_of`, `is_dependent_on`, `is_related_to`. Once parts are created and linked, open Product > Trails in the app to see the connected graph rendered visually.
 
-**Important**: To move a part within the Trail later, use `links.replace` rather than delete-then-create, so you never leave a part orphaned without a parent. The replacement is **atomic only for part-to-part default (non-custom) link types**; for custom link types or non-part endpoints it runs as a non-atomic delete-then-create and the new link must keep the same type and share an endpoint (§3 note).
+**Important**: To move a part within the Trail later, use `links.replace` rather than delete-then-create, so you never leave a part orphaned without a parent. The replacement is **atomic only for part-to-part default (non-custom) link types**; for custom link types or non-part endpoints it runs as a non-atomic delete-then-create and the new link must keep the same type and share an endpoint (Phase 3 note).
 
 **Verify**: `parts.list` to confirm the hierarchy; `links.list` on a part to see its connections.
 
@@ -215,12 +215,12 @@ curl -X POST 'https://api.devrev.ai/works.create' \
 1. **Prepare the data** — parse the CSV or source data into a list of records to create.
 
 2. **Create records in order** (respect dependencies):
-   - **Customer data ordering** (§Phase 5 note): `accounts.create` → `rev-orgs.create` → `rev-users.create`, top-down, saving each DON id.
+   - **Customer data ordering** (`references/Customers_Users_and_Orgs_API.md` §8, build order): `accounts.create` → `rev-orgs.create` → `rev-users.create`, top-down, saving each DON id.
    - **Parts ordering** (Phase 2): product → capability → feature, saving each DON id and passing `parent_part` to children.
    - **Work items** (Phase 5): after parts exist, create work items with `applies_to_part`.
 
 3. **Idempotency**:
-   - For **custom objects**: pass a stable `unique_key` on `custom-objects.create` (§1.2, Phase 1). Repeating the call with the same key won't create a duplicate.
+   - For **custom objects**: pass a stable `unique_key` on `custom-objects.create` (`references/DevRev_Building_Org_Using_API_v1.md` §1.5, Custom objects). Repeating the call with the same key won't create a duplicate.
    - For **stock objects**: no native `unique_key`. Check-before-create pattern: `*.list` filtered by a unique attribute (e.g. account name or user email), create only if not found. Keep a DON scratchpad or persist to a run file.
 
 4. **Error handling**: fail loudly on non-2xx. Log each created DON id to a per-run file. If the script crashes, re-run it — idempotency ensures no duplicates.
@@ -256,7 +256,7 @@ done < accounts.csv
 
 ### Ordered customer data creation
 
-**Reference**: `references/DevRev_Building_Org_Using_API_v1.md` Phase 5 note (customer data ordering).
+**Reference**: `references/Customers_Users_and_Orgs_API.md` §8 "Object relationships (build order)".
 
 When creating customer identity objects, follow this top-down order (each tier saves DON ids for the next):
 
@@ -272,6 +272,7 @@ When creating customer identity objects, follow this top-down order (each tier s
 | --- | --- |
 | `references/Platform_and_Admin_API.md` | Artifact upload/download (§1); webhooks, jobs, schedules, vistas, observability, web-crawler, snap-widgets, commands, code-changes, auth-tokens (§2–12); common pitfalls (§14) |
 | `references/DevRev_Building_Org_Using_API_v1.md` | Entire file — end-to-end org build playbook (§4 setup at a glance, Phase 0–5), key concepts (§3), worked example (§end-to-end), troubleshooting (§troubleshooting), best practices (§best practices) |
+| `references/Customers_Users_and_Orgs_API.md` | Accounts, rev-orgs, rev-users, dev-users, groups — payloads and the §8 build order (account → rev_org → rev_user) used by customer data loads |
 
 ## DON id scratchpad
 
@@ -311,3 +312,13 @@ From the references:
 - **Custom objects inaccessible**: they start with zero access by default (even for admins) — grant object- and field-level roles in Settings (`references/DevRev_Building_Org_Using_API_v1.md` Phase 1 §1.5, §troubleshooting, §best practices).
 - **Duplicate records**: pass a stable `unique_key` on `custom-objects.create` for idempotency; for stock objects, check-before-create with `*.list` filter.
 - **No bulk-create endpoint**: there is no public bulk-create endpoint — bulk loads = deterministic scripted loops over `*.create`, idempotent via `unique_key` or check-before-create, safe to re-run, fail loudly on non-2xx (documented honestly here).
+
+## Field notes (live-learned; see docs/LEARNINGS.md)
+
+Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
+differ from the references. Add entries via the `capture-learnings` protocol
+(`.claude/skills/capture-learnings/SKILL.md`): one dated bullet per fact, with evidence. If a fact
+*corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
+better home or needs domain-level visibility.
+
+- _(none yet)_

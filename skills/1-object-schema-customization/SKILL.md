@@ -151,7 +151,7 @@ Every playbook step cites the exact reference file and section. Follow the order
 
 ### Playbook 3 — Create and manage subtypes
 
-**Reference**: `references/Stock_Object_Modification_and_Schemas_API.md` §5 (Manage subtypes); `references/DevRev_Building_Org_Using_API_v1.md` Phase 1 §1.2 (Add a subtype with custom fields).
+**Reference**: `references/Stock_Object_Modification_and_Schemas_API.md` §5 (Manage subtypes); worked example: `../3-data-upload-and-org-build/references/DevRev_Building_Org_Using_API_v1.md` Phase 1 §1.2 (Add a subtype with custom fields).
 
 **Steps**:
 
@@ -279,3 +279,13 @@ After any schema change:
 - **Setting `stage` without a diagram**: attach a stage diagram to the leaf type first (Playbook 1 optional), or the stage value is rejected.
 - **Trying to delete a custom link type**: no public delete endpoint — deprecate via `link-types.custom.update` with `deprecated: true`.
 - **Old field values persisting**: records reference the old fragment version until upgraded — re-save them via `*.update` with the current `custom_schema_spec`.
+
+## Field notes (live-learned; see docs/LEARNINGS.md)
+
+Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
+differ from the references. Add entries via the `capture-learnings` protocol
+(`.claude/skills/capture-learnings/SKILL.md`): one dated bullet per fact, with evidence. If a fact
+*corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
+better home or needs domain-level visibility.
+
+- _(none yet)_

@@ -5,7 +5,9 @@ description: Use this skill when the user asks to "create a DevRev dashboard", "
 
 # DevRev Dashboards & Widgets
 
-This skill routes dashboard and widget requests to the installed `dashboard-dev` Claude Code plugin (marketplace `devrev-aai-plugins`, sourced from `repos/aai-skills`). The actual domain knowledge (widget JSON schema, 12-column grid layout rules, Meerkat aggregations, validation stages) lives in the plugin's own skills at `repos/aai-skills/plugins/dashboard-dev/skills/` — this file only routes.
+This skill routes dashboard and widget requests to the installed `dashboard-dev` Claude Code plugin (marketplace `devrev-aai-plugins`, registered in `.claude/settings.json` with GitHub source `devrev/aai-skills`; the clone at `repos/aai-skills` is the same code, kept for reading/grounding). The actual domain knowledge (widget JSON schema, 12-column grid layout rules, Meerkat aggregations, validation stages) lives in the plugin's own skills at `repos/aai-skills/plugins/dashboard-dev/skills/` — this file only routes.
+
+> **Command-name note** (verified 2026-07-18): the plugin's create command file declares frontmatter `name: dashboard-create`, so the registered command may appear as `/dashboard-dev:dashboard-create` rather than `/create-dashboard`. If `/create-dashboard` doesn't resolve in a session, use `/dashboard-dev:dashboard-create` (same command). `/modify-dashboard` resolves as `dashboard-dev:modify-dashboard`.
 
 ## Routing table
 
@@ -50,3 +52,13 @@ If any precondition is unmet, surface it to the user rather than proceeding — 
 ## Why this indirection
 
 The actual domain knowledge lives in `repos/aai-skills/plugins/dashboard-dev/skills/`. This file intentionally does not duplicate that content — it only routes and states the hard rules. Read the target skill's `SKILL.md` for the real implementation details.
+
+## Field notes (live-learned; see docs/LEARNINGS.md)
+
+Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
+differ from the references. Add entries via the `capture-learnings` protocol
+(`.claude/skills/capture-learnings/SKILL.md`): one dated bullet per fact, with evidence. If a fact
+*corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
+better home or needs domain-level visibility.
+
+- _(none yet)_

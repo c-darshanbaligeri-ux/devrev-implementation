@@ -870,7 +870,7 @@ Consult these files for the full list of available operations:
 
 For 130 operations, detailed resolved schemas are available with exact field names, types, required flags, enum values, and composite sub-fields:
 
-- **Schema Index:** `skills/6-workflows/operations/schema-index.md` (39 triggers, 62 actions, 5 other)
+- **Schema Index:** `skills/6-workflows/operations/schema-index.md` (40 triggers, 64 actions, 7 controls, 2 blockings, 17 other)
 - **Per-operation schemas:** `skills/6-workflows/operations/schemas/<slug>.md`
 
 Use these schemas to determine the exact field names and types when building `input_values` for a step. For example, to see what fields `create_ticket` accepts, read `operations/schemas/create_ticket.md`.
@@ -889,18 +889,19 @@ These templates have been confirmed to import successfully. **Always study these
 | `working-invoke-code-sample.json` | 4 | **Code node pattern**: enhancement_updated -> if_else -> invoke_code -> update_enhancement. Shows `invoke_code` with `text_template` code, `composite_value_list` inputs, `output_schema` with UI metadata |
 | `working-csat-score-on-ticket-resolved.json` | 5 | **HTTP + AI pattern**: ticket_updated -> if_else (check resolved) -> http (timeline-entries API) -> ask_ai (CSAT analysis) -> add_comment. Shows HTTP with Bearer auth, `text_template` body with expressions, AI prompt composition |
 | `working-enhancement-replace-agent.json` | 4 | **Code + update pattern**: enhancement_updated -> if_else (contains check) -> invoke_code (regex replace) -> update_enhancement. Shows `invoke_code` with Python regex, passing data between steps |
+| `working-ai-agent-skill-koi-booking.json` | 4 | **Agent-callable skill (four-block)**: ai_agent_skill_trigger -> ai_agent_skill block -> http -> set_ai_agent_skill_output, labels `["skill"]`. See `ai-agent-skill-pattern.md` |
 
 ### Reference Examples (from production)
 
 | File | Steps | Pattern Demonstrated |
 |------|-------|---------------------|
-| `4392-Async opportunity review agent` | 2 | Simple trigger -> action, agent interaction |
-| `4505-Auto-update issue tcd` | 3 | Trigger with `fields_to_watch` + `_filter`, chained updates |
-| `5216-Account segment missing notification` | 4 | Trigger -> get -> if_else -> comment, `_filter` with stage check |
-| `4441-Ticket escalator from customer message` | 11 | Complex: trigger -> ask_ai -> if_else -> get -> nested if_else -> update + notify |
-| `3592-Generate rca from pia` | 8 | Incident trigger -> ask_ai -> create_article, if_else branching |
-| `5040-Devrevu enablement journey poc emails` | 8 | Custom object trigger, HTTP calls, sleep_for, third-party operations |
-| `5158-Devrevu enablement journey mailing` | 43 | Complex sequential flow with many sleep_for + if_else + third-party email |
+| `4392-Async opportunity review agent-template.json` | 2 | Simple trigger -> action, agent interaction |
+| `4505-Auto-update issue tcd as end of sprint date-template.json` | 3 | Trigger with `fields_to_watch` + `_filter`, chained updates |
+| `5216-Account segment missing notification-template.json` | 4 | Trigger -> get -> if_else -> comment, `_filter` with stage check |
+| `4441-Ticket escalator from customer message-template.json` | 11 | Complex: trigger -> ask_ai -> if_else -> get -> nested if_else -> update + notify |
+| `3592-Generate rca from pia-template.json` | 8 | Incident trigger -> ask_ai -> create_article, if_else branching |
+| `5040-Devrevu - enablement journey - poc emails-template.json` | 8 | Custom object trigger, HTTP calls, sleep_for, third-party operations |
+| `5158-Devrevu - enablement journey - mailing for non enablement journey users-template.json` | 43 | Complex sequential flow with many sleep_for + if_else + third-party email |
 
 To read an example: `python3 -c "import json; d=json.load(open('skills/6-workflows/examples/FILENAME.json')); inner=json.loads(d['data']); print(json.dumps(inner, indent=2))"`
 

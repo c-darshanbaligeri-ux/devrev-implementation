@@ -54,6 +54,7 @@ an org.
 | Timeline / comments | `references/Work_Items_Timeline_Tags_Links_API.md` | timeline-entries.*, reactions.* |
 | Tags | `references/Work_Items_Timeline_Tags_Links_API.md` | tags.* |
 | Links | `references/Work_Items_Timeline_Tags_Links_API.md` + `references/Custom_Objects_and_Links_API.md` | links.*, link-types.custom.* |
+| Parts (product/capability/feature) | `references/DevRev_Building_Org_Using_API_v1.md` Phase 2 | parts.create/list (scope tracks part type) |
 | Accounts / orgs / users | `references/Customers_Users_and_Orgs_API.md` | accounts.*, rev-orgs.*, rev-users.*, dev-users.*, groups.*, directories.* |
 | Conversations / chats | `references/Support_Knowledge_and_SLAs_API.md` | conversations.*, chats.* |
 | Articles (KB) | `references/Support_Knowledge_and_SLAs_API.md` | articles.* |
@@ -123,3 +124,13 @@ CUSTOM_OBJECT_ID= CUSTOM_LINK_TYPE_ID= STAGE_DIAGRAM_ID=
 curl -X POST 'https://api.devrev.ai/ping' -H "Authorization: Bearer $DEVREV_TOKEN" -d '{}'
 curl -X POST 'https://api.devrev.ai/works.list' -H "Authorization: Bearer $DEVREV_TOKEN" -d '{ "type": ["ticket"], "limit": 5 }'
 ```
+
+## Field notes (live-learned; see docs/LEARNINGS.md)
+
+Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
+differ from the references. Add entries via the `capture-learnings` protocol
+(`.claude/skills/capture-learnings/SKILL.md`): one dated bullet per fact, with evidence. If a fact
+*corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
+better home or needs domain-level visibility.
+
+- _(none yet)_

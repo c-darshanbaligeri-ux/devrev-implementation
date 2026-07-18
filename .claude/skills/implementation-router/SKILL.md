@@ -22,6 +22,7 @@ every fact must come from the matched skill's reference files.
 | Build, debug, improve, or test AI agents (Agent Studio) | `skills/7-agent-building/SKILL.md` |
 | Any raw DevRev REST API call | `skills/8-devrev-api/SKILL.md` |
 | "Update the repos" / "pull latest" / "sync to main" | `.claude/skills/update-repos/SKILL.md` |
+| Hit an unexpected error/restriction, discovered undocumented API behavior, or was corrected by the user — mid-task, any domain | `.claude/skills/capture-learnings/SKILL.md` (run it immediately, then continue the task) |
 
 ## Rules
 

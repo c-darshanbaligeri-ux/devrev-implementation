@@ -29,7 +29,7 @@ That's it. Everything else auto-configures on session start.
 | **Workspace directories** (`dashboards/`, `datasets/`, `plans/`, `logs/`, `templates/`) | SessionStart hook creates synchronously; CLI then runs `dashboard-sync init` once present |
 | **`config.yaml`** | The `dashboard-dev` plugin's own hook generates it from `.env` |
 | **Plugin marketplace** (`dashboard-dev`, `dataset-builder`) | Committed `.claude/settings.json` registers `devrev-aai-plugins` marketplace; trust prompt activates it |
-| **Hosted MCP** (DevRev object access: search, work items, parts, etc.) | `.mcp.json` points to `https://api.devrev.ai/mcp/v1`; token interpolated from `${DEVREV_PAT}` in `.env` |
+| **Hosted MCP** (DevRev object access: search, work items, parts, etc.) | `.mcp.json` points to `https://api.devrev.ai/mcp/v1`; `${DEVREV_PAT}` is read from the process environment — export it (or source `.env`) in the shell that launches Claude Code if the MCP shows unauthorized |
 
 ## Capability map
 
@@ -49,7 +49,7 @@ That's it. Everything else auto-configures on session start.
 From a fresh machine with git + gh auth + Claude Code installed:
 
 1. Clone this repo.
-2. Create `.env` (one line: `DEVREV_PAT=<your_token>`).
+2. Create `.env` from `.env.example` (both `DEVREV_PAT=<your_token>` and `DEVREV_ENDPOINT=https://api.devrev.ai` — the dashboard plugin requires both lines).
 3. Start a Claude Code session, accept the trust prompt.
 4. Wait ~1 minute for background installs.
 5. Start a second session for PATH refresh.

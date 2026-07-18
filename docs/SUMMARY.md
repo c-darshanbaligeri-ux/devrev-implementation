@@ -24,7 +24,9 @@ This document tracks the source lineage and adaptations for all artifacts in the
 | `.claude/hooks/bootstrap-workspace.sh` | S3 bootstrap hook | Extended with: (1) `.env` gate, (2) workspace dirs creation, (3) repos/ initial clone (background, once, writes to CLONE_RESULTS.md), (4) dashboard-sync CLI install via pipx (background, once) |
 | `.claude/skills/update-repos/SKILL.md` | S3 `update-repos/SKILL.md` | Updated post-run note: restart Claude Code or `/plugin marketplace update devrev-aai-plugins` if aai-skills changed; removed clone_repos.sh reference |
 | `.claude/skills/update-repos/update_repos.sh` | S3 `update-repos/update_repos.sh` | Verbatim copy; idempotent shallow clone with dirty-check skip |
-| `.claude/skills/implementation-router/SKILL.md` | Authored new | Master router with 9-row routing table (8 skills + update-repos); preconditions check (.env, ping); never reconstruct from memory |
+| `.claude/skills/implementation-router/SKILL.md` | Authored new | Master router with routing table (8 skills + update-repos + capture-learnings); preconditions check (.env, ping); never reconstruct from memory |
+| `.claude/skills/capture-learnings/SKILL.md` | Authored new (2026-07-18 refinement) | Self-learning protocol: routes discoveries (errors, restrictions, undocumented behavior) to the specific owning file + docs/LEARNINGS.md journal |
+| `docs/LEARNINGS.md` | Authored new (2026-07-18 refinement) | Append-only learnings journal (audit trail for the capture-learnings protocol) |
 | **skills/8-devrev-api** | | |
 | `skills/8-devrev-api/references/` (10 files) | S1 (9 .md files) | Verbatim copies: 00_API_Catalog.md, Work_Items_Timeline_Tags_Links_API.md, Customers_Users_and_Orgs_API.md, Support_Knowledge_and_SLAs_API.md, Platform_and_Admin_API.md, Custom_Objects_and_Links_API.md, Stock_Object_Modification_and_Schemas_API.md, Stages_States_and_StageDiagrams_API.md, DevRev_Building_Org_Using_API_v1.md |
 | `skills/8-devrev-api/references/devrev-mcp-claude-code-setup.md` | S1 (same filename) | Copied + PREPENDED superseded notice (hosted MCP via .mcp.json supersedes npx @devrev/mcp-server) |

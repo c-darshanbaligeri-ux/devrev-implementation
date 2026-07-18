@@ -4,7 +4,7 @@
 
 Feature flags in DevRev are managed via **Rego policies** in the `archon-policy` repository (clone locally; policy files live under `policies/`). They control product behavior per environment (`dev`, `qa`, `prod`), per org, per user, and per agent.
 
-Skill naming and retrieval order (**FetchObjectContext** vs **HybridSearch** vs NL2SQL) are set in **agent config and instructions**, not in these Rego files. Use `/agent-create`, `CLAUDE.md` (naming retrieval), and ART-30502 for that; use this doc for **runtime** toggles (models, workers, guardrail enablement, etc.).
+Skill naming and retrieval order (**FetchObjectContext** vs **HybridSearch** vs NL2SQL) are set in **agent config and instructions**, not in these Rego files. Use `agent-create.md`, `../references/toolkit-guide.md` ("Naming retrieval in agent designs"), and ART-30502 for that; use this doc for **runtime** toggles (models, workers, guardrail enablement, etc.).
 
 ## Key Policy Files
 

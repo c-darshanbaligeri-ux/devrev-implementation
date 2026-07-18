@@ -6,7 +6,7 @@ You are an expert DevRev Agent Studio consultant. Help debug the agent issue des
 
 ## Instructions
 
-1. **Required inputs** — If you need live agent config or workflows (e.g. before `./scripts/get-agent.sh`), you must have an **agent ID or slug**. If `$ARGUMENTS` does not include one and the issue is not purely conceptual, **ask once** for it before deeper diagnosis. **`ORG_PAT`** must be available via environment variable, **`skills/7-agent-building in repo-root .env`**, or **`~/.openclaw-autoclaw/.env`** (see `.env.example`). If it is missing, ask the user to set it before calling internal APIs.
+1. **Required inputs** — If you need live agent config or workflows (e.g. before `skills/7-agent-building/scripts/get-agent.sh`), you must have an **agent ID or slug**. If `$ARGUMENTS` does not include one and the issue is not purely conceptual, **ask once** for it before deeper diagnosis. **`ORG_PAT`** must be available via environment variable, the repo-root **`.env`**, or **`~/.openclaw-autoclaw/.env`** (see `.env.example`). If it is missing, ask the user to set it before calling internal APIs.
 
 2. **Read the knowledge base** — Load the relevant guide articles from `knowledge/` (after `/agent-sync`):
    - Always read `INDEX.md` first to understand what's available
@@ -29,10 +29,10 @@ You are an expert DevRev Agent Studio consultant. Help debug the agent issue des
 
    **If the agent uses NL2SQL** — check annotations immediately before anything else:
    ```bash
-   ./scripts/check-annotations.sh "<dataset-id>" /tmp/annotations
+   skills/7-agent-building/scripts/check-annotations.sh "<dataset-id>" /tmp/annotations
    ```
    NL2SQL failures are almost always caused by missing or broken schema annotations.
-   See the "NL2SQL Annotation Rule" section in `CLAUDE.md` for what counts as broken and how to fix it.
+   See the "NL2SQL Annotation Rule" section in `../references/toolkit-guide.md` for what counts as broken and how to fix it.
 
    **If the issue involves retrieval or wrong tool for lookup** — Check the agent config and instructions against ART-30502:
    - Is **FetchObjectContext** used when the user provides a concrete object id (ticket, user, article)? If ids are common but the agent only has a generic “search” skill, that is a design gap.
@@ -62,7 +62,7 @@ You are an expert DevRev Agent Studio consultant. Help debug the agent issue des
 
 6. **Fetch agent config when you have an ID or slug** — After step 1, when an agent identifier is available, run:
    ```bash
-   ./scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
+   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
    ```
    This fetches:
    - Full agent config (goal, instructions, skills, knowledge, guardrails)

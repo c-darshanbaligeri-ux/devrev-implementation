@@ -22,7 +22,7 @@ set -euo pipefail
 # ============================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# Script is in scripts/, go up 1 level to workspace root
+# Script is in skills/7-agent-building/scripts/, go up 3 levels to repo root
 WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
 # Load environment variables

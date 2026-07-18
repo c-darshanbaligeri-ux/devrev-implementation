@@ -5,7 +5,7 @@ description: Use this skill when the user asks to "create a custom dataset", "Oa
 
 # DevRev Custom Datasets
 
-This skill routes dataset requests to the installed `dataset-builder` Claude Code plugin (marketplace `devrev-aai-plugins`, sourced from `repos/aai-skills`). The actual domain knowledge (Oasis platform APIs, BigQuery schemas, Ponos YAML structure, PaaS job execution) lives in the plugin's own skills at `repos/aai-skills/plugins/dataset-builder/skills/` — this file only routes and states the decision rules.
+This skill routes dataset requests to the installed `dataset-builder` Claude Code plugin (marketplace `devrev-aai-plugins`, registered in `.claude/settings.json` with GitHub source `devrev/aai-skills`; the clone at `repos/aai-skills` is the same code, kept for reading/grounding). The actual domain knowledge (Oasis platform APIs, BigQuery schemas, Ponos YAML structure, PaaS job execution) lives in the plugin's own skills at `repos/aai-skills/plugins/dataset-builder/skills/` — this file only routes and states the decision rules.
 
 ## Routing
 
@@ -79,3 +79,13 @@ State the impact clearly and get explicit user confirmation before running these
 ## Why this indirection
 
 The actual domain knowledge lives in `repos/aai-skills/plugins/dataset-builder/skills/`. This file intentionally does not duplicate that content — it only routes and states the decision rules. Read the target skill's SKILL.md or command file for the real implementation details.
+
+## Field notes (live-learned; see docs/LEARNINGS.md)
+
+Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
+differ from the references. Add entries via the `capture-learnings` protocol
+(`.claude/skills/capture-learnings/SKILL.md`): one dated bullet per fact, with evidence. If a fact
+*corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
+better home or needs domain-level visibility.
+
+- _(none yet)_

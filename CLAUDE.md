@@ -29,7 +29,7 @@ This repo requires **one manual step** to activate: create `.env` from `.env.exa
 1. **Workspace directories**: creates `dashboards/`, `datasets/`, `plans/`, `logs/`, `templates/` synchronously.
 2. **Toolchain repos clone** (background, once): if `repos/aai-skills/.git` doesn't exist, loops over non-comment lines in `repos.txt` and clones each to `repos/<name>`. Clone status logs to `.claude/.auto-setup/install.log` and appends a result table to `docs/CLONE_RESULTS.md`.
 3. **`dashboard-sync` CLI install** (background, once): if `dashboard-sync` is not on PATH and no install is already running, installs `pipx` via Homebrew (if missing) and then `pipx install git+https://github.com/devrev/dashboard-sync-cli.git`. Logs to `.claude/.auto-setup/install.log`.
-4. **Dashboard workspace init**: once the CLI is present, runs `dashboard-sync init` (synchronously if `dashboards/` was missing) to ensure directories exist.
+4. **Dashboard workspace init**: once the CLI is present, runs `dashboard-sync init` once (tracked by the `.claude/.auto-setup/init.done` marker, since this repo pre-creates `dashboards/` itself).
 5. **Plugin hook**: the `dashboard-dev` plugin's own `SessionStart` hook generates `config.yaml` from `.env`.
 
 **First session after adding `.env`**: accept the workspace-trust prompt to activate the committed plugin marketplace (`devrev-aai-plugins` from `.claude/settings.json`). The CLI install runs in the background — give it a minute, then **start a new session** so PATH picks up `~/.local/bin/dashboard-sync` (a hook can't refresh the shell PATH of its own already-running session).
@@ -78,7 +78,7 @@ The following operations are **destructive or irreversible**. State the impact c
 
 - Any `*.delete` (objects, parts, works, accounts, etc.)
 - `*.merge` (accounts, works)
-- Deprecating objects (custom link types, stages, states, stage diagrams — `deprecated: true`)
+- Deprecating objects (custom link types via `deprecated: true`; stages within a diagram via `is_deprecated` on the stage node — the references document no whole-diagram or state deprecation)
 - `objects.bulk-upgrade` (if available — verify scope first; affects all records of a type)
 - `web-crawler-jobs.control` with `stop` or `reset` actions
 - Dataset or PaaS/Ponos job deletion (destructive via `/dataset-builder:delete`)
@@ -100,9 +100,30 @@ The script clones anything missing, fast-forwards clean repos to their upstream 
 
 **After updating `repos/aai-skills`** (the plugin marketplace source): restart Claude Code or run `/plugin marketplace update devrev-aai-plugins` so new commands and skills load.
 
+## Self-learning — MANDATORY, not optional
+
+This repo must improve itself every time it's used. Whenever you hit an **error the references
+didn't predict**, a **restriction** (scope/permission/feature-flag/immutability), an **undocumented
+endpoint/field/enum/limit**, a **new workflow-import failure cause**, a **plugin/CLI quirk**, or a
+**user correction** about DevRev behavior — follow the protocol in
+`.claude/skills/capture-learnings/SKILL.md` **immediately, as part of the same task**:
+
+1. **Verify** the fact (real request/response, reproduced behavior, or explicit user statement — never a guess).
+2. **Update the SPECIFIC owning file** — the routing table in capture-learnings maps every kind of
+   learning to its exact target (a domain SKILL.md "Field notes" section, an API reference doc's
+   wrong passage fixed in place, the workflow import-debugging checklist, an operation schema file,
+   `api-contracts.md`, the README troubleshooting table, a router trigger phrase…). Updating only
+   this CLAUDE.md is wrong unless the learning is a truly global API rule.
+3. **Append one row to `docs/LEARNINGS.md`** (the append-only journal) and `git commit` the change
+   (`learn: <summary>`).
+
+Never edit files under `repos/` (upstream clones) — learnings about their tools go in our skill
+files. Never record secrets or real customer DON ids.
+
 ## Guardrails
 
 - **Dashboard validation loop**: never bypass the `/create-dashboard` pipeline for new dashboards. That pipeline (generate widgets in parallel → 3-stage validation: structure → semantic → live API, with auto-fix retries → assemble dashboard → deploy via `dashboard-sync` → Playwright verify) is the only supported path to reliably valid output. Never hand-write widget JSON — it skips all validation.
 - **No unattended network installs** beyond the confirmed bootstrap (`pipx` CLI install + `repos/` clone) which the user has pre-approved as part of this workspace model. Don't extend auto-config to other unattended network installs.
 - **Never fabricate**: if an API field name, DON id format, scope name, JSON structure, or file path doesn't appear in a reference file or tool result, look it up or stop. Do not reconstruct from memory.
 - **Determinism first**: model reasoning produces plans; deterministic scripts, templates, and validators execute them. Same input → same output. Re-runs are safe. Failures are loud (non-zero exit, clear error message).
+- **Capture learnings**: reality beats documentation — when they disagree, fix the documentation via the self-learning protocol above, in the same task where you discovered it.

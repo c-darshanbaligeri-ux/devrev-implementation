@@ -68,3 +68,17 @@ If none of those match, compare the failing template's step structure line-by-li
 | `operations/*.md`, `operations/schemas/*.md` | Looking up an operation's slug or exact field names |
 | `examples/*.json` | Studying real patterns before writing a new template |
 | `scripts/trigger_manual_workflow.py` | Triggering any published workflow with a manual/API trigger step |
+
+## Capturing new learnings
+
+This skill already has two built-in learning channels — use them, plus the journal:
+
+- **New import-failure cause** (not in the checklist above): add it to "Debugging a failed import"
+  here AND to the validation checklist in `references/template-json-format.md`.
+- **Confirmed-working template**: promote to `examples/working-<name>.json` + a row in
+  `references/template-json-format.md`'s example table.
+- **Operation schema surprise** (field the schema doc missed/got wrong): fix
+  `operations/schemas/<slug>.md` in place.
+
+In all cases also append a row to `docs/LEARNINGS.md` and commit — full protocol:
+`.claude/skills/capture-learnings/SKILL.md`.

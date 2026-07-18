@@ -6,7 +6,7 @@ You are an expert DevRev Agent Studio consultant. Analyze and improve the agent 
 
 ## Instructions
 
-1. **Required inputs** — Improvement against a **live** agent needs an **agent ID or slug**. If `$ARGUMENTS` does not include one, **ask once** before running `./scripts/get-agent.sh` or deep analysis. **`ORG_PAT`** must be available via environment variable, **`skills/7-agent-building in repo-root .env`**, or **`~/.openclaw-autoclaw/.env`** (see `.env.example`). If it is missing, ask the user to set it.
+1. **Required inputs** — Improvement against a **live** agent needs an **agent ID or slug**. If `$ARGUMENTS` does not include one, **ask once** before running `skills/7-agent-building/scripts/get-agent.sh` or deep analysis. **`ORG_PAT`** must be available via environment variable, the repo-root **`.env`**, or **`~/.openclaw-autoclaw/.env`** (see `.env.example`). If it is missing, ask the user to set it.
 
 2. **Read the knowledge base** — Load the relevant guide articles from `knowledge/` (after `/agent-sync`):
    - `INDEX.md` — article overview
@@ -20,7 +20,7 @@ You are an expert DevRev Agent Studio consultant. Analyze and improve the agent 
 
 3. **Get the current agent config** — Once you have an agent ID or slug (from `$ARGUMENTS` or step 1), run:
    ```bash
-   ./scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
+   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
    ```
    This fetches the full agent config + all skill workflows + org agent list. Token requirements are in step 1 (`ORG_PAT`).
 
@@ -32,9 +32,9 @@ You are an expert DevRev Agent Studio consultant. Analyze and improve the agent 
    - **Retrieval strategy** — Is **FetchObjectContext** used when object ids are available? Are search skills explicitly grounded as **HybridSearch** (or NL2SQL) in docs/instructions, not only a vague “search” name? (ART-30502)
    - **NL2SQL annotations** — If the agent uses NL2SQL, run the annotation check first:
      ```bash
-     ./scripts/check-annotations.sh "<dataset-id>" /tmp/annotations
+     skills/7-agent-building/scripts/check-annotations.sh "<dataset-id>" /tmp/annotations
      ```
-     Missing or broken annotations are the #1 cause of NL2SQL failures. See `CLAUDE.md` → "NL2SQL Annotation Rule".
+     Missing or broken annotations are the #1 cause of NL2SQL failures. See `../references/toolkit-guide.md` → "NL2SQL Annotation Rule".
    - **Design pattern fit** — Is the pattern right for the task? Over-engineered? (ART-30503)
    - **Guardrails** — Are they specific with trigger conditions? (ART-27855 §3)
      - Check: Are `topic_boundary` descriptions precise enough to catch off-topic queries?

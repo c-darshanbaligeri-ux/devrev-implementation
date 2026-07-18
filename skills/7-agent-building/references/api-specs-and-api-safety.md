@@ -6,7 +6,7 @@ Use this when designing or applying **API** changes to AI agents (not UI-only ed
 
 Clone **`https://github.com/devrev/api-specs`** and set:
 
-- **`DEVREV_API_SPECS`** (recommended) to the repo root, e.g. `~/dev/devrev/api-specs`, or
+- **`DEVREV_API_SPECS`** (recommended) to the spec clone — in this repo it's already cloned at `repos/api-specs`, so set `DEVREV_API_SPECS=repos/api-specs` (see `.env.example`), or
 - Open the same paths under your normal DevRev checkout.
 
 Primary file for **internal** agent endpoints:
@@ -54,7 +54,7 @@ Workflows (skills) often have separate paths — search `workflows` / `openapi-i
 ## Rules: permission before API runs
 
 1. **No silent mutations** — Do not `curl` / SDK **POST** internal mutating endpoints without the user **explicitly approving** the exact operation in this session (endpoint name + agent/version id + summary of body or field diff).
-2. **Prefer read-first** — Use **`./scripts/get-agent.sh`** (or `ai-agents.get` / `ai-agents.versions.get` per spec) to snapshot current config before proposing changes.
+2. **Prefer read-first** — Use **`skills/7-agent-building/scripts/get-agent.sh`** (or `ai-agents.get` / `ai-agents.versions.get` per spec) to snapshot current config before proposing changes.
 3. **Persist proposals locally** — Before any mutate call, write the **proposed** JSON (or unified diff) to a file under the user’s project or `/tmp` (e.g. `agent-update.proposed.json`) and show it. After approval, run the API once.
 4. **Redact secrets** — Never paste `ORG_PAT` / tokens into summaries; use env vars only.
 5. **Versioning** — Agent changes often go through **agent** vs **agent version** resources; follow the spec for `ai-agents.update` vs `ai-agents.versions.*` and your org’s release process (`deploy` if applicable).
@@ -73,4 +73,4 @@ After a successful mutate (only after user approval):
 - **`references/troubleshooting.md`** — Common issues and solutions from real-world usage.
 - **`scripts/get-agent.sh`** — Read path for config + workflows without hand-rolling every call.
 - **`scripts/create-agent.sh`** — Create/update/delete agents with payload validation.
-- **`CLAUDE.md`** (section *Naming retrieval in agent designs*) — **FetchObjectContext** vs **HybridSearch** in agent writeups; applies across `/agent-create`, `/agent-debug`, `/agent-test`, `/agent-ask`.
+- **`toolkit-guide.md`** (this folder; section *Naming retrieval in agent designs*) — **FetchObjectContext** vs **HybridSearch** in agent writeups; applies across `/agent-create`, `/agent-debug`, `/agent-test`, `/agent-ask`.

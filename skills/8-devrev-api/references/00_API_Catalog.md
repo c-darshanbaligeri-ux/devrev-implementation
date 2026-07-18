@@ -79,6 +79,19 @@ via `.update`). There is no `link-types.custom.delete`.
 
 ---
 
+## Parts (product / capability / feature)
+The scope tracks the part type (like works). Source: `DevRev_Building_Org_Using_API_v1.md` Phase 2.
+| Endpoint | Method | Scope |
+| --- | --- | --- |
+| `parts.create` | POST | `product:write,product:all` (product) / `capability:write,capability:all` (capability) / `feature:write,feature:all` (feature) |
+| `parts.list` | GET/POST | corresponding `<part_type>:read,...` |
+
+Hierarchy: product (root) → capability (`parent_part` = product) → feature (`parent_part` = capability or feature).
+A Trail is **not** a separate object — there is no `trails.create`; it's the rendered part hierarchy plus links.
+(Other `parts.*` verbs are not documented in this folder's references — verify against the official API reference before use.)
+
+---
+
 ## Accounts
 | Endpoint | Method | Scope |
 | --- | --- | --- |
@@ -275,7 +288,8 @@ via `.update`). There is no `link-types.custom.delete`.
 See `Stock_Object_Modification_and_Schemas_API.md`, `Custom_Objects_and_Links_API.md`,
 and `Stages_States_and_StageDiagrams_API.md` for full detail. Endpoints:
 `schemas.custom.set/get/list`, `schemas.stock.get/list`, `schemas.aggregated.get`,
-`schemas.subtypes.prepare-update`, `custom-objects.create/update/delete/get/list/count`,
+`schemas.subtypes.list`, `schemas.subtypes.prepare-update`,
+`custom-objects.create/update/delete/get/list/count`,
 `stages.custom.*`, `states.custom.*`, `stage-diagrams.*`.
 
 ## Health

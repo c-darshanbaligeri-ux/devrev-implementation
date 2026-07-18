@@ -1,6 +1,6 @@
 ---
 name: stage-lifecycle-customization
-description: Customize object lifecycles in DevRev — create custom states (broad categories like open/in_progress/closed), define custom stages (specific steps like "In Review" or "Needs RCA"), build stage diagrams (allowed transitions), and assign lifecycles to object types or subtypes. Use when you need to model a custom workflow: ticket stages, issue states, custom object lifecycles, or any object's stage-based flow. Covers states.custom.*, stages.custom.*, and stage-diagrams.* endpoints.
+description: "Customize object lifecycles in DevRev — create custom states (broad categories like open/in_progress/closed), define custom stages (specific steps like \"In Review\" or \"Needs RCA\"), build stage diagrams (allowed transitions), and assign lifecycles to object types or subtypes. Use when you need to model a custom workflow: ticket stages, issue states, custom object lifecycles, or any object's stage-based flow. Covers states.custom.*, stages.custom.*, and stage-diagrams.* endpoints."
 ---
 
 # Stage & lifecycle customization — executable playbook
@@ -82,7 +82,7 @@ curl -X POST 'https://api.devrev.ai/stages.custom.create' \
 - Save each returned stage DON id — the stage diagram needs them in Step 3.
 - **Verify**: `stages.custom.list` (no scope required) to see all stages.
 
-**Important**: `ordinal` for stages controls ordering within the list; duplicate ordinalsare allowed across stages (unlike states), but unique ordinalskeep ordering predictable.
+**Important**: `ordinal` for stages controls ordering within the list. The reference (§7) documents the uniqueness requirement only for **states** (unique within the dev org); keep stage ordinals unique anyway for predictable ordering.
 
 ### Step 3 — Create a stage diagram
 
@@ -195,7 +195,7 @@ Confirm before these operations:
 - Deprecating a stage (`is_deprecated: true` in a stage-diagrams.update) — existing records referencing that stage are not orphaned, but the stage is hidden from new transitions.
 - Changing a diagram's transitions — records currently in the old flow may become stuck if the new diagram removes their current stage or valid transitions. Verify with `stage-diagrams.get` and `works.list` filtered by stage before applying.
 
-**Diagrams deprecate via `is_deprecated`** (§4, §8): to retire a stage diagram without breaking existing records, set `is_deprecated: true` on the diagram via `stage-diagrams.update`. Do not delete stages that are referenced by a diagram; deprecate them instead so existing records aren't orphaned.
+**Stages within a diagram deprecate via `is_deprecated`** (§4, §8): to retire a stage without breaking the diagram or orphaning records, set `is_deprecated: true` on that stage's node inside the diagram via `stage-diagrams.update`. Do not delete stages that are referenced by a diagram. (The references document `is_deprecated` only on stage nodes within a diagram — not on the diagram object itself; whole-diagram retirement is not covered, so verify against the live API before attempting it.)
 
 After any lifecycle change:
 - Verify each tier with the matching `*.list` call before building the next.
@@ -204,7 +204,17 @@ After any lifecycle change:
 ## Common pitfalls (from the reference §8)
 
 - **Creating a stage before its state exists**: fails, because `state` must resolve to a valid state ID. Always create states first (Step 1), then stages (Step 2).
-- **Duplicate `ordinal` for states**: must be unique within the dev org. Stages can share ordinalsacross different stages, but keep them unique for predictable ordering.
+- **Duplicate `ordinal` for states**: must be unique within the dev org (§2). For stages the reference states no uniqueness rule — keep them unique anyway for predictable ordering.
 - **Forgetting to assign the diagram to the subtype**: stages and the diagram exist, but the object still uses the inherited/default lifecycle until the subtype references the `stage_diagram_id` (Step 4) and the change is published.
 - **Deleting a stage that's referenced by a diagram**: do not delete — deprecate it (`is_deprecated: true`) instead so existing records aren't orphaned.
 - **Immutable fields**: `is_default` and `leaf_type` on a stage diagram cannot be changed after creation (§4, §8). Choose them carefully at creation time.
+
+## Field notes (live-learned; see docs/LEARNINGS.md)
+
+Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
+differ from the references. Add entries via the `capture-learnings` protocol
+(`.claude/skills/capture-learnings/SKILL.md`): one dated bullet per fact, with evidence. If a fact
+*corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
+better home or needs domain-level visibility.
+
+- _(none yet)_

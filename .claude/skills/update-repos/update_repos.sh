@@ -79,4 +79,5 @@ rm -f /tmp/update_repos_fetch_err /tmp/update_repos_co_err
 
 echo ""
 echo "== Summary =="
-printf '%s\n' "${SUMMARY[@]}"
+# ${SUMMARY[@]+...} guards bash 3.2's set -u against an empty array
+printf '%s\n' ${SUMMARY[@]+"${SUMMARY[@]}"}

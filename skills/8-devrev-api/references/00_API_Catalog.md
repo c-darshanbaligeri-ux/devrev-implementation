@@ -5,7 +5,7 @@ the OAuth scope(s) required. This is the authoritative index for the whole
 folder. Source: DevRev auto-generated API-to-scope reference.
 
 Excluded by design (not covered in this folder): AI agents, workflows, and
-AirSync connectors.
+AirSync connectors — see skills 6, 7, 9 for those.
 
 | Field | Detail |
 | --- | --- |
@@ -14,6 +14,9 @@ AirSync connectors.
 | Content type | `application/json` |
 | Method note | Most endpoints accept both GET (query params) and POST (JSON body). Prefer POST for anything with a non-trivial body. |
 | Scope note | "None" means no scope is required, though object-level read/write access still applies. Ranges like `x:read,x:write,x:all` mean any one of those grants access. |
+| `/internal/` prefix | **Some endpoints live only under `/internal/`, not the public root.** Verified live 2026-07-18: `POST https://api.devrev.ai/internal/ai-agents.list` works with `Bearer $DEVREV_PAT`, while `POST /ai-agents.list` returns HTTP 404 "route not found". Skill 7 also uses `/internal/workflows.trigger` and other internal paths. If a documented endpoint 404s from the public root, try `/internal/<endpoint>` before assuming the endpoint is gone. |
+| Required list-filter params | **Some `.list` endpoints reject a bare call (only `limit`) with HTTP 400.** Verified live 2026-07-18: `webhooks.list` needs at least one filter param. If a `.list` 400s with `type: bad_request` or `field_name: <something>`, add that filter and retry — do not assume the endpoint is broken. |
+| Response-wrapper drift | Response bodies use different top-level keys per op. Verified live 2026-07-18: `.create` typically returns `{"id": "..."}` or `{"<type>": {...}}` (e.g. `custom_state`, `custom_stage`, `fragment`); `.list` returns `{"result": [...], "cursor": "..."}` (paginated); `.get` returns `{"<type>": {...}}`. When parsing, check both singular and plural wrappers; never assume `{"schema": ...}` etc. |
 
 Detailed payloads and examples live in the domain docs — see `CLAUDE.md` for the
 routing table. This file is the lookup index; go to the domain doc to build a call.

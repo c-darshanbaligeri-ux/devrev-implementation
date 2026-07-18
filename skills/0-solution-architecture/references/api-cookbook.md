@@ -18,7 +18,7 @@ Concrete, copy-ready request shapes for the customization surface. Use these whe
 
 ## 1. Custom object schema — `schemas.custom.set`
 
-Creates (and updates) a custom leaf type. **This is a full replacement** — always `schemas.custom.get`/`list` first and resend existing fields, or dropped fields are removed. Key params: `type: "tenant_fragment"` + `is_custom_leaf_type: true` + `id_prefix` for a new custom object; `type: "custom_type_fragment"` + `subtype` for a subtype on a stock object.
+Creates a custom leaf type. **`.set` is a versioned create, not an update** — verified live 2026-07-18: calling `.set` twice with the same `leaf_type` produces two fragments (`tenant_fragment/N`, `tenant_fragment/N+1`), the older one is NOT superseded, and there is no delete endpoint. "Full replacement" means fields *within a single fragment*, not "supersede the previous fragment". List first to check if the leaf type exists before calling `.set` at all. Key params: `type: "tenant_fragment"` + `is_custom_leaf_type: true` + `id_prefix` (uppercase letters only, 2–10 chars) + `leaf_type` (lowercase letters + underscores, no digits) for a new custom object; `type: "custom_type_fragment"` + `subtype` for a subtype on a stock object.
 
 → Exact payloads (custom object + subtype variants): `../../1-object-schema-customization/references/Stock_Object_Modification_and_Schemas_API.md`.
 

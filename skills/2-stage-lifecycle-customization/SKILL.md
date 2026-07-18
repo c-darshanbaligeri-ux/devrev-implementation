@@ -217,4 +217,7 @@ differ from the references. Add entries via the `capture-learnings` protocol
 *corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
 better home or needs domain-level visibility.
 
-- _(none yet)_
+- **2026-07-18 · Standalone custom stages and states are PERMANENT once created.** `stages.custom.delete` and `states.custom.delete` both return HTTP 404 "route not found". `stages.custom.update` accepts `name` and `ordinal` but rejects every deprecation-shaped field tried (`is_deprecated`, `deprecated`, `archived`, `active`, `is_active`, `enabled`, `is_enabled`, `status`) with HTTP 400. The `is_deprecated` flag documented in this skill's reference lives on a stage node **inside a stage diagram** — not on the standalone stage/state object.
+- **2026-07-18 · Warning to add before creating**: because there is no cleanup path, treat every `states.custom.create` / `stages.custom.create` as durable. Test in a dev tenant where clutter is acceptable, or use existing state/stage IDs by list-first instead of create.
+- **2026-07-18 · Response wrapper is `custom_state` / `custom_stage` (not `state` / `stage`).** `.create` returns `{"custom_state": {"id": "..."}}`; `.list` returns `{"result": [...], "cursor": "..."}`. Parsers assuming the shorter name silently return null IDs.
+- **2026-07-18 · Regression orphans**: `custom_stage/44` and `custom_state/6` in `devo/1139FmGETi` were created by regression testing and renamed to `zzz_ORPHAN_REGRESSION_DELETE_ME` — they'll appear at the bottom of the stages/states list in DevRev Settings until manually purged from the UI. Manual UI delete works even when the API doesn't.

@@ -82,7 +82,8 @@ The following operations are **destructive or irreversible**. State the impact c
 
 - Any `*.delete` (objects, parts, works, accounts, etc.)
 - `*.merge` (accounts, works)
-- Deprecating objects (custom link types via `deprecated: true`; stages within a diagram via `is_deprecated` on the stage node — the references document no whole-diagram or state deprecation)
+- Deprecating objects (custom link types via `deprecated: true`; stages within a diagram via `is_deprecated` on the stage node). **Verified live 2026-07-18**: standalone custom stages and states have **no deprecation and no delete endpoint** — `stages.custom.delete`/`states.custom.delete` return 404, and no top-level `deprecated` variant is accepted on `.update`. Treat every `states.custom.create` and `stages.custom.create` as permanent; manual UI cleanup is the only fix.
+- Custom-object schema creation via `schemas.custom.set` (**verified live 2026-07-18**): this is a *versioned create*, not an update. Two calls with the same `leaf_type` produce two fragments (`tenant_fragment/N` and `tenant_fragment/N+1`), and there is no `schemas.custom.delete`. Always `schemas.custom.list` first — if a fragment for that `leaf_type` exists, do NOT call `.set` again. Also: `id_prefix` must match `^[A-Z]{2,10}$` and `leaf_type` must be `[a-z_]+` (no digits) or `.set` returns HTTP 400.
 - `objects.bulk-upgrade` (if available — verify scope first; affects all records of a type)
 - `web-crawler-jobs.control` with `stop` or `reset` actions
 - Dataset or PaaS/Ponos job deletion (destructive via `/dataset-builder:delete`)

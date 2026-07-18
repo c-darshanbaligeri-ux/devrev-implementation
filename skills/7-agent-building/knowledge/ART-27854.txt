@@ -1,0 +1,53 @@
+Here is the knowledge base as plain text:DevRev Agent Building Knowledge Base
+
+A comprehensive collection of guides for building production-grade AI agents in DevRev Agent Studio.ArticlesGetting Started
+
+01 – Prompting Guide — [ART-27855](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-27855)What You'll Learn: How to write effective goals, instructions, guardrails, and skill descriptions
+
+02 – Skills & Tools Guide — [ART-30501](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-30501)What You'll Learn: Configuring tools, workflows, and NL (natural-language) skills; deterministic vs. AI-driven decisions; when to delegate to an NL sub-agent skill; skill design patterns
+
+08 – Agent Studio Quick Reference — [ART-27862](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-27862)What You'll Learn: One-page reference for the Agent Studio UI, API, and configuration fieldsKnowledge & Retrieval
+
+03 – Why Default Computer Memory Isn't Enough — [ART-27857](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-27857)What You'll Learn: Limitations of default knowledge configuration and how to overcome them
+
+04 – HybridSearch vs. NL2SQL vs. FetchObjectContext — [ART-30502](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-30502)What You'll Learn: Choosing the right retrieval strategy and configuring each one
+
+05 – Knowledge Configuration & Curation — [ART-27859](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-27859)What You'll Learn: Selecting knowledge sources, writing agent-optimized articles, and managing knowledge qualityArchitecture & Patterns
+
+06 – Agent Design Patterns — [ART-30503](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-30503)What You'll Learn: Tool Use, ReAct, Plan-and-Execute, Reflection, and Multi-Agent patterns — when to use eachComplete Examples
+
+09 – Full Agent Examples — [ART-27863](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-27863)What You'll Learn: Complete configs for CX Support, RevOps/Salesforce, Ticket Routing, Internal Knowledge, and Onboarding agentsQuality & Operations
+
+07 – Testing & Evaluation Guide — [ART-27861](https://app.devrev.ai/devrev/settings/knowledge-base/articles/ART-27861)What You'll Learn: Playground testing, bulk tests, Task Success vs. Accuracy metrics, debugging failuresRecommended Reading Order🆕 General help / not sure where to start?
+
+Work through all articles in order — each one builds on the last:08 (Quick Reference) → 01 (Prompting) → 02 (Skills & Tools) → 03 (Default Computer Memory) → 04 (Retrieval Strategy) → 05 (Knowledge Configuration) → 06 (Design Patterns) → 07 (Testing) → 09 (Full Examples)New to DevRev agents?
+
+08 (Quick Reference) → 01 (Prompting) → 02 (Skills) → 05 (Knowledge) → 07 (Testing)Building your first production agent?
+
+01 (Prompting) → 02 (Skills) → 03 (Default Computer) → 04 (Retrieval Strategy) → 07 (Testing)Debugging agent quality issues?
+
+07 (Testing) → 03 (Default Computer) → 04 (Retrieval Strategy) → 01 (Prompting)Architecting a complex multi-agent system?
+
+06 (Design Patterns) → 04 (Retrieval Strategy) → 02 (Skills) → 07 (Testing)Agent isn't finding the right information?
+
+03 (Default Computer Memory) → 04 (Retrieval Strategy) → 05 (Knowledge Configuration)Agent is taking wrong actions or calling wrong skills?
+
+02 (Skills & Tools) → 01 (Prompting) → 07 (Testing)Want to see a complete working example?
+
+09 (Full Agent Examples) → then refer back to the relevant guide for the area you want to customizePreparing for a customer demo or go-live?
+
+07 (Testing) → 09 (Full Examples) → 08 (Quick Reference)Key Principles
+
+Deterministic first — If it can be a workflow, make it a workflow. Use AI only where it adds value. For multi-step work that still needs reasoning, prefer an NL skill over free-form agent improvisation — it plans first, then executes proven steps.
+
+FetchObjectContext > Search — If you have an object ID, fetch it directly. Search is for discovery.
+
+Minimal knowledge sources — Fewer sources = less noise = better results. Add sources only when testing reveals a gap.
+
+Task Success before Accuracy — Fix whether the customer's problem is solved before fixing whether the information is correct.
+
+Delegate multi-step reasoning to an NL skill — when a task needs planning or dynamic, multi-step reasoning beyond a single tool call, use an NL skill (a sub-agent that plans and executes), rather than overloading the parent agent or hand-wiring two agents together.
+
+Test before publish — Always run bulk tests before promoting a draft to live.
+
+Start simple — Begin with the Tool Use pattern. Add complexity (ReAct, Multi-Agent) only when the simple pattern demonstrably fails.Object:

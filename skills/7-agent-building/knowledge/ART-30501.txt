@@ -1,0 +1,332 @@
+# Skills & Tools Guide: Deterministic Workflows in DevRev Agents
+
+This guide covers how to configure skills (tools and workflows) for DevRev agents, when to use deterministic workflows vs. AI-driven decisions, and best practices for skill design.
+
+## Core Concept: Skills = What the Agent Can Do
+
+Without skills, an agent can only answer questions based on its knowledge sources. With skills, the agent can take action — creating tickets, updating records, sending messages, running multi-step workflows. There are three types of skills:
+
+| Type | What It Is | When to Use |
+| --- | --- | --- |
+| Tools | Built-in DevRev API actions with configurable parameters | Standard single-step operations on DevRev objects |
+| Workflows | Custom deterministic automation sequences (workflow builder) | Multi-step processes, external integrations, fixed logic |
+| NL Skills | Natural-language sub-agents that plan and execute autonomously | Multi-step reasoning / dynamic decisions beyond one tool call; sub-agent delegation |
+
+## 1. Tools (Built-in Operations)
+
+Tools are pre-built DevRev API actions. They expose operations that the agent can invoke based on conversation context.
+
+**Tool Configuration — each tool operation requires:**
+- **Name** (Yes): Unique identifier. Must match `^[a-zA-Z0-9_]+$` (letters, numbers, underscores only)
+- **Description** (Yes): When the agent should use this tool. This is a prompt — write it carefully
+- **Input fields** (Varies): Each field can be Auto-fill or Manual
+- **Execute as User** (No): When on, the tool runs with the user's permissions. Default: on
+- **Connections** (Varies): Select appropriate keyrings if the operation requires external connections
+
+**Input Field Modes:**
+- **Auto-fill:** The agent determines the value from conversation context. Use when the value depends on what the user says.
+- **Manual:** Fixed value that you set during configuration. Use when the value should never change.
+
+**Example: "Create Ticket" Tool**
+
+```
+Name: create_ticket
+Description: Use this when a customer reports a new issue that cannot be resolved through knowledge base articles, or when the customer explicitly requests a support ticket.
+Input fields:
+  - title: Auto-fill (derived from the customer's description)
+  - body: Auto-fill (detailed issue description)
+  - priority: Auto-fill (based on account tier and issue severity)
+  - part_id: Auto-fill (based on product area mentioned)
+  - owned_by: Manual (set to your support team's group ID)
+Execute as User: ON```
+
+**Example: "Search Knowledge Base" Tool**
+
+```
+Name: search_knowledge
+Description: Use this for every customer question to find relevant articles, FAQs, and documentation before formulating a response.
+Input fields:
+  - query: Auto-fill (derived from the customer's question)
+  - object_types: Manual (set to ["article", "question_answer"])
+Execute as User: ON```
+
+## 1b. NL Skills (Natural-Language Sub-Agents)
+
+An NL skill is a sub-agent. It receives a natural-language objective, decomposes it into steps, plans a sequence using its available tools, executes each step while adapting to intermediate results, and returns the result to the parent agent. [ART-65599]
+
+Use an NL skill when the task needs multi-step reasoning or dynamic decision-making that a single tool call cannot express — this is the native mechanism for sub-agent delegation and planning. [ART-26058]
+
+**How execution works:**
+1. Parent agent decides the NL skill applies (from its description + the request).
+2. The NL skill receives the objective and current context.
+3. It plans a sequence of steps using its attached tools.
+4. It executes each step, adapting on intermediate results.
+5. It returns the result to the parent agent. [ART-65599]
+
+**Attaching tools to an NL skill's plan (API):** after creating the plan, attach the workflows/operations it may call via `ai-agents-plans.update`, where `skills.set` is an array of objects. Each object has:
+- `name` — matches the workflow/operation name
+- `description` — when to use it (shown to the planning LLM)
+- `act_as_user` — true so the tool runs with the calling user's permissions
+- `needs_approval` — true if it requires user confirmation before executing
+- `trigger.workflow` / `trigger.operation` — DON ID of the workflow/operation
+
+[ART-26145]
+
+**Failure handling:** skill-calling failures inside a workflow are handled on the agent side. The platform retries retryable steps and returns a failure status; the agent owns recovery. [ART-11040]
+
+## 2. Workflows (Custom Automation)
+
+Workflows are multi-step automation sequences you build using DevRev's workflow builder. They are the deterministic backbone of agent actions.
+
+**When to Build a Workflow Instead of Using a Tool**
+
+| Build a workflow when... | Don't build a workflow when... |
+| --- | --- |
+| The process has 3+ sequential steps | A single API call suffices |
+| You need branching logic (if/else) | The action is a simple CRUD operation |
+| You need to integrate with external systems | The agent can decide the action at runtime |
+| You need delays or scheduled follow-ups | The task is fully unstructured |
+| You need error handling and retry logic | The operation is always the same |
+
+**Workflow Node Types:**
+- **Action nodes:** Execute specific operations (Create ticket, send notification, update record)
+- **Tool nodes:** Interact with external systems (Call Jira API, send Slack message, query database)
+- **Trigger nodes:** Initiate workflows based on events (On ticket created, on SLA breached, on form submit)
+- **Delay nodes:** Add wait time between actions (Wait 24 hours before sending follow-up)
+- **Condition nodes:** Branching logic (If priority = P1, escalate; otherwise, assign normally)
+- **AI nodes:** LLM-powered decision making within the workflow (Classify sentiment, extract entities, summarize text)
+
+**Building a Workflow: Step-by-Step**
+1. Define the trigger — What event starts this workflow?
+2. Map the happy path — What happens when everything goes right?
+3. Add error handling — What happens when a step fails?
+4. Add branching logic — Are there conditions that change the path?
+5. Set delay/timing — Are there time-dependent steps?
+6. Test the workflow — Run it with sample inputs
+7. Add to agent as a skill — The agent can now invoke it
+
+**Example: Ticket Escalation Workflow**
+
+```
+Trigger: Agent invokes "escalate_ticket" skill
+  ├─ Step 1: Read ticket details (ticket ID, severity, account)
+  ├─ Step 2: Condition - Is account Enterprise tier?
+  │   ├─ YES: Set priority to P1, notify on-call engineer via Slack
+  │   └─ NO:  Set priority to P2, assign to queue
+  ├─ Step 3: Condition - Does the ticket mention "data loss"?
+  │   ├─ YES: Add security team as watcher, set SLA to 1 hour
+  │   └─ NO:  Set SLA based on account tier
+  ├─ Step 4: Send acknowledgment email to customer
+  └─ Step 5: Update ticket with escalation notes```
+
+**Example: Customer Onboarding Workflow**
+
+```
+Trigger: Agent invokes "onboard_customer" skill
+  ├─ Step 1: Create account in DevRev
+  ├─ Step 2: Create welcome article bookmark
+  ├─ Step 3: Condition - Account tier?
+  │   ├─ Enterprise: Schedule kickoff meeting, assign dedicated CSM
+  │   └─ Standard: Send welcome email series (3-day delay sequence)
+  ├─ Step 4: Create internal notification
+  └─ Step 5: Log onboarding activity```
+
+## 3. Deterministic vs. AI-Driven: When to Use What
+
+This is the most important design decision in agent building.
+
+**The Golden Rule:** If something can be done deterministically without tradeoff, make it a callable skill/workflow. Do not rely on AI reasoning for steps that have a clear, unambiguous sequence.
+
+**Three-way rule of thumb:**
+- Single deterministic action, no payload reasoning → Tool
+- Fixed multi-step sequence, deterministic → Workflow
+- Needs planning / multi-step reasoning / delegation → NL skill (sub-agent)
+
+**Decision Matrix:**
+
+| Scenario | Approach | Why |
+| --- | --- | --- |
+| Route ticket to a team based on product area | Deterministic workflow | Clear mapping rules, no ambiguity |
+| Classify a ticket as bug vs. feature request | AI-driven | Requires understanding nuance in natural language |
+| Send a notification when SLA breaches | Deterministic workflow | Fixed trigger, fixed action |
+| Determine if a customer is frustrated | AI-driven | Requires interpreting tone, context, and language |
+| Create a ticket with fields from conversation | Hybrid | AI extracts the data, deterministic workflow creates the ticket |
+| Escalate based on account tier + severity | Deterministic workflow | Rules are explicit and unambiguous |
+| Summarize a long conversation thread | AI-driven | Requires language understanding |
+| Update account notes with new contact info | Deterministic with AI extraction | AI extracts the info, fixed update operation |
+
+**Hybrid Pattern: AI Extraction + Deterministic Execution** (most common, most effective)
+
+```
+Customer says: "I'm Jane from Acme Corp, my email changed to jane@acme.io"
+AI Agent:
+  1. Understands this is a contact update request
+  2. Extracts: name=Jane, company=Acme Corp, new_email=jane@acme.io
+  3. Invokes "update_contact" skill with extracted parameters
+Deterministic Skill (Update Contact):
+  1. Look up contact by name + company
+  2. Validate the new email format
+  3. Update the email field
+  4. Log the change
+  5. Return success confirmation to agent
+AI Agent:
+  6. Responds to customer: "Done! I've updated your email to jane@acme.io."```
+
+The AI handles understanding and extraction; the workflow handles the structured, reliable execution.
+
+## 4. Skill Description Best Practices
+
+The skill description is the most important configuration field. The agent reads it to decide when to invoke the skill. A bad description means the agent never uses the skill, or uses it at the wrong time.
+
+**Anatomy of a Good Skill Description:** [When to use] + [What it does] + [Important constraints]
+
+**Examples:**
+- **create_ticket:** Use when the customer reports a new issue that knowledge base articles don't resolve, or when the customer explicitly requests a support ticket. Do not use for general questions that can be answered from documentation.
+- **escalate_ticket:** Use when the customer expresses frustration, mentions legal/compliance, reports data loss or security issues, or when the issue has not been resolved after 2 attempts. Always include the reason for escalation in the notes field.
+- **search_articles:** Use this for every customer question before formulating a response. Searches the knowledge base for relevant articles and FAQs. Always run this first, even if you think you know the answer.
+- **update_priority:** Use when the customer mentions data loss (set P1), the account is Enterprise tier and multiple users are affected (set P2), or the customer explicitly asks to increase urgency.
+- **route_to_team:** Use after classifying the issue type. Route bugs to engineering, billing questions to finance, and feature requests to product. If unsure, route to general support.
+
+**Anti-Patterns:**
+
+| Bad Description | Why It Fails |
+| --- | --- |
+| "Creates a ticket" | Agent doesn't know when to use it |
+| "A tool for operations" | Meaningless — applies to every skill |
+| "Use this skill" | No trigger condition |
+| "Handles customer stuff" | Too vague for the agent to make a decision |
+
+## 5. Execute as User Setting
+
+The "Execute as User" toggle controls the permissions context for any skill execution, including NL skills. Under Execute-as-User, actions run with the permissions of the user the agent acts on behalf of — no privilege escalation, audit trail preserved, and no separate service-account config required for the basic path. [ART-65599]
+- **ON (default):** Skill runs with the invoking user's permissions. Most cases — ensures the agent respects existing access controls.
+- **OFF:** Skill runs with system-level permissions. When the action must succeed regardless of the user's role (e.g., creating audit logs).
+
+**Token constraint:** when an agent acts for a user, effective permissions = agent capabilities ∩ user permissions, so neither side can exceed its bounds; tokens are short-lived. [ART-43919]
+
+**Nested execution caveat:** when an NL skill (sub-agent) calls workflows as skills, the workflow's service account is never used — the agent service account is. To act as a user, the agent passes an impersonation id alongside its service account. [ART-16132]
+
+**When to Turn It Off:**
+- The skill performs system-level operations (logging, monitoring)
+- The user shouldn't need special permissions for the action
+- The action should succeed even for limited-permission users
+
+**When to Keep It On:**
+- The skill accesses user-specific data (their tickets, their account)
+- You want to respect role-based access controls
+- The action should fail if the user lacks permission
+
+## 6. Connections (Keyrings)
+
+If a skill requires access to external systems (Slack, Jira, Salesforce, etc.), you must configure connections.
+
+**How Connections Work:**
+1. Create a connection in DevRev that stores authentication credentials
+2. The connection is stored as a keyring
+3. When configuring a skill that needs external access, select the appropriate keyring
+4. The skill uses the stored credentials at runtime
+
+**Common Connection Types:**
+
+| External System | What You Need | Typical Keyring Type |
+| --- | --- | --- |
+| Slack | Bot token, workspace URL | OAuth / API token |
+| Jira | API token, project key | API token |
+| Salesforce | Client ID, secret, instance URL | OAuth |
+| GitHub | Personal access token | API token |
+| Custom API | Base URL, auth header | API key |
+
+## 7. Invoking Agents via API
+
+For programmatic agent execution, use the async API:
+
+Endpoint: `POST https://api.devrev.ai/internal/ai-agents.events.execute-async`
+
+Request:
+
+```
+{
+  "agent": "don:core:dvrv-us-1:devo/0:ai_agent/1",
+  "event": { "input_message": { "message": "Customer reports login failure after password reset" } },
+  "session_object": "conversation_12345",
+  "webhook_target": { "webhook": "don:integration:dvrv-us-1:devo/0:webhook/auCJ7By8" }
+}```
+
+Response Events (via webhook), type `ai_agent_response`:
+- **Progress message:** Skill triggered or executing
+- **Final message:** Agent's complete response
+- **Error message:** Skill execution failed
+
+**Session Management:**
+- Use `session_object` to maintain conversation state across multiple calls
+- The same `session_object` value = the same conversation context
+- Change the `session_object` to start a new conversation
+
+## 8. Workflow Skill Design Patterns
+
+**Pattern 1: Simple Action** — One operation, minimal logic. Use a tool, not a workflow. Agent → [Tool: Create Ticket] → Done
+
+**Pattern 2: Conditional Action** — Action with branching logic.
+
+```
+Agent → [Workflow]
+  ├─ If Enterprise → Priority P1, notify on-call
+  └─ If Standard → Priority P2, assign to queue```
+
+**Pattern 3: Multi-Step with Rollback** — Complex operations where partial failure should be handled.
+
+```
+Agent → [Workflow]
+  ├─ Step 1: Validate input
+  ├─ Step 2: Create record
+  ├─ Step 3: Send notification
+  │   └─ If notification fails → Log error, continue
+  └─ Step 4: Update related records
+      └─ If update fails → Rollback Step 2, return error```
+
+**Pattern 4: AI-in-the-Loop Workflow** — Workflow that uses AI nodes for intermediate decisions.
+
+```
+Trigger: Ticket created
+  ├─ AI Node: Classify sentiment (positive/neutral/negative)
+  ├─ Condition: If negative
+  │   ├─ AI Node: Determine escalation reason
+  │   └─ Action: Notify manager with reason
+  └─ Condition: If positive
+      └─ Action: Send satisfaction survey link```
+
+**Pattern 5: External System Integration** — Workflow that calls out to external APIs.
+
+```
+Agent → [Workflow]
+  ├─ Step 1: Fetch customer data from Salesforce
+  ├─ Step 2: Look up order status in Shopify
+  ├─ Step 3: Combine data
+  └─ Step 4: Return consolidated response to agent```
+
+## 9. Common Mistakes and Fixes
+
+| Mistake | Consequence | Fix |
+| --- | --- | --- |
+| Writing a vague skill description | Agent never invokes the skill, or invokes it at wrong times | Write specific trigger conditions with examples |
+| Using AI for deterministic tasks | Inconsistent results, higher cost, slower execution | Use workflows for rule-based operations |
+| Not setting input field modes correctly | Agent prompts for values it should know, or hardcodes values that should be dynamic | Review each field: should it come from context (Auto-fill) or be fixed (Manual)? |
+| Overloading one skill with too many responsibilities | Agent gets confused about when to use it | Split into focused, single-purpose skills |
+| Not testing skills individually | Failures compound when combined with the agent | Test each skill in isolation before adding to the agent |
+| Missing error handling in workflows | Workflow fails silently, agent appears to hang | Add error handling at every external call step |
+| Forgetting to configure connections | Skill fails at runtime with authentication error | Set up keyrings before testing |
+| Building two agents + Talk-to-Agent for simple multi-step reasoning | Unnecessary complexity, extra routing failure points | Use one NL skill (sub-agent) that plans and executes; reserve multi-agent routing for genuinely separate domains [ART-26058] |
+
+## 10. Checklist: Configuring a New Skill
+- Identify the action the agent needs to perform
+- Determine if it should be a Tool or Workflow
+- If Tool: select the built-in operation, configure input fields
+- If Workflow: build it in the workflow builder, test independently
+- Write a clear skill description with trigger conditions
+- Set input field modes (Auto-fill vs. Manual) for each parameter
+- If the action needs multi-step reasoning or delegation, configure it as an NL skill and attach its tools via the plan (act_as_user / needs_approval per tool). [ART-26145]
+- Configure "Execute as User" based on permission requirements
+- Set up connections/keyrings if external access is needed
+- Test the skill in the Playground
+- Review execution trace to verify correct invocation
+- Add to bulk test dataset for regression testing

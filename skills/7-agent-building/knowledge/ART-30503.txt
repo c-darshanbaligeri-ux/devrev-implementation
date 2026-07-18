@@ -1,0 +1,465 @@
+# Agent Design Patterns for DevRev
+
+A practical guide to choosing and implementing agent design patterns. Covers when to use each pattern, how to implement them in DevRev Agent Studio, and common pitfalls.
+
+## Core Design Principle
+
+If something can be done deterministically without tradeoff, make it a callable skill/workflow. Only use AI reasoning where it adds value.
+
+Agents are powerful, but they are not always the right tool. Before choosing a pattern, ask:
+
+| Question | If Yes | If No |
+| --- | --- | --- |
+| Can this be a fixed workflow with no decision points? | Use a plain workflow, not an agent | Continue |
+| Does the task require understanding natural language? | Agent is appropriate | Use a workflow |
+| Does the task require choosing between multiple actions based on context? | Agent is appropriate | Use a workflow |
+| Is the process fully predictable? | Use a workflow | Consider an agent |
+
+## Pattern 1: Tool Use (Default DevRev Pattern)
+
+### What It Is
+
+One agent with a set of skills (tools and workflows). The agent receives input, decides which skill(s) to use, executes them, and returns a response.
+
+```
+User Input → Agent → [Selects Skill] → [Executes Skill] → Response
+```
+
+### When to Use
+
+- Single-domain tasks (customer support, ticket routing, knowledge Q&A)
+- The agent needs to choose from a known set of actions
+- All operations can be expressed as discrete skills
+- The task doesn't require multi-step planning
+
+### When to Avoid
+
+- The agent needs to perform sequential multi-step reasoning
+- The task requires evaluating its own output and retrying
+- Multiple specialized domains need to collaborate
+
+### Implementation in DevRev
+
+This is the default pattern when you create an agent in Agent Studio:
+
+- Build tab: Set goal, write instructions
+- Skills section: Add tools and workflows
+- Knowledge section: Configure searchable object types
+- Guardrails section: Add safety rules
+
+```
+Agent: Customer Support Bot
+Goal: "Resolve customer issues by searching the knowledge base and performing account actions."
+
+Skills:
+  - search_articles (Tool)
+  - create_ticket (Tool)
+  - escalate_ticket (Workflow)
+  - update_priority (Tool)
+
+Knowledge: Article, Q&A, Ticket, Account, Rev User
+```
+
+### Best Practices
+
+- Limit to 5-8 skills — more skills make it harder for the agent to choose correctly
+- Write specific skill descriptions — the agent decides based on these
+- Order skills logically — list search/lookup skills before action skills
+- Test skill selection — verify the agent picks the right skill for each input type
+
+## Pattern 2: ReAct (Reason + Act)
+
+### What It Is
+
+The agent interleaves reasoning and action in a loop: think, act, observe, repeat until done. Each step builds on the previous step's result.
+
+```
+Thought → Action → Observation → Thought → Action → ... → Final Answer
+```
+
+### When to Use
+
+- Research and information gathering tasks
+- Tasks requiring iterative refinement
+- Debugging and investigation workflows
+- Complex problem-solving where the next step depends on previous results
+
+### When to Avoid
+
+- Simple, straightforward tasks (overkill)
+- Time-critical applications (multiple LLM calls add latency)
+- Tasks where deterministic steps suffice
+
+### Implementation in DevRev
+
+Implement ReAct by building a workflow with explicit reasoning-validation loops:
+
+```
+Workflow: Investigate Issue
+  ├─ Step 1: Fetch ticket context (FetchObjectContext)
+  ├─ Step 2: AI Node — Analyze the issue, form hypothesis
+  ├─ Step 3: Search for similar resolved issues (HybridSearch)
+  ├─ Step 4: AI Node — Evaluate search results against hypothesis
+  ├─ Step 5: Condition — Is the hypothesis confirmed?
+  │   ├─ YES: Apply the resolution, return to agent
+  │   └─ NO: Refine hypothesis, go to Step 3 (max 3 iterations)
+  └─ Step 6: If not resolved after 3 iterations, escalate to human
+```
+
+### Key Parameters
+
+| Parameter | Recommendation | Why |
+| --- | --- | --- |
+| max_steps | 3-5 | Prevents infinite loops and cost explosion |
+| fallback | Escalate to human | Graceful degradation when the loop can't resolve |
+| timeout | 30-60 seconds | Prevents long-running sessions |
+
+### Example: Customer Issue Investigation
+
+```
+Agent receives: "My integration keeps timing out since yesterday"
+
+ReAct Loop:
+  Thought 1: This sounds like a connectivity or API issue. Let me check if there are known incidents.
+  Action 1: Search Articles and Issues for "integration timeout"
+  Observation 1: Found Incident INC-456 "API Gateway Degradation" affecting integrations since yesterday.
+  Thought 2: This matches. Let me verify the customer's integration uses the affected gateway.
+  Action 2: Fetch customer's integration configuration
+  Observation 2: Customer uses API Gateway v2, which is the affected component.
+  Thought 3: Confirmed. I can now inform the customer and link to the incident.
+  Final Answer: "This is a known issue — Incident INC-456. Our API Gateway is experiencing degradation
+  since yesterday. Your integration uses the affected gateway. The engineering team is working on a fix.
+  I'll link this ticket to the incident for updates."
+```
+
+## Pattern 3: Plan-and-Execute
+
+### What It Is
+
+The agent first creates a plan (list of steps), then executes each step in sequence. A separate planning phase produces a structured execution plan before any action is taken.
+
+```
+Task → Planner → Plan → Step 1 → Step 2 → Step 3 → Result
+                  ↑                    ↓
+                  └── Re-plan if needed ┘
+```
+
+### When to Use
+
+- Complex tasks with clear, decomposable subtasks
+- Multi-step processes where upfront planning saves time
+- Tasks with known dependencies between steps
+- Cost-sensitive applications (fewer LLM calls after planning)
+
+### When to Avoid
+
+- Highly uncertain or rapidly changing requirements
+- Tasks where decomposition is unclear
+- Simple tasks that don't warrant planning overhead
+
+### Implementation in DevRev
+
+**Preferred:** implement Plan-and-Execute with a single NL skill. The NL skill is a sub-agent that
+produces a plan and executes its steps against attached tools, adapting on intermediate results —
+no second agent or Talk-to-Agent wiring required. [ART-65599] [ART-26145]
+
+**When to split into two agents:** use a separate Planner Agent and Executor Agent (connected via
+the Talk-to-Agent skill) only when the planner and executor need different permissions, knowledge,
+or ownership. [ART-65599 — new skill vs new agent litmus]
+
+```
+Planner Agent:
+  Goal: "Decompose user requests into structured execution plans."
+  Skills: talk_to_executor (sends plan to executor)
+  Output: Ordered list of steps with dependencies
+
+Executor Agent (Tool Use pattern):
+  Goal: "Execute steps from a plan using available tools."
+  Skills: All operational skills (create_ticket, search, update, etc.)
+  Input: Receives steps from Planner Agent
+```
+
+### Example: Customer Onboarding
+
+```
+User: "Set up a new Enterprise customer"
+
+Planner Agent creates plan:
+  1. Create account record (depends on: nothing)
+  2. Create Rev Org mapping (depends on: step 1)
+  3. Assign dedicated CSM (depends on: step 1)
+  4. Create onboarding ticket (depends on: steps 1, 3)
+  5. Schedule kickoff meeting (depends on: steps 3, 4)
+  6. Send welcome email (depends on: steps 1, 2)
+  7. Create knowledge base bookmark (depends on: step 1)
+
+Executor Agent executes:
+  - Step 1 executes first
+  - Steps 2, 3, 7 execute in parallel (all depend only on step 1)
+  - Steps 4, 6 execute next
+  - Step 5 executes last
+```
+
+### Advantages Over ReAct
+
+| Aspect | ReAct | Plan-and-Execute |
+| --- | --- | --- |
+| LLM calls per step | 1 reasoning + 1 action | 1 action (plan already made) |
+| Parallel execution | Sequential only | Independent steps can run in parallel |
+| Cost predictability | Variable | More predictable |
+| Error recovery | Retry current step | Re-plan from failure point |
+
+> **Note:** the "fewer LLM calls after planning" and "independent steps in parallel" advantages
+> attributed to Plan-and-Execute are realized natively by an NL skill's plan-then-execute loop.
+> [ART-79523] [ART-63799]
+
+## Pattern 4: Reflection
+
+### What It Is
+
+The agent evaluates its own output against criteria, then refines it. A validation step catches errors before the response reaches the user.
+
+```
+Initial Output → Self-Review → Refinement → Final Output
+```
+
+### When to Use
+
+- Quality-critical outputs (customer-facing responses, generated content)
+- Tasks with high hallucination risk
+- Complex reasoning where single-pass accuracy is insufficient
+- Code generation, content creation, or summarization tasks
+
+### When to Avoid
+
+- Simple, low-risk tasks (cost multiplication isn't justified)
+- Time-critical applications (reflection adds latency)
+- Tasks where the agent is already highly accurate
+
+### Implementation in DevRev
+
+Use a main agent with a Validation Skill (a workflow that runs a second evaluation pass):
+
+```
+Main Agent:
+  Goal: "Answer customer questions accurately."
+  Skills:
+    - search_articles
+    - validate_response (Reflection Workflow)
+
+Reflection Workflow:
+  Input: original_question, agent_response, knowledge_sources_used
+  Steps:
+    1. AI Node: Evaluate response against criteria:
+       - Is every claim supported by the retrieved knowledge sources?
+       - Is the response complete (does it address all parts of the question)?
+       - Is the tone appropriate?
+       - Are there any hallucinated details not in the sources?
+    2. Condition: Passes validation?
+       ├─ YES: Return response as-is
+       └─ NO: Generate improved response with specific corrections
+    3. Return final (original or improved) response
+```
+
+### Evaluation Criteria Template
+
+```
+Validate the response against these criteria:
+1. Accuracy: Every factual claim must be directly supported by the knowledge sources. Score 1-5.
+2. Completeness: The response addresses every part of the user's question. Score 0.0 or 1.0.
+3. Tone: Professional, concise, and appropriate for the audience. Pass/Fail.
+4. Scope: The response stays within the agent's defined scope. Pass/Fail.
+5. Hallucination check: No fabricated information, procedures, or numbers. Pass/Fail.
+
+If any criterion fails, regenerate the response addressing the specific failure.
+Maximum 2 refinement iterations.
+```
+
+### Cost Management
+
+Reflection doubles or triples the cost per interaction. Mitigate by:
+
+- Only triggering reflection when confidence is low
+- Using the reflection pattern selectively (e.g., only for P1 tickets)
+- Setting a maximum of 1-2 refinement iterations
+- Caching reflection results for similar questions
+
+## Pattern 5: Multi-Agent (Routing)
+
+### What It Is
+
+A router agent directs incoming requests to specialized agents based on the request type. Each specialist agent handles its domain expertly.
+
+```
+User Input → Router Agent → Specialist Agent A → Response
+                          → Specialist Agent B → Response
+                          → Specialist Agent C → Response
+```
+
+### When to Use
+
+- Multiple distinct domains requiring specialized knowledge
+- Single agent becomes too complex (too many skills, conflicting instructions)
+- Different domains need different guardrails or knowledge sources
+- Teams want to manage their domain's agent independently
+
+### When to Avoid
+
+- The domain is narrow enough for a single agent
+- The overhead of managing multiple agents isn't justified
+- Routing accuracy is critical and the router itself might fail
+
+**When NOT to reach for Multi-Agent:** if the work is one domain but simply needs multi-step
+reasoning or delegation, use an NL skill (sub-agent) inside the existing agent instead of standing
+up a router + specialists. Reserve Multi-Agent for genuinely distinct domains that need different
+permissions, knowledge, or guardrails. [ART-26058] [ART-65599]
+
+### Implementation in DevRev
+
+Use the Talk-to-Agent skill to enable agent-to-agent communication:
+
+```
+Router Agent:
+  Goal: "Route customer requests to the appropriate specialist."
+  Skills: talk_to_agent (routes to specialist)
+  Knowledge: Minimal (only needs to classify, not answer)
+  Instructions: Classification rules for each specialist
+
+Specialist Agents (one per domain):
+  Billing Agent:
+    Goal: "Handle billing inquiries, payment issues, and invoice requests."
+    Skills: lookup_invoice, process_refund, update_payment_method
+    Knowledge: Article (billing), Account, Rev Org
+
+  Technical Agent:
+    Goal: "Resolve technical issues through troubleshooting guides."
+    Skills: search_articles, create_bug_ticket, escalate_to_engineering
+    Knowledge: Article (technical), Issue, Ticket, Part hierarchy
+
+  Account Agent:
+    Goal: "Handle account management, upgrades, and contract questions."
+    Skills: get_account_details, request_upgrade, connect_to_csm
+    Knowledge: Account, Rev Org, Opportunity, Article (account)
+```
+
+### Routing Instructions Template
+
+```
+Classify the customer's request and route to the appropriate specialist:
+
+- Billing: payment issues, invoice requests, refund requests, pricing questions,
+  charge disputes, subscription changes
+  → Route to Billing Agent
+
+- Technical: product issues, error messages, troubleshooting, how-to questions,
+  bug reports, integration problems
+  → Route to Technical Agent
+
+- Account: account management, plan upgrades, contract questions, contact changes,
+  CSM requests, account closure
+  → Route to Account Agent
+
+- Ambiguous: If you cannot clearly classify the request, route to Technical Agent
+  as the default. Never refuse to route.
+```
+
+## Pattern Selection Matrix
+
+| Criteria | Tool Use | ReAct | Plan-Execute | Reflection | Multi-Agent |
+| --- | --- | --- | --- | --- | --- |
+| Complexity | Low | Medium | High | Medium | Very High |
+| Cost | Low | Medium | Medium | High | High |
+| Latency | Low | Medium | Medium | High | Medium |
+| Reliability | Medium | Medium | High | High | Depends on router |
+| Best for | Single domain tasks | Iterative reasoning | Complex multi-step | Quality-critical | Multiple domains |
+
+> **Note:** Tool Use, ReAct, Plan-and-Execute, and Reflection can each be realized inside a single
+> agent via an NL skill (sub-agent) — the NL skill plans and executes without a second agent. Move
+> to Multi-Agent only when domains, permissions, or knowledge differ. [ART-26058]
+
+## Decision Flowchart
+
+```
+Is the task single-domain?
+├─ NO → Multi-Agent (Routing)
+└─ YES
+    ├─ Does it need self-review for quality?
+    │   ├─ YES → Reflection
+    │   └─ NO
+    │       ├─ Does it need multi-step planning?
+    │       │   ├─ YES → Plan-and-Execute
+    │       │   └─ NO
+    │       │       ├─ Does it need iterative reasoning?
+    │       │       │   ├─ YES → ReAct
+    │       │       │   └─ NO → Tool Use (simplest)
+```
+
+## Common Implementation Pitfalls
+
+### 1. Over-Engineering
+
+Starting with a complex pattern when a simpler one suffices. Always start with Tool Use. For
+multi-step reasoning, prefer a single NL skill (sub-agent) before splitting into multiple agents —
+multi-agent wiring adds routing failure points and management overhead. [ART-26058] [ART-65599]
+
+### 2. Missing Error Handling
+
+Every pattern needs explicit failure modes:
+
+| Pattern | Required Failure Mode |
+| --- | --- |
+| Tool Use | What if the agent can't find a matching skill? |
+| ReAct | What if max iterations are reached? |
+| Plan-Execute | What if a step fails? Re-plan or abort? |
+| Reflection | What if validation keeps failing? |
+| Multi-Agent | What if the router misclassifies? |
+
+### 3. Insufficient Testing
+
+Test each pattern with:
+
+- Happy path: Straightforward, well-formed inputs
+- Edge cases: Ambiguous, incomplete, or multi-part inputs
+- Adversarial: Inputs designed to trigger the wrong behavior
+- Scale: Multiple concurrent sessions
+- Failure: What happens when a skill or tool fails mid-execution
+
+### 4. Ignoring Observability
+
+Every pattern should produce execution traces you can inspect:
+
+- Which skills were invoked and why
+- What knowledge was retrieved
+- What the agent "thought" at each step
+- Where failures occurred
+
+Use the Observe > Sessions tab to review traces after deployment.
+
+## Starting Template: New Agent Checklist
+
+- Define the agent's goal (1-2 sentences)
+- List the questions/tasks the agent must handle
+- Choose the simplest pattern that covers those tasks
+- Select the minimum knowledge sources
+- Build skills (tools first, workflows for multi-step)
+- Write instructions with retrieval priority
+- Add guardrails for safety-critical rules
+- Test in Playground with 15-20 inputs
+- Review execution traces
+- Create bulk test dataset
+- Iterate on instructions, skills, and knowledge
+- Publish when metrics meet thresholds
+
+## Real-World Lesson: Simpler Patterns with Smarter Retrieval
+
+A complex multi-tool pipeline (FindArticles → evaluate → KnowledgeSearch fallback → answer) with a
+1,500-word prompt was outperformed by a simple Tool Use pattern with one search tool and a 250-word
+prompt. The difference wasn't the pattern — it was the search architecture. By scoping searches to
+a directory first, then searching articles within it, the simpler pattern achieved higher accuracy
+with far less complexity.
+
+**Implication for Pattern 1:** Before adding more tools or moving to a more complex pattern (ReAct,
+Multi-Agent), check whether your retrieval strategy is the bottleneck. A well-scoped search with
+the basic Tool Use pattern often beats a poorly-scoped search with an advanced pattern.
+
+See the full case study in 04 – HybridSearch vs. NL2SQL vs. FetchObjectContext (ART-30502).

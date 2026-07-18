@@ -1,0 +1,398 @@
+# Prompting Guide for DevRev Agents
+
+This guide covers how to write effective instructions, goals, and guardrails for agents in DevRev Agent Studio.
+
+## Where Prompts Live
+
+DevRev agents use system-level prompts — the user never sees them. There are four places where you write prompt-like content:
+
+| Location | Purpose | Format |
+| --- | --- | --- |
+| Goal | One-line statement of what the agent is for | Plain text, 1–2 sentences |
+| Instructions | Detailed behavioral playbook | Rich text with @ mentions |
+| Guardrails | Hard rules the agent must follow | Structured (topic + description) |
+| Skill Descriptions | When to invoke a given skill | Plain text per skill |
+| NL Skill Objective | The natural-language objective + plan context an NL sub-agent reasons over | Plain text per NL skill |
+
+> **Note:** Agent Studio is currently in beta for Dev0. Some features may only be configurable via API. See the Guardrails API Configuration section below.
+
+## 1. Writing the Agent Goal
+
+The goal orients every decision the agent makes. A bad goal produces an agent that drifts; a good goal keeps it focused.
+
+**Structure:** `[Role] + [What it handles] + [Boundary/escalation condition]`
+
+| Good | Why |
+| --- | --- |
+| "Help customers troubleshoot product issues by searching the knowledge base, and escalate to a human agent when the issue cannot be resolved." | Specific role, clear scope, explicit escalation |
+| "Triage incoming tickets by categorizing them, assigning the right owner group, and setting priority based on account tier and sentiment." | Defines the task, mentions data sources, sets boundaries |
+| "Answer employee questions about HR policies using only the HR Articles knowledge source." | Narrow scope, single source, no ambiguity |
+
+**Anti-patterns:**
+
+- Too vague: "Be a helpful assistant" — gives no guidance on scope or behavior
+- Too long: Goals are not instructions. Keep it to 1–2 sentences
+- Negative phrasing: "Don't answer questions about billing" — use affirmative language in the goal; put restrictions in guardrails
+
+## 2. Writing Agent Instructions
+
+Instructions are your detailed playbook. This is where most of your prompting effort goes.
+
+### Recommended Structure
+
+Organize instructions into these sections (use headings for clarity):
+
+```
+## Role & Persona
+## Scope of Responsibilities
+## How to Respond
+## When to Use Skills
+## Escalation Rules
+## Tone & Style
+```
+
+### 2.1 Role & Persona
+
+Define who the agent is and how it should present itself.
+
+```
+You are a customer support agent for Acme Corp, a B2B SaaS company.
+You communicate in a professional but friendly tone.
+You never claim to be human — if asked, clarify you are an AI assistant.
+```
+
+### 2.2 Scope of Responsibilities
+
+Be explicit about what the agent handles and what it does not.
+
+```
+You handle:
+- Product troubleshooting questions
+- Account and billing inquiries
+- Feature request routing
+
+You do NOT handle:
+- Legal or compliance questions → escalate immediately
+- Pricing negotiations → route to the sales team
+- Bug reports that mention data loss → escalate as P1 incident
+```
+
+### 2.3 How to Respond
+
+Define the response structure the agent should follow.
+
+```
+When answering a question:
+1. Search the knowledge base first.
+2. If you find a relevant article, summarize the key steps in 3–5 bullet points.
+3. If you find conflicting information across sources, prefer the most recent article.
+4. If no article matches, say "I don't have specific documentation for that" and offer to create a ticket.
+5. Never fabricate steps or procedures that are not in the knowledge base.
+```
+
+### 2.4 When to Use Skills
+
+Reference skills by name and specify trigger conditions.
+
+```
+Use the "Create Ticket" skill when:
+- The customer reports a bug or issue not covered in the knowledge base
+- The customer explicitly requests human follow-up
+- You have attempted to resolve the issue but the customer confirms it persists
+
+Use the "Update Ticket Priority" skill when:
+- The customer mentions data loss or security concerns → set to P1
+- The account is Enterprise tier and the issue affects multiple users → set to P2
+
+Use the "Search Knowledge Base" skill for every incoming question before responding.
+```
+
+> **Tip:** Use @ mentions in the instructions editor to reference specific skills and knowledge sources directly. This creates a binding so the agent knows exactly which tool to call.
+
+### 2.5 Escalation Rules
+
+Define clear escalation triggers.
+
+```
+Escalate to a human agent when:
+- The customer uses words like "legal", "lawsuit", "compliance", or "regulation"
+- The issue involves billing disputes over $500
+- You are unable to find relevant information after 2 knowledge base searches
+- The customer expresses frustration or dissatisfaction (e.g., "this is the third time", "unacceptable")
+```
+
+### 2.6 Tone & Style
+
+- Be concise. Prefer bullet points over paragraphs.
+- Use the customer's name when available.
+- Match the customer's formality level.
+- Avoid jargon unless the customer uses it first.
+- End every response with a clear next step or offer for further help.
+
+## 3. Writing Guardrails
+
+Guardrails are hard rules that override all other behavior. They are evaluated on every interaction.
+
+### Guardrail Types
+
+Currently only one guardrail type exists: `topic_boundary` — restricts the agent to a specific topic. The schema is designed for extensibility, with additional types expected in the future.
+
+### Guardrail Configuration Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| Type | enum | Yes | The guardrail type. Currently only "topic_boundary" is supported. |
+| Topic Name | string (text) | Yes (for topic_boundary) | Short label for the topic. |
+| Description | string (text) | Yes (for topic_boundary) | Detailed description defining what is allowed within this topic. Be specific — this is what the model uses to evaluate whether the agent's input or output stays in bounds. |
+| Applies To | array of enum | Yes | Which stages the guardrail checks: ["input"], ["output"], or ["input", "output"]. |
+| Default Message | string (text) | No | Message shown to the user when the guardrail triggers. Should be helpful and redirect the user. |
+| Enabled | boolean | Yes | Whether the guardrail is active. Set to false to disable without deleting. |
+
+### When to Use Guardrails vs. Instructions
+
+| Use guardrails for | Use instructions for |
+| --- | --- |
+| Never/always rules | Preference-based guidance |
+| Compliance requirements | Tone and style |
+| Safety boundaries | Response formatting |
+| Data access restrictions | Skill usage patterns |
+
+### Choosing `applies_to`
+
+Use `applies_to` to control which stages the guardrail evaluates:
+
+| Value | Use Case |
+| --- | --- |
+| `["input"]` | Check user messages before the agent processes them. Use for: preventing off-topic questions, blocking harmful inputs, restricting the domain of allowed queries. |
+| `["output"]` | Check agent responses before sending. Use for: preventing information leakage, ensuring responses stay within scope, blocking fabricated content. |
+| `["input", "output"]` | Check both stages. Use for: maximum safety, compliance-sensitive agents, preventing the agent from going off-topic in its reasoning. |
+
+### Guardrail Examples
+
+| Topic | Type | Applies To | Description | Default Message |
+| --- | --- | --- | --- | --- |
+| PII Protection | topic_boundary | ["input", "output"] | Never disclose internal employee personal information (email, phone, address) to external users. Only share publicly available contact information. | "I'm not able to share personal information. Let me connect you with the right team." |
+| Identity Verification | topic_boundary | ["input"] | Always verify the customer's identity by confirming their account email before processing any account change requests. | "Before I can make changes to your account, I need to verify your identity. Could you please confirm the email address associated with your account?" |
+| Refund Limit | topic_boundary | ["output"] | Do not process refunds over $500. For amounts exceeding this limit, escalate to a manager with the refund details. | "I'm not able to process refunds over $500. Let me escalate this to a manager who can help." |
+| Scope Boundary | topic_boundary | ["input"] | Do not provide medical, legal, or financial advice. Only respond to questions about product features, troubleshooting, and account management. | "I'm not able to help with that topic. I can only assist with product-related questions." |
+
+### Tips for Guardrails
+
+- Be specific in descriptions: "Never share employee email addresses" is better than "Protect privacy"
+- Include the consequence: "Respond with [X] and do [Y]" rather than just "Don't do [Z]"
+- Set `applies_to` correctly: use `["input"]` for input filtering, `["output"]` for output filtering, `["input", "output"]` for both
+- Write a helpful `default_message`: guide the user to what they should do instead
+- Test edge cases: After adding a guardrail, test with inputs that should trigger it and inputs that shouldn't
+- Max 16 guardrails per agent
+
+### Guardrails API Configuration
+
+> Agent Studio is currently in beta for Dev0. Guardrails may not be configurable through the UI yet. Use the internal API to manage guardrails directly.
+
+Guardrails are embedded in agent and agent version payloads — there are no standalone guardrail endpoints.
+
+**Endpoints:**
+
+- Create AI Agent: `POST /internal/ai-agents.create` — `guardrails` field accepts `set-ai-agent-guardrail[]` (max 16)
+- Update AI Agent: `POST /internal/ai-agents.update` — `guardrails` field uses `{ set: [...] }` wrapper (max 16)
+- Get AI Agent: `GET /internal/ai-agents.get` — response includes `guardrails` as `agent-guardrail[]`
+- Create AI Agent Version: `POST /internal/ai-agents.versions.create` — `guardrails` field accepts `set-ai-agent-guardrail[]`
+- Update AI Agent Version: `POST /internal/ai-agents.versions.update` — `guardrails` field uses `{ set: [...] }` wrapper
+
+**Create payload example:**
+
+```json
+{
+  "name": "support-agent",
+  "goal": "Help customers with product support questions",
+  "guardrails": [
+    {
+      "type": "topic_boundary",
+      "applies_to": ["input", "output"],
+      "enabled": true,
+      "default_message": "I can only help with product support questions. Please rephrase your request.",
+      "topic_boundary": {
+        "topic_name": "Product Support",
+        "description": "Only answer questions about DevRev product features, pricing, integrations, and troubleshooting. Do not discuss competitors, internal company information, or off-topic subjects."
+      }
+    }
+  ]
+}
+```
+
+**Update payload example** (note the `{ set: [...] }` wrapper):
+
+```json
+{
+  "id": "<agent-id>",
+  "guardrails": {
+    "set": [
+      {
+        "type": "topic_boundary",
+        "applies_to": ["input"],
+        "enabled": true,
+        "default_message": "Please ask a question related to our documentation.",
+        "topic_boundary": {
+          "topic_name": "Documentation Only",
+          "description": "Only respond to questions that can be answered from the knowledge base articles."
+        }
+      }
+    ]
+  }
+}
+```
+
+To remove a guardrail, set `type` to `"none"`:
+
+```json
+{
+  "id": "<agent-id>",
+  "guardrails": {
+    "set": [
+      {
+        "type": "none",
+        "applies_to": ["input", "output"],
+        "enabled": false,
+        "default_message": ""
+      }
+    ]
+  }
+}
+```
+
+### Feature Flag Control
+
+Guardrail behavior is also controlled by feature flags in `archon-policy` (`neuron.rego`):
+
+- `agent_guardrails_enabled` — controls whether guardrails are evaluated. Default: true in prod. Can be disabled per org/agent.
+- `override_model_name_provider_map` — can override the model used for guardrail evaluation using the `"agent_guardrails"` key.
+
+See the Feature Flags guide for the full reference.
+
+## 4. Writing Skill Descriptions
+
+Each skill has a description field. The agent reads this to decide when to invoke the skill — treat it like a trigger condition.
+
+### Good Skill Descriptions
+
+```
+Name: create_ticket
+Description: Use this when the customer reports a new issue that is not resolved by knowledge base
+articles, or when the customer explicitly requests that a support ticket be created.
+
+Name: search_knowledge
+Description: Use this for every customer question to find relevant articles, FAQs, and documentation
+before responding.
+
+Name: update_account_notes
+Description: Use this when the customer provides new information about their account (e.g., changed
+contact details, new stakeholders) that should be recorded.
+```
+
+### Bad Skill Descriptions
+
+```
+Name: create_ticket
+Description: Creates a ticket.          → Too vague, agent won't know when to use it
+
+Name: search_knowledge
+Description: Search tool.               → No context on when or why
+
+Name: update_account_notes
+Description: Updates things.            → Meaningless to the agent
+```
+
+### NL Skill Descriptions
+
+For NL skills, the description must also tell the parent agent that this skill plans and executes a
+multi-step objective (delegation), not just performs one action — so the agent routes whole
+sub-tasks to it. Each tool attached to the NL skill's plan additionally needs its own description,
+shown to the planning LLM. [ART-26145] [ART-65599]
+
+## 5. Prompting Best Practices
+
+**Do:**
+
+- Write clear, unidirectional instructions — each instruction should convey one rule
+- Be specific about scope — explicitly list what the agent handles and what it does not
+- Use affirmative language — "Respond with X" instead of "Don't respond with Y"
+- Provide examples — especially for classification or routing tasks
+- Reference skills by name — use @ mentions to bind instructions to specific tools
+- Define escalation triggers — the agent needs to know when to hand off to a human
+- Test with edge cases — try adversarial inputs, out-of-scope questions, and ambiguous requests
+- Set `applies_to` correctly on guardrails — use `["input"]` to filter user questions, `["output"]` to filter agent responses, `["input", "output"]` for both
+- Write helpful `default_message` text on guardrails — guide the user to what they should ask instead
+
+**Don't:**
+
+- Don't overload the goal — keep it to 1–2 sentences; details go in instructions
+- Don't use conflicting instructions — if two rules could contradict, clarify the priority
+- Don't assume the agent knows context — state everything explicitly
+- Don't use jargon without definition — define domain terms the first time they appear
+- Don't leave gaps — if a scenario isn't covered, the agent will improvise (often poorly)
+- Don't write vague guardrail descriptions — "Be professional" is not a guardrail, it's an instruction
+
+## 6. Prompting Patterns by Agent Type
+
+### Customer Support Agent
+
+```
+Goal: "Resolve customer issues by searching the knowledge base and performing account actions.
+Escalate to a human when the issue cannot be resolved or involves sensitive matters."
+
+Instructions:
+- Always search knowledge base before answering
+- If confidence is low, say so and offer to create a ticket
+- For billing disputes, verify identity first, then check account history
+- Never promise SLA timelines that aren't in the documentation
+```
+
+### Ticket Routing Agent
+
+```
+Goal: "Classify and route incoming tickets to the correct team based on product area, issue type,
+and severity."
+
+Instructions:
+- Analyze the ticket title, body, and any attachments
+- Check the product → capability → feature hierarchy to determine routing
+- Set priority based on: account tier (Enterprise = higher), sentiment (negative = higher),
+  keywords ("data loss" = P1)
+- If uncertain about routing, assign to the general support queue and flag for review
+```
+
+### Internal Knowledge Agent
+
+```
+Goal: "Answer employee questions about internal processes, policies, and documentation."
+
+Instructions:
+- Search across all enabled knowledge sources
+- Prefer the most recently updated document when sources conflict
+- If multiple documents are relevant, synthesize and cite sources
+- For HR-related questions, only use the HR Articles knowledge source
+- Do not share information marked as confidential with external users
+```
+
+## 7. Iterative Prompt Refinement
+
+Prompting is iterative. Follow this loop:
+
+1. Write initial instructions based on the agent's intended purpose
+2. Test in the Playground with 10–15 representative inputs
+3. Review execution traces — look at the agent's reasoning to understand why it made choices
+4. Identify failure patterns — categorize failures (wrong skill, hallucination, out of scope, etc.)
+5. Update instructions to address the specific failure pattern
+6. Run bulk tests to validate the fix didn't cause regressions
+7. Publish when satisfied
+
+### Common Failure Patterns and Fixes
+
+| Failure | Cause | Fix |
+| --- | --- | --- |
+| Agent hallucinates | Instructions too vague, no source constraints | Add "only use information from knowledge base results" |
+| Agent uses wrong skill | Skill description unclear | Rewrite description with specific trigger conditions |
+| Agent goes out of scope | No scope boundary in instructions | Add explicit "You handle X, Y, Z. For anything else, escalate." |
+| Agent gives inconsistent answers | Conflicting or ambiguous instructions | Consolidate rules, add priority ordering |
+| Agent ignores guardrails | Guardrail description too generic or applies_to wrong | Make guardrail more specific with exact trigger phrases. Check applies_to covers the right stage. Verify agent_guardrails_enabled is true in archon-policy. |
+| Agent tries to do multi-step work inline and drifts | No delegation path | Add an NL skill (sub-agent) for the multi-step objective and reference it by name in instructions [ART-26058] |

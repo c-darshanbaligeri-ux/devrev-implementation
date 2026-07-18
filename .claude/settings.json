@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/bootstrap-workspace.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "devrev-aai-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "devrev/aai-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "dashboard-dev@devrev-aai-plugins": true,
+    "dataset-builder@devrev-aai-plugins": true
+  }
+}

@@ -1,0 +1,18 @@
+# DevRev toolchain repos cloned into repos/ (gitignored; never edit in place).
+# Cloned automatically on first session by the bootstrap hook; refreshed ONLY on
+# explicit request via the update-repos skill.
+# One URL per line. Lines starting with # are comments.
+
+# PRIMARY — dashboard-dev + dataset-builder Claude Code plugins (marketplace: devrev-aai-plugins)
+https://github.com/devrev/aai-skills
+
+# REQUIRED DEPENDENCY — CLI the dashboard-dev plugin shells out to (installed via pipx by the bootstrap hook)
+https://github.com/devrev/dashboard-sync-cli
+
+# GROUNDING — OpenAPI contracts (specs/next/openapi-internal.yaml) used by skills/7-agent-building
+https://github.com/devrev/api-specs
+
+# Deliberately excluded (see docs/CLONE_RESULTS.md):
+#   https://github.com/devrev/devrev-snap-ins  — snap-in source is out of scope for this repo
+#   https://github.com/devrev/mcp-server       — archived; superseded by the hosted MCP in .mcp.json
+# devrev/auto-annotations is auto-cloned on demand by skills/7-agent-building/scripts/check-annotations.sh

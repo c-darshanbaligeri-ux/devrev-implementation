@@ -1,0 +1,266 @@
+When Default Computer Memory Isn't Good Enough for Production Agents
+
+DevRev's "Computer Memory" — the Knowledge Graph that automatically provides business context to agents — sounds ideal. Plug in an agent, and it "just knows" your organization's data. In practice, the default configuration is a starting point, not a production solution. This article explains why and what to do about it.What Default Computer Memory Gives You
+
+Out of the box, DevRev agents get access to the Knowledge Graph — a centralized store of your organization's objects, relationships, and metadata. The pitch is:
+
+Agents automatically understand your business context
+
+No manual configuration required
+
+Continuous learning from usage patterns
+
+This works for demos and simple Q&A. It breaks down when you need agents to perform reliably at scale.The Core Problem: No Curation = No Precision1. Information Overload
+
+Default Computer Memory gives the agent access to everything in your Knowledge Graph — every object type, every relationship, every field. When an agent searches for relevant context, it pulls from an enormous surface area.
+
+The result is predictable:
+
+Symptom
+
+Cause
+
+Agent returns irrelevant information
+
+Search surface is too broad; noise drowns out signal
+
+Slow response times
+
+Agent retrieves and processes far more context than needed
+
+Hallucination on edge cases
+
+Agent synthesizes conflicting information from unrelated sources
+
+Inconsistent answers across sessions
+
+Different context retrieved for similar questions depending on what surfaces rank highest
+
+A customer support agent doesn't need access to internal microservice metadata. A ticket routing agent doesn't need dashboard definitions. But the default configuration doesn't know or care about these distinctions.2. No Control Over What Gets Prioritized
+
+When an agent searches knowledge sources, something has to rank first. In the default setup, ranking is opaque — the platform decides relevance based on generic signals (text similarity, recency, graph proximity).
+
+You cannot:
+
+Weight certain sources higher — e.g., "always prefer the official FAQ over community Q&A"
+
+Exclude deprecated content — old articles that are technically "live" but no longer accurate
+
+Define source hierarchies — e.g., "if the SLA policy article and a support conversation conflict, the article wins"
+
+Control retrieval depth — how many results, how many hops in the graph, which relationships to traverse
+
+This means two agents with identical goals but different use cases (internal IT support vs. external customer support) get the same undifferentiated retrieval behavior.3. No Schema-Level Customization
+
+The Knowledge Graph has a fixed schema. Object types, field definitions, and relationships are predefined. While DevRev supports schema fragments (custom fields via tenant_fragment, custom_type_fragment, app_fragment), these are data-layer customizations, not agent-facing knowledge configuration.
+
+What you cannot customize at the knowledge level:
+
+What You Want
+
+What Default Provides
+
+"Only search articles tagged 'customer-facing'"
+
+Searches all articles regardless of audience
+
+"Exclude internal wiki pages from this agent"
+
+No exclusion mechanism
+
+"Treat 'severity' field as high-signal for routing"
+
+All fields weighted equally
+
+"Use product hierarchy for routing, not flat search"
+
+No hierarchical retrieval config
+
+"Cache answers for top 50 FAQs"
+
+No caching or precomputation controls4. No Per-Agent Knowledge Tuning
+
+Every agent in your organization shares the same underlying Knowledge Graph. The only customization available is which object types the agent can search (configured in the Knowledge section of the Build tab).
+
+This is a binary on/off per object type. You cannot:
+
+Configure which fields within an object type are searchable
+
+Set different search behaviors for the same object type across different agents
+
+Define agent-specific aliases or synonyms for the same underlying data
+
+Create derived or computed knowledge that only exists for one agent's purposes5. Static in a Dynamic Environment
+
+Default Computer Memory reflects the current state of your Knowledge Graph at query time. This is correct but insufficient for production agents that need:
+
+Need
+
+Why Default Falls Short
+
+Business rules encoded in retrieval
+
+"If account tier = Enterprise, also retrieve the escalation policy" — no conditional retrieval
+
+Temporal context
+
+"Use the version of this article that was live when the ticket was created" — no point-in-time retrieval
+
+Cross-session patterns
+
+"This customer has asked about this feature 3 times before" — no aggregated session memory injection
+
+Proactive context
+
+"This issue resembles a recent incident that affected the same product area" — no proactive retrieval triggersWhat to Do Instead1. Be Surgical with Knowledge Source Selection
+
+In the Build tab, you select which object types the agent can search. This is the most important knowledge configuration decision.
+
+For a customer support ticket agent, add only these 5 core types:
+
+Object Type
+
+Why
+
+Ticket + Conversation
+
+Severity, SLA status, part, group, owner, channels, sentiment, response urgency
+
+Account
+
+Customer state, tier, ACV/ARR, friction & utilization scores, health, engagement level
+
+Rev User
+
+Contact identity, role, seniority, key contact flag
+
+Rev Org
+
+Workspace-to-account mapping, SLA entitlements
+
+Part hierarchy (Product → Capability → Feature)
+
+Route to the right team based on product area
+
+Don't add everything. Every unnecessary object type adds noise and latency.2. Write Explicit Source-Preference Rules in Instructions
+
+Since you can't configure retrieval ranking, encode it in the agent's instructions:When searching for information:
+1. Prefer Articles over Q&A entries — articles are curated and reviewed.
+2. If you find conflicting information, prefer the source with the most recent "updated" date.
+3. For SLA-related questions, only use the "SLA Policy" article. Do not infer SLA from ticket history.
+4. For pricing questions, only use articles tagged "pricing-guide". If none exist, say you don't have current pricing information.
+
+This is a workaround, not a fix — but it materially improves agent behavior.3. Use Skills to Supplement Knowledge Retrieval
+
+When the Knowledge Graph doesn't provide the right context, build a workflow that fetches exactly what you need:Instead of: Agent searches all articles about "refund policy"
+Build a skill: "get_refund_policy" that:
+  1. Queries the specific refund policy article by ID
+  2. Extracts the relevant section based on the customer's region
+  3. Returns the structured policy to the agent
+
+This gives you deterministic retrieval with AI-driven application.4. Create Dedicated Knowledge Articles for the Agent
+
+Don't rely on existing documentation that was written for humans. Create agent-specific articles that are structured for retrieval:
+
+Human-Facing Article
+
+Agent-Optimized Article
+
+Long paragraphs with context and storytelling
+
+Structured: condition → action → exception
+
+Implicit rules ("we typically...")
+
+Explicit rules ("IF tier=Enterprise THEN SLA=1hr")
+
+Scattered across multiple docs
+
+Consolidated: one article per decision domain
+
+Mixed audiences (internal + external)
+
+Tagged and scoped for the agent's audience5. Test Retrieval Quality Explicitly
+
+Build bulk test datasets that specifically test knowledge retrieval:Test case 1:
+  Input: "What's our refund policy for Enterprise customers in the EU?"
+  Expected: "Enterprise EU customers have a 60-day refund window. See Refund Policy v3.2."
+  Purpose: Verify the agent retrieves the correct, current policy
+
+Test case 2:
+  Input: "I found an old article that says 30-day refund. Is that still valid?"
+  Expected: "The current policy is 60-day for Enterprise EU customers. The 30-day policy was updated in January 2025."
+  Purpose: Verify the agent prefers current sources over old ones
+
+Test case 3:
+  Input: "What's the server IP for our staging environment?"
+  Expected: "I don't have information about infrastructure configurations."
+  Purpose: Verify the agent doesn't retrieve out-of-scope internal informationThe Bigger Picture: Default = Prototype, Not Production
+
+Default Computer Memory is designed to get you from zero to a working demo fast. That's valuable. But the gap between "works in a demo" and "works reliably for real users" is precisely the gap between undifferentiated knowledge access and curated, purpose-built knowledge configuration.
+
+Stage
+
+Knowledge Approach
+
+Prototype / Demo
+
+Default Computer Memory, broad object types, generic instructions
+
+Pilot
+
+Curated object types, explicit source-preference rules, agent-specific articles
+
+Production
+
+All of the above + custom retrieval skills + dedicated test datasets + ongoing retrieval quality monitoring
+
+The agents that perform well in production are the ones where someone spent time thinking about exactly what the agent needs to know, where that knowledge lives, and how to get it reliably. Default Computer Memory can't do that thinking for you.Summary
+
+Limitation
+
+Impact
+
+Mitigation
+
+No retrieval ranking control
+
+Irrelevant or conflicting results
+
+Encode source preferences in instructions
+
+No exclusion mechanism
+
+Noise from unrelated data
+
+Be surgical with object type selection
+
+No per-field search config
+
+Over-broad retrieval
+
+Build targeted retrieval skills
+
+No conditional retrieval
+
+Can't adapt to context
+
+Use workflow skills with branching logic
+
+No agent-specific tuning
+
+One-size-fits-all behavior
+
+Create agent-optimized knowledge articles
+
+Binary object type on/off
+
+Can't fine-tune scope
+
+Select minimal set, supplement with skills
+
+Static retrieval behavior
+
+Can't handle dynamic business rules
+
+Test explicitly, iterate on instructions + skills

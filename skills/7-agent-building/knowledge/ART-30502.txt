@@ -1,0 +1,488 @@
+HybridSearch vs. NL2SQL vs. FetchObjectContext: Choosing the Right Retrieval Strategy
+
+DevRev agents have multiple ways to access data. Choosing the wrong retrieval strategy is the single biggest cause of unreliable agent behavior. This article provides a decision framework.The Three Retrieval Strategies
+
+Strategy
+
+What It Does
+
+Determinism
+
+Best For
+
+FetchObjectContext
+
+Retrieves a specific object with all its fields and relationships
+
+High
+
+When you know exactly which object you need
+
+HybridSearch
+
+Combines keyword + semantic search across configured knowledge sources
+
+Medium
+
+When you need to find relevant information by meaning or keywords
+
+NL2SQL
+
+Converts natural language to SQL queries against structured datasets
+
+Low
+
+When you need aggregated, filtered, or computed results from tabular data1. FetchObjectContext: Always Start Here
+
+FetchObjectContext retrieves a specific DevRev object (ticket, account, user, article, etc.) by its ID with all configured fields and relationships. This is a deterministic operation — given an object ID, you always get the same structured result.When to Use
+
+You have the object ID (from a trigger, a mention, a previous search result)
+
+You need complete, structured data about a specific entity
+
+The agent needs to inspect fields, relationships, or metadataWhy It's the Best Default
+
+Quality
+
+FetchObjectContext
+
+HybridSearch
+
+NL2SQL
+
+Result reliability
+
+Exact match
+
+Ranked approximation
+
+Generated query
+
+Data completeness
+
+All fields + relationships
+
+Snippets and summaries
+
+Computed results
+
+Hallucination risk
+
+None (factual data)
+
+Medium (may misinterpret)
+
+High (query may be wrong)
+
+Latency
+
+Fast
+
+Medium
+
+Variable
+
+Consistency across runs
+
+100% identical
+
+May vary
+
+May vary significantlyHow to Use in Agent Configuration
+
+Configure a skill that fetches object context when the agent needs specific data:Skill: fetch_ticket_context
+Description: Use this when you need complete details about a specific ticket, including its severity, SLA status, owner, assigned group, linked account, conversation history, and part hierarchy. Always use this after identifying a ticket ID.
+
+Input:
+  - ticket_id: Auto-fill (from conversation context or trigger)
+  - include_relationships: Manual (true)Skill: fetch_account_context
+Description: Use this when you need complete account information including tier, health score, ARR, key contacts, and SLA entitlements. Use before making any account-dependent decisions like prioritization or escalation.
+
+Input:
+  - account_id: Auto-fill (from conversation or ticket relationship)
+  - include_hierarchy: Manual (true)Pattern: Trigger → FetchObjectContext → Decide
+
+This is the most reliable agent pattern:Trigger: New ticket created
+  │
+  ├─ Step 1: FetchObjectContext(ticket_id)
+  │   → Get severity, account, part, conversation
+  │
+  ├─ Step 2: FetchObjectContext(account_id) [from ticket relationship]
+  │   → Get tier, health, ARR, SLA entitlements
+  │
+  ├─ Step 3: FetchObjectContext(part_id) [from ticket relationship]
+  │   → Get product → capability → feature hierarchy
+  │
+  ├─ Step 4: Agent reasons over complete structured data
+  │   → Determines routing, priority, escalation
+  │
+  └─ Step 5: Agent invokes action skill with determined values
+
+Every step is deterministic except Step 4 (the AI reasoning). The data fed into the reasoning step is complete, accurate, and structured. This minimizes hallucination and maximizes consistency.2. HybridSearch: Use When You Don't Know the Object ID
+
+HybridSearch is the agent's search capability that combines:
+
+Keyword search (BM25-style) — matches exact terms and phrases
+
+Semantic/vector search — matches meaning and intent
+
+The agent uses HybridSearch when it needs to discover relevant information without knowing exactly which object or article to fetch.When HybridSearch Is the Right Choice
+
+Answering knowledge questions ("How do I configure SSO?")
+
+Finding relevant articles or documentation
+
+Searching for similar issues or past tickets
+
+Discovering policies or procedures by descriptionWhen HybridSearch Is the Wrong Choice
+
+You already have an object ID → use FetchObjectContext
+
+You need aggregated data ("How many P1 tickets were created this week?") → NL2SQL handles this automatically
+
+You need exact field values → use FetchObjectContext
+
+The answer requires computation → NL2SQL handles this automaticallyTuning HybridSearch Parameters
+
+The key to effective HybridSearch is narrowing the search space. Configure these parameters in your agent's knowledge sources:
+
+Object Type Selection
+
+Only enable the object types the agent actually needs:
+
+Agent Type
+
+Recommended Object Types
+
+Customer Support
+
+Article, Question & Answer, Ticket, Conversation, Account, Rev User, Rev Org
+
+Ticket Routing
+
+Ticket, Conversation, Account, Rev Org, Part hierarchy
+
+Knowledge Q&A
+
+Article, Question & Answer
+
+Internal IT
+
+Article, Ticket, Issue, Task, Rev User, Group
+
+Account Management
+
+Account, Rev Org, Rev User, Opportunity
+
+Search Scope Guidelines
+
+Guideline
+
+Why
+
+Fewer object types = better results
+
+Reduces noise, improves ranking
+
+Articles > Conversations for policy questions
+
+Articles are curated; conversations are raw
+
+Include Part hierarchy for routing
+
+Enables product-area-based search
+
+Exclude microservices/dashboards for external agents
+
+Internal metadata confuses customer-facing agents
+
+Minimizing Reliance on Generic Knowledge
+
+Generic Knowledge search (the default behavior when an agent searches all configured object types) should be your last resort, not your first. Build your agent's retrieval strategy in this priority order:1. FetchObjectContext  →  If you have an ID, fetch directly
+2. Targeted Skill      →  If you need specific data, build a retrieval skill
+3. HybridSearch        →  If you need to discover, search with narrow scope
+4. Generic Knowledge   →  Only when none of the above applyHybridSearch Best Practices in Instructions
+
+Encode retrieval priority in your agent's instructions:When answering a question:
+1. If the customer mentions a specific ticket number, fetch that ticket directly.
+2. If the question is about a process or policy, search Articles only.
+3. If the question is about a past issue, search Tickets and Conversations.
+4. Only search across all knowledge sources if the above don't apply.
+5. Never present information from search results as definitive if you find
+   conflicting answers — acknowledge the conflict and prefer the most recent source.3. NL2SQL: For Structured Data Queries
+
+NL2SQL converts natural language questions into SQL queries against DevRev datasets. This is the most powerful but least reliable retrieval strategy.
+
+> **NL2SQL is built-in and enabled by default** for all agents. You do not need to add or configure a separate NL2SQL skill — the agent automatically uses NL2SQL when a user's question requires querying structured dataset data. Your job is to ensure your datasets have thorough schema annotations so the agent generates accurate SQL.Recommended Model for NL2SQL
+
+When using NL2SQL, Claude Sonnet 4.5 or Claude Sonnet 4.6 is the recommended model. Claude Sonnet excels at structured data reasoning, schema comprehension, and generating accurate SQL from natural language — critical capabilities for NL2SQL workloads where query correctness directly impacts agent reliability.
+
+Why Claude Sonnet for NL2SQL:
+- Superior schema comprehension and column disambiguation
+- Stronger SQL generation accuracy, especially for complex joins and aggregations
+- Better handling of ambiguous natural language queries
+- More consistent output formatting for structured resultsWhen NL2SQL Is the Right Choice
+
+Aggregated metrics: "How many P1 tickets were created this week?"
+
+Comparative queries: "Compare response times between Enterprise and Standard accounts"
+
+Trend queries: "What's the trend in ticket volume over the last 30 days?"
+
+Filtered subsets: "Show me all open tickets from accounts with health score below 50"
+
+Computed results: "What's the average time-to-resolution for bugs vs. feature requests?"When NL2SQL Is the Wrong Choice
+
+You need a specific object → FetchObjectContext
+
+You need an article or document → HybridSearch
+
+The answer is a simple fact → HybridSearch or FetchObjectContext
+
+The query involves complex business logic → Build a deterministic skill instead
+
+Accuracy is critical and the query is complex → Build a deterministic skill
+
+The agent generates wrong SQL → Improve schema annotations (see below)NL2SQL Failure Modes
+
+Failure Mode
+
+Example
+
+Cause
+
+Wrong join logic
+
+Counts duplicate tickets due to missing DISTINCT
+
+NL2SQL doesn't understand the schema's cardinality
+
+Misunderstood field semantics
+
+Filters by "created_date" when user meant "resolved_date"
+
+Ambiguous column names
+
+Missing WHERE clause
+
+Returns all-time data instead of "this week"
+
+Time range not properly converted
+
+Wrong aggregation
+
+Returns COUNT instead of SUM, or AVG instead of MEDIAN
+
+Natural language ambiguity
+
+Schema hallucination
+
+References a column that doesn't exist
+
+NL2SQL guesses at schema structureMitigating NL2SQL Failures
+
+Schema Annotations (Critical)
+
+NL2SQL performance depends entirely on how well it understands your schema. Schema annotations are not optional — they are required for NL2SQL to work.
+
+For every column in a dataset that NL2SQL will query:
+
+Write a clear description of what the column contains
+
+Include examples of valid values
+
+Document relationships to other columns/tables
+
+Note any ambiguity — if "status" could mean multiple things, say so
+
+Bad annotation:Column: priority
+Description: The priority.
+
+Good annotation:Column: priority
+Description: The urgency level of the ticket. Valid values: "p0" (critical/outage),
+"p1" (high/data loss), "p2" (medium/feature broken), "p3" (low/cosmetic).
+Set by the routing agent based on account tier, issue type, and customer sentiment.
+P0 and P1 trigger automatic escalation to on-call engineering.
+
+Dataset Design for NL2SQL
+
+Practice
+
+Why
+
+Use clear, descriptive column names
+
+account_tier not acc_t
+
+Denormalize commonly-joined data
+
+Include account tier in the ticket table to avoid joins
+
+Add computed/denormalized fields
+
+is_enterprise, is_overdue, days_since_created
+
+Use consistent naming conventions
+
+Snake_case, consistent prefixes
+
+Avoid ambiguous column names
+
+resolved_at not date
+
+Document every column
+
+Every column needs a description with examples
+
+Pre-Build Common Queries as Skills
+
+For queries that agents run frequently, don't rely on NL2SQL. Build a deterministic skill:Instead of: Agent generates SQL for "how many P1 tickets this week"
+Build a skill: "get_p1_ticket_count" that:
+  1. Runs a pre-built, tested SQL query
+  2. Takes parameters (time_range, account_filter)
+  3. Returns structured result to the agent
+
+This guarantees correctness for your most important queries.Decision FrameworkFlowchart: Which Strategy to UseDo you have an object ID?
+├─ YES → FetchObjectContext
+└─ NO
+    ├─ Do you need aggregated/computed data?
+    │   ├─ YES → Is the query common/repeated?
+    │   │   ├─ YES → Build a skill (deterministic)
+    │   │   └─ NO → NL2SQL (with schema annotations, Claude Sonnet 4.5/4.6)
+    │   └─ NO
+    │       ├─ Do you need to find a document or article?
+    │       │   ├─ YES → HybridSearch (narrow scope)
+    │       │   └─ NO → Generic Knowledge (last resort)Quick Reference Table
+
+"I need to..."
+
+Strategy
+
+Get details about ticket TKT-123
+
+FetchObjectContext
+
+Find the refund policy
+
+HybridSearch (Articles only)
+
+Know how many P1 tickets this week
+
+NL2SQL (automatic — ensure schema is annotated)
+
+Get the account tier for this customer
+
+FetchObjectContext (via ticket relationship)
+
+Find similar past issues
+
+HybridSearch (Tickets)
+
+Compare resolution times by team
+
+NL2SQL (automatic — ensure schema is annotated)
+
+Answer "how do I reset my password?"
+
+HybridSearch (Articles)
+
+Check if this account has SLA coverage
+
+FetchObjectContext
+
+Get top 10 accounts by ticket volume
+
+NL2SQL (automatic — ensure schema is annotated)Configuration Priority: What to Set Up First
+
+When building a new agent, configure retrieval in this order:Step 1: Set Up FetchObjectContext Skills (Day 1)
+
+For every object type the agent interacts with, create a skill that fetches it by ID. This is your foundation.- fetch_ticket
+- fetch_account
+- fetch_user
+- fetch_article
+- fetch_partStep 2: Configure Knowledge Sources (Day 1)
+
+Select the minimum set of object types the agent needs for search. Err on the side of fewer.Step 3: Build Deterministic Skills for Common Operations (Day 1-2)
+
+For every repeatable query or operation, build a skill. Don't leave it to AI reasoning.- get_account_health_score
+- get_open_ticket_count
+- get_sla_status
+- get_team_oncallStep 4: Write Retrieval-Priority Instructions (Day 2)
+
+Encode the priority order in the agent's instructions so it knows which strategy to use when.Step 5: Annotate Datasets for NL2SQL (Day 2-3)
+
+NL2SQL is enabled by default — no configuration needed. If the agent needs aggregated/computed data, make sure your datasets have thorough schema annotations. Use Claude Sonnet 4.5 or 4.6 for best NL2SQL performance.Step 6: Test Retrieval Quality (Day 3+)
+
+Build test datasets that specifically validate each retrieval strategy:
+
+FetchObjectContext tests: "Get details about ticket X" → verify all fields present
+
+HybridSearch tests: "Find the refund policy" → verify correct article returned
+
+NL2SQL tests: "How many P1 tickets this week?" → verify accurate count
+
+Conflict tests: "Which refund policy is current?" → verify correct source prioritizedSummary
+
+Strategy
+
+Reliability
+
+Speed
+
+Flexibility
+
+Recommended Model
+
+When to Use
+
+FetchObjectContext
+
+Highest
+
+Fastest
+
+Narrow
+
+N/A (deterministic)
+
+You have an ID. Always prefer this.
+
+HybridSearch
+
+Medium
+
+Medium
+
+Broad
+
+N/A (built-in)
+
+You need to discover information. Narrow the scope.
+
+NL2SQL
+
+Lowest
+
+Variable
+
+Very broad
+
+Claude Sonnet 4.5 / 4.6
+
+You need aggregated data. Annotate everything.
+
+Generic Knowledge
+
+Low
+
+Slow
+
+Broadest
+
+N/A (built-in)
+
+Last resort. Minimize reliance.
+
+The hierarchy is simple: FetchObjectContext > Targeted Skills > HybridSearch > NL2SQL > Generic Knowledge.
+
+Every time you move down the hierarchy, you trade reliability for flexibility. In production, reliability wins.

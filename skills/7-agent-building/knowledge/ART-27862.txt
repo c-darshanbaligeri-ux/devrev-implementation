@@ -1,0 +1,533 @@
+Agent Studio Quick Reference
+
+A one-page reference for navigating DevRev Agent Studio and its key configuration fields.
+
+> **Note:** Agent Studio is currently in beta for Dev0. Some features may only be configurable via API. See the Guardrails section below for API configuration details.NavigationDev0 → Settings → Agent Studio → [Agent Name]
+                                      ├─ Build
+                                      ├─ Test
+                                      └─ ObserveBuild TabAgent Identity
+
+Field
+
+Behavior
+
+Agent Name
+
+Display name. Click to edit. Saved on blur.
+
+Agent Goal
+
+High-level objective. Auto-resizing textarea. Reverts if empty.Capabilities
+
+Knowledge
+
+Select which DevRev object types the agent can search.
+
+Category
+
+Types
+
+Content
+
+Article, Question & Answer
+
+Work items
+
+Ticket, Issue, Task, Enhancement, Incident
+
+Product
+
+Product, Feature, Capability, Component
+
+People
+
+Rev User, Dev User, Group
+
+Organizations
+
+Account, Rev Org
+
+Conversations
+
+Conversation, Direct Message
+
+Other
+
+Custom Object, Dashboard, Dataset, Meeting, Microservice, Opportunity, Tag, Widget, Linkable, Runnable, Vista, Service Account
+
+Skills
+
+Type
+
+Configuration Required
+
+Tools
+
+Name, Description, Input fields (Auto-fill or Manual)
+
+Workflows
+
+Added directly, no additional config
+
+Tool fields:
+
+Field
+
+Required
+
+Notes
+
+Name
+
+Yes
+
+^[a-zA-Z0-9_]+$ only
+
+Description
+
+Yes
+
+When the agent should use this skill
+
+Input fields
+
+Varies
+
+Auto-fill (agent determines) or Manual (fixed value)
+
+Execute as User
+
+No
+
+Default: ON. Controls permission context.
+
+Connections
+
+Varies
+
+Keyrings for external system access
+
+Guardrails
+
+Currently only one guardrail type exists: topic_boundary — restricts the agent to a specific topic.
+
+Field
+
+Type
+
+Required
+
+Description
+
+Type
+
+enum
+
+Yes
+
+The guardrail type. Currently only "topic_boundary" is supported.
+
+Topic Name
+
+string (text)
+
+Yes (for topic_boundary)
+
+Short label for the topic.
+
+Description
+
+string (text)
+
+Yes (for topic_boundary)
+
+Detailed description defining what is allowed within this topic. This is what the model evaluates against.
+
+Applies To
+
+array of enum
+
+Yes
+
+Which stages to check: ["input"], ["output"], or ["input", "output"].
+
+Default Message
+
+string (text)
+
+No
+
+Message shown to the user when the guardrail triggers.
+
+Enabled
+
+boolean
+
+Yes
+
+Whether the guardrail is active.
+
+State
+
+Meaning
+
+Enabled
+
+Actively enforced
+
+Disabled
+
+Exists but not enforced
+
+Always on
+
+Cannot toggle (Default Guardrail only)
+
+> **Max 16 guardrails per agent.**
+
+Guardrails API Configuration
+
+> Agent Studio UI may not expose guardrail configuration yet. Use the internal API.
+
+Endpoints:
+
+- Create AI Agent: POST /internal/ai-agents.create — guardrails: set-ai-agent-guardrail[] (max 16)
+- Update AI Agent: POST /internal/ai-agents.update — guardrails: { set: set-ai-agent-guardrail[] } (max 16)
+- Get AI Agent: GET /internal/ai-agents.get — response includes guardrails: agent-guardrail[]
+- Create AI Agent Version: POST /internal/ai-agents.versions.create — guardrails: set-ai-agent-guardrail[]
+- Update AI Agent Version: POST /internal/ai-agents.versions.update — guardrails: { set: set-ai-agent-guardrail[] }
+
+Create example:
+{
+  "name": "support-agent",
+  "goal": "Help customers with product support questions",
+  "guardrails": [
+    {
+      "type": "topic_boundary",
+      "applies_to": ["input", "output"],
+      "enabled": true,
+      "default_message": "I can only help with product support questions.",
+      "topic_boundary": {
+        "topic_name": "Product Support",
+        "description": "Only answer questions about product features, troubleshooting, and integrations."
+      }
+    }
+  ]
+}
+
+To remove: set type to "none" in the update payload.
+
+Feature flag: neuron.agent_guardrails_enabled in archon-policy controls whether guardrails are evaluated per org/agent.Instructions
+
+Rich text editor for behavioral guidance. Supports @ mentions for referencing skills and knowledge sources.Header Controls
+
+Control
+
+Description
+
+Version badge
+
+Draft or Live
+
+Version History
+
+Side panel with version timeline
+
+Playground
+
+Chat playground side panel
+
+Publish
+
+Promote draft to live
+
+More options
+
+Duplicate, DeleteTest TabPreview Tests
+
+Element
+
+Description
+
+Start New Chat
+
+Fresh Playground conversation
+
+Test session list
+
+Previous test conversations
+
+View Trace
+
+Execution trace for a sessionBulk Tests
+
+Element
+
+Description
+
+Create Bulk Test
+
+Opens creation form
+
+Bulk test list
+
+All tests with status and results
+
+Create Bulk Test form:
+
+Field
+
+Required
+
+Description
+
+Test name
+
+Yes
+
+Test purpose
+
+Agent
+
+Yes
+
+Pre-selected from context
+
+Agent Version
+
+Yes
+
+Draft or specific version
+
+Dataset
+
+Yes
+
+Test cases to run against
+
+Evaluators
+
+No
+
+Correctness and/or Completeness
+
+Bulk test statuses: Queued → Running → Completed / ErroredObserve TabAnalytics
+
+State
+
+Description
+
+Not enabled
+
+Click "Enable Evaluation" to start
+
+Enabling
+
+Loading state
+
+Active
+
+Dashboard, defaults to last 7 daysSessions
+
+Column
+
+Sortable
+
+Trigger
+
+No
+
+Members
+
+Yes
+
+Last message
+
+Yes
+
+Filters: Last message (time range), Trigger (type)
+
+Session detail: Header + Conversation + Execution trace
+
+Trace elements: Thought, LLM Reasoning (intermediate/final), Input, Output, Guardrail Check, Response Time, View WorkflowVersion Management
+
+State
+
+Description
+
+Draft
+
+Work-in-progress. Only one at a time.
+
+Live (Published)
+
+Active version. Only one at a time.
+
+Archived
+
+Previous live version. Preserved.
+
+Action
+
+Effect
+
+Edit Live agent
+
+Auto-creates new Draft
+
+Publish
+
+Draft → Live, previous Live → Archived
+
+Restore
+
+Creates new Draft from previous versionAgent Types
+
+Type
+
+Audience
+
+Channels
+
+Internal (coming soon)
+
+Employees, internal workflows
+
+Internal surfaces
+
+CX (External)
+
+End customers
+
+Slack, WhatsApp, PLuG Chat, EmailAPI Quick ReferenceExecute Agent AsyncPOST https://api.devrev.ai/internal/ai-agents.events.execute-async
+
+{
+  "agent": "don:core:dvrv-us-1:devo/0:ai_agent/{id}",
+  "event": {
+    "input_message": {
+      "message": "Your query"
+    }
+  },
+  "session_object": "unique_conversation_id",
+  "webhook_target": {
+    "webhook": "don:integration:dvrv-us-1:devo/0:webhook/{id}"
+  }
+}Webhook Response Events
+
+Event
+
+Content
+
+ai_agent_response (progress)
+
+Skill triggered/executing
+
+ai_agent_response (final)
+
+Complete agent response
+
+ai_agent_response (error)
+
+Error detailsAuthentication
+
+Token Type
+
+Use Case
+
+Personal Access Token (PAT)
+
+Individual developer use
+
+Application Access Token (AAT)
+
+Application integrations
+
+System User Token (SUT)
+
+System-level operations
+
+Session Token
+
+Customer-specific accessKey Shortcuts
+
+What You Want
+
+Where to Go
+
+Write agent behavior
+
+Build > Instructions
+
+Add a tool the agent can call
+
+Build > Skills > Tools
+
+Add a multi-step workflow
+
+Build > Skills > Workflows
+
+Limit what the agent searches
+
+Build > Knowledge
+
+Add a hard rule
+
+Build > Guardrails
+
+Quick test a question
+
+Test > Preview Tests > Start New Chat
+
+Run structured tests
+
+Test > Bulk Tests
+
+See how agent performs live
+
+Observe > Analytics
+
+Debug a specific conversation
+
+Observe > Sessions > [Click session]
+
+Create test datasets
+
+Agent Studio > Settings > Datasets
+
+Publish changes
+
+Build > Publish
+
+Revert to previous version
+
+Build > Version History > RestoreRecommended Knowledge Sources by Agent Type
+
+Agent Type
+
+Sources
+
+Customer Support
+
+Article, Q&A, Ticket, Conversation, Account, Rev User, Rev Org
+
+Ticket Routing
+
+Ticket, Conversation, Account, Rev Org, Product/Feature/Capability
+
+Knowledge Q&A
+
+Article, Q&A
+
+Internal IT
+
+Article, Ticket, Issue, Task, Rev User, Group
+
+Account Management
+
+Account, Rev Org, Rev User, Opportunity, TicketRetrieval Priority1. FetchObjectContext  →  Have an ID? Fetch directly. Most reliable.
+2. Targeted Skill      →  Need specific data? Build a retrieval skill.
+3. HybridSearch        →  Need to discover? Search with narrow scope.
+4. NL2SQL              →  Need aggregated data? Query with annotations.
+5. Generic Knowledge   →  Last resort. Minimize.Metrics Priority1. Fix Task Success first (is the customer's problem solved?)
+2. Then fix Accuracy (is the information correct?)
+3. Then optimize latency, cost, and other KPIs

@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# SessionStart hook — auto-configures this workspace so the user's only manual
+# step is adding credentials to .env. Creates workspace directories, clones the
+# toolchain repos listed in repos.txt (in the background, once), installs the
+# dashboard-sync CLI (in the background, since it involves a network install),
+# and runs `dashboard-sync init` once workspace directories don't exist yet.
+# Always exits 0 — never blocks session start.
+#
+# User-confirmed behavior: auto-installs dashboard-sync-cli via pipx and
+# auto-clones repos.txt without asking each time, once .env is present
+# (see project CLAUDE.md, "Plug and play").
+
+set +e
+
+WORKSPACE_ROOT="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+cd "$WORKSPACE_ROOT" 2>/dev/null || exit 0
+
+# Nothing to configure until the user adds credentials — this is the one
+# manual step this project asks for.
+if [[ ! -f "$WORKSPACE_ROOT/.env" ]]; then
+    echo "devrev-implementation: create .env from .env.example (DEVREV_PAT + DEVREV_ENDPOINT) to activate auto-setup."
+    exit 0
+fi
+
+STATUS_DIR="$WORKSPACE_ROOT/.claude/.auto-setup"
+mkdir -p "$STATUS_DIR" 2>/dev/null
+LOCK_FILE="$STATUS_DIR/install.lock"
+CLONE_LOCK="$STATUS_DIR/clone.lock"
+LOG_FILE="$STATUS_DIR/install.log"
+
+# --- Workspace directories (synchronous — local and instant) -----------------
+mkdir -p dashboards datasets plans logs templates 2>/dev/null
+
+# --- Toolchain repos: initial background clone, once --------------------------
+if [[ ! -d "$WORKSPACE_ROOT/repos/aai-skills/.git" && ! -f "$CLONE_LOCK" && -f "$WORKSPACE_ROOT/repos.txt" ]]; then
+    touch "$CLONE_LOCK" 2>/dev/null
+    echo "devrev-implementation: cloning toolchain repos in background — see .claude/.auto-setup/install.log"
+    (
+      {
+        echo "=== $(date -u +%FT%TZ) repos clone started ==="
+        mkdir -p "$WORKSPACE_ROOT/repos" "$WORKSPACE_ROOT/docs"
+        RESULTS_FILE="$WORKSPACE_ROOT/docs/CLONE_RESULTS.md"
+        if ! grep -q '^| Repo |' "$RESULTS_FILE" 2>/dev/null; then
+            {
+              echo "# Clone results"
+              echo ""
+              echo "| Repo | Status | Default branch | Commit | Notes |"
+              echo "|---|---|---|---|---|"
+            } >>"$RESULTS_FILE"
+        fi
+        while IFS= read -r url; do
+            [[ -z "$url" || "$url" =~ ^[[:space:]]*# ]] && continue
+            name="$(basename "$url" .git)"
+            target="$WORKSPACE_ROOT/repos/$name"
+            if [[ -d "$target/.git" ]]; then
+                echo "SKIP $name (already cloned)"
+                continue
+            fi
+            echo "CLONE $url"
+            if err="$(git clone --depth 1 "$url" "$target" 2>&1)"; then
+                branch="$(git -C "$target" branch --show-current 2>/dev/null || echo '?')"
+                sha="$(git -C "$target" rev-parse --short HEAD 2>/dev/null || echo '?')"
+                echo "| $name | OK | $branch | $sha | |" >>"$RESULTS_FILE"
+                echo "  OK $name ($branch @ $sha)"
+            else
+                oneline="$(echo "$err" | tr '\n' ' ' | sed 's/|/\\|/g' | cut -c1-160)"
+                echo "| $name | FAILED | - | - | $oneline |" >>"$RESULTS_FILE"
+                echo "  FAILED $name: $oneline"
+            fi
+        done < "$WORKSPACE_ROOT/repos.txt"
+        echo "=== $(date -u +%FT%TZ) repos clone finished ==="
+        rm -f "$CLONE_LOCK"
+      } >>"$LOG_FILE" 2>&1
+    ) </dev/null >/dev/null 2>&1 &
+    disown
+fi
+
+# --- dashboard-sync CLI --------------------------------------------------------
+if command -v dashboard-sync >/dev/null 2>&1; then
+    # CLI already present. Bring up the CLI workspace once, synchronously
+    # (local + fast) — the dashboard-dev plugin's own hook handles config.yaml.
+    # Tracked with our own marker: this repo pre-creates dashboards/ etc., so
+    # directory existence can't signal whether `init` has run yet.
+    if [[ ! -f "$STATUS_DIR/init.done" ]]; then
+        if dashboard-sync init "$WORKSPACE_ROOT" >>"$LOG_FILE" 2>&1; then
+            touch "$STATUS_DIR/init.done" 2>/dev/null
+            echo "dashboard-sync: workspace initialized (dashboards/, datasets/, plans/, logs/)."
+        fi
+    fi
+    exit 0
+fi
+
+# CLI missing. Avoid stacking a duplicate background install if one from a
+# previous session start is still running.
+if [[ -f "$LOCK_FILE" ]]; then
+    echo "dashboard-sync CLI install already in progress — see .claude/.auto-setup/install.log"
+    exit 0
+fi
+touch "$LOCK_FILE" 2>/dev/null
+
+echo "dashboard-sync CLI not found — installing in background. Progress: .claude/.auto-setup/install.log"
+
+(
+  {
+    echo "=== $(date -u +%FT%TZ) install started ==="
+    if ! command -v pipx >/dev/null 2>&1; then
+        if command -v brew >/dev/null 2>&1; then
+            brew install pipx
+        else
+            echo "pipx not found and Homebrew unavailable."
+            echo "Install pipx manually (https://pipx.pypa.io), then run:"
+            echo "  pipx install git+https://github.com/devrev/dashboard-sync-cli.git"
+            rm -f "$LOCK_FILE"
+            exit 1
+        fi
+    fi
+    pipx install git+https://github.com/devrev/dashboard-sync-cli.git
+    install_status=$?
+    pipx ensurepath >/dev/null 2>&1
+    if [[ $install_status -eq 0 ]]; then
+        echo "=== $(date -u +%FT%TZ) install finished OK ==="
+        echo "Start a new terminal/session so PATH picks up ~/.local/bin, then dashboard-sync init runs automatically on next session start."
+    else
+        echo "=== $(date -u +%FT%TZ) install FAILED (exit $install_status) ==="
+    fi
+    rm -f "$LOCK_FILE"
+  } >>"$LOG_FILE" 2>&1
+) </dev/null >/dev/null 2>&1 &
+disown
+
+exit 0

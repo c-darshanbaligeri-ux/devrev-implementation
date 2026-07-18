@@ -1,0 +1,16 @@
+.env
+.env.local
+config.yaml
+logs/
+.backups/
+repos/*/
+!repos/.gitkeep
+.claude/.auto-setup/
+node_modules/
+dist/
+.venv/
+__pycache__/
+templates/
+dashboards/
+datasets/
+plans/

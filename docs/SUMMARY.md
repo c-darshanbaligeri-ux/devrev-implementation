@@ -1,0 +1,146 @@
+# Provenance Summary
+
+This document tracks the source lineage and adaptations for all artifacts in the `devrev-implementation` repository.
+
+## Source Repositories
+
+- **S1** = `/Users/q15137/Documents/The one/API's` — DevRev REST API knowledge base
+- **S2** = `/Users/q15137/Documents/The one/devrev-workflow-admin` — workflow authoring/admin skill
+- **S3** = `/Users/q15137/Documents/The one/Dashboard and Widget Creation` — working plug-and-play workspace
+- **S4** = `/Users/q15137/Documents/The one/aai-custom-computer-capabilities/3-computer-capabilities-nxt/agent-building-toolkit` — agent-building toolkit
+
+## Provenance Table
+
+| Destination | Source | Adaptation |
+|-------------|--------|------------|
+| **Root config files** | | |
+| `.gitignore` | Authored new | Combines patterns from S3 with repo-specific exclusions (repos/*, plans/, templates/, dashboards/, datasets/) |
+| `.mcp.json` | S3 `.mcp.json` | Verbatim copy; proven hosted DevRev MCP configuration |
+| `.env.example` | Authored new | Standardized on `DEVREV_PAT` (canonical) + `DEVREV_ENDPOINT`; added optional `ORG_PAT` for skills/7-agent-building |
+| `repos.txt` | Authored new | Lists 3 repos (aai-skills, dashboard-sync-cli, api-specs); documents 2 deliberate exclusions |
+| `.devrev/repo.yml` | Authored new | Single line: `deployable: false` |
+| **`.claude/` infrastructure** | | |
+| `.claude/settings.json` | Authored new | SessionStart hook + `extraKnownMarketplaces` (github-source to devrev/aai-skills) + `enabledPlugins` (dashboard-dev, dataset-builder) |
+| `.claude/hooks/bootstrap-workspace.sh` | S3 bootstrap hook | Extended with: (1) `.env` gate, (2) workspace dirs creation, (3) repos/ initial clone (background, once, writes to CLONE_RESULTS.md), (4) dashboard-sync CLI install via pipx (background, once) |
+| `.claude/skills/update-repos/SKILL.md` | S3 `update-repos/SKILL.md` | Updated post-run note: restart Claude Code or `/plugin marketplace update devrev-aai-plugins` if aai-skills changed; removed clone_repos.sh reference |
+| `.claude/skills/update-repos/update_repos.sh` | S3 `update-repos/update_repos.sh` | Verbatim copy; idempotent shallow clone with dirty-check skip |
+| `.claude/skills/implementation-router/SKILL.md` | Authored new | Master router with 9-row routing table (8 skills + update-repos); preconditions check (.env, ping); never reconstruct from memory |
+| **skills/8-devrev-api** | | |
+| `skills/8-devrev-api/references/` (10 files) | S1 (9 .md files) | Verbatim copies: 00_API_Catalog.md, Work_Items_Timeline_Tags_Links_API.md, Customers_Users_and_Orgs_API.md, Support_Knowledge_and_SLAs_API.md, Platform_and_Admin_API.md, Custom_Objects_and_Links_API.md, Stock_Object_Modification_and_Schemas_API.md, Stages_States_and_StageDiagrams_API.md, DevRev_Building_Org_Using_API_v1.md |
+| `skills/8-devrev-api/references/devrev-mcp-claude-code-setup.md` | S1 (same filename) | Copied + PREPENDED superseded notice (hosted MCP via .mcp.json supersedes npx @devrev/mcp-server) |
+| `skills/8-devrev-api/SKILL.md` | S1 `SKILL.md` | Path updates (doc references → references/); token guidance updated (DEVREV_PAT from .env, alias DEVREV_TOKEN); added "When not to use" line (workflows/agents/dashboards/datasets → other skills) |
+| **skills/1-object-schema-customization** | | |
+| `references/` (2 files) | S1 | Verbatim copies: Custom_Objects_and_Links_API.md, Stock_Object_Modification_and_Schemas_API.md |
+| `SKILL.md` | Authored new | Grounded in the 2 reference files; playbooks for custom objects, tenant fields, subtypes, custom link types; every endpoint/scope/field cited from references |
+| **skills/2-stage-lifecycle-customization** | | |
+| `references/` (1 file) | S1 | Verbatim copy: Stages_States_and_StageDiagrams_API.md |
+| `SKILL.md` | Authored new | Grounded in the reference file; playbook for states → stages → stage diagram → subtype assignment → dependent fields |
+| **skills/3-data-upload-and-org-build** | | |
+| `references/` (2 files) | S1 | Verbatim copies: DevRev_Building_Org_Using_API_v1.md, Platform_and_Admin_API.md |
+| `SKILL.md` | Authored new | Grounded in the 2 reference files; playbooks for artifact upload, ordered org build (5 phases), bulk record creation (honest: no bulk endpoint, scripted loops) |
+| **skills/4-dashboards-and-widgets** | | |
+| `SKILL.md` | Authored new | Router-only; modeled on S3 `.claude/skills/devrev-dashboards/SKILL.md`; routes to /dashboard-planner, /create-dashboard, /modify-dashboard, widget-development/dashboard-development skills in repos/aai-skills; enforces hard rule (never bypass generate→validate→deploy→verify pipeline) |
+| **skills/5-datasets** | | |
+| `SKILL.md` | Authored new | Router-only; routes to /dataset-builder:* commands; PaaS vs Ponos decision table (from repos/aai-skills/plugins/dataset-builder/README.md); preconditions (DEVREV_PAT for PaaS; +gcloud/bq/AWS/kubectl for Ponos); known gotchas; safety (destructive deletes) |
+| **skills/6-workflows** | | |
+| `references/`, `operations/`, `examples/`, `scripts/` | S2 (all 4 dirs) | Copied recursively; applied 4 fixups (see below) |
+| `SKILL.md` | S2 `SKILL.md` | Fixups: (1) stale path `.claude/skills/devrev-workflow-admin/` → `skills/6-workflows/`; (2) `/tmp/op_schemas/<slug>.json` → `operations/schemas/<slug>.md` (wording adjusted); (3) count "106" → "130" (actual schema count); (4a) token guidance (DEVREV_PAT from .env), (4b) added "When not to use" (snap-in dev out of scope, AI agent config → skills/7), (4c) learning loop path → `skills/6-workflows/examples/` |
+| **skills/7-agent-building** | | |
+| `commands/`, `knowledge/`, `references/`, `scripts/` | S4 (all 4 dirs) | Copied; EXCLUDED: .env, .env.example (REAL SECRETS), presentations/, agent-instructions-ai_agent-1.md, dependent-objects-bridge-skill-guide.md (client-specific), .claude/, .claude-plugin/, hooks/, LICENSE, .gitignore, references/IMPROVEMENTS.md; secret scan mandatory (eyJ regex) |
+| `references/toolkit-guide.md` | S4 `CLAUDE.md` | Renamed on copy; fixed relative links (knowledge/ → ../knowledge/) |
+| `SKILL.md` | S4 `SKILL.md` | Fixups: (1) removed `disable-model-invocation: true` frontmatter; (2) path `.cursor/skills/devrev-agent-toolkit/` → `skills/7-agent-building/`, `${CLAUDE_PLUGIN_ROOT}` → `skills/7-agent-building`; (3) env note (DEVREV_PAT for public API, ORG_PAT optional for internal API); (4) article ID updates (old ART-27856/27858/27860 → current ART-30501/30502/30503 per knowledge/INDEX.md) |
+| **Top-level docs** | | |
+| `CLAUDE.md` | Authored new | Structure from S1 `CLAUDE.md` (global API rules source); plug-and-play phrasing from S3 `CLAUDE.md`; 8 sections: identity, routing table, plug-and-play (one manual step = .env), global API rules (verbatim from S1), execution flow, safety, keeping repos current, guardrails |
+| `README.md` | Authored new | Sections: what this is, one-time setup, what self-configures (table), capability map (8 skills), plug-and-play acceptance, troubleshooting |
+| `docs/ARCHITECTURE.md` | Authored new | Final tree + design rationale: numbered flow order (customization→data→analytics→automation→API), two skill species (routers vs knowledge-owners), repos/ never-edited, env var strategy (one .env), determinism-first execution model |
+| `docs/SUMMARY.md` | Authored new (this file) | Provenance table covering all artifacts; source→destination→adaptation mappings |
+| `docs/CLONE_RESULTS.md` | Generated by Chunk J | Created by bootstrap hook's repos/ clone; table with repo/status/branch/SHA; deliberate exclusions section |
+
+## Key Decisions
+
+### Environment Variable Standardization
+- **Canonical**: `DEVREV_PAT` in `.env`
+- **Synonyms**: `DEVREV_API_KEY` ≡ `DEVREV_PAT` (interchangeable)
+- **Aliases**: `DEVREV_TOKEN` = legacy name for inherited scripts; set via `export DEVREV_TOKEN="$DEVREV_PAT"`
+- **Rationale**: Single source of truth; scripts/plugins/CLI/MCP all read from the same `.env`
+
+### Hosted MCP Supersedes npx Flow
+- `.mcp.json` wires `https://api.devrev.ai/mcp/v1` (hosted DevRev MCP server)
+- `references/devrev-mcp-claude-code-setup.md` in skills/8 has PREPENDED superseded notice
+- Legacy `npx @devrev/mcp-server` flow kept for reference only (devrev/mcp-server repo is archived)
+
+### Deliberately Excluded Repos
+**Not in `repos.txt`**:
+1. `devrev/devrev-snap-ins`: Snap-in source development is out of scope for this repo (only tangential reference: `trigger-dashboard-agent` in snap-ins, which is optional/Dev0-only)
+2. `devrev/mcp-server`: Archived; superseded by hosted MCP at `https://api.devrev.ai/mcp/v1`
+
+**Cloned on demand**:
+- `devrev/auto-annotations`: Not in repos.txt; cloned only when `skills/7-agent-building/scripts/check-annotations.sh` runs
+
+### Workflow-Builder Plugin Not Consolidated
+- `workflow-skill` (workflow-builder plugin in S4's parent directory) was NOT consolidated
+- **Rationale**: Known upstream alternative to `skills/6-workflows`; user already has S2's devrev-workflow-admin as the canonical workflow skill
+- Both approaches valid; S2 chosen for this repo
+
+### Agent-Building Commands as Reference Files
+- S4 `.claude/commands/*.md` → `skills/7-agent-building/commands/` (no `.claude/commands/` registration)
+- **User decision**: Commands available as reference material only; not registered as slash commands
+- **Rationale**: Avoids namespace collision; keeps /commands focused on implementation-router and marketplace-provided commands
+
+## Fixups Applied
+
+### skills/6-workflows (S2 copy)
+1. **Stale path prefix**: `grep -rl` then `sed -i ''` to replace `.claude/skills/devrev-workflow-admin/` → `skills/6-workflows/` across all .md files
+2. **Stale schema path**: `/tmp/op_schemas/<slug>.json` → `operations/schemas/<slug>.md` (sentence wording adjusted, not just path)
+3. **Count drift**: "106" → "130" (actual schema file count in operations/schemas/)
+4. **SKILL.md updates**: (a) token from `.env` (DEVREV_PAT), (b) "When not to use" (snap-in dev, AI agent config), (c) learning loop path → `skills/6-workflows/examples/`
+
+### skills/7-agent-building (S4 copy)
+1. **Secret exclusion**: Mandatory `grep -rE 'eyJ[A-Za-z0-9_-]{20,}'` scan; .env/.env.example never copied
+2. **Path prefix**: `.cursor/skills/devrev-agent-toolkit/` → `skills/7-agent-building/`, `${CLAUDE_PLUGIN_ROOT}` → `skills/7-agent-building` (all .md files and scripts)
+3. **Env & auth note**: `DEVREV_PAT` from repo-root `.env` (public API); `ORG_PAT` optional (internal API) — added to SKILL.md
+4. **Article ID updates**: ART-27856 → ART-30501, ART-27858 → ART-30502, ART-27860 → ART-30503 (per knowledge/INDEX.md)
+5. **Excluded client artifacts**: agent-instructions-ai_agent-1.md, dependent-objects-bridge-skill-guide.md, presentations/
+6. **Frontmatter**: Removed `disable-model-invocation: true` (skill must be routable)
+
+### skills/8-devrev-api (S1 copy)
+1. **Doc references**: Old paths → `references/<filename>` (checked every table row in SKILL.md)
+2. **Token wording**: Lone `$DEVREV_TOKEN` → token from `.env` (`DEVREV_PAT`), alias via `export DEVREV_TOKEN="$DEVREV_PAT"`
+3. **When not to use**: Added line routing workflows/agent configs/dashboards/datasets to other skills
+4. **MCP setup doc**: PREPENDED superseded notice (hosted MCP via .mcp.json; npx flow legacy)
+
+### Bootstrap Hook (S3 extension)
+1. **Gate**: If no `.env` → echo gate message → `exit 0` (no side effects)
+2. **Workspace dirs**: `mkdir -p dashboards datasets plans logs templates` (synchronous)
+3. **repos/ clone**: Background once; writes per-repo status to `docs/CLONE_RESULTS.md` (table with branch/SHA/notes)
+4. **dashboard-sync install**: Background once via pipx (S3 logic verbatim)
+5. **Conventions preserved**: `set +e`, fully-detached background subshells, `.claude/.auto-setup/` status dir, always `exit 0`
+
+### Update-Repos Skill (S3 copy)
+1. **Post-run note**: If aai-skills changed → restart Claude Code or `/plugin marketplace update devrev-aai-plugins`
+2. **Removed reference**: No `clone_repos.sh` (initial clone is bootstrap hook's job)
+3. **Script logic**: Unchanged (dirty→SKIPPED, default branch detection, `git reset --hard origin/<branch>`)
+
+## Verification (build-time, 2026-07-18)
+
+| Check | Result |
+| --- | --- |
+| Secret scan (`eyJ[A-Za-z0-9_-]{20,}`, excluding `repos/`) | CLEAN — no matches; no `.env` files present |
+| Stale paths (`/tmp/op_schemas`, `.cursor/`, `CLAUDE_PLUGIN_ROOT`, old skill paths) | CLEAN (provenance mentions in this file excepted) |
+| Shell syntax (`bash -n` on hook, update_repos, 7 toolkit scripts) | PASS |
+| Python (`py_compile` trigger_manual_workflow.py) | PASS |
+| JSON (.mcp.json, .claude/settings.json, 13 workflow example templates incl. stringified `data`) | PASS |
+| Tree completeness (8 skills; 130 op schemas; 13 examples; 10 knowledge articles; 8 commands; 7 scripts) | PASS |
+| Bootstrap hook dry-run (no `.env` → gate message, exit 0, zero side effects; with `.env` → dirs created, background install + log) | PASS |
+| update-repos idempotency + dirty-repo safety (second run "up to date"; dirtied repo SKIPPED, never reset) | PASS |
+| Clones | aai-skills main@57b8a5f, dashboard-sync-cli main@451a51d, api-specs main@79cd29e |
+
+**Marketplace registration variant shipped**: GitHub source (`{"source": "github", "repo": "devrev/aai-skills"}`)
+in project `.claude/settings.json`, activated by the one-time workspace-trust prompt. Fallback documented in
+README troubleshooting: `/plugin marketplace add ./repos/aai-skills` (local clone) if GitHub-source auth to the
+private repo fails in a given environment.
+
+**Build-time fixes beyond the plan** (recorded for honesty):
+- `skills/6-workflows/SKILL.md` frontmatter `name:` changed `devrev-workflow-admin` → `workflows` (stale name).
+- Bootstrap hook `dashboard-sync init` idempotency uses a `.claude/.auto-setup/init.done` marker instead of
+  checking `dashboards/` existence (this repo pre-creates that directory, so existence can't signal init state).

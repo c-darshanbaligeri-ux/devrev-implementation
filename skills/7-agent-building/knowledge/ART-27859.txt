@@ -1,0 +1,394 @@
+Knowledge Configuration & Curation Guide
+
+This guide covers how to select, configure, and curate knowledge sources for DevRev agents so they retrieve the right information at the right time.Overview
+
+Knowledge sources tell the agent what it knows. When a user asks a question, the agent searches configured knowledge sources to find relevant information. It searches in real time — it doesn't memorize data, so it always works with the latest information available.
+
+Configuration happens in the Build tab > Knowledge section, where you select which DevRev object types the agent can search.1. Available Knowledge SourcesAll Object Types
+
+Category
+
+Types
+
+Content
+
+Article, Question & Answer
+
+Work items
+
+Ticket, Issue, Task, Enhancement, Incident
+
+Product
+
+Product, Feature, Capability, Component
+
+People
+
+Rev User, Dev User, Group
+
+Organizations
+
+Account, Rev Org
+
+Conversations
+
+Conversation, Direct Message
+
+Other
+
+Custom Object, Dashboard, Dataset, Meeting, Microservice, Opportunity, Tag, Widget, Linkable, Runnable, Vista, Service Account
+
+Each knowledge source appears as a chip showing the object type's icon and name. Click × to remove.2. Source Selection by Agent TypeCustomer Support Agent
+
+Essential (always include):
+
+Object Type
+
+Why
+
+Article
+
+Curated support documentation, FAQs, troubleshooting guides
+
+Question & Answer
+
+Community-sourced answers
+
+Ticket
+
+Current and past tickets for context
+
+Conversation
+
+Conversation history for context and sentiment
+
+Account
+
+Customer tier, health, ARR for prioritization
+
+Rev User
+
+Contact details, role, seniority
+
+Rev Org
+
+Organization-level SLA entitlements
+
+Optional (include based on use case):
+
+Object Type
+
+When to Include
+
+Product, Feature, Capability
+
+When the agent needs to route by product area
+
+Issue
+
+When the agent needs to reference known bugs
+
+Enhancement
+
+When the agent needs to reference planned features
+
+Do NOT include: Dashboard, Dataset, Microservice, Service Account, Widget, RunnableTicket Routing Agent
+
+Essential:
+
+Object Type
+
+Why
+
+Ticket
+
+The object being routed
+
+Conversation
+
+Full context of the support request
+
+Account
+
+Tier, health, ARR for prioritization decisions
+
+Rev Org
+
+SLA entitlements for priority setting
+
+Product, Feature, Capability
+
+Product hierarchy for team routing
+
+Optional:
+
+Object Type
+
+When to Include
+
+Issue
+
+When routing needs to check for duplicate/related known issues
+
+Group
+
+When routing directly to specific groupsKnowledge Q&A Agent (Internal)
+
+Essential:
+
+Object Type
+
+Why
+
+Article
+
+Primary knowledge source
+
+Question & Answer
+
+Supplemental answers
+
+Optional:
+
+Object Type
+
+When to Include
+
+Ticket
+
+When answers should reference past resolved tickets
+
+Rev User
+
+When answers should reference who to contact
+
+Custom Object
+
+When there are custom knowledge repositoriesAccount Management Agent
+
+Essential:
+
+Object Type
+
+Why
+
+Account
+
+Primary object — health, tier, ARR, engagement
+
+Rev Org
+
+Organization mapping and SLA entitlements
+
+Rev User
+
+Key contacts, roles, decision makers
+
+Opportunity
+
+Pipeline and deal context
+
+Ticket
+
+Open issues, support history
+
+Conversation
+
+Communication history3. The Minimum Effective Set
+
+More knowledge sources ≠ better agent. Every additional object type:
+
+Increases search surface area (more noise)
+
+Increases retrieval time
+
+Increases the chance of conflicting information
+
+Makes the agent's reasoning trace harder to debugRule of Thumb
+
+Start with the minimum set that covers the agent's stated goal. Add sources only when you observe a specific gap during testing.Decision Process1. Write the agent's goal
+2. List the questions the agent must answer
+3. For each question, identify the single best source
+4. Add only those sources
+5. Test
+6. If the agent can't answer a question, add the specific missing source
+7. Re-testExample: Customer Support AgentGoal: "Resolve customer issues by searching the knowledge base and performing account actions."
+
+Questions the agent must answer:
+Q: "How do I reset my password?" → Article ✓
+Q: "What's my ticket status?" → Ticket ✓
+Q: "Who's my account manager?" → Account, Rev User ✓
+Q: "Am I covered by SLA?" → Rev Org ✓
+Q: "Is this a known issue?" → Article, Issue ← Add Issue if needed
+
+Minimum set: Article, Ticket, Account, Rev User, Rev Org (5 sources)4. Knowledge Curation4.1 Write Agent-Optimized Articles
+
+Existing human-facing documentation is often poorly structured for agent retrieval. Create agent-specific articles.
+
+Human-Facing
+
+Agent-Optimized
+
+Narrative paragraphs
+
+Structured rules: IF condition THEN action
+
+Implicit knowledge ("we typically...")
+
+Explicit rules ("IF tier=Enterprise THEN SLA=1hr")
+
+Spread across multiple documents
+
+Consolidated: one article per decision domain
+
+Mixed internal/external content
+
+Tagged and scoped for the intended audience
+
+General guidelines
+
+Specific, actionable instructionsArticle Template for Agent Consumption
+
+markdown# [Policy/Process Name]
+
+## Summary
+[One sentence describing what this article covers]
+
+## Applicability
+- Account tiers: [Enterprise/Standard/All]
+- Regions: [AMER/EMEA/APAC/All]
+- Products: [Product names or "All"]
+
+## Rules
+
+### Rule 1: [Condition]
+- IF [condition] THEN [action]
+- Exception: [edge case and how to handle]
+
+### Rule 2: [Condition]
+- IF [condition] THEN [action]
+- Exception: [edge case and how to handle]
+
+## Escalation
+- When to escalate: [triggers]
+- Who to escalate to: [team/individual]
+
+## Related Articles
+- [Link to related article 1]
+- [Link to related article 2]
+
+## Last Updated
+- Date: YYYY-MM-DD
+- Author: [Name]4.2 Maintain Article Quality
+
+Practice
+
+Frequency
+
+Review articles for accuracy
+
+Monthly or after any policy change
+
+Archive deprecated articles
+
+Immediately when superseded
+
+Add new articles for new features/processes
+
+Before or at launch
+
+Check for conflicting information across articles
+
+Monthly
+
+Test article retrieval in Playground
+
+After every article change4.3 Tag and Scope Articles
+
+Use consistent tagging so the agent (and your team) can filter effectively:
+
+Tag Dimension
+
+Examples
+
+Audience
+
+internal, external, agent-only
+
+Topic
+
+billing, technical, onboarding, escalation
+
+Product
+
+product-a, product-b, cross-product
+
+Policy type
+
+sla, refund, security, privacy
+
+Status
+
+active, deprecated, draft5. Advanced Configuration5.1 Multi-Source Conflict Resolution
+
+When the agent finds conflicting information across sources, it needs a resolution strategy. Encode this in the agent's instructions:When information conflicts across sources:
+1. Prefer the most recently updated Article over Q&A entries
+2. Prefer official policies over community answers
+3. Prefer specific articles over general ones
+4. If two articles from the same source conflict, prefer the one with the later "updated" date
+5. If you cannot resolve the conflict, acknowledge it to the user and offer to escalate5.2 Source-Specific Instructions
+
+You can write instructions that apply only when searching specific sources:When searching Articles:
+- Focus on the "Rules" and "Summary" sections
+- Ignore the "Internal Notes" section (marked with [INTERNAL])
+
+When searching Tickets:
+- Only consider tickets from the last 90 days
+- Prefer resolved tickets over open ones for "how to" questions
+- Look at the resolution summary, not the full conversation
+
+When searching Account data:
+- Always retrieve the full account profile including tier, health, and ARR
+- Cross-reference with Rev Org for SLA entitlements5.3 Dynamic Knowledge Narrowing
+
+For agents that serve multiple contexts, use instructions to dynamically narrow the knowledge scope:Context-dependent search rules:
+- If the user is an external customer: search Articles (tagged 'external') and Q&A only
+- If the user is an internal employee: search all enabled sources
+- If the question mentions a specific product: add that product's Part hierarchy to the search
+- If the question involves billing: search Articles tagged 'billing' first, then expand6. Knowledge Configuration ChecklistInitial Setup
+
+Identify the agent's goal and required questions
+
+Select the minimum set of object types
+
+Review existing articles for coverage gaps
+
+Create agent-optimized articles for critical topics
+
+Write source-preference rules in instructions
+
+Configure conflict resolution strategyPre-Publish Validation
+
+Test knowledge retrieval with 15-20 representative questions in Playground
+
+Verify the agent retrieves the correct source for each question
+
+Test with ambiguous questions to verify conflict resolution
+
+Test with out-of-scope questions to verify graceful handling
+
+Review execution traces for retrieval quality
+
+Create bulk test dataset with knowledge-specific test casesOngoing Maintenance
+
+Review analytics for low-accuracy sessions (knowledge retrieval failures)
+
+Update articles when policies or processes change
+
+Archive deprecated content promptly
+
+Add new articles for new features/products
+
+Re-run bulk tests after knowledge changes
+
+Quarterly review of source selection (remove unused, add needed)

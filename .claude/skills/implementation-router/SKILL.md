@@ -1,6 +1,6 @@
 ---
 name: implementation-router
-description: Master router for all DevRev implementation work in this repo. Use for ANY DevRev request — customizing objects, fields, schemas, subtypes or custom links ("add a field to accounts"), stages/states/lifecycles ("customize ticket stages"), uploading files or migrating data or building a fresh org, dashboards and widgets ("build me a support dashboard"), custom datasets, workflows and automations ("when a ticket comes in, notify..."), agent-callable skills ("let the agent look up order status"), building/debugging/improving/testing AI agents, or raw DevRev REST API calls. Routes to the correct numbered domain skill under skills/.
+description: Master router for all DevRev implementation work in this repo. Use for ANY DevRev request — designing an end-to-end solution for a business problem, customizing objects, fields, schemas, subtypes or custom links ("add a field to accounts"), stages/states/lifecycles ("customize ticket stages"), uploading files or migrating data or building a fresh org, dashboards and widgets ("build me a support dashboard"), custom datasets, workflows and automations ("when a ticket comes in, notify..."), agent-callable skills ("let the agent look up order status"), building/debugging/improving/testing AI agents, or raw DevRev REST API calls. Routes to the correct numbered domain skill under skills/.
 ---
 
 # Implementation Router
@@ -13,6 +13,7 @@ every fact must come from the matched skill's reference files.
 
 | The user wants to… | Go to |
 | --- | --- |
+| Design an end-to-end solution for a business problem, or decide which DevRev capability fits a requirement ("should this be an agent or a workflow", "we're an [industry] company and need to...") | `skills/0-solution-architecture/SKILL.md` |
 | Customize objects, fields, schemas, subtypes, custom link types | `skills/1-object-schema-customization/SKILL.md` |
 | Customize stages, states, lifecycles, stage diagrams, transitions | `skills/2-stage-lifecycle-customization/SKILL.md` |
 | Upload files/artifacts, migrate or bulk-load data, build a fresh org | `skills/3-data-upload-and-org-build/SKILL.md` |
@@ -43,3 +44,8 @@ every fact must come from the matched skill's reference files.
    - "call works.list" / "hit the API" → 8 (raw REST)
 4. Cross-domain requests (e.g. a fresh org build) start at the lowest-numbered skill involved —
    `skills/3` orchestrates and routes back to 1 and 2 for the customization phases.
+5. **Greenfield or genuinely cross-domain requests** ("we're a [industry] company, help us set up
+   DevRev", "design a solution for X") start at `skills/0-solution-architecture` for the blueprint
+   before any building begins — it hands off to the numbered execution skills section by section
+   (see its "Handing off to execution" table). Don't skip straight to building when the ask is this
+   broad; a five-minute blueprint prevents building the wrong thing.

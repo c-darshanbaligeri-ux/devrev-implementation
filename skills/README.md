@@ -1,10 +1,12 @@
-# skills/ — the 8 DevRev implementation domains
+# skills/ — the 9 DevRev implementation domains
 
 Numbered in **implementation-flow order** — the order a fresh org is built in, and the order to
-reason in when a request spans domains (start at the lowest number involved):
+reason in when a request spans domains (start at the lowest number involved; greenfield/cross-domain
+requests start at 0):
 
 | # | Skill | Owns | Type |
 | --- | --- | --- | --- |
+| 0 | `0-solution-architecture` | Turns a vague business problem into a 20-section DevRev solution blueprint (object/lifecycle mapping, workflow/agent capability selection, integrations, estimates, risk, A/B/C alternatives) | Design (references/ inline; never calls the live API) |
 | 1 | `1-object-schema-customization` | Custom objects, tenant/subtype fields, field overrides, aggregated schema, custom link types | Knowledge-owner (references/ inline) |
 | 2 | `2-stage-lifecycle-customization` | States → stages → stage diagrams, lifecycle assignment, dependent fields | Knowledge-owner |
 | 3 | `3-data-upload-and-org-build` | Artifacts/file upload, ordered org builds, idempotent bulk loading | Knowledge-owner |
@@ -19,5 +21,7 @@ reason in when a request spans domains (start at the lowest number involved):
   endpoints, scopes, and payloads. Never reconstruct API facts from memory.
 - Skills 1–3 duplicate their reference docs from skill 8 on purpose (self-containment). If a
   learning corrects a reference doc, fix **both** copies (the capture-learnings protocol says how).
+- Skill 0's references cross-reference skills 1, 2, 6, 7, 8 for exact API mechanics rather than
+  duplicating them — a design-time index over the same knowledge-owner reference files, not a third copy.
 - Each SKILL.md ends with a **Field notes** (or domain-specific learning) section — dated facts
   discovered in live use. Read it; it overrides older text above it when they conflict.

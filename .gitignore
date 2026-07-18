@@ -10,8 +10,8 @@ node_modules/
 dist/
 .venv/
 __pycache__/
-templates/
-dashboards/
-datasets/
-plans/
+/templates/
+/dashboards/
+/datasets/
+/plans/
 docs/CLONE_RESULTS.local.md

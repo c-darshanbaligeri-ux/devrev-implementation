@@ -42,6 +42,7 @@ Route by what the learning is about — this table is the heart of the protocol:
 
 | Learning about… | Update this file (and section) |
 | --- | --- |
+| Solution-design guidance (which primitive to pick, blueprint template, decision framework) proves wrong or incomplete | `skills/0-solution-architecture/SKILL.md` → "Field notes" (+ the wrong passage in its `references/` copy if applicable) |
 | An endpoint's existence, method, or scope | `skills/8-devrev-api/references/00_API_Catalog.md` (the domain's table) AND the matching domain doc in `skills/8-devrev-api/references/` |
 | Payload/field/enum behavior of a specific API domain | The domain doc in `skills/8-devrev-api/references/` (e.g. `Work_Items_Timeline_Tags_Links_API.md`) — fix the wrong passage in place, or add to its pitfalls |
 | A cross-cutting API accuracy fact | `skills/8-devrev-api/SKILL.md` → "Accuracy notes" section |

@@ -8,6 +8,7 @@ This document tracks the source lineage and adaptations for all artifacts in the
 - **S2** = `/Users/q15137/Documents/The one/devrev-workflow-admin` — workflow authoring/admin skill
 - **S3** = `/Users/q15137/Documents/The one/Dashboard and Widget Creation` — working plug-and-play workspace
 - **S4** = `/Users/q15137/Documents/The one/aai-custom-computer-capabilities/3-computer-capabilities-nxt/agent-building-toolkit` — agent-building toolkit
+- **S5** = `/Users/q15137/Documents/The one/plan-skill-workspace/devrev-solution-architect` — standalone design-phase skill (2026-07-18 merge; built independently of S1–S4, with zero prior shared authorship)
 
 ## Provenance Table
 
@@ -27,6 +28,10 @@ This document tracks the source lineage and adaptations for all artifacts in the
 | `.claude/skills/implementation-router/SKILL.md` | Authored new | Master router with routing table (8 skills + update-repos + capture-learnings); preconditions check (.env, ping); never reconstruct from memory |
 | `.claude/skills/capture-learnings/SKILL.md` | Authored new (2026-07-18 refinement) | Self-learning protocol: routes discoveries (errors, restrictions, undocumented behavior) to the specific owning file + docs/LEARNINGS.md journal |
 | `docs/LEARNINGS.md` | Authored new (2026-07-18 refinement) | Append-only learnings journal (audit trail for the capture-learnings protocol) |
+| **skills/0-solution-architecture** | | |
+| `SKILL.md`, `templates/solution-blueprint.md`, `examples/` (3 files) | S5 (verbatim) | No structural change — the unique methodology brain (6-step problem-working process, 20-section blueprint template, 3 worked examples) has no Tree-B equivalent. Added: "Field notes" section, "Handing off to execution" table (blueprint section → execution skill, incl. 2 honestly-flagged gaps: AirSync setup and Security/Permissions have no execution-skill counterpart in this repo), frontmatter `name` changed `devrev-solution-architect` → `solution-architecture` (repo naming convention) |
+| `references/{data-model,api-cookbook,workflows-automation,agents,patterns-and-recipes}.md` | S5, trimmed | API-mechanics sections replaced with pointers into skills/1, 2, 6, 7, 8 (which document the same facts at equal-or-greater fidelity, incl. empirically-verified wire formats). Design/conceptual framing kept verbatim. One correction folded in: `ai-agents.plans.get/list` confirmed not to exist (live-verified) |
+| `references/{extensibility-and-apis,integrations-channels,decision-frameworks,estimation-and-delivery,case-studies}.md` | S5 (verbatim) | No Tree-B equivalent exists for AirSync/channels/PLuG, analytics concepts, RBAC/permissions model, notifications, case studies, effort estimation, or the master decision-tree framework — kept as-is |
 | **skills/8-devrev-api** | | |
 | `skills/8-devrev-api/references/` (10 files) | S1 (9 .md files) | Verbatim copies: 00_API_Catalog.md, Work_Items_Timeline_Tags_Links_API.md, Customers_Users_and_Orgs_API.md, Support_Knowledge_and_SLAs_API.md, Platform_and_Admin_API.md, Custom_Objects_and_Links_API.md, Stock_Object_Modification_and_Schemas_API.md, Stages_States_and_StageDiagrams_API.md, DevRev_Building_Org_Using_API_v1.md |
 | `skills/8-devrev-api/references/devrev-mcp-claude-code-setup.md` | S1 (same filename) | Copied + PREPENDED superseded notice (hosted MCP via .mcp.json supersedes npx @devrev/mcp-server) |
@@ -172,3 +177,28 @@ Verified file-by-file. Everything carried over or deliberately excluded:
   command dupes. All snap-in dirs (1-*, 2-*, 4-*) and non-agent nxt skills: out of scope.
   `workflow-skill` (workflow-builder plugin): not consolidated — skills/6 covers the domain;
   known upstream alternative.
+
+## Fifth-source merge: `plan-skill-workspace` (2026-07-18)
+
+Unlike S1–S4, **S5 (`plan-skill-workspace`) was NOT deleted or fully absorbed** — it remains an
+independent, standalone skill at its original path (its own CLAUDE.md says to publish it separately
+via skill-creation tooling, so nothing there was removed wholesale). What happened instead:
+
+1. **Deduplicated in place at the source** — the 5 reference files with API-mechanics overlap
+   (`data-model.md`, `api-cookbook.md`, `workflows-automation.md`, `agents.md`,
+   `patterns-and-recipes.md`) were trimmed inside `plan-skill-workspace/devrev-solution-architect/references/`
+   itself, replacing exact payloads/schemas/node catalogs with cross-repo pointers into this repo's
+   skills 1, 2, 6, 7, 8. The other 5 reference files, the SKILL.md, the blueprint template, and the
+   3 examples have no equivalent in this repo and were left untouched.
+2. **Embedded here as `skills/0-solution-architecture`** — a copy of the now-deduplicated content,
+   with the same 5 files' pointers rewritten to in-repo relative paths, plus two additions specific
+   to this repo: a "Field notes" section (wired to `docs/LEARNINGS.md`) and a "Handing off to
+   execution" table mapping each blueprint section to the skill that builds it — including two
+   honestly-flagged gaps (AirSync connector setup and Security/Permissions/RBAC have no execution
+   skill in this repo).
+3. **One correction folded in** from this repo's empirically-verified knowledge:
+   `ai-agents.plans.get`/`ai-agents.plans.list` do not exist as endpoints (live-verified against the
+   internal API), now stated in both copies' `agents.md`.
+
+Net effect: `plan-skill-workspace` stays independently publishable with no duplicate API-mechanics
+content, and `devrev-implementation` gains a design phase that precedes its 8 execution skills.

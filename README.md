@@ -35,6 +35,7 @@ That's it. Everything else auto-configures on session start.
 
 | Skill | What it does |
 | --- | --- |
+| **skills/0-solution-architecture** | Turns a vague business problem into a 20-section DevRev solution blueprint (design phase; no live API calls) — use before skills 1–8 for greenfield/cross-domain requests |
 | **skills/1-object-schema-customization** | Create custom object types, add tenant/subtype fields to stock objects, define custom link types, modify schemas |
 | **skills/2-stage-lifecycle-customization** | Customize stages, states, stage diagrams, and lifecycle flows for work items |
 | **skills/3-data-upload-and-org-build** | Upload artifacts, bulk-create records, build fresh orgs from scratch (ordered: schemas → parts → Trails → links → work) |

@@ -2,7 +2,7 @@
 
 ## Identity
 
-This is the unified operating environment for all DevRev implementation work apart from snap-in development. It is not a buildable software project — it's a workspace containing skills + references + cloned toolchains (`repos/`) + a hosted DevRev MCP. Everything needed to customize DevRev organizations, upload data, build dashboards, create datasets, author workflows, and develop AI agents lives here in a plug-and-play configuration.
+This is the unified operating environment for all DevRev implementation work apart from snap-in development. It is not a buildable software project — it's a workspace containing skills + references + cloned toolchains (`repos/`) + a hosted DevRev MCP. Everything needed to design a solution, customize DevRev organizations, upload data, build dashboards, create datasets, author workflows, and develop AI agents lives here in a plug-and-play configuration, spanning design (skill 0) through build (skills 1–8).
 
 ## Routing table
 
@@ -10,6 +10,7 @@ When the user asks to work with DevRev, match the request to a skill and **read 
 
 | The user wants to… | Route to |
 | --- | --- |
+| Design an end-to-end solution for a business problem ("how would I build X in DevRev", "we're a fintech and need to...", "should this be an agent or a workflow") — before any building starts | `skills/0-solution-architecture` |
 | Customize objects, fields, schemas, subtypes, or custom link types ("add a field to accounts", "create a custom object", "define a subtype") | `skills/1-object-schema-customization` |
 | Customize stages, states, or lifecycles ("customize ticket stages", "add a state", "define transitions") | `skills/2-stage-lifecycle-customization` |
 | Upload files, attach artifacts, migrate data, build a fresh org, bulk-create records ("load these CSVs", "import data", "build an org from scratch") | `skills/3-data-upload-and-org-build` |

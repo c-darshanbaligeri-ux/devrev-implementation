@@ -19,6 +19,7 @@ devrev-implementation/
 │       ├── capture-learnings/SKILL.md       (Self-learning protocol)
 │       └── update-repos/{SKILL.md, update_repos.sh}  (Explicit refresh)
 ├── skills/
+│   ├── 0-solution-architecture/{SKILL.md, references/, templates/, examples/}
 │   ├── 1-object-schema-customization/{SKILL.md, references/}
 │   ├── 2-stage-lifecycle-customization/{SKILL.md, references/}
 │   ├── 3-data-upload-and-org-build/{SKILL.md, references/}
@@ -37,6 +38,9 @@ devrev-implementation/
 
 The skills are numbered to reflect the natural dependency order of DevRev implementation work:
 
+**Design Layer (0)**: Precedes everything else
+- **0-solution-architecture**: Turns a vague business problem into a 20-section solution blueprint before any building starts — object/lifecycle mapping, capability selection (deterministic vs. AI), integrations, estimates, risk, alternatives. Never calls the live API; hands off to skills 1–8 section by section (see its "Handing off to execution" table). Greenfield/cross-domain requests start here.
+
 **Foundation Layer (1–3)**: Customization and data must come first
 - **1-object-schema-customization**: Custom objects, tenant fields, subtypes, custom link types must be defined before records can be created
 - **2-stage-lifecycle-customization**: Custom states, stages, and stage diagrams must exist before work items can flow through them
@@ -53,7 +57,10 @@ The skills are numbered to reflect the natural dependency order of DevRev implem
 **Horizontal Foundation (8)**: The REST API layer
 - **8-devrev-api**: Direct API knowledge base, used by all other skills when they need to make raw API calls
 
-### Two Skill Species
+### Three Skill Species
+
+**Design skill** (0): A full SKILL.md + inline `references/`/`templates/`/`examples/`, but distinct from the knowledge-owners below because it never calls the live API — it's pure design reasoning that hands off to the others
+- `skills/0-solution-architecture`: Produces the blueprint; its reference files cross-reference skills 1, 2, 6, 7, 8 for exact API mechanics rather than duplicating them (a design-time index over the same knowledge, not a third copy)
 
 **Router skills** (4, 5): Minimal SKILL.md files that delegate to plugins in `repos/aai-skills`
 - `skills/4-dashboards-and-widgets`: Routes to `/dashboard-planner`, `/create-dashboard`, `/modify-dashboard`, and the `dashboard-dev` plugin's skills
@@ -64,6 +71,7 @@ The skills are numbered to reflect the natural dependency order of DevRev implem
 - Contain complete API reference docs, playbooks, schemas, examples, and scripts
 - Self-contained: everything needed to execute is present in the skill folder
 - No external plugin dependencies
+- Skill 0's references point INTO these rather than restating their mechanics
 
 ### `repos/` Directory
 

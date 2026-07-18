@@ -35,11 +35,23 @@ Also figure out which **shape** of workflow this is:
 
 ## Step 2: Author the template JSON
 
+**Default template for AI agent skills / workflow tools**: whenever the ask is "create an AI agent
+skill", "agent workflow", "workflow tool", or "agent-callable skill" (the shape where an agent
+invokes it mid-conversation with parameters and gets a structured result back), **always start from
+`examples/default-ai-agent-skill-template.json`** — a minimal, importable 4-step scaffold
+(trigger → skill block → HTTP → set output). Copy it, then customize as described in
+`references/ai-agent-skill-pattern.md` § "Default starter — use this every time". Do not
+hand-author the four-block wiring from scratch — it's easy to miss `block_step_reference_key`,
+`labels: ["skill"]`, or the `$get('ai_agent_skill_trigger_1', 'output').<field>` shape.
+
+For event-driven workflows (`ticket_created`, `sla_breach`, etc.), pick the closest `working-*.json`
+in `examples/` instead. General steps:
+
 1. **Parse intent** — identify the trigger event (or, for an agent skill, the input parameters), the sequence of actions, any conditions/branching, and any loops.
 2. **Look up operations** — find the correct `{namespace, slug}` and input/output schema for each operation you need:
    - Full lists: `operations/triggers.md` (145), `operations/actions.md` (245), `operations/controls.md` (8), `operations/blockings.md` (2)
    - Detailed field-level schemas for 130 operations: `operations/schemas/<slug>.md`, indexed at `operations/schema-index.md`
-3. **Study examples before writing anything** — read the closest-matching file(s) in `examples/`. **Prioritize `working-*.json` files** — these are the ones confirmed to actually import successfully; the numbered files (e.g. `5216-...`) are real production templates but haven't been re-validated against the current schema rules. To read one:
+3. **Study examples before writing anything** — for agent skills, read `default-ai-agent-skill-template.json` first, then a closer `working-ai-agent-skill-*.json` if one matches. For event workflows, prioritize `working-*.json` files — these are confirmed to import successfully; the numbered files (e.g. `5216-...`) are real production templates but haven't been re-validated against the current schema rules. To read one:
    ```bash
    python3 -c "import json; d=json.load(open('skills/6-workflows/examples/FILE.json')); inner=json.loads(d['data']); print(json.dumps(inner, indent=2))"
    ```

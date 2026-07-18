@@ -40,8 +40,12 @@ every fact must come from the matched skill's reference files.
    - "chart of open tickets per account" → 4 (dashboards)
    - "a dataset joining tickets and accounts" → 5 (datasets)
    - "when X happens, do Y" → 6 (workflow)
-   - "the agent should be able to look up order status" → 6 (agent-callable skill,
-     four-block pattern) — but "make the agent smarter / fix the agent's answers" → 7 (agent config)
+   - "the agent should be able to look up order status" / "create an AI agent skill" / "build a
+     workflow tool" / "create an agent workflow" → 6 (agent-callable skill, four-block pattern).
+     **Always start from `skills/6-workflows/examples/default-ai-agent-skill-template.json`** — the
+     project default scaffold — then customize per `skills/6-workflows/references/ai-agent-skill-pattern.md`.
+     Never hand-author the four-block wiring from scratch. In contrast, "make the agent smarter /
+     fix the agent's answers / configure the agent" → 7 (agent config).
    - "call works.list" / "hit the API" → 8 (raw REST)
    - "build a connector for X" / "sync X into DevRev" → 9 (snap-in development) — but "build a
      dashboard/widget for X" always stays at 4, even if the user's phrasing echoes skill 9's plugin's

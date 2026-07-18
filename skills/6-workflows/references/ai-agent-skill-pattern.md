@@ -47,10 +47,26 @@ When the skill wraps an HTTP API, build the `url` (and `body`, if needed) as a s
 
 This keeps optional fields out of the query string entirely when the agent didn't supply them, instead of sending `&id=` empty.
 
+## Default starter — use this every time
+
+Whenever the user asks to create an AI agent skill, an agent workflow, or a workflow tool, **start
+from `examples/default-ai-agent-skill-template.json`** — a minimal, importable 4-step scaffold
+(trigger → skill block → HTTP → set output) that relies on operation defaults instead of restating
+every port schema. Copy the file, then customize in this order:
+
+1. Change the top-level `title` and `description` (description is what the calling agent reads — write it as a tool description with modes, params, edge cases).
+2. Rewrite the `ai_agent_skill_trigger_1` step's `input_values` to declare the parameter schema the agent will pass.
+3. Edit the `http_1` step's URL / method / auth headers / body — build the URL as a JSONata expression pulling from `$get('ai_agent_skill_trigger_1', 'output').<field>` (see "Building the URL/body dynamically" above).
+4. Adjust the output list in `set_ai_agent_skill_output_1` so the keys map to what the agent will read back.
+5. Optionally add more steps inside the block by setting `block_step_reference_key: "ai_agent_skill_1"` on each — e.g. multi-step chains (HTTP → ask_ai → HTTP).
+
+Do **not** hand-author these from scratch — the trigger/block wiring is easy to get wrong (missing `block_step_reference_key`, wrong reference-key format for `$get`, missing `labels: ["skill"]`).
+
 ## Worked examples
 
+- `examples/default-ai-agent-skill-template.json` — **the starting scaffold** (see previous section). Minimal, uses operation defaults for port schemas.
 - `examples/working-ai-agent-skill-koi-booking.json` — a real, validated skill (`ride_details_skill_v3`) that wraps a booking-lookup REST API with five use-case modes. Study its top-level `description` field closely — it documents identification modes, case-sensitivity rules, and per-field defaults inline, which is exactly the density an orchestrating agent needs to call it correctly on the first try.
-- `examples/ai-agent-skill-http-template.json` — a minimal generic skeleton: trigger -> block -> `http` -> output. Start here when scaffolding a brand-new agent skill before filling in the specifics.
+- `examples/ai-agent-skill-http-template.json` — a **verbose** variant of the same scaffold with every port schema restated inline (`input_ports`, `output_ports`, `field_descriptors` for HTTP method / headers / body / status_code). Use it when you need to override a specific port schema (e.g. constrain the HTTP method enum). For 95% of skills, prefer the `default-*` template above.
 
 To read either: `python3 -c "import json; d=json.load(open('skills/6-workflows/examples/FILENAME.json')); inner=json.loads(d['data']); print(json.dumps(inner, indent=2))"`
 

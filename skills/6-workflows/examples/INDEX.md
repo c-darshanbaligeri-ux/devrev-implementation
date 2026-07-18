@@ -8,6 +8,19 @@ When a new template is confirmed working, add it here AND to the example table i
 
 To read one: `python3 -c "import json; d=json.load(open('<file>')); print(json.dumps(json.loads(d['data']), indent=2))"`
 
+## THE DEFAULT starter for a new agent-callable skill / workflow / tool
+
+**Whenever the user asks to create an "AI agent skill", "agent workflow", "workflow tool", or
+"agent-callable skill", start from `default-ai-agent-skill-template.json`** — a minimal, importable
+4-step scaffold (trigger → skill block → HTTP → output) that relies on operation defaults instead
+of restating every port_schema. Rename `title` and `description`, wire the HTTP step's URL / method /
+auth to the target external API, and adjust the output mapping in `set_ai_agent_skill_output_1`.
+This is the shortest path from "user asks" to "importable template" — do not hand-author from scratch.
+
+| File (exact) | Pattern |
+| --- | --- |
+| `default-ai-agent-skill-template.json` | **Default** minimal agent-skill scaffold — use this as the starting point for every new agent skill / workflow tool ask |
+
 ## Confirmed working
 
 | File (exact) | Pattern |
@@ -17,7 +30,7 @@ To read one: `python3 -c "import json; d=json.load(open('<file>')); print(json.d
 | `working-enhancement-replace-agent.json` | Code + update: invoke_code (Python regex) → update_enhancement |
 | `working-invoke-code-sample.json` | Minimal invoke_code node pattern |
 | `working-loop-variable-sample.json` | loop_over_* + init_variable/set_variable pattern |
-| `ai-agent-skill-http-template.json` | Minimal agent-skill skeleton (trigger → block → http → output) — the scaffold to start skills from |
+| `ai-agent-skill-http-template.json` | Verbose agent-skill scaffold with full port_schemas restated inline — reference only; prefer the `default-*` template above for new work |
 
 ## Production references (not re-validated)
 

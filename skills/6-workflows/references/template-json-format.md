@@ -885,6 +885,7 @@ These templates have been confirmed to import successfully. **Always study these
 
 | File | Steps | Pattern Demonstrated |
 |------|-------|---------------------|
+| `default-ai-agent-skill-template.json` | 4 | **DEFAULT starter for every AI agent skill / workflow tool ask** — minimal, importable four-block scaffold (ai_agent_skill_trigger -> ai_agent_skill block -> http -> set_ai_agent_skill_output), `labels: ["skill"]`, relies on operation defaults for port schemas. Copy this first, then customize per `ai-agent-skill-pattern.md`. |
 | `working-loop-variable-sample.json` | 7 | **Loop + variable pattern**: timer_trigger -> init_variable -> loop_over_issues -> [http -> set_variable] -> ask_ai -> send_notification. Shows `loop_over_*`, `init_variable`, `set_variable`, `$get_variable`, `block_step_reference_key`, `uenum` fields, `block_callback` port, timer trigger with uenum |
 | `working-invoke-code-sample.json` | 4 | **Code node pattern**: enhancement_updated -> if_else -> invoke_code -> update_enhancement. Shows `invoke_code` with `text_template` code, `composite_value_list` inputs, `output_schema` with UI metadata |
 | `working-csat-score-on-ticket-resolved.json` | 5 | **HTTP + AI pattern**: ticket_updated -> if_else (check resolved) -> http (timeline-entries API) -> ask_ai (CSAT analysis) -> add_comment. Shows HTTP with Bearer auth, `text_template` body with expressions, AI prompt composition |

@@ -111,9 +111,12 @@ CUSTOM_OBJECT_ID= CUSTOM_LINK_TYPE_ID= STAGE_DIAGRAM_ID=
   `custom_link_type:write`.
 - `links.replace` is atomic only for part-to-part default link types; otherwise a
   non-atomic delete+create that must keep the same link type and share an endpoint.
-- `objects.bulk-upgrade` is not in the public API-to-scope reference. Prefer
-  re-saving records via their `*.update` with the current `custom_schema_spec`;
-  only use bulk-upgrade if confirmed available in the target org's API version.
+- `objects.bulk-upgrade` — **confirmed live 2026-07-18**: exists ONLY at
+  `/internal/objects.bulk-upgrade` (public-root `objects.bulk-upgrade` 404s).
+  `{"type":"<obj_type>"}` → HTTP 200 `{"id":"<job_don>"}`; poll `jobs.get` for
+  `job_category:"bulk_upgrade"` / `state:"completed"`. Affects ALL records of
+  that type org-wide — confirm before running; prefer re-saving a single
+  record via its `*.update` with the current `custom_schema_spec` instead.
 - Tags on custom objects are modeled as a custom field (an `id`-typed field with
   `id_type: ["tag"]`, or an enum/tokens field), not the native `tags` property
   that stock objects (works, parts, accounts) expose.
@@ -133,4 +136,17 @@ differ from the references. Add entries via the `capture-learnings` protocol
 *corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
 better home or needs domain-level visibility.
 
-- _(none yet)_
+- (2026-07-18) `webhooks.list` accepts **zero** fields — even `limit`/`cursor` return
+  `400 {"type":"invalid_field","field_name":"<field>"}`. Call it with a bare `{}`. (Corrects a prior
+  session's note that it "needs a filter param" — see `00_API_Catalog.md`.)
+- (2026-07-18) `works.update` requires `"type"` in the payload whenever you set a type-specific
+  field (e.g. `severity`) — omitting it returns `400 {"type":"invalid_field","field_name":"<field>"}`,
+  not a silent ignore.
+- (2026-07-18) `links.create` with a built-in `link_type` can 400 with an opaque
+  `{"type":"bad_request"}` (no `field_name`) when the type isn't valid for that
+  (source-type, target-type) pair — e.g. `is_related_to`/`is_part_of` ticket→issue both failed while
+  `is_dependent_on` ticket→issue and `is_related_to` issue→issue succeeded. Try a different built-in
+  type before assuming the request is malformed.
+- (2026-07-18) `links.delete` and `tags.delete` both genuinely delete (verified via a subsequent
+  404 on `.get`) — unlike custom link types, stages/states, and custom-object schema fragments,
+  which have no delete and are deprecate-only or permanent.

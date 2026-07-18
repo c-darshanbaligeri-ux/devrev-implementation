@@ -13,7 +13,7 @@
 | A custom field write "succeeded" but the field is empty | Wrong `tnt__`/`ctype__` prefix — this **fails silently** | Check the aggregated schema (`schemas.aggregated.get`) for the real field name; resend with `custom_schema_spec` |
 | Records don't show a newly added schema field | Fragments are versioned; records hold the old version | Re-save affected records via their `*.update` |
 | Workflow template import fails | Almost always one of four known causes | `uenum` missing `allowed_values`; `array` missing `base_type`; `for_each` used where a dedicated `loop_over_*` op exists; `invoke_code` value-type mismatch. The workflows skill has the full checklist |
-| Workflow trigger returns 404 | Workflow is still a draft | Publish (Deploy in the Workflows UI) first — triggering a draft 404s |
+| Workflow trigger returns 400 (`"...is not active"`) | Workflow is still a draft | Publish (Deploy in the Workflows UI) first — triggering a draft returns HTTP 400, not 404 (corrected 2026-07-18; a 404 does occur if the workflow ID itself doesn't exist, but a deleted workflow ID was observed returning HTTP 500 in one test, not a clean 404) |
 | `gcloud`/`bq`/`kubectl` errors during dataset work | Ponos-path tools not installed (by design) | Run `/dataset-builder:setup` — only needed for Ponos; PaaS needs nothing extra |
 | Agent-building command asks for `ORG_PAT` | Mutating internal-API call needs the optional org token | Add `ORG_PAT=` to `.env`, or stick to read-only/public operations |
 | `/devrev:*` snap-in commands don't resolve | Plugin never installed (deliberately not auto-enabled — third-party org) | Run `/plugin install devrev@devrev-qk-agents` once. If the marketplace itself won't resolve, register the local clone: `/plugin marketplace add ./repos/devrev-qk-agents` |
@@ -40,8 +40,8 @@ they're worth knowing as the human in the loop.
 Before any of the following, the agent states the impact and waits for your yes:
 
 - any `*.delete`, any `*.merge`
-- deprecations (custom link types, stages within a diagram via `is_deprecated` — whole-diagram or state deprecation are undocumented; verify against live API before attempting)
-- `objects.bulk-upgrade` (flagged as unverified in the public API — treated with extra caution)
+- deprecations (custom link types via `deprecated: true` — confirmed working). **Corrected 2026-07-18**: stage-node `is_deprecated: true` inside a diagram, previously listed here as a working option, is confirmed REJECTED at both create and update (`HTTP 400`) — there is no known working mechanism to retire a stage anywhere in a diagram via the public API; treat every stage as permanent once added.
+- `objects.bulk-upgrade` — **confirmed live 2026-07-18**: real, exists at `/internal/objects.bulk-upgrade` (not the public root). Still treat with caution — it affects ALL records of a type org-wide via an async job.
 - `web-crawler-jobs.control` with `stop` or `reset`
 - dataset / PaaS job deletion, workflow deletion
 - `devrev snap_in_version delete-one` (only one non-published version per package; required before creating a new version, but destroys the deleted version's state)

@@ -62,6 +62,10 @@ curl -X POST 'https://api.devrev.ai/articles.create' \
 | `articles.delete` | `article:all` |
 | `articles.get` / `.list` | `article:read` … |
 
+`articles.list` response — confirmed live 2026-07-18: wrapper is `{"articles": [...], "total": <int>}`.
+The extra top-level `total` count is not on most other `.list` endpoints tested in this folder (they
+return only the array + `cursor`); useful for pagination UI without a separate `.count` call.
+
 Articles support `status` (draft/published), `scope` (internal/external),
 `tags`, and sharing via `shared_with`.
 

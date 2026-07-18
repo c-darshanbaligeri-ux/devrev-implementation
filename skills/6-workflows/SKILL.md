@@ -103,3 +103,101 @@ This skill already has two built-in learning channels — use them, plus the jou
 
 In all cases also append a row to `docs/LEARNINGS.md` and commit — full protocol:
 `.claude/skills/capture-learnings/SKILL.md`.
+
+## Field notes (live-learned; see docs/LEARNINGS.md)
+
+- **2026-07-18 — Step-by-step CRUD build works end-to-end, confirmed live.** Built and deleted two
+  full workflows via raw API only (no import): a 4-step generic workflow
+  (`enhancement_updated`→`if_else`→`invoke_code`→`update_enhancement`, mirroring
+  `working-enhancement-replace-agent.json`) and a 4-block AI agent skill (from
+  `default-ai-agent-skill-template.json`). `workflows.create`→`workflow-steps.create`(×N)→
+  `workflow-steps.update`(×N to wire `input_values`/`next_steps`)→`workflows.get`/
+  `workflow-versions.get` to verify→`workflows.delete`→`workflows.get` 404 to confirm gone. All
+  worked as expected except the specific field-name corrections below.
+
+- **`workflow-steps.create`'s `operation` field is a DON string, NOT `{namespace, slug}`.**
+  Passing `{"namespace":"devrev","slug":"enhancement_updated"}` fails: `HTTP 400
+  unexpected_json_type — expected: 'STRING', actual: 'OBJECT'`. The correct value is the full
+  operation DON: `"don:integration:<shard>:operation/devrev.<slug>"`. This is a different rule
+  from the *template JSON* format (`references/template-json-format.md`), where `{namespace,
+  slug}` is correct — that shorthand is a template-authoring convenience, not what the raw CRUD
+  API accepts. **Owning file**: this note + `references/manage-workflows-api.md` (fixed in
+  place, see below).
+
+- **The operation-DON shard must match the target org's shard, not the doc's example
+  `dvrv-in-1`.** `references/manage-workflows-api.md` showed `don:integration:dvrv-in-1:...` as
+  the pattern; on a `dvrv-us-1` org, using `dvrv-in-1` in the operation DON returns `HTTP 400
+  id_not_found: object not found`. Discover the correct shard from the org's own DON prefix
+  (visible in any existing object's `id`, or in `workflows.create`'s own response) and substitute
+  it — don't copy the doc's example shard literally.
+
+- **`workflow-steps.create` requires, in order: `workflow` → `name` → `operation` →
+  `reference_key`.** Omitting any one gives a `missing_required_field` error naming exactly the
+  next missing field, so build the body iteratively if unsure.
+
+- **Wiring one step to the next uses `next_steps: [{port_name, next_step, next_port_name}]` on
+  the *upstream* step via `workflow-steps.update` — the key is `next_step` (a full step DON
+  string), NOT `next_step_reference_key`.** `next_step_reference_key` (used in the template-JSON
+  wrapper format) returns `HTTP 400 invalid_field` at the raw API level; so do `next_step_id`,
+  `step_reference_key`, and bare `reference_key`. Verified by elimination against a live
+  `workflow-steps.update` call.
+
+- **The AI-agent-skill block nesting field at the raw CRUD API level is `block_step` (a step
+  DON), NOT `block_step_reference_key`.** The template-JSON wrapper format's
+  `block_step_reference_key` (a `reference_key` string) is template-authoring shorthand only;
+  passing it to `workflow-steps.create` at the raw API returns `HTTP 400 invalid_field`. Use
+  `"block_step": "<block-step's-full-DON>"` instead. Confirmed live: building the four-block
+  agent-skill shape (`ai_agent_skill_trigger`→`ai_agent_skill`→`http`→
+  `set_ai_agent_skill_output`) step-by-step through the CRUD API required this substitution for
+  both the `http` and `set_ai_agent_skill_output` steps, and the resulting
+  `workflow-steps.get`/`workflow-versions.get` response confirms the nesting rendered correctly
+  (`block_step` populated on both, absent on the trigger/block steps).
+
+- **`invoke_code`'s `input_ports`/`output_ports` do NOT need to be sent on `workflow-steps.update`
+  — the operation auto-populates a default static schema for them.** Sending `input_ports`
+  explicitly (even copying the exact structure from `operations/schemas/invoke_code.md`) returns
+  `HTTP 400 invalid_field: type` (the nested port `"type": "default"` field is rejected at this
+  layer) or, with the type field stripped, `HTTP 400 bad_request: dynamic input ports are not
+  supported`. Sending only `input_values` (code / input_values / output_schema) plus `next_steps`
+  succeeds (`200`) and the resulting step already has fully-populated `input_ports`/`output_ports`
+  matching the schema doc's shape. This only concerns the raw `workflow-steps.update` API — the
+  template-JSON import path (`references/template-json-format.md`) that explicitly restates
+  `input_ports`/`output_ports` is unaffected and still the documented approach for that path.
+
+- **`workflows.update` accepts `labels` (array) and `description` (string) at the top level** —
+  both persisted correctly on a live workflow (`labels: ["skill"]`, description text), confirming
+  these are valid post-create fields for marking a workflow as an agent-callable skill without
+  reconstructing the whole object.
+
+- **Publishing correction, more precise than the existing note**: `workflow-versions.publish`
+  fails with `HTTP 400 bad_request: "workflow ... is in Workflow_StatusEnumDraft state and cannot
+  be published"` — this is the *workflow's* status (`draft`), not just the version's. No
+  `workflows.deploy`/`workflows.activate`/`workflow-versions.deploy`/`workflows.publish` endpoint
+  exists (all 404 `route not found`), and `workflows.update` rejects both `status` and `state` as
+  top-level fields (`HTTP 400 invalid_field`). Confirms there is genuinely no API path to move a
+  workflow out of draft — the DevRev UI's Deploy action is the only route, exactly as the existing
+  doc says, but now with the exact error strings for both the publish attempt and the blocked
+  update attempts.
+
+- **Triggering a still-draft workflow returns `HTTP 400`, not `HTTP 404` as previously
+  documented.** Built a minimal single-step `manual_trigger` workflow specifically to test this
+  precisely (then deleted it — see below): `workflows.trigger` on a draft workflow (either an
+  `enhancement_updated` event-trigger shape or a bare `manual_trigger` shape) returns `HTTP 400
+  bad_request: "workflow ... is not active"`. The existing doc/CLAUDE.md claim of "404 on
+  trigger" for an undeployed workflow does not match live behavior in this org — **correcting**,
+  not just confirming, the prior finding. (A 404 does occur for `workflows.trigger` against a
+  workflow ID that was already deleted — but that path returned `HTTP 500 internal_error` in this
+  test, not a clean 404, which is a separate minor drift worth noting if hit again.)
+
+- **`workflows.delete` → `workflows.get` cycle is clean and immediate.** `workflows.delete`
+  returns `HTTP 200 {}` for both a full 4-step workflow and a single-step probe workflow; the
+  immediately-following `workflows.get` on the same ID returns `HTTP 404 not_found` with a
+  `debug_message` naming the deleted workflow's own DON. No propagation delay observed.
+
+- **Operation-schema spot-check results**: `enhancement_updated`, `update_enhancement`, `if_else`,
+  and `invoke_code`'s documented input/output field shapes in `operations/schemas/*.md` all
+  matched what the live API actually returned/accepted for those operations (field names, types,
+  required flags) — no drift found in the schema *content* itself. The drift found in this test
+  round was entirely in `references/manage-workflows-api.md`'s CRUD-level field-naming
+  assumptions (operation DON vs. `{namespace,slug}`, `next_step` vs. `next_step_reference_key`,
+  `block_step` vs. `block_step_reference_key`), not in the 130 op schema files.

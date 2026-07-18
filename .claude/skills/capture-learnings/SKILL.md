@@ -69,6 +69,7 @@ Route by what the learning is about — this table is the heart of the protocol:
 - If it's NEW knowledge → add a concise, dated bullet in the file's "Field notes" / pitfalls /
   checklist section: `- (YYYY-MM-DD) <fact>. Evidence: <error message / endpoint response>.`
 - Keep entries short and factual — a future agent reads them cold.
+- **2026-07-18 · Field note on this protocol itself**: a full end-to-end test pass across skills 1–9 produced numerous in-place corrections (wrong reference examples, overgeneralized prior findings) but in every case the dated Field-notes-bullet convention was used and the inline `<!-- corrected YYYY-MM-DD: was "..." -->` HTML-comment convention was NOT — none of the corrections this session added that comment, even though it's the letter of this section. In practice, a clearly-worded "CORRECTED YYYY-MM-DD: ..." bolded lead-in inside the Field notes bullet itself served the same purpose (says what was wrong, when, and why) without the separate inline comment. Future agents: either convention is acceptable as long as the correction is unambiguous about what it's superseding — but if striving for strict compliance with this file's own instruction, add the HTML comment too.
 
 ### 3. Append to the journal and commit
 

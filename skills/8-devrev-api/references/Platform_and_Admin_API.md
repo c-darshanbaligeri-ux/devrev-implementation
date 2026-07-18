@@ -35,6 +35,14 @@ curl -X POST 'https://api.devrev.ai/artifacts.download' \
 | `artifacts.download` | `artifact:read` |
 | `artifacts.get` / `.list` / `.locate` | `artifact:read` (+ parent read) |
 
+**Referencing the artifact on a parent — confirmed working live 2026-07-18**: pass
+`"artifacts": ["<ARTIFACT_DON>"]` on `works.create` (or `timeline-entries.create` for a
+`timeline_comment`) to attach it. **An artifact can only ever have ONE parent** — attaching
+an already-attached artifact id to a second object returns
+`400 {"type":"artifact_already_attached_to_a_parent","existing_parent":"<don>","is_same":false}`.
+This isn't mentioned anywhere else in the artifact docs; upload a fresh artifact (repeat
+`artifacts.prepare` + upload) per attachment target if the same file needs to live on two objects.
+
 ---
 
 ## 2. Webhooks
@@ -48,6 +56,11 @@ curl -X POST 'https://api.devrev.ai/webhooks.create' \
 
 `webhooks.get/list/update/delete/event` — no explicit scope (default scopes N/A).
 See the Webhooks guide for signature verification and event payloads.
+
+`webhooks.list` (verified live 2026-07-18): call it with an empty body `{}` (or a bare GET with no
+query string). It rejects any field you add — `limit`, `cursor`, `id`, `name`, `event_types` all
+return `400 {"type":"invalid_field","field_name":"<field>"}`. This is the opposite of most `.list`
+endpoints; don't add `limit` here.
 
 ---
 

@@ -144,31 +144,63 @@ curl -X POST 'https://api.devrev.ai/stage-diagrams.create' \
 ```
 
 - Each stage node: `stage_id` (required), `is_start` (marks the entry stage),
-  `transitions` (list of allowed `target_stage_id`), and `is_deprecated` to
-  retire a stage without breaking the diagram.
+  `transitions` (list of allowed `target_stage_id`).
 - A stage with no outgoing transitions is effectively terminal (e.g. Resolved).
+- **Live-verified 2026-07-18: `is_deprecated: true` on a stage node is REJECTED** at both
+  create and update time (`HTTP 400 {"type":"bad_request"}`), tried on the start stage, a
+  middle stage, and a terminal stage, and on a brand-new diagram never touched by `.update`.
+  The identical payload with `is_deprecated` omitted succeeds; `is_deprecated: false` is
+  accepted as a no-op. There is currently **no known working mechanism** to retire a stage
+  inside a diagram via the public API — treat every stage added to a diagram as permanent.
 
 ### Update — `stage-diagrams.update`
 
-Update transitions, deprecate stages, or rename. Note: `is_default` and
-`leaf_type` cannot be changed after creation.
+Update transitions or rename. Note: `is_default` and
+`leaf_type` cannot be changed after creation (live-verified: both return
+`{"message":"Bad Request","type":"invalid_field"}` if included in the update body).
+Stage deprecation via `is_deprecated` does **not** work — see the verified note above.
 
 ### Read
 - `stage-diagrams.get` — fetch one diagram.
 - `stage-diagrams.list` — list diagrams; filter by `leaf_type`, `name`, or
-  `is_custom_leaf_type` (no scope required).
+  `is_custom_leaf_type` (no scope required). **Live-verified 2026-07-18**: for a
+  custom leaf type, `leaf_type=<custom_leaf_type>` alone returns `{"result":[]}` —
+  you must also pass `is_custom_leaf_type=true` in the same query to get matches.
+  `name` filters correctly on its own (exact match; no match returns `[]`).
 
 ---
 
 ## 5. Assigning a stage diagram to a subtype
 
-A stage diagram is applied to a subtype through the subtype's schema fragment.
-When you define or update the subtype with `schemas.custom.set`, reference the
-stage diagram via `stage_diagram_id`. This lets different subtypes of the same
-object (e.g. a Bug vs. a Feature Request issue) follow different lifecycles.
+**Live-verified 2026-07-18 — this section is UNCONFIRMED / likely wrong; do not rely on it
+without re-checking the live API first.** The mechanism below is what older material and this
+doc previously described, but every write path tried this session was rejected:
+- `schemas.custom.set` with `stage_diagram_id` (also tried `stage_diagram`, `diagram_id`,
+  `stagediagram_id`, `stage_diagram_ref`, `lifecycle_id`, `workflow_diagram_id`, and a nested
+  `{"stage_diagram":{"id":"..."}}`) → always `{"message":"Bad Request","type":"invalid_field","field_name":"stage_diagram_id"}` (or the tried field name). Tried on both a `tenant_fragment`
+  (custom leaf type) and a `custom_type_fragment` (subtype of `issue`).
+- `stage-diagrams.create` with a top-level `subtype` field → `{"message":"Bad Request","type":"invalid_field","field_name":"subtype"}`. Diagrams appear to be `leaf_type`-scoped only.
+- `schemas.subtypes.prepare-update` with `subtype` or `stage_diagram_id` in the body → both
+  rejected as `invalid_field`; it only accepts `leaf_type` and returns
+  `{"added_fields":[...]}` (fields a bulk-upgrade would add), so it's a preview/dry-run tool,
+  not the attachment mechanism.
+- Counter-evidence the field exists somewhere in the data model: `schemas.aggregated.get`
+  returns a **read-only** `stage_diagram_id` key for stock leaf types that already have a
+  diagram, e.g. `ticket` → `"stage_diagram_id":{"id":"don:core:...:stage_diagram/6","name":"ticket_transitions"}`. So the association exists server-side — only the public
+  write path to set it on a subtype/custom leaf type remains unconfirmed.
+  **Also note (live-verified 2026-07-18, corrected same day):** `schemas.aggregated.get` works fine
+  via POST — the specific shape `{"leaf_type":"ticket","custom_schema_spec":{"tenant_fragment":true}}`
+  (the example this skill and skill 1 previously documented) returns
+  `{"message":"Bad Request","type":"invalid_field","field_name":"tenant_fragment"}`, but that's
+  because tenant/custom fields are included by default — omitting `custom_schema_spec` entirely
+  (`POST` with just `{"leaf_type":"ticket"}`, or the equivalent `GET schemas.aggregated.get?leaf_type=<type>`,
+  add `&is_custom_leaf_type=true` for custom leaf types) returns `HTTP 200` with the full merged set.
+  `custom_schema_spec: {"subtype": "<name>"}` (no `tenant_fragment` key) also works via POST when you
+  need a specific subtype's fields. Response wrapper is `{"schema": {...}}`.
 
 By default a bug subtype inherits transitions from its parent type (Issue); once
-you assign a dedicated diagram, publish the change to activate it.
+you assign a dedicated diagram, publish the change to activate it — **write path unconfirmed,
+see above.**
 
 ---
 
@@ -210,6 +242,10 @@ Effects can `require`, `show`, or constrain `allowed_values` for fields.
 - Duplicate `ordinal` for states — must be unique within the dev org.
 - Forgetting to assign the diagram to the subtype — stages exist but the object
   still uses the inherited/default lifecycle until the subtype references the
-  `stage_diagram_id` and the change is published.
-- Deleting a stage that's referenced by a diagram — deprecate it (`is_deprecated`)
-  instead so existing records aren't orphaned.
+  `stage_diagram_id` and the change is published. **Live-verified 2026-07-18: the
+  write path for this is itself unconfirmed** — see §5 for every field-name
+  variant tried and rejected.
+- Deleting a stage that's referenced by a diagram — there's no delete endpoint
+  anyway. `is_deprecated` was intended as the retirement path but **is rejected
+  live** (`HTTP 400 bad_request` on both create and update, live-verified
+  2026-07-18 — see §4). Treat every stage added to a diagram as permanent.

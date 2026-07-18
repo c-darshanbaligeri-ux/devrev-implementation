@@ -301,8 +301,8 @@ curl -X POST 'https://api.devrev.ai/works.create' \
 ```
 Verify the setup:
 
-- parts.list - confirm the product hierarchy exists.
-- links.list on a part - confirm builder parts, custom links, and work are attached.
+- parts.list - confirm the product hierarchy exists. To filter by parent, `parent_part` is an OBJECT, not a bare array: `{"parent_part": {"parts": ["<PARENT_DON>"], "level": <optional int>}}`. Passing a plain array (`{"parent_part": ["<PARENT_DON>"]}`) returns HTTP 400 `unexpected_json_type` (verified live 2026-07-18).
+- links.list on a part - confirm builder parts, custom links, and work are attached. Confirmed live: creating a part with `parent_part` set auto-creates an `is_part_of` link from child to parent, visible via `links.list?object=<child_don>` — you don't need to call `links.create` yourself for the parent_part relationship, only for cross-hierarchy connections like `serves`.
 - schemas.custom.list / custom-objects.list - confirm your fragments and custom objects.
 
 # End-to-end worked example
@@ -327,7 +327,7 @@ Verify the setup:
 | Customization | custom-objects.create / .list | Create / list custom object records |
 | Customization | stages.custom.create | Create a custom stage |
 | Customization | stage-diagrams.create | Define allowed stage transitions |
-| Customization | objects.bulk-upgrade | Upgrade records to the latest fragment version (not in the public API-to-scope reference — verify before use; alternatively re-save via the object's `*.update`) |
+| Customization | objects.bulk-upgrade | Upgrade records to the latest fragment version. **Confirmed live 2026-07-18**: exists ONLY at `/internal/objects.bulk-upgrade` (public root path 404s) — `{"type":"<obj_type>"}` returns HTTP 200 `{"id":"<job_don>"}`; poll `jobs.get` for `job_category:"bulk_upgrade"` / `state:"completed"`. Affects ALL records of that type org-wide — confirm before running; for a single record, re-save via `*.update` instead. |
 | Parts | parts.create / .list / .update | Create and manage the product hierarchy |
 | Trails / Links | links.create | Connect parts to each other, work, and customers |
 | Trails / Links | links.list | List an object's links |
@@ -344,7 +344,7 @@ Verify the setup:
 | 403 / permission denied on parts.create | Missing write scope for that part type | Confirm the token has the specific scope for the type, e.g. capability:write, not just a generic write scope. |
 | Custom object empty / inaccessible even to admins | No access granted yet | Custom objects start with zero access by default. Grant object- and field-level roles in Settings > Object customization and Settings > User Management > Roles. |
 | Part temporarily orphaned mid-move | Used delete-then-create to re-parent | Use links.replace instead - it re-parents atomically so the part is never briefly without a parent. |
-| Old field values still showing after a schema change | Existing records still reference the old fragment | Re-save the record via its `*.update` with the current custom_schema_spec (or a bulk-upgrade operation if confirmed available in your API version). |
+| Old field values still showing after a schema change | Existing records still reference the old fragment | Re-save the record via its `*.update` with the current custom_schema_spec, or run `objects.bulk-upgrade` (confirmed live at `/internal/objects.bulk-upgrade`, not public root — see Phase-5-adjacent quick reference row above) for all records of a type at once. |
 | Link creation fails with "object not found" | Referencing a display ID instead of a DON | Always pass the full DON id (don:core:...), not a short display ID like PROD-12345, in parent_part and link calls. |
 | Can't delete a custom link type | By design | Custom link types can only be deprecated, not deleted, to preserve referential integrity. Create a new one if you need a rename. |
 

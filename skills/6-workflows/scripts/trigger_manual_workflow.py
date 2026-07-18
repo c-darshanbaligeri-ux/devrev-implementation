@@ -95,10 +95,14 @@ def explain_status(code: int) -> str:
         200: "OK — workflow triggered",
         201: "Created — workflow run started",
         202: "Accepted — workflow trigger queued",
-        400: "Bad Request — check JSON / parameter names (case-sensitive)",
+        400: "Bad Request — check JSON / parameter names (case-sensitive); also returned (with "
+             "'is not active' in the response body) when the workflow is still in draft and not "
+             "yet published — verified live 2026-07-18, corrects an earlier assumption that this "
+             "case 404s",
         401: "Unauthorized — regenerate your PAT in DevRev → Settings → Personal Access Tokens",
         403: "Forbidden — your PAT doesn't have permission to trigger this workflow",
-        404: "Not Found — confirm the workflow ID and that it's published",
+        404: "Not Found — confirm the workflow ID is correct (a draft/unpublished workflow "
+             "returns 400, not 404 — see the 400 case above)",
         429: "Rate limited — slow down and retry",
     }.get(code, f"HTTP {code}")
 

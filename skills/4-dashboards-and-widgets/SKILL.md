@@ -7,17 +7,18 @@ description: Use this skill when the user asks to "create a DevRev dashboard", "
 
 This skill routes dashboard and widget requests to the installed `dashboard-dev` Claude Code plugin (marketplace `devrev-aai-plugins`, registered in `.claude/settings.json` with GitHub source `devrev/aai-skills`; the clone at `repos/aai-skills` is the same code, kept for reading/grounding). The actual domain knowledge (widget JSON schema, 12-column grid layout rules, Meerkat aggregations, validation stages) lives in the plugin's own skills at `repos/aai-skills/plugins/dashboard-dev/skills/` — this file only routes.
 
-> **Command-name note** (verified 2026-07-18): the plugin's create command file declares frontmatter `name: dashboard-create`, so the registered command may appear as `/dashboard-dev:dashboard-create` rather than `/create-dashboard`. If `/create-dashboard` doesn't resolve in a session, use `/dashboard-dev:dashboard-create` (same command). `/modify-dashboard` resolves as `dashboard-dev:modify-dashboard`.
+> **Command-name note** (verified 2026-07-18 against the cloned plugin): the plugin's `commands/` folder contains exactly **two slash commands** — `create-dashboard.md` (frontmatter `name: dashboard-create`) and `modify-dashboard.md`. Their canonical namespaced form is `/dashboard-dev:dashboard-create` and `/dashboard-dev:modify-dashboard`; the unprefixed `/create-dashboard` and `/modify-dashboard` may also resolve depending on how the plugin is loaded. If the unprefixed form doesn't resolve in a session, fall back to the namespaced form (same command). Everything else in the plugin — `dashboard-planner`, `widget-development`, `dashboard-development`, `benchmark-*` — is a **plugin skill** (loaded via the Skill mechanism), not a slash command.
 
 ## Routing table
 
 | User wants to... | Do this |
 |---|---|
-| Create a new dashboard | Run `/dashboard-planner` (if requirements are vague) then `/create-dashboard plans/<slug>.md`, or `/create-dashboard <prose requirements>` directly. |
-| Modify an existing dashboard | `/modify-dashboard` — not `/create-dashboard` |
-| Fix/debug a single widget, or create one standalone widget outside a dashboard | Load the `widget-development` skill at `repos/aai-skills/plugins/dashboard-dev/skills/widget-development/SKILL.md` |
-| Fix dashboard layout/format errors on an existing dashboard | Load the `dashboard-development` skill at `repos/aai-skills/plugins/dashboard-dev/skills/dashboard-development/SKILL.md` |
+| Create a new dashboard from vague / prose requirements | First invoke the `dashboard-planner` plugin skill (writes `plans/<slug>.md`), then run `/dashboard-dev:dashboard-create plans/<slug>.md`. Or run `/dashboard-dev:dashboard-create <prose>` directly if requirements are already crisp. |
+| Modify an existing dashboard | `/dashboard-dev:modify-dashboard` — not `dashboard-create` |
+| Fix/debug a single widget, or create one standalone widget outside a dashboard | Load the `widget-development` plugin skill at `repos/aai-skills/plugins/dashboard-dev/skills/widget-development/SKILL.md` |
+| Fix dashboard layout/format errors on an existing dashboard | Load the `dashboard-development` plugin skill at `repos/aai-skills/plugins/dashboard-dev/skills/dashboard-development/SKILL.md` |
 | Verify an already-deployed dashboard visually | Invoke the `dashboard-verifier` agent |
+| Contribute widgets or benchmark the pipeline | Load one of the `benchmark-contributor` / `benchmark-widget` / `benchmark-dashboard` plugin skills |
 
 ## HARD RULE: Never bypass the pipeline for new dashboards
 

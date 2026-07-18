@@ -1,6 +1,6 @@
 # DevRev Implementation Operating Environment
 
-This is the unified workspace for all DevRev implementation work apart from snap-in development. It's not a buildable software project — it's a plug-and-play operating environment containing skills, reference documentation, cloned toolchains, and an integrated DevRev MCP server. Everything needed to customize DevRev organizations, migrate data, build dashboards and datasets, author workflows, and develop AI agents.
+This is the unified workspace for all DevRev implementation work, spanning solution design (skill 0) through build (skills 1–9, including snap-in / AirSync connector development via a routed third-party plugin at skill 9). It's not a buildable software project — it's a plug-and-play operating environment containing skills, reference documentation, cloned toolchains, and an integrated DevRev MCP server. Everything needed to design solutions, customize DevRev organizations, migrate data, build dashboards and datasets, author workflows, develop AI agents, and build snap-ins.
 
 ## One-time setup
 
@@ -24,7 +24,7 @@ That's it. Everything else auto-configures on session start.
 
 | Component | How it initializes |
 | --- | --- |
-| **Repos clone** (`repos/aai-skills`, `repos/dashboard-sync-cli`, `repos/api-specs`, `repos/devrev-qk-agents`) | SessionStart hook clones on first run; status table written to `docs/CLONE_RESULTS.md` |
+| **Repos clone** (`repos/aai-skills`, `repos/dashboard-sync-cli`, `repos/api-specs`, `repos/devrev-qk-agents`) | SessionStart hook clones on first run; per-machine status table written to `docs/CLONE_RESULTS.local.md` (gitignored). Curated build-time snapshot lives at `docs/CLONE_RESULTS.md`. |
 | **`dashboard-sync` CLI** | SessionStart hook installs via `pipx` on first run (background; logs to `.claude/.auto-setup/install.log`) |
 | **Workspace directories** (`dashboards/`, `datasets/`, `plans/`, `logs/`, `templates/`) | SessionStart hook creates synchronously; CLI then runs `dashboard-sync init` once present |
 | **`config.yaml`** | The `dashboard-dev` plugin's own hook generates it from `.env` |
@@ -57,7 +57,9 @@ From a fresh machine with git + gh auth + Claude Code installed:
 4. Wait ~1 minute for background installs.
 5. Start a second session for PATH refresh.
 
-**Fully operational for everything except snap-in development.** No npm install, no build, no config files to hand-edit, no CLI to install separately (it auto-installs), no MCP server to run for the hosted DevRev MCP. The workspace auto-configures on every session start after that. Snap-in development (`skills/9`) is the one deliberate exception: it needs a manual `/plugin install devrev@devrev-qk-agents` plus 1–2 third-party MCP server opt-ins — this repo won't auto-activate a non-devrev-org plugin or auto-register non-DevRev MCP endpoints.
+**Fully operational for skills 0–8 after these five steps.** No npm install, no build, no config files to hand-edit, no CLI to install separately (it auto-installs), no MCP server to run for the hosted DevRev MCP. The workspace auto-configures on every session start after that.
+
+**Snap-in development (`skills/9`) needs one extra opt-in**, done once per project: `/plugin install devrev@devrev-qk-agents` plus 1–2 third-party MCP server opt-ins (`snapin-builder` for build/update/metadata/search; `airsync` for `/devrev:generate-metadata`). This repo won't auto-activate a non-devrev-org plugin or auto-register non-DevRev MCP endpoints — but the marketplace is already registered, so the `/plugin install` line is all it takes to enable it. See `skills/9-snapin-development/SKILL.md`.
 
 ## Troubleshooting
 
@@ -69,3 +71,5 @@ From a fresh machine with git + gh auth + Claude Code installed:
 | 401 Unauthorized on API calls | Missing or invalid PAT in `.env` | Verify `.env` exists and `DEVREV_PAT` is a valid token; test with `curl -H "Authorization: Bearer $DEVREV_PAT" https://api.devrev.ai/ping` |
 | Clone failures for repos | Missing GitHub access to devrev org repos, or `gh` not authenticated | Check `docs/CLONE_RESULTS.md` for error details; run `gh auth status` and ensure the authenticated account has read access to devrev org repos |
 | `gcloud` / `bq` / `kubectl` commands fail | Ponos-path prerequisites missing (not auto-installed) | Run `/dataset-builder:setup` to check and configure; these are only needed for Ponos jobs, not PaaS datasets |
+| `/create-dashboard` doesn't resolve, but `/dashboard-dev:dashboard-create` does | Plugin command's frontmatter uses `dashboard-create`; the namespaced form always resolves | Use `/dashboard-dev:dashboard-create` (same command). Same for `/modify-dashboard` → `/dashboard-dev:modify-dashboard`. |
+| `/dashboard-planner` doesn't resolve | It's a plugin **skill**, not a slash command | Invoke it via the Skill mechanism (from `repos/aai-skills/plugins/dashboard-dev/skills/dashboard-planner/`), or just describe the requirement — skill 4 routes correctly. |

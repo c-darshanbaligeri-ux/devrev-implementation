@@ -9,6 +9,7 @@ Routing is by **intent, not keyword**:
 
 | You say… | Routed to |
 | --- | --- |
+| "design a solution for [business problem]", "how should I build X in DevRev", "we're a fintech and need to..." | 0 — solution architecture (blueprint) |
 | "add a field to accounts", "create a custom object", "define a subtype" | 1 — object & schema customization |
 | "tickets should go through a triage step", "customize stages", "add a state" | 2 — stage & lifecycle |
 | "load these CSVs", "attach this file", "build an org from scratch" | 3 — data upload & org build |
@@ -18,11 +19,36 @@ Routing is by **intent, not keyword**:
 | "let the agent look up order status" | 6 — agent-callable skill (four-block pattern) |
 | "make the agent smarter", "debug the agent", "test the agent's guardrails" | 7 — agent building |
 | "call works.list", "hit the API", any raw endpoint | 8 — raw REST API |
+| "build a HubSpot connector", "sync Asana into DevRev", "add pagination to the Trello snap-in" | 9 — snap-in / AirSync development (routed to third-party plugin) |
 | "update the repos", "pull latest" | update-repos (maintenance) |
+| "remember this so we don't hit it again", any correction / undocumented behavior | capture-learnings (self-improves the repo mid-task) |
 
 Below: what each domain does, example prompts, and what happens under the hood.
 
 ---
+
+## 0 — Solution architecture (design phase)
+
+**Covers**: turning a vague business problem — support, sales, ITSM, fintech, insurance, healthcare,
+internal ops, anything — into a **20-section solution blueprint** that maps the domain onto the full
+DevRev platform. Never calls the live API; the blueprint hands off section-by-section to skills 1–8.
+
+**Example prompts**
+- "We're a fintech doing digital lending — design an end-to-end solution."
+- "How should we build support deflection + support↔engineering convergence for a B2B SaaS?"
+- "We use ManageEngine as our IT ticketing system-of-record — how do we bring DevRev on top?"
+- "Should this be an agent or a workflow?"
+- "Native-first analysis: where does this need custom code vs. configuration?"
+
+**Under the hood**: 6-step design arc — (1) analyze the domain, (2) map customer nouns onto the
+DevRev graph (data model + lifecycle first), (3) select capability per requirement (deterministic vs
+intelligent, usually hybrid), (4) walk the 13-layer completeness checklist, (5) estimate effort + risk
++ A/B/C alternatives, (6) sequence the build. Outputs the blueprint template, which then routes each
+build step to the right execution skill (1–8). The design principle throughout: **native-first /
+configuration over customization** — model the domain natively, automate deterministically where
+possible, add AI or custom code only where they genuinely add value. Also flags two known gaps where
+DevRev design must go outside this repo: AirSync connector setup (unless skill 9 covers it) and
+Security/Permissions/RBAC (no execution-skill counterpart yet).
 
 ## 1 — Object & schema customization
 
@@ -173,6 +199,34 @@ customization endpoints.
 5. **Verify** with the matching `*.get`/`*.list`
 6. Keep a scratchpad of returned DON ids for dependent calls
 7. `ping` first when token validity is uncertain
+
+## 9 — Snap-in / AirSync connector development
+
+**Covers**: planning, building, updating, and testing DevRev snap-ins and AirSync connectors (any
+external system → DevRev integration). Routes to the `devrev` plugin from `QK-SnapIn/devrev-qk-agents`
+(third-party — **plugin is not auto-enabled**; the user runs `/plugin install devrev@devrev-qk-agents`
+once before first use).
+
+**Example prompts**
+- "Plan an AirSync connector for HubSpot."
+- "Build the snap-in code from the approved TDD."
+- "Add pagination to the Trello connector."
+- "Test this snap-in end-to-end (unit + UI automation)."
+- "/devrev:plan-snapin" → "/devrev:build-snapin" → "/devrev:test-snapin"
+
+**Under the hood**: PM → Architect → Tester pipeline. PM gathers requirements across 4 discovery
+rounds → feasibility check (does a native connector already exist?) → PRD → TDD → explicit user
+approval gate. Architect web-researches the real external API across 8 areas (auth, endpoints, rate
+limits, pagination, errors, incremental sync, permissions, attachments), documents 15 engineering
+decisions, and generates the full project (AirSync connectors clone-and-rewrite a production Asana
+template rather than starting from a blank scaffold). Tester writes Jest unit tests (≥70% coverage)
+then drives real UI automation (install → configure → sync → verify field-by-field → test
+incremental).
+
+**Precondition**: 1–2 MCP servers must be added manually — see [01 — Getting Started, "Optional:
+snap-in development"](01-getting-started.md). This skill also **explicitly excludes** the same
+plugin's Implementation (dashboard) vertical — that vertical hand-writes widget JSON and violates
+skill 4's hard rule; dashboards always go through skill 4.
 
 ## The hosted MCP (always on)
 

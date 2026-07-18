@@ -24,11 +24,19 @@ Per repo listed in `repos.txt`, the script:
 repo, so restart Claude Code or run `/plugin marketplace update devrev-aai-plugins` to pick up new
 commands, skills, or agents.
 
+**After `repos/devrev-qk-agents` updates**: the `devrev` plugin (skill 9's snap-in pipeline) comes
+from that repo. Restart Claude Code or run `/plugin marketplace update devrev-qk-agents`. Any
+learnings captured via `/devrev:improve-skill` **inside that clone** get overwritten by the update —
+so those must have already been mirrored into `skills/9-snapin-development/SKILL.md`'s Field notes
+(the skill's playbook enforces this).
+
 ## Adding a new toolchain repo
 
 Add its URL as a line in `repos.txt` (comments start with `#`), then run the update-repos skill.
-Record the outcome in `docs/CLONE_RESULTS.md` — and if a repo turns out to be inaccessible, mark it
-"NOT VERIFIED — repo not accessible" rather than guessing its contents.
+Update the curated `docs/CLONE_RESULTS.md` if the change is durable (this file is the build-time
+snapshot); the per-machine `docs/CLONE_RESULTS.local.md` is written by the bootstrap hook and is
+gitignored. If a repo turns out to be inaccessible, mark it "NOT VERIFIED — repo not accessible"
+rather than guessing its contents.
 
 ## Refreshing agent-building knowledge
 

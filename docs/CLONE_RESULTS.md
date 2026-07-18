@@ -1,14 +1,16 @@
 # Clone results
 
-Generated: 2026-07-18 (initial build). Clones are shallow (`--depth 1`). Refresh via the
-`update-repos` skill (explicit request only); the bootstrap hook appends rows here if it
-performs the initial clone on a fresh machine.
+Generated: 2026-07-18 (initial build). Clones are shallow (`--depth 1`). This file is the
+**curated build-time snapshot**; the bootstrap hook writes its per-machine outcomes to
+`docs/CLONE_RESULTS.local.md` (gitignored). Refresh via the `update-repos` skill (explicit request
+only).
 
 | Repo | Status | Default branch | Commit SHA | Notes |
 |---|---|---|---|---|
-| aai-skills | OK | main | 57b8a5f | Plugin marketplace `devrev-aai-plugins`: dashboard-dev + dataset-builder |
+| aai-skills | OK | main | 57b8a5f | Plugin marketplace `devrev-aai-plugins`: dashboard-dev + dataset-builder (both auto-enabled) |
 | dashboard-sync-cli | OK | main | 451a51d | Python CLI (pipx-installed by bootstrap); dashboard-dev shells out to it |
 | api-specs | OK | main | 79cd29e | OpenAPI contracts (`specs/next/openapi-internal.yaml`) for skills/7 grounding |
+| devrev-qk-agents | PENDING | main | — | Third-party plugin marketplace `devrev-qk-agents` (source repo `QK-SnapIn/devrev-qk-agents`), powers skills/9's snap-in vertical. Registered in `.claude/settings.json` `extraKnownMarketplaces` but **NOT auto-enabled** — user opts in with `/plugin install devrev@devrev-qk-agents`. Cloned by the bootstrap hook on first session after `.env` is present; the actual SHA on this machine will appear in `CLONE_RESULTS.local.md`. |
 
 ## Deliberate exclusions
 

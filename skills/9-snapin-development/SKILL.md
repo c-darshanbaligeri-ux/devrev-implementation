@@ -5,7 +5,7 @@ description: Use this skill when the user asks to build, plan, update, or test a
 
 # DevRev Snap-in Development
 
-This skill fills the one gap `CLAUDE.md`'s Identity line names explicitly: "all DevRev implementation work **apart from snap-in development**." It routes to the `devrev` Claude Code plugin (source repo `QK-SnapIn/devrev-qk-agents`, a third-party org, distinct from `devrev/aai-skills`). The actual domain knowledge (PRD/TDD templates, ADaaS SDK patterns, manifest structure, CLI workflow) lives in the plugin's own skills — this file only routes and states the hard rules.
+This skill covers snap-in and AirSync connector development end-to-end. It routes to the `devrev` Claude Code plugin (source repo `QK-SnapIn/devrev-qk-agents`, a third-party org, distinct from `devrev/aai-skills`). The actual domain knowledge (PRD/TDD templates, ADaaS SDK patterns, manifest structure, CLI workflow) lives in the plugin's own skills — this file only routes and states the hard rules. It's the one skill in this repo whose plugin isn't auto-activated: `.claude/settings.json` registers the marketplace but deliberately excludes the plugin from `enabledPlugins` (third-party org, manual trust boundary).
 
 **Install is manual, one-time, and not auto-enabled** (unlike `dashboard-dev`/`dataset-builder`, which activate automatically): the marketplace source is registered in `.claude/settings.json`'s `extraKnownMarketplaces`, but `enabledPlugins` deliberately does not include it — auto-activating a third-party org's code on every session is a real trust boundary this repo doesn't cross silently. Before using any `/devrev:*` command below, the user runs:
 
@@ -22,7 +22,7 @@ The repo also clones the source at `repos/devrev-qk-agents` (via `repos.txt`, sa
 | Plan a snap-in or AirSync connector (gather requirements, PRD, TDD) | `/devrev:plan-snapin` |
 | Build the deployable code (manifest, functions, extraction/loading workers) | `/devrev:build-snapin` |
 | Test it (unit tests + UI automation) | `/devrev:test-snapin` |
-| Modify an existing snap-in (add entity, fix pagination, switch auth, add attachments) | `/devrev:update-snapin` |
+| Modify an existing snap-in — 7 supported update types: add entity, add pagination, switch auth, add bidirectional loading, add attachments, add rate limiting, add nested children | `/devrev:update-snapin` |
 | Generate `external_domain_metadata.json` / `initial_domain_mapping.json` standalone | `/devrev:generate-metadata` |
 | Quick pattern/decision lookup (auth, pagination, rate limiting) without a full build | `/devrev:search-guide` |
 | Report a mistake the plugin's agents made so it doesn't repeat | `/devrev:improve-skill` — see "Self-learning is plugin-scoped" below |
@@ -33,7 +33,7 @@ The repo also clones the source at `repos/devrev-qk-agents` (via `repos.txt`, sa
 **Never hand-write snap-in code or a manifest directly, and never skip straight to `/devrev:build-snapin` for a new connector without a plan.** The pipeline exists because the Architect's 15 documented engineering decisions and mandatory API research (never hallucinated) are what make the generated code correct:
 
 1. `/devrev:plan-snapin` — PM gathers requirements across 4 discovery rounds → feasibility check (does a native connector already exist?) → PRD → TDD with sequence/data-mapping diagrams → explicit user approval gate → structured handoff brief
-2. `/devrev:build-snapin` — Architect consumes the handoff, web-researches the real external API (8 research areas: auth, endpoints, rate limits, pagination, errors, incremental sync, permissions, attachments), documents 15 technical decisions, generates the complete project (for AirSync: clones and rewrites the production Asana template rather than starting from a blank scaffold)
+2. `/devrev:build-snapin` — Architect consumes the handoff, web-researches the real external API (8 research areas: auth, endpoints, rate limits, pagination, errors, incremental sync, permissions, attachments), documents 15 technical decisions, and generates the complete project. **For AirSync connectors**, the Architect is required to clone the production Asana template and rewrite it (a hard rule, not an optimization — it exists because generating 20+ files from a blank scaffold produced unreliable output in the plugin's build history)
 3. `/devrev:test-snapin` — Tester writes Jest unit tests (normalization, mapping, error handling, state, pagination; target 70%+ coverage), then drives a real UI automation pass (install → configure mapping → run sync → verify imported data field-by-field → test incremental sync)
 
 Bugs flow back upstream, not sideways: code bugs → Architect, requirements bugs → PM, systematic/repeated agent errors → `/devrev:improve-skill`.
@@ -51,6 +51,8 @@ claude mcp add airsync chef-cli mcp initial-mapping
 ```
 
 A third MCP reference — "devrev-sdk MCP" (for checking `@devrev/ts-adaas` breaking changes after cloning the Asana template) — is named throughout the plugin's Architect skill/agent but its setup command is not documented anywhere in the plugin itself; treat it as **NOT VERIFIED** and tell the user to ask the plugin's maintainers rather than guessing a `claude mcp add` invocation for it.
+
+The `airsync` MCP above is one specific mode of `chef-cli` (the DevRev AirSync mapping tool). The plugin's `build-snapin` command also references a separate mode — `chef-cli mcp` at `https://developer.devrev.ai/airsync/mcp` — for constructing `initial_domain_mapping.json`. Both are provided by the same `chef-cli` binary; if the user hits `chef-cli: command not found`, they need to install the AirSync tooling per DevRev's developer docs before the mapping/metadata commands work.
 
 If a snap-in command reports the MCP server isn't connected, tell the user exactly which command above to run and STOP — never proceed without it (the commands themselves also self-check and refuse).
 

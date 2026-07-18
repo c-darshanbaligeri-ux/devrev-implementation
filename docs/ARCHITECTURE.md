@@ -23,14 +23,15 @@ devrev-implementation/
 │   ├── 1-object-schema-customization/{SKILL.md, references/}
 │   ├── 2-stage-lifecycle-customization/{SKILL.md, references/}
 │   ├── 3-data-upload-and-org-build/{SKILL.md, references/}
-│   ├── 4-dashboards-and-widgets/SKILL.md
+│   ├── 4-dashboards-and-widgets/{SKILL.md, references/}
 │   ├── 5-datasets/SKILL.md
 │   ├── 6-workflows/{SKILL.md, operations/, references/, examples/, scripts/}
-│   ├── 7-agent-building/{SKILL.md, commands/, knowledge/, references/, scripts/}
+│   ├── 7-agent-building/{SKILL.md, README.md, commands/, knowledge/, references/, scripts/}
 │   ├── 8-devrev-api/{SKILL.md, references/}
 │   └── 9-snapin-development/SKILL.md
 ├── repos/.gitkeep                  (Clone target, gitignored after population)
-└── docs/{ARCHITECTURE.md, SUMMARY.md, CLONE_RESULTS.md}
+├── docs/{ARCHITECTURE.md, SUMMARY.md, CLONE_RESULTS.md, LEARNINGS.md}   # LEARNINGS.md is the append-only journal for capture-learnings
+└── documentation/                  (User-facing docs: getting-started, tour, using-the-skills, maintenance, troubleshooting)
 ```
 
 ## Design Rationale

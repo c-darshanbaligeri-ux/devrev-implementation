@@ -16,6 +16,10 @@
 | Workflow trigger returns 404 | Workflow is still a draft | Publish (Deploy in the Workflows UI) first — triggering a draft 404s |
 | `gcloud`/`bq`/`kubectl` errors during dataset work | Ponos-path tools not installed (by design) | Run `/dataset-builder:setup` — only needed for Ponos; PaaS needs nothing extra |
 | Agent-building command asks for `ORG_PAT` | Mutating internal-API call needs the optional org token | Add `ORG_PAT=` to `.env`, or stick to read-only/public operations |
+| `/devrev:*` snap-in commands don't resolve | Plugin never installed (deliberately not auto-enabled — third-party org) | Run `/plugin install devrev@devrev-qk-agents` once. If the marketplace itself won't resolve, register the local clone: `/plugin marketplace add ./repos/devrev-qk-agents` |
+| Snap-in build/update/metadata command reports an MCP server isn't connected | Required MCP servers not opted in (bootstrap doesn't install them; third-party services) | `claude mcp add snapin-builder --transport http -s project https://snapin-builder-mcp.onrender.com/mcp` for build/update/generate-metadata/search; `claude mcp add airsync chef-cli mcp initial-mapping` for `/devrev:generate-metadata` only |
+| Snap-in Architect mentions "devrev-sdk MCP" and it isn't set up | Third MCP server referenced by the plugin without a documented setup command | Treat as NOT VERIFIED; ask the plugin's maintainers rather than guessing an install line |
+| `/create-dashboard` doesn't resolve but `/dashboard-dev:dashboard-create` does | Plugin command's frontmatter uses the `dashboard-create` name; namespaced form always works | Use `/dashboard-dev:dashboard-create` (same command); same for `/modify-dashboard` → `/dashboard-dev:modify-dashboard` |
 
 Diagnostic quick kit:
 
@@ -36,10 +40,11 @@ they're worth knowing as the human in the loop.
 Before any of the following, the agent states the impact and waits for your yes:
 
 - any `*.delete`, any `*.merge`
-- deprecations (custom link types, stages, states, stage diagrams)
+- deprecations (custom link types, stages within a diagram via `is_deprecated` — whole-diagram or state deprecation are undocumented; verify against live API before attempting)
 - `objects.bulk-upgrade` (flagged as unverified in the public API — treated with extra caution)
-- `web-crawler-jobs.control`
+- `web-crawler-jobs.control` with `stop` or `reset`
 - dataset / PaaS job deletion, workflow deletion
+- `devrev snap_in_version delete-one` (only one non-published version per package; required before creating a new version, but destroys the deleted version's state)
 
 ### Verify-after-change
 

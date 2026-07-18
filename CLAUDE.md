@@ -21,6 +21,8 @@ When the user asks to work with DevRev, match the request to a skill and **read 
 | Make any raw DevRev REST API call ("call works.list", "get account details", "create a ticket via API") | `skills/8-devrev-api` |
 | Build, plan, update, or test a snap-in or AirSync connector ("build a HubSpot connector", "sync Asana into DevRev", "add pagination to the Trello connector") | `skills/9-snapin-development` (routes to a third-party plugin, manual install required — never `skills/4`'s dashboard vertical) |
 | "Update the repos" / "pull latest" / "sync repos to main" / "refresh the cloned repos" (explicit request only — never automatically) | `.claude/skills/update-repos` |
+| "Remember this so we don't hit it again", any correction, any undocumented restriction/behavior discovered mid-task | `.claude/skills/capture-learnings` (routes the fix to the specific owning file + `docs/LEARNINGS.md`) |
+| Route unclear or genuinely spanning multiple skills | `.claude/skills/implementation-router` (uses this same routing table to pick a skill, or picks the lowest-numbered one for cross-domain requests) |
 
 **Rule**: open the matched SKILL.md file and follow its playbook. Do not reconstruct API endpoint formats, payload structures, scope names, or JSON schemas from training data — every API fact must come from the skill's reference files.
 
@@ -29,7 +31,7 @@ When the user asks to work with DevRev, match the request to a skill and **read 
 This repo requires **one manual step** to activate: create `.env` from `.env.example` and populate `DEVREV_PAT` + `DEVREV_ENDPOINT`. Once `.env` exists, a `SessionStart` hook (`.claude/hooks/bootstrap-workspace.sh`) auto-configures the environment on session start:
 
 1. **Workspace directories**: creates `dashboards/`, `datasets/`, `plans/`, `logs/`, `templates/` synchronously.
-2. **Toolchain repos clone** (background, once): if `repos/aai-skills/.git` doesn't exist, loops over non-comment lines in `repos.txt` and clones each to `repos/<name>`. Clone status logs to `.claude/.auto-setup/install.log` and appends a result table to `docs/CLONE_RESULTS.md`.
+2. **Toolchain repos clone** (background, once): if any repo in `repos.txt` is missing, loops over the non-comment lines and clones each to `repos/<name>`. Clone status logs to `.claude/.auto-setup/install.log` and appends a per-machine result table to `docs/CLONE_RESULTS.local.md` (gitignored). The curated `docs/CLONE_RESULTS.md` is the build-time snapshot and is not touched by the hook.
 3. **`dashboard-sync` CLI install** (background, once): if `dashboard-sync` is not on PATH and no install is already running, installs `pipx` via Homebrew (if missing) and then `pipx install git+https://github.com/devrev/dashboard-sync-cli.git`. Logs to `.claude/.auto-setup/install.log`.
 4. **Dashboard workspace init**: once the CLI is present, runs `dashboard-sync init` once (tracked by the `.claude/.auto-setup/init.done` marker, since this repo pre-creates `dashboards/` itself).
 5. **Plugin hook**: the `dashboard-dev` plugin's own `SessionStart` hook generates `config.yaml` from `.env`.

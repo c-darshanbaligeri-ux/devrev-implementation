@@ -32,3 +32,9 @@ If `repos/aai-skills` changed, the `dashboard-dev`/`dataset-builder` plugins com
 (marketplace `devrev-aai-plugins`, registered in `.claude/settings.json`) — restart Claude Code or
 run `/plugin marketplace update devrev-aai-plugins` so new commands/skills/agents load. Mention
 this to the user after a successful `aai-skills` update.
+
+If `repos/devrev-qk-agents` changed (skill 9's snap-in build pipeline), tell the user to restart
+Claude Code or run `/plugin marketplace update devrev-qk-agents`. Also warn them that any
+`/devrev:improve-skill` patches previously applied inside `repos/devrev-qk-agents/` are now gone —
+verify `skills/9-snapin-development/SKILL.md`'s Field notes captured them (per the skill's
+"Self-learning is plugin-scoped" section) before treating the refresh as complete.

@@ -321,4 +321,5 @@ differ from the references. Add entries via the `capture-learnings` protocol
 *corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
 better home or needs domain-level visibility.
 
-- _(none yet)_
+- **2026-07-18 · Artifact upload path works end-to-end.** `POST /artifacts.prepare` (body: `{"file_name","file_type"}`) returns `{id, url, form_data[]}` with a pre-signed S3 URL. Then `POST` (multipart form) all the `form_data[]` fields plus `file=@<path>` to `url`. Success is **HTTP 204** (empty body). Verify immediately with `GET /artifacts.get?id=<don>` — the file name + size land within seconds.
+- **2026-07-18 · No public artifact delete endpoint.** Verified live: `artifacts.delete`, `artifact-versions.delete`, `artifact-versions.delete-one` all return HTTP 404 route-not-found. Artifacts persist by design (content-hash addressable). Any test upload lives forever unless purged via infra — plan accordingly.

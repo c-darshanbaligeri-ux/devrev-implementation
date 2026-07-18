@@ -15,7 +15,7 @@ The agent cannot manipulate workflows directly through any built-in capability â
 |---|---|---|---|
 | `workflows.list` | POST | `/internal/workflows.list` | List existing workflows |
 | `workflows.get` | POST | `/internal/workflows.get` | Fetch one workflow (steps, version, status) |
-| `workflows.create` | POST | `/internal/workflows.create` | Create a new workflow shell |
+| `workflows.create` | POST | `/internal/workflows.create` | Create a new workflow shell. **Required body field: `title` (not `name`).** Verified 2026-07-18: an empty body returns HTTP 400 `missing_required_field: title`; a body with `name` or `state` returns HTTP 400 `invalid_field`. Minimum valid body: `{"title": "..."}`. |
 | `workflows.update` | POST | `/internal/workflows.update` | Update workflow-level metadata |
 | `workflows.delete` | POST | `/internal/workflows.delete` | Delete a workflow |
 | `workflows.trigger` | POST | `/internal/workflows.trigger` | Fire a manual/API-triggered workflow |

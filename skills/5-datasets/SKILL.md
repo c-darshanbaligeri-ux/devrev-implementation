@@ -88,4 +88,5 @@ differ from the references. Add entries via the `capture-learnings` protocol
 *corrects* a reference doc, fix the doc in place too — this section is for knowledge that has no
 better home or needs domain-level visibility.
 
-- _(none yet)_
+- **2026-07-18 · Raw dataset endpoints are plugin-internal — no direct REST access at `/internal/datasets.*`.** Verified live: `POST /internal/datasets.list`, `/internal/sources.list`, `/internal/datasets.summary` all return HTTP 404. The `dataset-builder` plugin talks to serengeti / Oasis endpoints under different paths that this repo does not document. If a user tries to hand-roll dataset REST calls, redirect them to `/dataset-builder:*` commands.
+- **2026-07-18 · Ponos tools verified missing.** On a clean install: `gcloud`, `bq`, `kubectl` all absent (only `aws` was present + SSO-authenticated). Matches the design — Ponos tools require interactive login and are deliberately NOT auto-installed. `/dataset-builder:setup` correctly prompts for them; PaaS path continues to work without them.

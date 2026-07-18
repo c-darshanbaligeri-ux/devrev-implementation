@@ -527,7 +527,7 @@ All endpoints use `POST /internal/<endpoint>` with `Authorization: <ORG_PAT>` un
 | `ai-agents.get` | `id` | Accepts DON ID **or** `display_id` format (`ai_agent-N`) |
 | `ai-agents.create` | `goal` | `name` is optional (auto-assigned if omitted); `goal` is required |
 | `ai-agents.update` | `id` | Accepts DON ID **or** `display_id` format; partial update preserves unmentioned fields |
-| `ai-agents.delete` | `id` | Accepts DON ID; returns `{}` on success |
+| `ai-agents.delete` | `id` | Accepts DON ID (not `display_id`). **Returns HTTP 201** (not 200/204) with the deleted agent's full body. `.get` immediately after returns HTTP 404 `not_found`. Verified live 2026-07-18. |
 | `ai-agents.versions.list` | `agent` | `agent` = DON ID of agent (NOT `agent_id`); filter is REQUIRED |
 | `ai-agents.versions.get` | `id` | `id` = version DON ID |
 | `ai-agents.plans.list` | — | ❌ **Route not found** — endpoint does not exist |

@@ -38,3 +38,23 @@ Claude Code or run `/plugin marketplace update devrev-qk-agents`. Also warn them
 `/devrev:improve-skill` patches previously applied inside `repos/devrev-qk-agents/` are now gone —
 verify `skills/9-snapin-development/SKILL.md`'s Field notes captured them (per the skill's
 "Self-learning is plugin-scoped" section) before treating the refresh as complete.
+
+If `repos/aai-custom-computer-capabilities` changed, that repo is the original source of
+`skills/7-agent-building/` (agent-building toolkit) and the Computer snap-ins routed via `skills/9`.
+Nothing auto-reloads — the destination is inline, not routed — but flag any meaningful upstream
+change to the user so they can decide whether to re-diff `skills/7-agent-building/`'s inlined copy
+against the fresh clone (see `docs/SUMMARY.md` § "Fixups Applied" for the original adaptations to
+preserve when re-inlining).
+
+If `repos/computer-skill` changed (community fork of DevRev Computer Skills — 10 sales-oriented
+skills), no plugin/marketplace refresh is needed. It's grounding material only; useful to skim if
+`skills/6-workflows` or `skills/0-solution-architecture` might borrow a pattern from
+`create-workflow-template`, `deal-review-meddpicc`, or the sales-agent recipes.
+
+## Non-git references (not touched by this skill)
+
+The Google Doc "Agent Skills Marketplace"
+(`https://docs.google.com/document/d/16NFkXnoY4c4xASkmoBfkG2uP32MInqlxzA2HOmUye2o/`) is a
+provenance pointer only — it requires Google auth, isn't a git repo, and can't be synced by this
+script. If the user asks to "update everything from source", clarify that this doc is manually
+reviewed, not auto-refreshed.

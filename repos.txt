@@ -18,7 +18,27 @@ https://github.com/devrev/api-specs
 # "Implementation" (dashboard) vertical is out of scope (conflicts with skills/4's hand-written-JSON ban).
 https://github.com/QK-SnapIn/devrev-qk-agents
 
+# GROUNDING — Original source repo for the agent-building toolkit inlined at skills/7-agent-building/
+# and for the Computer snap-ins routed via skills/9. Content was copied and adapted at build time
+# (2026-07-18); keep a live clone here so future updates can be diffed against skills/7 before
+# re-inlining. Private repo — requires GitHub read access to the devrev org (same as api-specs).
+https://github.com/devrev/aai-custom-computer-capabilities
+
+# REFERENCE — Community fork of DevRev Computer Skills: 10 sales-oriented Claude Code skills
+# (create-workflow-template, deal-review-meddpicc, sales-call-plan-coach, account-evaluation/research,
+# customer-brief, sales-search-and-lookup, sales-context, next-step-for-opportunity, trace-diagnosis).
+# Public. Not routed to by any skill in this repo; kept as grounding material for skills/6-workflows
+# (its create-workflow-template overlaps with our WorkflowTemplateV2 authoring) and for future
+# sales-agent design work (skill 0 blueprints).
+https://github.com/shashankcube/computer-skill
+
 # Deliberately excluded (see docs/CLONE_RESULTS.md):
 #   https://github.com/devrev/devrev-snap-ins  — snap-in SOURCE (not tooling) is out of scope for this repo
 #   https://github.com/devrev/mcp-server       — archived; superseded by the hosted MCP in .mcp.json
 # devrev/auto-annotations is auto-cloned on demand by skills/7-agent-building/scripts/check-annotations.sh
+#
+# Non-git source references (NOT clonable by this file — documented for provenance only):
+#   Google Doc "Agent Skills Marketplace"
+#     https://docs.google.com/document/d/16NFkXnoY4c4xASkmoBfkG2uP32MInqlxzA2HOmUye2o/
+#     Requires Google auth. Design/marketplace notes that informed some of the skill routing;
+#     no automated sync — treat as read-only human reference.

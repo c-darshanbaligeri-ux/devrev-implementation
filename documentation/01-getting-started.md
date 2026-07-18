@@ -68,7 +68,7 @@ With `.env` present it:
 | Step | What | How |
 | --- | --- | --- |
 | Workspace dirs | Creates `dashboards/`, `datasets/`, `plans/`, `logs/`, `templates/` | Instant, synchronous |
-| Toolchain clone | Clones every repo in `repos.txt` into `repos/` (aai-skills, dashboard-sync-cli, api-specs, devrev-qk-agents) | Background, once; results appended to `docs/CLONE_RESULTS.local.md` (per-machine) — the curated `docs/CLONE_RESULTS.md` is the build-time snapshot |
+| Toolchain clone | Clones every repo in `repos.txt` into `repos/` (6 total: aai-skills, dashboard-sync-cli, api-specs, devrev-qk-agents, aai-custom-computer-capabilities, computer-skill) | Background, once; results appended to `docs/CLONE_RESULTS.local.md` (per-machine) — the curated `docs/CLONE_RESULTS.md` is the build-time snapshot |
 | CLI install | Installs `pipx` (via Homebrew if missing), then `dashboard-sync` from `devrev/dashboard-sync-cli` | Background, once |
 | CLI init | Runs `dashboard-sync init` once the CLI is on PATH | Next session start |
 | Dashboard config | The `dashboard-dev` plugin's own hook generates `config.yaml` from `.env` | Automatic |
@@ -95,8 +95,8 @@ curl -s -X POST 'https://api.devrev.ai/ping' -H "Authorization: Bearer $DEVREV_P
 dashboard-sync --version
 
 # Toolchain repos cloned?
-ls repos/           # expect: aai-skills, dashboard-sync-cli, api-specs, devrev-qk-agents
-cat docs/CLONE_RESULTS.md          # curated build-time snapshot
+ls repos/           # expect: aai-skills, dashboard-sync-cli, api-specs, devrev-qk-agents, aai-custom-computer-capabilities, computer-skill
+cat docs/CLONE_RESULTS.md          # curated build-time snapshot + non-git reference pointers (Google Doc)
 cat docs/CLONE_RESULTS.local.md    # per-machine bootstrap output (if the hook has cloned anything on this machine)
 
 # Plugins loaded? (inside Claude Code)

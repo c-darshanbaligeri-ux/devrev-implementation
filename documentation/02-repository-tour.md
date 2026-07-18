@@ -72,14 +72,16 @@ The numbers encode the order the agent reasons in — design before build, found
   manual `/plugin install`. Also excludes half of the routed plugin's surface (the dashboard
   vertical, which hand-writes widget JSON and violates skill 4's hard rule).
 
-## The four cloned toolchains (`repos/`)
+## The six cloned toolchains (`repos/`)
 
-| Repo | Role |
-| --- | --- |
-| `repos/aai-skills` | Plugin marketplace `devrev-aai-plugins` — source of the `dashboard-dev` and `dataset-builder` plugins (auto-enabled) |
-| `repos/dashboard-sync-cli` | Python CLI the dashboard plugin shells out to for all platform I/O (installed via pipx by the bootstrap) |
-| `repos/api-specs` | DevRev OpenAPI contracts (`specs/next/openapi-internal.yaml`) — grounding for agent-building internal API calls |
-| `repos/devrev-qk-agents` | Third-party plugin source (marketplace `devrev-qk-agents`) — powers skill 9's PM/Architect/Tester snap-in pipeline; plugin **not auto-enabled** — user runs `/plugin install devrev@devrev-qk-agents` once |
+| Repo | Role | Sync target |
+| --- | --- | --- |
+| `repos/aai-skills` | Plugin marketplace `devrev-aai-plugins` — source of the `dashboard-dev` and `dataset-builder` plugins (auto-enabled) | Plugin behavior |
+| `repos/dashboard-sync-cli` | Python CLI the dashboard plugin shells out to for all platform I/O (installed via pipx by the bootstrap) | CLI on PATH |
+| `repos/api-specs` | DevRev OpenAPI contracts (`specs/next/openapi-internal.yaml`) — grounding for agent-building internal API calls | Skill 7 grounding |
+| `repos/devrev-qk-agents` | Third-party plugin source (marketplace `devrev-qk-agents`) — powers skill 9's PM/Architect/Tester snap-in pipeline; plugin **not auto-enabled** — user runs `/plugin install devrev@devrev-qk-agents` once | Skill 9 plugin |
+| `repos/aai-custom-computer-capabilities` | Original source of `skills/7-agent-building/` (inlined) and the Computer snap-ins routed via skill 9. **Private** repo — same GitHub access as api-specs. Kept as a live clone so future upstream changes can be diffed against the inlined copy | Grounding / re-inline diff |
+| `repos/computer-skill` | Community fork (`shashankcube/computer-skill`): 10 sales-oriented Claude Code skills. Public. Reference material only, not routed to by any skill here | Grounding for future sales-agent design |
 
 Rules: `repos/` is a **clone target, never a source of truth** — gitignored, never hand-edited,
 refreshed only when you explicitly ask (see [04 — Maintenance](04-maintenance.md)). If a
@@ -91,6 +93,11 @@ Deliberately excluded (documented in `docs/CLONE_RESULTS.md`): `devrev/devrev-sn
 *source* is out of scope — skill 9 covers snap-in *building* via the routed plugin) and
 `devrev/mcp-server` (archived — the hosted MCP in `.mcp.json` replaces it). `devrev/auto-annotations`
 is auto-cloned on demand by the agent-building annotation checker.
+
+**Non-git reference (documented, not cloned)**: the Google Doc "Agent Skills Marketplace"
+(`https://docs.google.com/document/d/16NFkXnoY4c4xASkmoBfkG2uP32MInqlxzA2HOmUye2o/`) is a provenance
+pointer requiring Google auth — recorded in `repos.txt` and `docs/CLONE_RESULTS.md`, but not
+automated (`update-repos` can't sync it).
 
 ## One `.env` serves everything
 

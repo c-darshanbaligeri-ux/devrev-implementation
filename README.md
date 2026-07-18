@@ -24,7 +24,7 @@ That's it. Everything else auto-configures on session start.
 
 | Component | How it initializes |
 | --- | --- |
-| **Repos clone** (`repos/aai-skills`, `repos/dashboard-sync-cli`, `repos/api-specs`, `repos/devrev-qk-agents`) | SessionStart hook clones on first run; per-machine status table written to `docs/CLONE_RESULTS.local.md` (gitignored). Curated build-time snapshot lives at `docs/CLONE_RESULTS.md`. |
+| **Repos clone** (6 total: `aai-skills`, `dashboard-sync-cli`, `api-specs`, `devrev-qk-agents`, `aai-custom-computer-capabilities`, `computer-skill`) | SessionStart hook clones on first run; per-machine status table written to `docs/CLONE_RESULTS.local.md` (gitignored). Curated build-time snapshot lives at `docs/CLONE_RESULTS.md`. Refresh on demand via the `update-repos` skill. |
 | **`dashboard-sync` CLI** | SessionStart hook installs via `pipx` on first run (background; logs to `.claude/.auto-setup/install.log`) |
 | **Workspace directories** (`dashboards/`, `datasets/`, `plans/`, `logs/`, `templates/`) | SessionStart hook creates synchronously; CLI then runs `dashboard-sync init` once present |
 | **`config.yaml`** | The `dashboard-dev` plugin's own hook generates it from `.env` |

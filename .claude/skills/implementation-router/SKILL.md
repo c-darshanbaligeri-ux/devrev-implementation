@@ -40,12 +40,21 @@ every fact must come from the matched skill's reference files.
    - "chart of open tickets per account" → 4 (dashboards)
    - "a dataset joining tickets and accounts" → 5 (datasets)
    - "when X happens, do Y" → 6 (workflow)
-   - "the agent should be able to look up order status" / "create an AI agent skill" / "build a
-     workflow tool" / "create an agent workflow" → 6 (agent-callable skill, four-block pattern).
-     **Always start from `skills/6-workflows/examples/default-ai-agent-skill-template.json`** — the
-     project default scaffold — then customize per `skills/6-workflows/references/ai-agent-skill-pattern.md`.
-     Never hand-author the four-block wiring from scratch. In contrast, "make the agent smarter /
-     fix the agent's answers / configure the agent" → 7 (agent config).
+   - Skill 6 covers two distinct shapes — route by which one the ask matches:
+     - **Generic workflow** ("when a ticket is created, notify the owner"; "every Monday morning
+       run X"; "if enhancement priority changes, do Y") → 6, pick the closest `working-*.json`
+       in `examples/`. **No default template.**
+     - **AI agent skill workflow** ("the agent should be able to look up order status"; "create an
+       AI agent skill"; "let the agent call this API"; "a skill for the agent to invoke") → 6, and
+       **always start from `skills/6-workflows/examples/default-ai-agent-skill-template.json`**
+       (the four-block scaffold), then customize per
+       `skills/6-workflows/references/ai-agent-skill-pattern.md`. Never hand-author the four-block
+       wiring from scratch.
+     - If the phrasing is bare "workflow" and it isn't obvious which shape is meant, ask once
+       ("Is this something an AI agent will invoke, or is it event/timer-triggered?") before
+       scaffolding.
+   - In contrast, "make the agent smarter / fix the agent's answers / configure the agent" → 7
+     (agent config), not skill 6.
    - "call works.list" / "hit the API" → 8 (raw REST)
    - "build a connector for X" / "sync X into DevRev" → 9 (snap-in development) — but "build a
      dashboard/widget for X" always stays at 4, even if the user's phrasing echoes skill 9's plugin's

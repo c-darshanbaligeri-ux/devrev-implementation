@@ -47,12 +47,17 @@ When the skill wraps an HTTP API, build the `url` (and `body`, if needed) as a s
 
 This keeps optional fields out of the query string entirely when the agent didn't supply them, instead of sending `&id=` empty.
 
-## Default starter — use this every time
+## Default starter — use this every time an AI agent skill is asked for
 
-Whenever the user asks to create an AI agent skill, an agent workflow, or a workflow tool, **start
-from `examples/default-ai-agent-skill-template.json`** — a minimal, importable 4-step scaffold
-(trigger → skill block → HTTP → set output) that relies on operation defaults instead of restating
-every port schema. Copy the file, then customize in this order:
+Scope: this section applies only to **AI agent skill workflows** — the four-block shape defined in
+this document. It does NOT apply to generic workflows (event-driven or manual/API-triggered
+automations that run independently, no calling agent) — those are covered by `template-json-format.md`
+and have no default scaffold; pick the closest `working-*.json` for the pattern.
+
+Whenever the user asks to create an AI agent skill, an agent-callable skill, or "a skill for the
+agent to call/invoke", **start from `examples/default-ai-agent-skill-template.json`** — a minimal,
+importable 4-step scaffold (trigger → skill block → HTTP → set output) that relies on operation
+defaults instead of restating every port schema. Copy the file, then customize in this order:
 
 1. Change the top-level `title` and `description` (description is what the calling agent reads — write it as a tool description with modes, params, edge cases).
 2. Rewrite the `ai_agent_skill_trigger_1` step's `input_values` to declare the parameter schema the agent will pass.

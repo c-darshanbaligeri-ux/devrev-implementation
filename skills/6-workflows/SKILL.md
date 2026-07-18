@@ -35,17 +35,26 @@ Also figure out which **shape** of workflow this is:
 
 ## Step 2: Author the template JSON
 
-**Default template for AI agent skills / workflow tools**: whenever the ask is "create an AI agent
-skill", "agent workflow", "workflow tool", or "agent-callable skill" (the shape where an agent
-invokes it mid-conversation with parameters and gets a structured result back), **always start from
-`examples/default-ai-agent-skill-template.json`** — a minimal, importable 4-step scaffold
-(trigger → skill block → HTTP → set output). Copy it, then customize as described in
-`references/ai-agent-skill-pattern.md` § "Default starter — use this every time". Do not
-hand-author the four-block wiring from scratch — it's easy to miss `block_step_reference_key`,
-`labels: ["skill"]`, or the `$get('ai_agent_skill_trigger_1', 'output').<field>` shape.
+**Two distinct shapes live in this skill — decide which one first**:
 
-For event-driven workflows (`ticket_created`, `sla_breach`, etc.), pick the closest `working-*.json`
-in `examples/` instead. General steps:
+- **Generic workflow** — event-driven (e.g. `ticket_created` → notify) or manual/API-triggered
+  automation that runs independently, no calling agent. No default scaffold; pick the closest
+  `working-*.json` in `examples/` for the pattern (loop, HTTP + AI, invoke_code, etc.). Continue
+  with the general steps below.
+- **AI agent skill workflow** — the four-block shape (`ai_agent_skill_trigger` → `ai_agent_skill`
+  block → action(s) → `set_ai_agent_skill_output`, `labels: ["skill"]`) that an AI agent invokes
+  mid-conversation to fetch data or take an action, then gets a structured result back. **Always
+  start from `examples/default-ai-agent-skill-template.json`** — a minimal importable scaffold —
+  and customize per `references/ai-agent-skill-pattern.md` § "Default starter — use this every
+  time". Never hand-author the four-block wiring from scratch: too easy to miss
+  `block_step_reference_key`, the `$get('ai_agent_skill_trigger_1', 'output').<field>` reference
+  shape, or `labels: ["skill"]`.
+
+If the phrasing is ambiguous ("build a workflow that..."), ask once which shape the user means —
+the two shapes have nothing in common structurally.
+
+General steps (apply to both shapes, except that agent-skill authoring always begins by copying
+the default template rather than composing from operation lookups):
 
 1. **Parse intent** — identify the trigger event (or, for an agent skill, the input parameters), the sequence of actions, any conditions/branching, and any loops.
 2. **Look up operations** — find the correct `{namespace, slug}` and input/output schema for each operation you need:

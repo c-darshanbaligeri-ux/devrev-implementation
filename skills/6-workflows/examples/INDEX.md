@@ -8,18 +8,28 @@ When a new template is confirmed working, add it here AND to the example table i
 
 To read one: `python3 -c "import json; d=json.load(open('<file>')); print(json.dumps(json.loads(d['data']), indent=2))"`
 
-## THE DEFAULT starter for a new agent-callable skill / workflow / tool
+## THE DEFAULT starter for an **AI agent skill workflow** (only)
 
-**Whenever the user asks to create an "AI agent skill", "agent workflow", "workflow tool", or
-"agent-callable skill", start from `default-ai-agent-skill-template.json`** — a minimal, importable
-4-step scaffold (trigger → skill block → HTTP → output) that relies on operation defaults instead
-of restating every port_schema. Rename `title` and `description`, wire the HTTP step's URL / method /
-auth to the target external API, and adjust the output mapping in `set_ai_agent_skill_output_1`.
-This is the shortest path from "user asks" to "importable template" — do not hand-author from scratch.
+**Scope**: this default template covers ONE specific shape only — the four-block workflow
+(`ai_agent_skill_trigger` → `ai_agent_skill` block → action(s) → `set_ai_agent_skill_output`,
+`labels: ["skill"]`) that an AI agent invokes mid-conversation to fetch data or take an action.
+It is **not** the default for generic workflows (event-driven or manual/API-triggered automations
+that run independently) — those have no default template; pick the closest `working-*.json` in
+the tables below.
+
+**Whenever the user asks to create an "AI agent skill", an "agent-callable skill", or "a skill for
+the agent to call/invoke"**, start from `default-ai-agent-skill-template.json` — a minimal,
+importable 4-step scaffold that relies on operation defaults instead of restating every port_schema.
+Rename `title` and `description`, rewrite the trigger's parameter schema, wire the HTTP step's
+URL / method / auth, and adjust the output mapping in `set_ai_agent_skill_output_1`. Do not
+hand-author from scratch.
+
+If the ask is bare "workflow" or "automation" (without an AI agent invoking it), skip this template
+and pick from the `working-*.json` tables below — that's the generic-workflow path.
 
 | File (exact) | Pattern |
 | --- | --- |
-| `default-ai-agent-skill-template.json` | **Default** minimal agent-skill scaffold — use this as the starting point for every new agent skill / workflow tool ask |
+| `default-ai-agent-skill-template.json` | **Default** minimal AI-agent-skill scaffold — use this as the starting point for every new AI agent skill ask. Do **not** use for generic (event-driven or manual) workflows. |
 
 ## Confirmed working
 

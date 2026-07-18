@@ -69,10 +69,10 @@ curl -X POST 'https://api.devrev.ai/custom-objects.create' \
 | --- | --- | --- |
 | `custom-objects.create` | `custom_type_fragment:write` | Create a record |
 | `custom-objects.update` | `custom_type_fragment:write` | Update fields/stage/description |
-| `custom-objects.delete` | `custom_type_fragment:write` | Delete a record |
+| `custom-objects.delete` | `custom_type_fragment:write` | Delete a record — **confirmed live 2026-07-19**: genuinely works (`HTTP 200 {}`, then `.get` 404s), not a stub |
 | `custom-objects.get` | none | Fetch one record |
-| `custom-objects.list` | none | List records |
-| `custom-objects.count` | none | Count records |
+| `custom-objects.list` | none | List records — **live-verified 2026-07-19: `leaf_type` is a required filter**, omitting it returns `HTTP 400 missing_required_field field_name:"leaf_type"` |
+| `custom-objects.count` | none | Count records — same required `leaf_type` filter as `.list` |
 
 > Access note: custom objects start with **zero access**, even for admins. Grant
 > object- and field-level roles in Settings > Object customization and
@@ -106,8 +106,11 @@ accept a `stage` value that must be a valid stage in that diagram.
    }'
    ```
 
-2. Reference that diagram from the custom type's schema fragment via
-   `stage_diagram_id` on `schemas.custom.set` (same field used for subtypes).
+2. Attach the diagram. **Live-verified 2026-07-19**: the write field is `stage_diagram` (a bare
+   DON-id **string**), not `stage_diagram_id` — that name is rejected (`invalid_field`); a nested
+   `{"stage_diagram":{"id":...}}` object is also rejected. Only a bare string succeeds. (For a
+   leaf type with no existing default diagram, `is_default: true` at `stage-diagrams.create` time
+   is an alternative, leaf-type-scoped path — see `skills/2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md` §5.)
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
@@ -116,10 +119,19 @@ accept a `stage` value that must be a valid stage in that diagram.
      "type": "tenant_fragment",
      "leaf_type": "campaign",
      "is_custom_leaf_type": true,
-     "stage_diagram_id": "<STAGE_DIAGRAM_ID>",
+     "description": "Attributes for Campaign",
+     "stage_diagram": "<STAGE_DIAGRAM_ID>",
      "fields": []
    }'
    ```
+
+   The read-side key (`schemas.aggregated.get`) is still named `stage_diagram_id` — only the
+   write-side field on `schemas.custom.set` is `stage_diagram`. If a `tenant_fragment` already
+   exists for this leaf type, replay its complete `fields` array (see §5 Common pitfalls) — a
+   partial replay 400s.
+   **Enforcement note**: this was confirmed to gate `custom-objects.update` correctly (non-adjacent
+   stage transitions rejected). The same attachment mechanism on a **stock-type subtype** did
+   *not* gate `works.update` in testing — see the stage-lifecycle skill's Field notes.
 
 3. Set the stage on a record:
 

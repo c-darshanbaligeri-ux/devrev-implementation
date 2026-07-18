@@ -16,7 +16,8 @@ AirSync connectors — see skills 6, 7, 9 for those.
 | Scope note | "None" means no scope is required, though object-level read/write access still applies. Ranges like `x:read,x:write,x:all` mean any one of those grants access. |
 | `/internal/` prefix | **Some endpoints live only under `/internal/`, not the public root.** Verified live 2026-07-18: `POST https://api.devrev.ai/internal/ai-agents.list` works with `Bearer $DEVREV_PAT`, while `POST /ai-agents.list` returns HTTP 404 "route not found". Skill 7 also uses `/internal/workflows.trigger` and other internal paths. If a documented endpoint 404s from the public root, try `/internal/<endpoint>` before assuming the endpoint is gone. **Confirmed live 2026-07-18, same pattern**: `objects.bulk-upgrade` exists ONLY at `/internal/objects.bulk-upgrade` — `{"type":"ticket"}` → HTTP 200 `{"id":"<job_don>"}` (poll via `jobs.get` for `job_category:"bulk_upgrade"`). This closes the long-open "is bulk-upgrade real" question — it is, just internal-only. |
 | Required list-filter params | <!-- corrected 2026-07-18: was "webhooks.list needs at least one filter param" --> **`webhooks.list` is the opposite of a normal `.list`: it accepts NO extra fields at all, not even `limit` or `cursor`.** Verified live 2026-07-18: `POST /webhooks.list` with body `{}` (or GET with no query params) returns `200 {"webhooks":[...]}`; adding `{"limit":10}` returns `400 {"type":"invalid_field","field_name":"limit"}`, and likewise for `cursor`, `id`, `name`, `event_types`. The only way to make the earlier-reported 400 happen is to send a body with *any* field in it — the fix is to send fewer params (an empty `{}`), not more. If another `.list` 400s with `type: invalid_field`, try removing the offending field before assuming a filter is missing. |
-| Response-wrapper drift | Response bodies use different top-level keys per op. Verified live 2026-07-18: `.create` typically returns `{"id": "..."}` or `{"<type>": {...}}` (e.g. `custom_state`, `custom_stage`, `fragment`); `.list` returns `{"result": [...], "cursor": "..."}` (paginated); `.get` returns `{"<type>": {...}}`. When parsing, check both singular and plural wrappers; never assume `{"schema": ...}` etc. |
+| Response-wrapper drift | Response bodies use different top-level keys per op. Verified live 2026-07-18, **corrected 2026-07-19 — the original ".list returns {result, cursor}" line below was an overgeneralization**: `.create` typically returns `{"id": "..."}` or `{"<type>": {...}}` (e.g. `custom_state`, `custom_stage`, `fragment`); `.get` returns `{"<type>": {...}}`. For `.list`: **most typed/stock-object endpoints wrap under the plural type name** — `{"accounts":[...]}`, `{"tags":[...]}`, `{"jobs":[...]}`, `{"rev_orgs":[...]}`, `{"rev_users":[...]}`, `{"sla_trackers":[...]}`, `{"dev_users":[...]}`, `{"groups":[...]}`, `{"webhooks":[...]}`, `{"conversations":[...]}`, `{"surveys":[...]}`, `{"meetings":[...]}`, `{"org_schedules":[...]}`, `{"vistas":[...]}` — the generic `{"result": [...]}` wrapper is used only by the "customization" family: `link-types.custom.list`, `custom-objects.list`, `schemas.custom.list`. The pagination cursor field, where present, is named **`next_cursor`**, not `cursor` (seen on `tags.list`, `groups.list`). `link-types.custom.list` additionally returns an undocumented `reverse_result` array alongside `result`. When parsing, check the plural-type-name wrapper first, fall back to `result`, and never assume `{"schema": ...}` etc. |
+| `ping` needs a JSON body, not just headers | **New 2026-07-19**: `POST /ping` with `Content-Type: application/json` set but **zero-length body** returns `HTTP 400 {"type":"invalid_content_type"}` — root cause is the header/body-length mismatch, not `/ping` specifically: any endpoint sent `Content-Type: application/json` with no body content is liable to the same rejection. Fix: always pair a JSON `Content-Type` with an actual body (`-d '{}'` at minimum), or omit the header entirely for a bodyless GET/POST. A `GET /ping` with no body works with no such gotcha. |
 
 Detailed payloads and examples live in the domain docs — see `CLAUDE.md` for the
 routing table. This file is the lookup index; go to the domain doc to build a call.
@@ -37,6 +38,10 @@ Scope varies by work type (e.g. `issue:*`, `ticket:*`, `opportunity:*`, `task:*`
 | `works.export` | GET/POST | `<type>:read` … |
 
 **Idempotency (confirmed live 2026-07-18)**: `works.create` accepts an `external_ref` (string, unique per work type). Re-creating with the same `external_ref` returns **HTTP 409** `{"type":"conflict"}`, not a duplicate and not a silent no-op — catch the 409 and look the record up. The matching `works.list` filter field is `external_ref` (singular, takes an array) — `external_refs` (plural) returns HTTP 400 `invalid_field`. See `skills/3-data-upload-and-org-build/SKILL.md` Field notes for the full pattern.
+
+**`applies_to_part` is required on `works.create` (confirmed live 2026-07-19)**, not merely a "common field" as prior examples implied — omitting it returns `HTTP 400` (a diagnostic `missing_required_field field_name:"applies_to_part"` for `issue`; an opaque `bad_request` with no field name for `ticket`).
+
+**`works.delete` confirmed live and genuinely working (2026-07-19)** — `HTTP 200 {}`, and a follow-up `.get` returns `HTTP 404`. Not previously verified live; this repo's CLAUDE.md Safety list correctly flags all `.delete` calls as destructive/confirm-first, but didn't previously state whether this one actually succeeds. It does — treat it as a real, working destructive operation, same tier as `tags.delete`/`links.delete`/`workflows.delete`.
 
 **Artifacts on works (confirmed live 2026-07-18)**: `works.create` accepts an `artifacts: ["<ARTIFACT_DON>"]` array at create time — the artifact renders fully in the response. An artifact can be attached to exactly ONE parent ever (work item, timeline comment, etc.) — reusing an artifact id on a second object returns HTTP 400 `{"type":"artifact_already_attached_to_a_parent","existing_parent":"<don>"}`.
 
@@ -181,6 +186,8 @@ A Trail is **not** a separate object — there is no `trails.create`; it's the r
 | `articles.delete` | POST | `article:all` |
 | `articles.get` / `.list` | GET/POST | `article:read` … |
 
+**`articles.create` minimal payload (corrected 2026-07-19)** — see `Support_Knowledge_and_SLAs_API.md` §3 for the full corrected example. `owned_by` is required (not just good practice); `content_format:"rt"` paired with `owned_by` alone returns an opaque `HTTP 400 bad_request` with no diagnostic field name — the working minimal payload is `{title, owned_by, resource}` (an empty `resource: {}` object, not `content_format`).
+
 ## Surveys
 | Endpoint | Method | Scope |
 | --- | --- | --- |
@@ -225,6 +232,8 @@ A Trail is **not** a separate object — there is no `trails.create`; it's the r
 | --- | --- | --- |
 | `webhooks.create` / `.update` / `.delete` / `.event` | POST | None (default scopes N/A) |
 | `webhooks.get` / `.list` | GET/POST | None |
+
+**`webhooks.create` confirmed live 2026-07-19**: the response includes a `secret` field not shown in prior examples (needed for signature verification — capture it at create time, it may not be re-exposed later), and the server silently appends a `"verify"` entry to `event_types` alongside whatever was requested.
 
 ## Jobs
 | Endpoint | Method | Scope |
@@ -298,6 +307,14 @@ and `Stages_States_and_StageDiagrams_API.md` for full detail. Endpoints:
 `schemas.subtypes.list`, `schemas.subtypes.prepare-update`,
 `custom-objects.create/update/delete/get/list/count`,
 `stages.custom.*`, `states.custom.*`, `stage-diagrams.*`.
+
+**`custom-objects.list`/`.count` require `leaf_type` (confirmed live 2026-07-19)** — omitting it
+returns `HTTP 400 missing_required_field field_name:"leaf_type"`. **`custom-objects.delete`
+confirmed live and genuinely working** (`HTTP 200 {}`, then `.get` 404s). **`schemas.subtypes.list`
+requires a `leaf_type` filter to return anything** — called bare (`{}`) it always returns
+`{"subtypes":[]}` regardless of what exists; with `leaf_type` supplied it reflects newly created
+subtypes immediately, no indexing delay (this corrects an earlier over-general "subtypes.list has
+an indexing delay" finding — see `skills/1-object-schema-customization/SKILL.md` Field notes).
 
 ## Health
 | Endpoint | Method | Scope |

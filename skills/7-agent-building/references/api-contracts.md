@@ -413,7 +413,7 @@ Before sending any `ai-agents.create` or `ai-agents.update` payload, verify:
 | `Missing required field: goal` | `goal` | `goal` is required on create |
 | `Invalid field: agent_id` | versions.list filter | Use `"agent"` not `"agent_id"` |
 | `ai agent id is required` | versions.list | `agent` filter is required on versions.list |
-| `route not found` | plans.get / plans.list | These endpoints do not exist; plan definitions are not fetchable |
+| `route not found` | `ai-agents.plans.get` / `.plans.list` (dotted) | This exact spelling doesn't exist — **but see the corrected entry below: the real endpoint uses a hyphen, not a dot, before `plans`** |
 
 ---
 
@@ -527,13 +527,18 @@ All endpoints use `POST /internal/<endpoint>` with `Authorization: <ORG_PAT>` un
 | `ai-agents.get` | `id` | Accepts DON ID **or** `display_id` format (`ai_agent-N`) |
 | `ai-agents.create` | `goal` | `name` is optional (auto-assigned if omitted); `goal` is required |
 | `ai-agents.update` | `id` | Accepts DON ID **or** `display_id` format; partial update preserves unmentioned fields |
-| `ai-agents.delete` | `id` | Accepts DON ID (not `display_id`). **Returns HTTP 201** (not 200/204) with the deleted agent's full body. `.get` immediately after returns HTTP 404 `not_found`. Verified live 2026-07-18. |
+| `ai-agents.delete` | `id` | Accepts DON ID (not `display_id`). **Returns HTTP 201** (not 200/204). **Corrected 2026-07-19**: body is an **empty `{}`**, not "the deleted agent's full body" as originally recorded — re-verified twice (two separate test agents) in this org/version, both returned `{}`. `.get` immediately after returns HTTP 404 `not_found`. |
 | `ai-agents.versions.list` | `agent` | `agent` = DON ID of agent (NOT `agent_id`); filter is REQUIRED |
 | `ai-agents.versions.get` | `id` | `id` = version DON ID |
-| `ai-agents.plans.list` | — | ❌ **Route not found** — endpoint does not exist |
-| `ai-agents.plans.get` | — | ❌ **Route not found** — endpoint does not exist |
+| `ai-agents-plans.list` | — | **Corrected 2026-07-19 — this endpoint EXISTS**, hyphenated (`ai-agents-plans`, not the dotted `ai-agents.plans` originally checked). `POST /internal/ai-agents-plans.list {"limit":3}` → `HTTP 200`, returns real system plans (`ai_agent_plan` objects, e.g. `don:core:dvrv-us-1:ai_agent_plan/devrev.setup_support_portal_sitemap`) with `description`, `guidance`, `is_system`, `name`, `skills`. Public root 404s (internal-only, same pattern as the rest of `ai-agents.*`). |
+| `ai-agents-plans.get` | `id` | **Corrected 2026-07-19 — exists, hyphenated.** `id` must be an `ai_agent_plan` DON (passing an `ai_agent` DON returns `HTTP 400 unexpected_id_type`, `allowed_types:["ai_agent_plan"]`). Returns full plan detail including the multi-step `guidance` markdown runbook. Public root 404s. |
 
-> Agent plan definitions (for `trigger.plan` skills) **cannot be fetched** via the current API. There is no known endpoint for `ai_agent_plan` objects.
+> **Corrects the prior claim below.** Agent plan definitions (for `trigger.plan` skills) **CAN be
+> fetched** — via `ai-agents-plans.get`/`.list` (hyphen before `plans`, not a dot). The dotted
+> spelling `ai-agents.plans.*` genuinely 404s at both public root and `/internal/`; that's a
+> naming-convention trap, not evidence the underlying capability is missing. This also means the
+> repo-root `CLAUDE.md`'s statement that these "do not exist as endpoints" is itself stale and
+> should be corrected to point at the hyphenated names.
 
 ---
 

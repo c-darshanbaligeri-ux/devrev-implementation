@@ -172,35 +172,79 @@ Stage deprecation via `is_deprecated` does **not** work — see the verified not
 
 ## 5. Assigning a stage diagram to a subtype
 
-**Live-verified 2026-07-18 — this section is UNCONFIRMED / likely wrong; do not rely on it
-without re-checking the live API first.** The mechanism below is what older material and this
-doc previously described, but every write path tried this session was rejected:
-- `schemas.custom.set` with `stage_diagram_id` (also tried `stage_diagram`, `diagram_id`,
-  `stagediagram_id`, `stage_diagram_ref`, `lifecycle_id`, `workflow_diagram_id`, and a nested
-  `{"stage_diagram":{"id":"..."}}`) → always `{"message":"Bad Request","type":"invalid_field","field_name":"stage_diagram_id"}` (or the tried field name). Tried on both a `tenant_fragment`
-  (custom leaf type) and a `custom_type_fragment` (subtype of `issue`).
-- `stage-diagrams.create` with a top-level `subtype` field → `{"message":"Bad Request","type":"invalid_field","field_name":"subtype"}`. Diagrams appear to be `leaf_type`-scoped only.
-- `schemas.subtypes.prepare-update` with `subtype` or `stage_diagram_id` in the body → both
-  rejected as `invalid_field`; it only accepts `leaf_type` and returns
-  `{"added_fields":[...]}` (fields a bulk-upgrade would add), so it's a preview/dry-run tool,
-  not the attachment mechanism.
-- Counter-evidence the field exists somewhere in the data model: `schemas.aggregated.get`
-  returns a **read-only** `stage_diagram_id` key for stock leaf types that already have a
-  diagram, e.g. `ticket` → `"stage_diagram_id":{"id":"don:core:...:stage_diagram/6","name":"ticket_transitions"}`. So the association exists server-side — only the public
-  write path to set it on a subtype/custom leaf type remains unconfirmed.
-  **Also note (live-verified 2026-07-18, corrected same day):** `schemas.aggregated.get` works fine
-  via POST — the specific shape `{"leaf_type":"ticket","custom_schema_spec":{"tenant_fragment":true}}`
-  (the example this skill and skill 1 previously documented) returns
-  `{"message":"Bad Request","type":"invalid_field","field_name":"tenant_fragment"}`, but that's
-  because tenant/custom fields are included by default — omitting `custom_schema_spec` entirely
-  (`POST` with just `{"leaf_type":"ticket"}`, or the equivalent `GET schemas.aggregated.get?leaf_type=<type>`,
-  add `&is_custom_leaf_type=true` for custom leaf types) returns `HTTP 200` with the full merged set.
-  `custom_schema_spec: {"subtype": "<name>"}` (no `tenant_fragment` key) also works via POST when you
-  need a specific subtype's fields. Response wrapper is `{"schema": {...}}`.
+**Live-verified 2026-07-19 — CONFIRMED working, via two distinct mechanisms.** This corrects the
+2026-07-18 finding below the fold, which ruled out `stage_diagram_id` and a **nested**
+`{"stage_diagram":{"id":...}}` object, but never tried `stage_diagram` as a **bare string** — that
+turned out to be the actual working field name.
 
-By default a bug subtype inherits transitions from its parent type (Issue); once
-you assign a dedicated diagram, publish the change to activate it — **write path unconfirmed,
-see above.**
+**Mechanism A — leaf-type-level default diagram**, via `is_default: true` at `stage-diagrams.create`
+time. Works only while the leaf type has no existing default diagram — a second `is_default: true`
+create for the same leaf type returns `HTTP 409 conflict`. `is_default` is immutable after creation
+(cannot be added retroactively via `.update`), so this is a one-shot, create-time-only path.
+
+**Mechanism B — subtype-level diagram**, via `stage_diagram` (bare DON-id string) on
+`schemas.custom.set`:
+
+```bash
+curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
+-H 'Authorization: Bearer <TOKEN>' \
+-d '{
+  "type": "custom_type_fragment",
+  "leaf_type": "issue",
+  "subtype": "bug",
+  "description": "Bug subtype",
+  "stage_diagram": "don:core:dvrv-us-1:devo/xxx:stage_diagram/12",
+  "fields": [...]
+}'
+```
+
+Verified: `schemas.custom.get` on the resulting fragment shows `"stage_diagram":{"id":"...stage_diagram/12","name":"..."}` persisted, and `schemas.aggregated.get` with
+`custom_schema_spec:{"subtype":"bug"}` shows `stage_diagram_id` populated for that subtype. If the
+subtype fragment already exists, the full-field-replay rule (§4a) applies — replay every existing
+field, don't send a partial list.
+
+For a custom object leaf type (not a subtype), use Mechanism A, or Mechanism B's shape with
+`"type": "tenant_fragment"` and `"is_custom_leaf_type": true` in place of `subtype`.
+
+**Enforcement differs by object class — read before promising this gates anything.** On **custom
+objects**, `custom-objects.update` genuinely enforces the diagram: setting `stage` to a non-member
+or non-adjacent stage returns `HTTP 400 bad_request`; valid transitions return `200`. On **stock-type
+subtypes**, `works.update` showed **no enforcement** in testing — after attaching a diagram that only
+allowed `triage → completed` on an `issue`/`bug` subtype record, `works.update` still accepted
+`stage` values from entirely unrelated lifecycles (an opportunity-only stage, an incident-only
+stage) with `HTTP 200`, changing the stage every time. The only rejection producible was a
+syntactically invalid stage DON. Treat subtype-level diagram attachment as real/persisted (visible
+in `schemas.aggregated.get`) but **not confirmed to gate `works.update`** — don't tell a caller it
+will reject invalid stage transitions on a stock leaf type's subtype.
+
+By default a bug subtype inherits transitions from its parent type (Issue); once you assign a
+dedicated diagram via Mechanism B, it takes effect immediately — no separate publish step was
+needed in testing.
+
+<details>
+<summary>2026-07-18 finding this section corrects (kept for audit trail)</summary>
+
+Every write path tried in the 2026-07-18 session was rejected:
+- `schemas.custom.set` with `stage_diagram_id` (also `diagram_id`, `stagediagram_id`,
+  `stage_diagram_ref`, `lifecycle_id`, `workflow_diagram_id`, and a **nested**
+  `{"stage_diagram":{"id":"..."}}`) → always `invalid_field`. `stage_diagram` as a bare string was
+  never tried — that gap is the actual root cause of this now-superseded finding.
+- `stage-diagrams.create` with a top-level `subtype` field → `invalid_field field_name:"subtype"`.
+  Diagrams remain `leaf_type`-scoped only; subtype-scoping happens via the fragment, not the
+  diagram itself.
+- `schemas.subtypes.prepare-update` with `subtype`/`stage_diagram_id` → `invalid_field`; it only
+  accepts `leaf_type` and previews a bulk-upgrade (`{"added_fields":[...]}`), not an attachment tool.
+</details>
+
+**Separately, live-verified 2026-07-18, still accurate:** `schemas.aggregated.get` via POST works
+fine in general — the specific shape `{"leaf_type":"ticket","custom_schema_spec":{"tenant_fragment":true}}`
+returns `invalid_field field_name:"tenant_fragment"` because tenant/custom fields are included by
+default. Omitting `custom_schema_spec` entirely (`POST {"leaf_type":"ticket"}`, or the equivalent
+`GET schemas.aggregated.get?leaf_type=<type>`, add `&is_custom_leaf_type=true` for custom leaf
+types) returns `HTTP 200` with the full merged set. `custom_schema_spec: {"subtype": "<name>"}` (no
+`tenant_fragment` key) also works via POST. Response wrapper is `{"schema": {...}}`. Note: a bare
+`GET ?leaf_type=<custom_leaf_type>` **without** `&is_custom_leaf_type=true` returns `HTTP 200` with
+a silently **empty** schema rather than an error — easy to mistake for "no custom fields exist."
 
 ---
 
@@ -217,6 +261,13 @@ bug reaches a specific stage. Add `conditions` to the subtype fragment:
 ```
 
 Effects can `require`, `show`, or constrain `allowed_values` for fields.
+
+**Live-verified 2026-07-19 nuance**: the requirement is enforced only when the conditioned field is
+**explicitly included** in an update payload, not as a standing invariant checked on every write or
+re-checked on stage entry. A record can sit indefinitely in the stage named by the condition with the
+field empty, as long as no update ever tries to explicitly clear that field again; moving the record
+into the stage while the field is already empty succeeds, and updating unrelated fields while parked
+in that stage also succeeds without re-validating the conditioned field.
 
 ---
 
@@ -242,9 +293,10 @@ Effects can `require`, `show`, or constrain `allowed_values` for fields.
 - Duplicate `ordinal` for states — must be unique within the dev org.
 - Forgetting to assign the diagram to the subtype — stages exist but the object
   still uses the inherited/default lifecycle until the subtype references the
-  `stage_diagram_id` and the change is published. **Live-verified 2026-07-18: the
-  write path for this is itself unconfirmed** — see §5 for every field-name
-  variant tried and rejected.
+  diagram via `stage_diagram` (bare DON string) or `is_default: true` — see §5 for
+  both confirmed-working mechanisms and the enforcement caveat (custom objects
+  enforce transitions on `custom-objects.update`; stock-type subtypes did not on
+  `works.update` in testing).
 - Deleting a stage that's referenced by a diagram — there's no delete endpoint
   anyway. `is_deprecated` was intended as the retirement path but **is rejected
   live** (`HTTP 400 bad_request` on both create and update, live-verified

@@ -45,16 +45,26 @@ scope is required.
 
 ## 3. Articles (knowledge base)
 
+**Corrected 2026-07-19** — the payload below is the live-verified minimal working shape.
+`owned_by` is genuinely required, not just good practice: omitting it returns
+`HTTP 400 missing_required_field field_name:"owned_by"`. The combination of `owned_by` +
+`content_format: "rt"` (this section's previous example, minus `applies_to_parts`) returns an
+opaque `HTTP 400 bad_request` with **no diagnostic field name** — swap `content_format` for an
+empty `resource: {}` object and it succeeds:
+
 ```bash
 curl -X POST 'https://api.devrev.ai/articles.create' \
 -H 'Authorization: Bearer <TOKEN>' \
 -d '{
   "title": "How to reset your password",
-  "applies_to_parts": [ "<PART_ID>" ],
   "owned_by": [ "<DEVU_ID>" ],
-  "content_format": "rt"
+  "resource": {}
 }'
 ```
+
+`applies_to_parts` is optional (contrary to the prior example's implication it was needed for a
+minimal create). The response omits `content_format` and reflects `resource:{}` and a default
+`scope: "external"`.
 
 | Endpoint | Scope |
 | --- | --- |

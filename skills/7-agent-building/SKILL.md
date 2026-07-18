@@ -499,7 +499,7 @@ All scripts are in `scripts/` directory:
 | `ai-agents.delete` | `{ "id": "<don-id or display_id>" }` → `{}` on success |
 | `ai-agents.versions.list` | Filter field: `"agent"` (not `"agent_id"`); filter required; response: `agent_versions` |
 | `ai-agents.versions.get` | Use version DON ID from `default_version_id.id`; response: `agent_version` |
-| `ai-agents.plans.get/list` | ❌ Routes do not exist — plan definitions are not fetchable |
+| `ai-agents-plans.get/list` | Hyphenated (not `ai-agents.plans.*`, which 404s) — **corrected 2026-07-19: these work**, `/internal/`-only, `id` must be an `ai_agent_plan` DON. Returns real system plans including `guidance` runbook text. |
 
 ## When to Use This Skill
 

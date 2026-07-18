@@ -39,8 +39,8 @@ they're worth knowing as the human in the loop.
 
 Before any of the following, the agent states the impact and waits for your yes:
 
-- any `*.delete`, any `*.merge`
-- deprecations (custom link types via `deprecated: true` — confirmed working). **Corrected 2026-07-18**: stage-node `is_deprecated: true` inside a diagram, previously listed here as a working option, is confirmed REJECTED at both create and update (`HTTP 400`) — there is no known working mechanism to retire a stage anywhere in a diagram via the public API; treat every stage as permanent once added.
+- any `*.delete`, any `*.merge` — **confirmed live and genuinely working** (not stubs) for `works.delete`, `custom-objects.delete`, `tags.delete`, `links.delete`, and `workflows.delete` (2026-07-18/19): each returns a clean success and the object then 404s on `.get`. By contrast, `schemas.custom.delete`, `stages.custom.delete`, `states.custom.delete`, and artifact deletes all genuinely don't exist (404 route-not-found) — confirm before running any delete, but don't assume it's a no-op just because some object types have no delete path.
+- deprecations (custom link types via `deprecated: true` or `is_deprecated: true` — both accepted as input, confirmed working). **Corrected 2026-07-18**: stage-node `is_deprecated: true` inside a diagram, previously listed here as a working option, is confirmed REJECTED at both create and update (`HTTP 400`) — there is no known working mechanism to retire a stage anywhere in a diagram via the public API; treat every stage as permanent once added. (Attaching a diagram to a subtype/leaf type in the first place is a separate, unrelated operation that IS confirmed working as of 2026-07-19 — see skill 2's Field notes; only *retiring* a stage inside an existing diagram is the blocked operation.)
 - `objects.bulk-upgrade` — **confirmed live 2026-07-18**: real, exists at `/internal/objects.bulk-upgrade` (not the public root). Still treat with caution — it affects ALL records of a type org-wide via an async job.
 - `web-crawler-jobs.control` with `stop` or `reset`
 - dataset / PaaS job deletion, workflow deletion

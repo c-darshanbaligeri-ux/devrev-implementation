@@ -26,9 +26,9 @@ Creates a custom leaf type. **`.set` is a versioned create, not an update** — 
 
 ## 2. Custom object instance — `custom-objects.create`
 
-Creates an instance of a custom leaf type; requires `custom_schema_spec`; `unique_key` is an optional idempotency key. Full CRUD: `.get/.list/.update/.delete/.count`.
+Creates an instance of a custom leaf type; requires `custom_schema_spec`; `unique_key` is an optional idempotency key. Full CRUD: `.get/.list/.update/.delete/.count`. **Live-verified 2026-07-19**: `.list`/`.count` require a `leaf_type` filter — omitting it 400s `missing_required_field`. `.delete` is confirmed genuinely working (`HTTP 200 {}`, then `.get` 404s), not a documentation-only claim.
 
-→ Exact payload, `custom_schema_spec` keys, `.list` filter syntax, response shape (`id`/`display_id`): `../../1-object-schema-customization/references/Custom_Objects_and_Links_API.md`.
+→ Exact create/update payload and `custom_schema_spec` keys: `../../1-object-schema-customization/references/Custom_Objects_and_Links_API.md`. (That file does not document a `.list` filter-syntax table or an `id`/`display_id` response-shape breakdown beyond what's shown inline in its examples — don't expect more detail there than the create/update flow.)
 
 ---
 
@@ -42,7 +42,7 @@ Creates an instance of a custom leaf type; requires `custom_schema_spec`; `uniqu
 
 ## 4. Stage diagram — `stage-diagrams.create`
 
-Defines stages + transitions for a leaf type. Rules: exactly one `is_start: true` node; a listed stage can't be deleted (mark `is_deprecated: true`); all non-deprecated stages reachable from start; a path to a terminal/closed state must exist; `is_default`/`leaf_type` immutable after creation.
+Defines stages + transitions for a leaf type. Rules: exactly one `is_start: true` node; all stages reachable from start; a path to a terminal/closed state must exist; `is_default`/`leaf_type` immutable after creation. **Live-verified 2026-07-18, still accurate: a listed stage cannot be deleted or deprecated at all** — `is_deprecated: true` on a stage node is rejected (`HTTP 400`) at both create and update, on start/middle/terminal stages alike; there is no known working retirement mechanism anywhere in a diagram via the public API. Design stage diagrams conservatively — every stage added is effectively permanent for that diagram's lifetime. **Subtype/custom-leaf-type attachment, live-verified 2026-07-19**: DOES work — via `stage_diagram` (a bare DON-id string, on `schemas.custom.set`) for subtype-level, or `is_default: true` (at `stage-diagrams.create` time) for leaf-type-level. Enforcement differs by object class: confirmed real for custom objects (`custom-objects.update` rejects invalid transitions); NOT confirmed for stock-type subtypes (`works.update` showed no enforcement in testing) — don't promise a caller a subtype's diagram will gate `works.update`.
 
 → Exact payload (note: transition target field is `target_stage_id`, not `target_id`), subtype-linkage mechanics, and the custom-object stage-wiring sequence: `../../2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md`.
 
@@ -50,9 +50,9 @@ Defines stages + transitions for a leaf type. Rules: exactly one `is_start: true
 
 ## 5. Custom link type and link instance
 
-`link-types.custom.create` (`name`, `source_types[]`, `target_types[]`, `forward_name`, `backward_name`; max 30 each side; cannot be deleted, only deprecated). `links.create` for instances. Stock `link_type` enum: `is_parent_of, is_dependent_on, is_related_to, is_duplicate_of, is_merged_into, is_follow_up_of, is_part_of, serves, custom_link`.
+`link-types.custom.create` (`name`, `source_types[]`, `target_types[]`, `forward_name`, `backward_name`; max 30 each side; cannot be deleted, only deprecated — **live-verified 2026-07-19: `link-types.custom.update` accepts either `deprecated` or `is_deprecated` as the input field**, both work, response always echoes `is_deprecated`). `links.create` for instances. Stock `link_type` enum: `is_parent_of, is_dependent_on, is_related_to, is_duplicate_of, is_merged_into, is_follow_up_of, is_part_of, serves, custom_link`.
 
-→ Exact payloads, descriptor options (`leaf_only`, `is_custom_leaf_type`), identity/idempotency rules: `../../1-object-schema-customization/references/Custom_Objects_and_Links_API.md`.
+→ Exact payloads and the `is_custom_leaf_type` descriptor option: `../../1-object-schema-customization/references/Custom_Objects_and_Links_API.md`. (That file does not document a `leaf_only` descriptor option — no such field exists there; don't expect it.) **Also live-verified 2026-07-19**: `link-types.custom.list` did not reflect 2 freshly created link types even 15+ minutes later — verify a new one via `.get` by id, not `.list`.
 
 ---
 

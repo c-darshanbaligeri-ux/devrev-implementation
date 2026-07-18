@@ -78,9 +78,12 @@ dependent-field conditions.
 - "Require the root-cause field once an incident reaches 'closed'."
 
 **Under the hood**: strict build order — **states first, then stages, then the stage diagram**, each
-tier verified with a `*.list` before the next. Diagrams attach to subtypes via `stage_diagram_id`.
-Some properties (`is_default`, `leaf_type`) are immutable after creation, so the skill gets them
-right the first time.
+tier verified with a `*.list` before the next. Diagrams attach to a subtype via `stage_diagram` (a
+bare DON-id string on the subtype's schema fragment — confirmed live 2026-07-19; note this is a
+different field name from the read-side `stage_diagram_id` key), or to a whole leaf type via
+`is_default: true` at diagram-create time. Some properties (`is_default`, `leaf_type`) are immutable
+after creation, so the skill gets them right the first time. Enforcement is confirmed real for
+custom objects; not confirmed for stock-type subtypes (testing found no gating on `works.update`).
 
 ## 3 — Data upload & org build
 

@@ -223,7 +223,13 @@ Agent Studio is enterprise agent **lifecycle** infrastructure — build, test, d
 
 **NL Skills (sub-agents, API-only):** three layers — Skill Description (**≤1024 chars**, always in context) + Plan Guidance (full prompt, loads on activation) + Tools (workflows/operations). Configured via `ai-agents-plans.create/.update` then `ai-agents.update`; `skills.set` **replaces all** — include existing ones. Sub-agents are stateless (return results to the main agent).
 
-→ **Live-verified correction**: `ai-agents.plans.get`/`ai-agents.plans.list` **do not exist** as endpoints — confirmed by empirical testing against the internal API. Do not assume they're available for reading back NL-skill plans. Full create-vs-update payload templates, pre-flight checklists, and an error→fix table: `../../7-agent-building/references/api-contracts.md`.
+→ **Live-verified 2026-07-19, corrects an earlier finding**: the read endpoints DO exist and work —
+`ai-agents-plans.get`/`ai-agents-plans.list` (hyphen before `plans`, matching the hyphenated
+create/update above), `/internal/`-only, confirmed live returning real `ai_agent_plan` objects
+including their `guidance` runbook text. The earlier "do not exist" finding tested the **dotted**
+spelling `ai-agents.plans.get`/`.list`, which genuinely 404s — that was a naming-convention miss,
+not a missing capability. Full create-vs-update payload templates, pre-flight checklists, and an
+error→fix table: `../../7-agent-building/references/api-contracts.md`.
 
 **Testing:** Playground (Start New Chat + View Trace) → traces show Thought/Reasoning, Input, Output per skill, Knowledge retrieval, Guardrail Check, Response Time, Tokens → Bulk tests over a CSV Dataset (Input / Expected Output / Remarks) with evaluators. **Documented evaluators are Correctness and Completeness only** — deflection/CSAT/groundedness are business metrics/roadmap, not built-in evaluators. Fix priority: Task Success → Accuracy → latency/cost.
 

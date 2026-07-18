@@ -9,6 +9,7 @@ Use this reference when the solution needs an implementation plan: effort estima
 4. Risk analysis
 5. Alternative designs (A/B/C)
 6. Deployment, testing, rollout, monitoring, maintenance
+7. Calibration from a real build (devrev-implementation)
 
 ---
 
@@ -94,3 +95,64 @@ Give a short trade-off table (effort, scalability, maintainability, risk) and a 
 - **Rollout strategy** — phased (Phase 1 objects+automation → Phase 2 agents/skills → Phase 3 optimization); change management for affected teams.
 - **Monitoring** — workflow analytics (run counts, error hotspots), agent observability (session tracing, token usage, guardrail triggers), SLA/CSAT dashboards, log streaming to SIEM/Datadog.
 - **Maintenance plan** — owner for each component, versioning/rollback discipline, KB/Q&A tuning cadence, connector health checks, periodic review of deprecated stages/fragments.
+
+---
+
+## 7. Calibration from a real build (devrev-implementation)
+
+The numbers and patterns below come from actually building and twice auditing `devrev-implementation` —
+a comparable-scope unified DevRev operating environment (9 skills incl. this design skill, ~300 files,
+consolidated from 5 source projects). Use these as calibration anchors, not universal constants — they
+came from one build, but the failure classes they expose are structural, not one-off, and worth naming
+in a blueprint's risk section or testing strategy.
+
+- **Defect density in reference-grounded documentation/config builds**: two full audit passes across
+  ~20 core skill/reference files found 14 confirmed errors + 16 minor issues — roughly 0.7 confirmed
+  errors per file, even though every fact was copied or paraphrased from a trusted source document.
+  **Buffer driver**: budget at least one dedicated audit pass for any build unit with more than ~5
+  interconnected config/reference files, even when the source material is trusted — grounding in a real
+  reference eliminates hallucination risk, not transcription/citation risk.
+- **The single most severe error found was a parse failure, not a logic error**: an unquoted colon inside
+  YAML frontmatter would have silently broken skill loading entirely. **Testing-strategy driver**: verify
+  that config/schema artifacts actually *load or parse*, not just that they read correctly on review — a
+  human proofread reliably misses this class of bug.
+- **The second-most-common error class was cross-reference drift**: wrong section numbers, stale file
+  counts, citations pointing at moved or renamed files. None of these change runtime behavior, so they
+  survive silently until someone follows the broken link. **Maintenance-plan driver**: schedule a periodic
+  cross-reference consistency sweep as its own maintenance task, separate from functional/behavior review.
+- **Silent-failure classes discovered empirically** — worth naming explicitly in a DevRev blueprint's risk
+  section, because none of them raise an error:
+  - A wrong `tnt__`/`ctype__` custom-field prefix is *accepted* by the API and *silently ignored* — the
+    field simply never lands, with no error response.
+  - `${VAR}`-style interpolation in configs (e.g. `.mcp.json`) reads the *process* environment, not a
+    `.env` file directly — a correctly populated `.env` can still produce an auth failure for a reason
+    that isn't visible in the file itself.
+  - An unanchored `.gitignore` pattern (`templates/` instead of `/templates/`) silently drops an entire
+    matching subdirectory from version control at any depth, with zero warning.
+  - **Pattern and mitigation**: silent failures — no error, just a wrong or missing result — are the
+    costliest class to estimate for, because they don't surface until someone specifically checks the
+    output. Budget explicit post-write verification (re-`GET` after writes involving custom fields;
+    `git status`/dry-run checks after config or `.gitignore` changes) into the testing strategy rather
+    than trusting a successful-looking run.
+- **The real operation surface is larger than any curated catalog implies**: a curated "160+ workflow
+  node" narrative undercounts the platform's actual ~520 operations (triggers + actions + field-schema'd
+  ops), a meaningful share of which are per-org custom-object CRUD operations that don't exist until a
+  customer defines that object. **Sizing driver**: for automations/integrations touching many object
+  types or many custom objects, size toward the top of a tier — the long tail of org-specific operations
+  adds real effort that a generic node count hides.
+- **Deterministic generate-then-validate pipelines measurably reduce rework, not just theoretically**:
+  a real dashboard-build pipeline (structure → semantic → live-API validation, with auto-fix retries)
+  exists specifically because hand-authored widget JSON produced unreliable output in practice — this is
+  the documented reason the pipeline was built, not a hypothetical best practice. When a blueprint
+  recommends a generate-then-validate loop over direct hand-authoring for any AI-generated artifact
+  (widgets, workflow templates, agent configs), that recommendation is proven, not speculative.
+- **"Fully automated" and "zero-touch" are different claims, even in a good setup**: a plug-and-play
+  environment with fully automated background installs still required two sessions in practice, because
+  a running session cannot refresh its own shell's `PATH`. **Rollout-plan driver**: state explicitly which
+  of the two claims a deployment plan is making — don't let "automated" imply "zero manual steps" if a
+  restart or session boundary is actually required.
+- **A working self-learning/knowledge-capture loop is cheap and pays for itself**: routing discovered
+  corrections to the exact owning file (not one catch-all doc) plus an append-only audit journal is a
+  maintenance pattern that measurably worked in practice across this build's own audit passes. Recommend
+  an equivalent pattern in any deliverable that will be operated over time by people who weren't in the
+  room for the original design.

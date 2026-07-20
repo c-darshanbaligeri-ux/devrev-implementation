@@ -301,8 +301,9 @@ curl -X POST 'https://api.devrev.ai/works.create' \
 ```
 Verify the setup:
 
-- parts.list - confirm the product hierarchy exists. To filter by parent, `parent_part` is an OBJECT, not a bare array: `{"parent_part": {"parts": ["<PARENT_DON>"], "level": <optional int>}}`. Passing a plain array (`{"parent_part": ["<PARENT_DON>"]}`) returns HTTP 400 `unexpected_json_type` (verified live 2026-07-18).
+- parts.list - confirm the product hierarchy exists. To filter by parent, `parent_part` is an OBJECT, not a bare array: `{"parent_part": {"parts": ["<PARENT_DON>"], "level": <optional int>}}`. Passing a plain array (`{"parent_part": ["<PARENT_DON>"]}`) returns HTTP 400 `unexpected_json_type` (verified live 2026-07-18). <!-- corrected 2026-07-20: this filter matches descendants at ANY depth, not just direct children --> **Confirmed live 2026-07-20: this filter matches descendants at ANY depth, not just direct children** — filtering `type:["feature"], parent_part:{"parts":[<grandparent_don>]}` returns features two levels down too. `parts.get`/`parts.list` never return a `parent_part` field on the part record at all. For an exact immediate-parent check (e.g. idempotency logic before creating a part), use `links.list` with the part as `object`, filtering to `link_type:"is_part_of"` edges where the part is the `source` — the `target` is the true immediate parent.
 - links.list on a part - confirm builder parts, custom links, and work are attached. Confirmed live: creating a part with `parent_part` set auto-creates an `is_part_of` link from child to parent, visible via `links.list?object=<child_don>` — you don't need to call `links.create` yourself for the parent_part relationship, only for cross-hierarchy connections like `serves`.
+- `parts.delete` requires children deleted first: deleting a part while an `is_part_of` child link still points to it returns HTTP 400 `bad_request` (no diagnostic field name). Delete leaves before parents (confirmed live 2026-07-20).
 - schemas.custom.list / custom-objects.list - confirm your fragments and custom objects.
 
 # End-to-end worked example

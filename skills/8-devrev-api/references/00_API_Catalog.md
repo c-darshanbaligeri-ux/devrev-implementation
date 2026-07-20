@@ -97,9 +97,11 @@ The scope tracks the part type (like works). Source: `DevRev_Building_Org_Using_
 | --- | --- | --- |
 | `parts.create` | POST | `product:write,product:all` (product) / `capability:write,capability:all` (capability) / `feature:write,feature:all` (feature) |
 | `parts.list` | GET/POST | corresponding `<part_type>:read,...` |
+| `parts.delete` | POST | corresponding `<part_type>:all` (confirmed live 2026-07-20: works, `HTTP 200 {}`, `.get` 404s after; but a part with an existing `is_part_of` child link pointing to it 400s — delete children first) |
 
 Hierarchy: product (root) → capability (`parent_part` = product) → feature (`parent_part` = capability or feature).
 A Trail is **not** a separate object — there is no `trails.create`; it's the rendered part hierarchy plus links.
+`parts.list`'s `parent_part:{"parts":[<don>]}` filter matches descendants at ANY depth, not just direct children (confirmed live 2026-07-20) — `parts.get`/`.list` never expose a part's own parent, so for an exact immediate-parent check use `links.list` (part as `object`, `link_type:"is_part_of"`, part as `source`, parent as `target`).
 (Other `parts.*` verbs are not documented in this folder's references — verify against the official API reference before use.)
 
 ---

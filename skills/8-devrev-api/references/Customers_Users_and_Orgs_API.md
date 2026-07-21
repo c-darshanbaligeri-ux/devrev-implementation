@@ -101,9 +101,9 @@ dev org tenant is done in the app / at subscription time, not via this API.)
 
 ---
 
-## 6. Groups & directory
+## 6. Groups
 
-Groups organize users; directories are the higher-level container.
+Groups organize users for routing/access-control purposes.
 
 ```bash
 # Create a group, then add a member
@@ -122,9 +122,8 @@ curl -X POST 'https://api.devrev.ai/groups.members.add' \
 | `groups.get` / `.list` | `group:read` … |
 | `groups.members.add` / `.remove` | `group_membership:all` |
 | `groups.members.list` | `group_membership:read` / `:all` |
-| `directories.create` / `.update` | `directory:write` / `:all` |
-| `directories.delete` | `directory:all` |
-| `directories.get` / `.list` / `.count` | `directory:read` … |
+
+<!-- corrected 2026-07-21: was "Groups organize users; directories are the higher-level container" with directories.* listed here as a user/group-organization endpoint. That's wrong — `directory` is the Help Center Article-collection object, unrelated to groups/users. Moved to references/Support_Knowledge_and_SLAs_API.md §3b and references/Directories_Collections_API.md; see docs/LEARNINGS.md. -->
 
 ---
 

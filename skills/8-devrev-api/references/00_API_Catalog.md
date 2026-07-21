@@ -186,10 +186,22 @@ A Trail is **not** a separate object — there is no `trails.create`; it's the r
 | Endpoint | Method | Scope |
 | --- | --- | --- |
 | `articles.create` / `.update` | POST | `article:write` / `article:all` |
-| `articles.delete` | POST | `article:all` |
+| `articles.delete` | POST | `article:all` (confirmed live 2026-07-21: genuinely works, `HTTP 200 {}`, `.get` 404s after) |
 | `articles.get` / `.list` | GET/POST | `article:read` … |
 
 **`articles.create` minimal payload (corrected 2026-07-19)** — see `Support_Knowledge_and_SLAs_API.md` §3 for the full corrected example. `owned_by` is required (not just good practice); `content_format:"rt"` paired with `owned_by` alone returns an opaque `HTTP 400 bad_request` with no diagnostic field name — the working minimal payload is `{title, owned_by, resource}` (an empty `resource: {}` object, not `content_format`).
+
+**Article body content (confirmed live 2026-07-21, see `Support_Knowledge_and_SLAs_API.md` §3a)** — the only working content mechanism is `resource.artifacts: [<artifact_don>]` (upload via `artifacts.prepare` first, same pattern as work-item attachments). `resource.rich_text`/`.content`/`.markdown`/`.html`/`.artifact_id`/`.artifact` and a top-level `artifacts` array are all rejected (`invalid_field`). Never send `resource.type` even though it's a real enum field in the schema — the API rejects it outright alongside `resource.artifacts`. `scope` takes a number (`1`=internal, `2`=external, default), not a string — `{"scope":"internal"}` 400s `unexpected_json_type`. The part-link field is `applies_to_parts` (array, max 10), **not** `applies_to_part_ids` (400s `invalid_field`).
+
+## Directories (Help Center collections) — confirmed live 2026-07-21
+A "collection" in the Help Center UI is the `directory` object at the API layer — there is no `collections.*` or `article-collections.*` endpoint (both 404 route-not-found).
+| Endpoint | Method | Scope |
+| --- | --- | --- |
+| `directories.create` / `.update` | POST | `directory:write` / `directory:all` |
+| `directories.delete` | POST | `directory:all` |
+| `directories.get` / `.list` / `.count` | GET/POST | `directory:read`, `:write`, or `:all` |
+
+Fields: `title` (required), `description`, `parent` (directory id — omit for top-level; nests infinitely), `published` (bool), `tags` (max 20). Articles join a collection from the **article** side — set the article's `parent` field to the directory's DON on `articles.create`/`.update`; an article belongs to only one collection at a time. Full detail: `Support_Knowledge_and_SLAs_API.md` §3b.
 
 ## Surveys
 | Endpoint | Method | Scope |

@@ -55,9 +55,10 @@ an org.
 | Tags | `references/Work_Items_Timeline_Tags_Links_API.md` | tags.* |
 | Links | `references/Work_Items_Timeline_Tags_Links_API.md` + `references/Custom_Objects_and_Links_API.md` | links.*, link-types.custom.* |
 | Parts (product/capability/feature) | `references/DevRev_Building_Org_Using_API_v1.md` Phase 2 | parts.create/list (scope tracks part type) |
-| Accounts / orgs / users | `references/Customers_Users_and_Orgs_API.md` | accounts.*, rev-orgs.*, rev-users.*, dev-users.*, groups.*, directories.* |
+| Accounts / orgs / users | `references/Customers_Users_and_Orgs_API.md` | accounts.*, rev-orgs.*, rev-users.*, dev-users.*, groups.* |
 | Conversations / chats | `references/Support_Knowledge_and_SLAs_API.md` | conversations.*, chats.* |
-| Articles (KB) | `references/Support_Knowledge_and_SLAs_API.md` | articles.* |
+| Articles (KB) | `references/Support_Knowledge_and_SLAs_API.md` §3, §3a | articles.* |
+| Collections (Help Center) | `references/Support_Knowledge_and_SLAs_API.md` §3b, `references/Directories_Collections_API.md` | directories.* (directory = collection; not related to groups/users) |
 | Surveys | `references/Support_Knowledge_and_SLAs_API.md` | surveys.*, surveys.responses.* |
 | Meetings | `references/Support_Knowledge_and_SLAs_API.md` | meetings.* |
 | SLAs / metrics | `references/Support_Knowledge_and_SLAs_API.md` | slas.*, metric-definitions.*, *-trackers.* |
@@ -150,3 +151,15 @@ better home or needs domain-level visibility.
 - (2026-07-18) `links.delete` and `tags.delete` both genuinely delete (verified via a subsequent
   404 on `.get`) — unlike custom link types, stages/states, and custom-object schema fragments,
   which have no delete and are deprecate-only or permanent.
+- (2026-07-21) **A Help Center "collection" is the `directory` object, not a `collections.*`
+  endpoint** (that name space 404s entirely). `directories.create` confirmed live; articles join a
+  collection via the article's own `parent` field (max one collection per article), not from the
+  directory side. `directory` was previously miscategorized in
+  `Customers_Users_and_Orgs_API.md` §6 as a groups/users container — corrected in place; the real
+  home is `Support_Knowledge_and_SLAs_API.md` §3b and `Directories_Collections_API.md`.
+- (2026-07-21) **Article body content only works via `resource.artifacts` (artifact upload), not
+  any inline text field.** `resource.rich_text`/`.content`/`.markdown`/`.html` and a top-level
+  `artifacts` array are all rejected `invalid_field`; `resource.type` is a real schema field but the
+  API rejects it outright even when valid otherwise — never send it. `scope` takes a number
+  (`1`=internal, `2`=external), not a string. The part-link field is `applies_to_parts`, not
+  `applies_to_part_ids`. Full detail: `Support_Knowledge_and_SLAs_API.md` §3a.

@@ -79,6 +79,107 @@ return only the array + `cursor`); useful for pagination UI without a separate `
 Articles support `status` (draft/published), `scope` (internal/external),
 `tags`, and sharing via `shared_with`.
 
+### 3a. Article body content — confirmed live 2026-07-21 (closes the prior open gap)
+
+The empty `resource: {}` payload above creates an article with **no body content** — it was
+only ever a minimal-create smoke test. The real content mechanism is `resource.artifacts`, an
+array of artifact DONs (same `artifacts.prepare` → upload → reference pattern used for
+`works.create`, see `Platform_and_Admin_API.md` §1):
+
+```bash
+# 1. Prepare + upload the file (e.g. a .md file) exactly as for work-item attachments
+curl -X POST 'https://api.devrev.ai/artifacts.prepare' -H 'Authorization: Bearer <TOKEN>' \
+  -d '{"file_name":"my-article.md","file_type":"text/markdown"}'
+# -> upload the returned form_data + file to the returned url (HTTP 204 on success)
+
+# 2. Reference the artifact on the article
+curl -X POST 'https://api.devrev.ai/articles.create' -H 'Authorization: Bearer <TOKEN>' \
+-d '{
+  "title": "Wire Status Reference",
+  "owned_by": [ "<DEVU_ID>" ],
+  "resource": { "artifacts": [ "<ARTIFACT_DON>" ] },
+  "scope": 1,
+  "applies_to_parts": [ "<PART_DON>" ],
+  "parent": "<DIRECTORY_DON>"
+}'
+```
+
+Confirmed facts from this live test:
+- `resource.artifacts` is the field (an array of artifact DONs, `max_items: 200`, per
+  `schemas.stock.get {"leaf_type":"article"}`'s `resource` composite schema). **Do not send
+  `resource.type`** — it exists in the schema as an enum (`artifact`/`url`) but the API rejects it
+  outright: `{"type":"invalid_field","field_name":"type"}`, even when the rest of the payload is
+  otherwise valid. Only send `resource.artifacts` (or `resource.url` for the URL-reference variant
+  below) — never `resource.type` alongside them.
+- `resource.url` (a bare string) also works, for linking to an already-hosted external page rather
+  than uploading content — confirmed live, returns `resource: {"url": "..."}`.
+- After creating an article with `resource.artifacts` set, DevRev **asynchronously extracts the
+  file's content** — within ~2 seconds in testing, `articles.get` showed a new `extracted_content`
+  array (a second, DevRev-generated artifact, `text/plain`, distinct from the originally uploaded
+  file) and a `tags: [{"tag": {"name": "content_extracted"}, "value": "<timestamp>"}]` entry
+  marking completion. Poll `articles.get` for the `content_extracted` tag before assuming the
+  article's searchable/rendered content is ready.
+- **`resource.rich_text`, `resource.content`, `resource.markdown`, `resource.html`,
+  `resource.artifact_id`, `resource.artifact`, and a top-level `artifacts` array (the `works.create`
+  pattern) were all tried and all rejected** with `{"type":"invalid_field","field_name":"<name>"}` —
+  none of these are real fields on the article `resource` composite. `resource.artifacts` (plural,
+  array) is the only content-bearing field confirmed to work.
+- **Markdown with tables renders/extracts correctly**; plain rich-text/HTML strings inline in the
+  payload are NOT supported at all — content must go through the artifact-upload path.
+- **`scope` takes a number, not the string label** — `{"scope":"internal"}` 400s
+  (`unexpected_json_type`, expected number); the correct values are `1` = internal, `2` = external
+  (default if omitted), per `schemas.stock.get`'s `scope` `uenum` definition. `scope` is also
+  `is_immutable`/`is_read_only` in that same schema — set it at create time; don't expect
+  `articles.update` to change it later (not independently re-tested, but the schema flags block it).
+- **The part-linking field is `applies_to_parts`, NOT `applies_to_part_ids`** — the latter 400s
+  with `{"type":"invalid_field","field_name":"applies_to_part_ids"}`. `applies_to_parts` takes an
+  array of part DONs, `max_items: 10`, and the response echoes back full part objects (not just
+  ids).
+- `parent` — see §3b below; works identically on `articles.create` and `.update`.
+- `articles.delete` **confirmed live and genuinely works** (`HTTP 200 {}`, follow-up `.get` 404s),
+  same tier as `works.delete`/`custom-objects.delete`/`workflows.delete` — safe to clean up
+  throwaway/test articles, but treat as destructive/confirm-first like any other working `.delete`.
+
+### 3b. Collections (directories) — confirmed live 2026-07-21
+
+**A "collection" in the DevRev Help Center UI is the `directory` object at the API layer.** This
+was previously undocumented anywhere in this repo — no `collections.*`/`article-collections.*`
+endpoint exists (both 404 route-not-found); the real family is `directories.*`.
+
+| Endpoint | Method | Scope |
+| --- | --- | --- |
+| `directories.create` | POST | `directory:write` / `:all` |
+| `directories.get` | GET/POST | `directory:read`, `:write`, or `:all` |
+| `directories.list` | GET/POST | `directory:read`, `:write`, or `:all` |
+| `directories.count` | GET/POST | `directory:read`, `:write`, or `:all` |
+| `directories.update` | POST | `directory:write` / `:all` |
+| `directories.delete` | POST | `directory:all` |
+
+```bash
+curl -X POST 'https://api.devrev.ai/directories.create' -H 'Authorization: Bearer <TOKEN>' \
+-d '{ "title": "PEx Module", "description": "Payments Exchange domain knowledge base",
+      "published": false }'
+```
+**Confirmed live** — `HTTP 201`, returns the full `directory` object (`id`, `display_id`, etc.).
+Fields: `title` (required), `description`, `parent` (id — omit for top-level, set to nest inside
+another directory; collections nest infinitely), `published` (bool), `language`, `thumbnail`
+(artifact id), `tags` (array, max 20).
+
+**Articles join a collection from the article side, not the directory side** — set the article's
+`parent` field to the directory's DON on `articles.create` or `.update`:
+```bash
+curl -X POST 'https://api.devrev.ai/articles.update' -H 'Authorization: Bearer <TOKEN>' \
+-d '{ "id": "<ARTICLE_DON>", "parent": "<DIRECTORY_DON>" }'
+```
+Confirmed live both at create time (inline `"parent": "<DIRECTORY_DON>"`) and via a separate
+`.update` call — `articles.get` afterward shows `parent: {"id": "...", "display_id": "..."}`.
+**An article can belong to only one collection at a time** (undocumented constraint, stated in the
+source doc for this section — not independently stress-tested by trying to move an article between
+two collections, but the single-`parent`-field shape makes this the expected behavior).
+
+`directories.delete` is blocked if the directory still contains nested items (sub-collections or
+articles) — empty it first (not independently verified live this session; documented behavior).
+
 ---
 
 ## 4. Surveys

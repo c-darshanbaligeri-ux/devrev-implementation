@@ -98,6 +98,7 @@ The scope tracks the part type (like works). Source: `DevRev_Building_Org_Using_
 | `parts.create` | POST | `product:write,product:all` (product) / `capability:write,capability:all` (capability) / `feature:write,feature:all` (feature) |
 | `parts.list` | GET/POST | corresponding `<part_type>:read,...` |
 | `parts.delete` | POST | corresponding `<part_type>:all` (confirmed live 2026-07-20: works, `HTTP 200 {}`, `.get` 404s after; but a part with an existing `is_part_of` child link pointing to it 400s — delete children first) |
+| `parts.update` | POST | corresponding `<part_type>:write,...` (confirmed live 2026-07-21: requires `type` in the payload alongside `id` and the changed fields — `{"id":...,"description":...}` alone 400s `bad_request` with no field name; `{"id":...,"type":"product","description":...}` → HTTP 200 with the full updated `part`. Used to set the stock `description` field, present on all part leaf types.) |
 
 Hierarchy: product (root) → capability (`parent_part` = product) → feature (`parent_part` = capability or feature).
 A Trail is **not** a separate object — there is no `trails.create`; it's the rendered part hierarchy plus links.

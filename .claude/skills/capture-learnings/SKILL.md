@@ -73,7 +73,9 @@ Route by what the learning is about — this table is the heart of the protocol:
 
 ### 3. Append to the journal and commit
 
-Append one row to `docs/LEARNINGS.md` (append-only; never rewrite old rows):
+Append one row **below the `RECONCILE-FROM-BELOW` sentinel row** at the bottom of the table in
+`docs/LEARNINGS.md` (this is a *staging* append now, not a permanent one — see "End-of-session
+reconciliation" below):
 
 ```
 | YYYY-MM-DD | <one-line what happened> | <root cause / fact learned> | <files updated> |
@@ -87,6 +89,46 @@ git add -A && git commit -m "learn: <one-line summary>"
 
 If a commit isn't possible (mid-task with unrelated staged changes), stage only the learning files
 (`git add <files>`) and commit just those.
+
+## End-of-session reconciliation
+
+**Why this exists**: step 2 above already puts the permanent copy of every fact in its owning
+skill/reference file. The journal row from step 3 is therefore temporary scaffolding — useful
+mid-session as a running list of what's been captured and where, but redundant (and a drift risk)
+once the owning-file edit is confirmed in place. Rather than let `docs/LEARNINGS.md` grow forever
+as a second copy of every fact, it gets reconciled down to zero pending rows at the end of each
+session.
+
+**Mechanism**: a `Stop` hook (`.claude/hooks/reconcile-learnings.sh`, registered in
+`.claude/settings.json`) runs whenever a turn is about to end. It checks whether any row sits below
+the sentinel row (Date column `RECONCILE-FROM-BELOW`) near the end of the journal table. If so, it
+blocks the Stop event with `decision: "block"` and a `reason` that re-engages you to do the actual
+reconciliation — the hook itself is a shell script and cannot edit files or judge whether a fact
+was correctly propagated, so it only detects and re-prompts.
+
+**What you do when re-engaged** (do this before ending the turn again):
+1. For each pending row (below the sentinel), open every file listed in its "Files updated" column
+   and confirm the fact described in the row is actually present there. If it's missing or wrong,
+   fix it now — the owning file, not the journal, is the permanent home for the fact.
+2. Once confirmed, delete that row from the table entirely. Do not leave a placeholder.
+3. **Exception**: if a row has no single owning file — a protocol-level finding about this
+   skill's own process, or a whole-repo synthesis note that doesn't map to one file — do not
+   delete it. Move it into the "Standing notes" section at the top of `docs/LEARNINGS.md` instead;
+   that section is the one place this journal is itself the permanent home.
+4. Move the sentinel row back down so it immediately precedes the (now-empty) space below it,
+   ready to receive the next session's new rows.
+5. Commit the result: `git add docs/LEARNINGS.md <any files fixed in step 1> && git commit -m
+   "learn: reconcile journal"` — commit only, do not push (matches the standing rule for this
+   protocol; pushing anything, including reconciliation commits, requires an explicit user ask).
+
+**Historical rows are exempt.** Rows already in the table above the sentinel as of 2026-07-23
+predate this lifecycle and stay in place permanently as an audit trail — the hook only ever counts
+and acts on rows below the sentinel.
+
+**Safety valve**: the hook caps itself at 3 block attempts per session (tracked in a per-session
+counter file under `.claude/.auto-setup/`, gitignored). If reconciliation still isn't done on the
+4th attempt, it emits a `systemMessage` instead of blocking, so a stuck reconciliation can never
+hang a session indefinitely — the leftover rows just carry into next session's check.
 
 ## Guardrails
 

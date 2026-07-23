@@ -10,6 +10,17 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/reconcile-learnings.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
     ]
   },
   "extraKnownMarketplaces": {

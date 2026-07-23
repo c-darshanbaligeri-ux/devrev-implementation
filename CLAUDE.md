@@ -122,8 +122,16 @@ endpoint/field/enum/limit**, a **new workflow-import failure cause**, a **plugin
    wrong passage fixed in place, the workflow import-debugging checklist, an operation schema file,
    `api-contracts.md`, the README troubleshooting table, a router trigger phrase…). Updating only
    this CLAUDE.md is wrong unless the learning is a truly global API rule.
-3. **Append one row to `docs/LEARNINGS.md`** (the append-only journal) and `git commit` the change
-   (`learn: <summary>`).
+3. **Append one row to `docs/LEARNINGS.md`** (below its `RECONCILE-FROM-BELOW` sentinel row) and
+   `git commit` the change (`learn: <summary>`).
+
+This journal is now a **staging area, not a permanent archive**: a `Stop` hook
+(`.claude/hooks/reconcile-learnings.sh`) blocks the end of a session while unreconciled rows exist
+below the sentinel, re-engaging you to confirm each row's fact actually landed in its owning
+file(s) and then delete the row — see `.claude/skills/capture-learnings/SKILL.md` § "End-of-session
+reconciliation" for the exact procedure. Rows with no single owning file move to that file's
+"Standing notes" section instead of being deleted. Rows already in the journal above the sentinel
+as of 2026-07-23 are historical and exempt — they stay permanently as an audit trail.
 
 Never edit files under `repos/` (upstream clones) — learnings about their tools go in our skill
 files. Never record secrets or real customer DON ids.

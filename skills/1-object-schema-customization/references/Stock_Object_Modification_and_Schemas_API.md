@@ -121,9 +121,40 @@ platform features that depend on it keep working.
 `uenum` (advanced enum with stable numeric IDs), `timestamp`, `date`, `id`,
 plus array/list variants of each.
 
+`uenum` stores a numeric `id` + `ordinal` per option instead of a bare string,
+so you can relabel or reorder options later without touching stored data. Each
+option: `{ id, label, ordinal, deprecated? }`; `default_value` references an
+option's `id`, not its label. Use `uenum[]` for multi-select. **Open
+discrepancy, not yet resolved**: `skills/0-solution-architecture/references/api-cookbook.md`
+§6 claims `uenum` is "used for stock overrides but not supported for
+user-defined custom fields — use `enum`", which contradicts this file's own
+Playbook 3 worked example and SKILL.md's field-type list, both of which show
+`uenum` as a plain supported custom field type. Neither claim has been
+live-tested against `schemas.custom.set`; try a real `uenum` custom field
+before trusting either statement.
+
 ### Removing fields
 Fragments are immutable and auto-versioned. To drop a field, send the full field
 list and name the removals in `deleted_fields`.
+
+### UI hints per field (`ui` object)
+
+Set under a field's `ui` object in `schemas.custom.set` — **not independently
+live-tested in this repo**, sourced from DevRev's docs:
+
+| Hint | Purpose |
+| --- | --- |
+| `display_name` | Label shown in the UI (used throughout this doc's examples) |
+| `is_hidden` | Hide the field from the UI |
+| `placeholder` | Placeholder text |
+| `is_sortable` | Allow sorting (requires the field's top-level `is_filterable: true`) |
+| `is_groupable` | Allow grouping (requires `is_filterable: true`) |
+| `order` | Field order in the side panel |
+| `is_read_only` | Not editable in UI after creation (the API can still write it) |
+| `group_name` | Group fields under a titled section |
+| `unit` | Display unit (e.g. days, kg) |
+
+`is_filterable` itself is a top-level field property (sibling of `field_type`), not nested under `ui`.
 
 ---
 

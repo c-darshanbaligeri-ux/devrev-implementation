@@ -79,6 +79,13 @@ curl -X POST 'https://api.devrev.ai/custom-objects.create' \
 > Settings > User Management > Roles before they appear or become editable.
 > If list view isn't supported for a custom object, enable search on it.
 
+`.list`/`.count` filter on a custom field with `[operator, path, value]`, path
+prefixed `$custom_fields.`, e.g.
+`{"leaf_type":"campaign","filter":["eq","$custom_fields.tnt__target_audience","Professionals"]}`.
+Search syntax needs its own `leaf_type:` term and, for subtype fields, a
+`subtype:` term alongside `ctype__` field terms. See the skill 1 copy of this
+file for the live-verification caveat on this filter syntax.
+
 ### Step 3 — give the custom object a stage field (lifecycle)
 
 A custom object has no stage until you attach a stage diagram to its leaf type.
@@ -240,6 +247,55 @@ curl -X POST 'https://api.devrev.ai/custom-objects.update' \
   (built-in `is_related_to`/`serves` or a custom link type — see §2 and §3).
   Use a field when the part is a first-class attribute of the record; use a link
   when it's a looser relationship you want to traverse on the Trail.
+
+### Step 5 — give the custom object subtypes
+
+Custom leaf types support subtypes the same way stock leaf types do: a
+`custom_type_fragment` scoped to `leaf_type` + `subtype` works identically
+whether `leaf_type` is stock (`issue`) or custom (`is_custom_leaf_type: true`
+from Step 1). The subtype inherits every tenant field and adds its own,
+prefixed `ctype__` on records.
+
+```bash
+curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
+-H 'Authorization: Bearer <TOKEN>' \
+-d '{
+  "type": "custom_type_fragment",
+  "description": "Attributes for social media campaigns",
+  "leaf_type": "campaign",
+  "subtype": "social_media",
+  "subtype_display_name": "Social Media",
+  "is_custom_leaf_type": true,
+  "fields": [
+    {
+      "name": "social_media_platform",
+      "field_type": "enum",
+      "allowed_values": [ "Facebook", "Instagram", "LinkedIn", "X" ],
+      "ui": { "display_name": "Platform" }
+    },
+    { "name": "post_id", "field_type": "text", "ui": { "display_name": "Post ID" } }
+  ]
+}'
+```
+
+```bash
+curl -X POST 'https://api.devrev.ai/custom-objects.create' \
+-H 'Authorization: Bearer <TOKEN>' \
+-d '{
+  "leaf_type": "campaign",
+  "custom_schema_spec": { "subtype": "social_media", "tenant_fragment": true },
+  "custom_fields": {
+    "tnt__budget": 10000,
+    "ctype__social_media_platform": "Facebook",
+    "ctype__post_id": "1234567890"
+  }
+}'
+```
+
+Repeat with a different `subtype` (e.g. `email_marketing`) to add another
+flavor of the same custom leaf type. See the skill 1 copy of this file for
+live-verified caveats (e.g. the stage-diagram write field is `stage_diagram`,
+not `stage_diagram_id`).
 
 ---
 

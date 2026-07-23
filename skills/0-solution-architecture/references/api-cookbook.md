@@ -28,7 +28,7 @@ Creates a custom leaf type. **`.set` is a versioned create, not an update** — 
 
 Creates an instance of a custom leaf type; requires `custom_schema_spec`; `unique_key` is an optional idempotency key. Full CRUD: `.get/.list/.update/.delete/.count`. **Live-verified 2026-07-19**: `.list`/`.count` require a `leaf_type` filter — omitting it 400s `missing_required_field`. `.delete` is confirmed genuinely working (`HTTP 200 {}`, then `.get` 404s), not a documentation-only claim.
 
-→ Exact create/update payload and `custom_schema_spec` keys: `../../1-object-schema-customization/references/Custom_Objects_and_Links_API.md`. (That file does not document a `.list` filter-syntax table or an `id`/`display_id` response-shape breakdown beyond what's shown inline in its examples — don't expect more detail there than the create/update flow.)
+→ Exact create/update payload and `custom_schema_spec` keys: `../../1-object-schema-customization/references/Custom_Objects_and_Links_API.md`. **2026-07-23 update**: that file now also documents a `.list`/`.count` filter syntax (`["eq","$custom_fields.<name>",<value>]`) and search-over-custom-objects syntax — sourced from DevRev's docs, not yet independently live-tested, so confirm against a real response before relying on it. It still does not document an `id`/`display_id` response-shape breakdown beyond what's shown inline in its examples.
 
 ---
 

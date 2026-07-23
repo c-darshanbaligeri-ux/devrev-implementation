@@ -79,6 +79,25 @@ curl -X POST 'https://api.devrev.ai/custom-objects.create' \
 > Settings > User Management > Roles before they appear or become editable.
 > If list view isn't supported for a custom object, enable search on it.
 
+**`.list`/`.count` filter syntax** — **not independently live-tested in this
+repo**, sourced from DevRev's docs (fills a gap the solution-architecture
+skill's `api-cookbook.md` §2 previously flagged as undocumented here — that
+pointer note is now stale and should be corrected once this is confirmed
+live). Filter on a custom field with a 3-element array
+`[operator, path, value]`, where the path is prefixed `$custom_fields.`:
+
+```json
+{
+  "leaf_type": "campaign",
+  "filter": [ "eq", "$custom_fields.tnt__target_audience", "Professionals" ]
+}
+```
+
+If the list view isn't supported for a custom object in the UI, the search
+syntax over custom objects requires its own `leaf_type` filter term, and
+subtype-specific field filters require a `subtype` term alongside it, e.g.
+`leaf_type:campaign subtype:social_media ctype__social_media_platform:Facebook`.
+
 ### Step 3 — give the custom object a stage field (lifecycle)
 
 A custom object has no stage until you attach a stage diagram to its leaf type.
@@ -252,6 +271,96 @@ curl -X POST 'https://api.devrev.ai/custom-objects.update' \
   (built-in `is_related_to`/`serves` or a custom link type — see §2 and §3).
   Use a field when the part is a first-class attribute of the record; use a link
   when it's a looser relationship you want to traverse on the Trail.
+
+### Step 5 — give the custom object subtypes
+
+**Yes — custom leaf types support subtypes exactly the same way stock leaf
+types do.** A subtype is a `custom_type_fragment` scoped to a `leaf_type` +
+`subtype` name; it works identically whether that `leaf_type` is a stock object
+(`issue`, `ticket`) or one you defined yourself with `is_custom_leaf_type: true`
+in Step 1. The subtype **inherits every field of the parent leaf type** (its
+tenant fragment) and adds its own fields on top, prefixed `ctype__` on records.
+
+Continuing the campaign example: define a `social_media` subtype and an
+`email_marketing` subtype, each with fields specific to that flavor of campaign.
+
+```bash
+curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
+-H 'Authorization: Bearer <TOKEN>' \
+-d '{
+  "type": "custom_type_fragment",
+  "description": "Attributes for social media campaigns",
+  "leaf_type": "campaign",
+  "subtype": "social_media",
+  "subtype_display_name": "Social Media",
+  "is_custom_leaf_type": true,
+  "fields": [
+    {
+      "name": "social_media_platform",
+      "field_type": "enum",
+      "allowed_values": [ "Facebook", "Instagram", "LinkedIn", "X" ],
+      "is_filterable": true,
+      "ui": { "display_name": "Platform" }
+    },
+    { "name": "post_id", "field_type": "text", "ui": { "display_name": "Post ID" } }
+  ]
+}'
+```
+
+Create a record of that subtype by naming it in `custom_schema_spec` and mixing
+`tnt__` (inherited) and `ctype__` (subtype-only) fields in one payload:
+
+```bash
+curl -X POST 'https://api.devrev.ai/custom-objects.create' \
+-H 'Authorization: Bearer <TOKEN>' \
+-d '{
+  "leaf_type": "campaign",
+  "custom_schema_spec": { "subtype": "social_media", "tenant_fragment": true },
+  "custom_fields": {
+    "tnt__budget": 10000,
+    "ctype__social_media_platform": "Facebook",
+    "ctype__post_id": "1234567890"
+  }
+}'
+```
+
+Repeat the `schemas.custom.set` call with a different `subtype` (e.g.
+`email_marketing`) and its own `fields` to add another flavor of the same
+custom leaf type. Verify a subtype landed with `schemas.aggregated.get` and
+`custom_schema_spec: { "subtype": "<name>" }` — see the Field notes above on
+`schemas.subtypes.list` requiring a `leaf_type` filter to show anything.
+
+**Field namespace nuance**: the `ctype__`/`tnt__` prefixes only apply to field
+*values* on an instantiated record (`custom_fields` in create/update payloads
+and in `schemas.aggregated.get`'s merged view). Inside a schema *definition*
+(the `fields` array passed to `schemas.custom.set` itself), field `name`s are
+bare — never write `"name": "ctype__post_id"` there, just `"name": "post_id"`.
+
+**Subtype-scoped access roles**: object access is granted per Step 4's access
+note, but field-level roles (Settings > User Management > Roles) can further be
+scoped to one subtype via `target_subtype`, or applied uniformly with
+`include_all_subtypes: true` — useful when different campaign subtypes should
+be editable by different teams.
+
+**Changing which subtype a record uses**: `schemas.subtypes.prepare-update`
+(Playbook 3 step 5 in SKILL.md) previews the effect of a subtype schema change
+before you apply it, reporting field-compatibility conflicts as
+`ABSENT_IN_NEW` (a field the old subtype had that the new one drops) or
+`INCOMPATIBLE_TYPE` (a field kept but with a changed `field_type`).
+
+> Sourced from DevRev's object-customization and custom-objects guides
+> (developer.devrev.ai) — not independently live-tested in this repo yet.
+> Where it overlaps with facts already live-verified here, the live-verified
+> version wins: e.g. that source material's stage-diagram-attachment example
+> uses `stage_diagram_id` on the subtype fragment, but this repo confirmed live
+> (2026-07-19, Field notes above) that `stage_diagram_id` is **rejected** —
+> the working write-side field is `stage_diagram` (a bare DON-id string), as
+> already documented in Step 3 above. Likewise, that source claims custom link
+> types can restrict by `subtype` **and** `leaf_only` — only the `subtype`
+> restriction is confirmed to exist in this API; a live pass on 2026-07-19
+> (see `skills/0-solution-architecture/references/api-cookbook.md` §5) found
+> no `leaf_only` field anywhere in this domain. Treat `leaf_only` as unconfirmed
+> until someone hits a live response that actually contains it.
 
 ---
 

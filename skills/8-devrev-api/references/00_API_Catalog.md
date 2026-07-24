@@ -41,7 +41,9 @@ Scope varies by work type (e.g. `issue:*`, `ticket:*`, `opportunity:*`, `task:*`
 
 **`applies_to_part` is required on `works.create` (confirmed live 2026-07-19)**, not merely a "common field" as prior examples implied — omitting it returns `HTTP 400` (a diagnostic `missing_required_field field_name:"applies_to_part"` for `issue`; an opaque `bad_request` with no field name for `ticket`).
 
-**`works.delete` confirmed live and genuinely working (2026-07-19)** — `HTTP 200 {}`, and a follow-up `.get` returns `HTTP 404`. Not previously verified live; this repo's CLAUDE.md Safety list correctly flags all `.delete` calls as destructive/confirm-first, but didn't previously state whether this one actually succeeds. It does — treat it as a real, working destructive operation, same tier as `tags.delete`/`links.delete`/`workflows.delete`.
+**`works.delete` confirmed live and genuinely working (2026-07-19)** — `HTTP 200 {}`, and a follow-up `.get` returns `HTTP 404`. Not previously verified live; this repo's CLAUDE.md Safety list correctly flags all `.delete` calls as destructive/confirm-first, but didn't previously state whether this one actually succeeds. It does — treat it as a real, working destructive operation, same tier as `tags.delete`/`links.delete`/`workflows.delete`. **Confirmed again at scale 2026-07-24** (25k+ sequential deletes, zero failures) — no bulk-delete endpoint exists for works, one-at-a-time is the only path.
+
+**Filtering `works.list`/`.count` by subtype (confirmed live 2026-07-24)**: nest under the type name, e.g. `{"type":["issue"], "issue":{"subtype":["<value>"]}}` — a top-level `subtype` key or `custom_schema_spec` are both rejected on `.list`/`.count`. Full detail: `Work_Items_Timeline_Tags_Links_API.md` §1.
 
 **Artifacts on works (confirmed live 2026-07-18)**: `works.create` accepts an `artifacts: ["<ARTIFACT_DON>"]` array at create time — the artifact renders fully in the response. An artifact can be attached to exactly ONE parent ever (work item, timeline comment, etc.) — reusing an artifact id on a second object returns HTTP 400 `{"type":"artifact_already_attached_to_a_parent","existing_parent":"<don>"}`.
 

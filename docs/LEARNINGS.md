@@ -26,7 +26,7 @@ section for the exact drain procedure).
 
 ## Standing notes (no single owning file — kept here permanently)
 
-- (none yet — reconciliation will move protocol-level/no-single-owner rows here as they're found)
+- **2026-07-24 · A `works.count`/`.list`-based deletion target can be actively growing under live automation** — before running a bulk delete filtered by count/list, snapshot the full matching id set into a manifest file first, then delete exactly that manifest. Don't re-derive "what to delete" from a live count/list call partway through, since a service-account workflow (or any other automation) can be creating new matching records faster than you can delete old ones, turning a one-time cleanup into a chase that never converges. Originated from a PDP-issue-subtype bulk delete where the count grew from 21,877 to 25,349 in ~15 minutes mid-task. This is a cross-cutting operational lesson, not tied to one API doc — the specific API facts from that same task (subtype filter shape on `works.list`, this org's real rate limit) are documented in `skills/8-devrev-api/SKILL.md` and `skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md`.
 
 | Date | What happened | Fact learned / root cause | Files updated |
 | --- | --- | --- | --- |

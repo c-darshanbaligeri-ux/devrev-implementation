@@ -121,6 +121,28 @@ CUSTOM_OBJECT_ID= CUSTOM_LINK_TYPE_ID= STAGE_DIAGRAM_ID=
 - Tags on custom objects are modeled as a custom field (an `id`-typed field with
   `id_type: ["tag"]`, or an enum/tokens field), not the native `tags` property
   that stock objects (works, parts, accounts) expose.
+- **Rate limits — the repo-root `rate limits.md` document's numbers are wrong,
+  confirmed live 2026-07-24.** That doc states a 600 req/min "Standard tier"
+  ceiling. A real org on this token (`devo/24TiM4xJFF`) showed
+  `x-ratelimit-limit: 8000` and a clean 60-second rolling window (`x-ratelimit-reset`
+  landed on an exact 60s boundary from request time) on ordinary `works.list`
+  calls — over 13x the documented number. Don't hardcode either number as a
+  planning assumption for a new org/token; read `x-ratelimit-limit` and
+  `x-ratelimit-remaining` from the live response headers every time and pace
+  off those, not off any static table (this repo's or otherwise). The general
+  shape of `rate limits.md`'s advice (adaptive delay tiers by quota %, 429
+  exponential backoff respecting `Retry-After`, circuit breaker after N
+  consecutive 429s) is sound and reusable — only the specific tier numbers are
+  unverified/wrong.
+- **`works.list` filter shape for subtype — undocumented anywhere in this repo
+  until confirmed live 2026-07-24**: `{"type":["issue"], "issue":{"subtype":["<value>"]}}`
+  (nested under the type name as its own object key), NOT a top-level `"subtype"`
+  array (`400 invalid_field field_name:"subtype"`) and NOT `custom_schema_spec`
+  (`400 invalid_field field_name:"custom_schema_spec"`, that field is
+  create/update-only). Verified both that a real subtype value returns matching
+  records with `"subtype":"<value>"` echoed on each, and that a bogus subtype
+  value returns `{"works":[]}` — confirms the filter is genuinely applied, not
+  silently ignored.
 
 ## Verify
 

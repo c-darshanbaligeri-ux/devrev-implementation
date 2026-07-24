@@ -72,6 +72,19 @@ curl -X POST 'https://api.devrev.ai/works.list' \
 - `works.count` — count matching a filter.
 - `works.export` — bulk export.
 
+**Filtering by subtype — confirmed live 2026-07-24**: nest the filter under the
+work `type` name as its own object key, e.g. for issues:
+```bash
+curl -X POST 'https://api.devrev.ai/works.list' \
+-H 'Authorization: Bearer <TOKEN>' \
+-d '{ "type": ["issue"], "issue": { "subtype": ["<subtype_value>"] }, "limit": 100 }'
+```
+A top-level `"subtype": [...]` key is rejected (`400 invalid_field field_name:"subtype"`);
+`custom_schema_spec` is also rejected on `.list` (`400 invalid_field field_name:"custom_schema_spec"`
+— that field is create/update-only). Works identically with `works.count` for a
+subtype-scoped count. `<subtype_value>` is the lowercase `value` from
+`schemas.subtypes.list` (e.g. `"pdp"`, not the `display_name` "PDP").
+
 ### Update / delete
 
 ```bash

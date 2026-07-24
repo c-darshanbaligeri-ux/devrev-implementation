@@ -71,17 +71,18 @@ Route by what the learning is about — this table is the heart of the protocol:
 - Keep entries short and factual — a future agent reads them cold.
 - **2026-07-18 · Field note on this protocol itself**: a full end-to-end test pass across skills 1–9 produced numerous in-place corrections (wrong reference examples, overgeneralized prior findings) but in every case the dated Field-notes-bullet convention was used and the inline `<!-- corrected YYYY-MM-DD: was "..." -->` HTML-comment convention was NOT — none of the corrections this session added that comment, even though it's the letter of this section. In practice, a clearly-worded "CORRECTED YYYY-MM-DD: ..." bolded lead-in inside the Field notes bullet itself served the same purpose (says what was wrong, when, and why) without the separate inline comment. Future agents: either convention is acceptable as long as the correction is unambiguous about what it's superseding — but if striving for strict compliance with this file's own instruction, add the HTML comment too.
 
-### 3. Append to the journal and commit
+### 3. Append to the journal, commit, and let the auto-push hook take it from there
 
-Append one row **below the `RECONCILE-FROM-BELOW` sentinel row** at the bottom of the table in
-`docs/LEARNINGS.md` (this is a *staging* append now, not a permanent one — see "End-of-session
-reconciliation" below):
+Append one permanent row at the bottom of the table in `docs/LEARNINGS.md` (append-only — never
+rewrite or delete an old row; if a row has no single owning file, put it in "Standing notes" at the
+top instead of the dated table):
 
 ```
 | YYYY-MM-DD | <one-line what happened> | <root cause / fact learned> | <files updated> |
 ```
 
-Then commit (local git; do not push unless the user's asked for pushes generally):
+Then commit with a `learn:`-prefixed subject line — this exact prefix matters, it's what the
+auto-push hook matches on:
 
 ```bash
 git add -A && git commit -m "learn: <one-line summary>"
@@ -90,51 +91,35 @@ git add -A && git commit -m "learn: <one-line summary>"
 If a commit isn't possible (mid-task with unrelated staged changes), stage only the learning files
 (`git add <files>`) and commit just those.
 
-## End-of-session reconciliation
+**What happens next is automatic — you don't need to do anything else.** A `PostToolUse` hook on
+`Bash` (`.claude/hooks/push-learnings.sh`, registered in `.claude/settings.json`) fires right after
+this commit lands. It checks three guardrails against the commit's diff — no secret-shaped strings,
+every changed file inside the known knowledge-base surface (`skills/`, `docs/`, `.claude/`,
+`plans/`, `CLAUDE.md`, `README.md`, `rate limits.md`, `documentation/`), and `origin/main` hasn't
+diverged — and pushes to `origin/main` only if all three pass. If any guardrail fails, the commit
+stays local (never lost, never force-pushed) and the hook reports why via stderr/`systemMessage`;
+fix the flagged issue and commit again. This fires deterministically off the commit itself, unlike
+the `Stop`-hook-based reconciliation this protocol used briefly (2026-07-23 to 2026-07-24) — that
+depended on a turn boundary a long or interrupted session might never reach, so it could silently
+never run. Auto-push doesn't have that failure mode.
 
-**Why this exists**: step 2 above already puts the permanent copy of every fact in its owning
-skill/reference file. The journal row from step 3 is therefore temporary scaffolding — useful
-mid-session as a running list of what's been captured and where, but redundant (and a drift risk)
-once the owning-file edit is confirmed in place. Rather than let `docs/LEARNINGS.md` grow forever
-as a second copy of every fact, it gets reconciled down to zero pending rows at the end of each
-session.
-
-**Mechanism**: a `Stop` hook (`.claude/hooks/reconcile-learnings.sh`, registered in
-`.claude/settings.json`) runs whenever a turn is about to end. It checks whether any row sits below
-the sentinel row (Date column `RECONCILE-FROM-BELOW`) near the end of the journal table. If so, it
-blocks the Stop event with `decision: "block"` and a `reason` that re-engages you to do the actual
-reconciliation — the hook itself is a shell script and cannot edit files or judge whether a fact
-was correctly propagated, so it only detects and re-prompts.
-
-**What you do when re-engaged** (do this before ending the turn again):
-1. For each pending row (below the sentinel), open every file listed in its "Files updated" column
-   and confirm the fact described in the row is actually present there. If it's missing or wrong,
-   fix it now — the owning file, not the journal, is the permanent home for the fact.
-2. Once confirmed, delete that row from the table entirely. Do not leave a placeholder.
-3. **Exception**: if a row has no single owning file — a protocol-level finding about this
-   skill's own process, or a whole-repo synthesis note that doesn't map to one file — do not
-   delete it. Move it into the "Standing notes" section at the top of `docs/LEARNINGS.md` instead;
-   that section is the one place this journal is itself the permanent home.
-4. Move the sentinel row back down so it immediately precedes the (now-empty) space below it,
-   ready to receive the next session's new rows.
-5. Commit the result: `git add docs/LEARNINGS.md <any files fixed in step 1> && git commit -m
-   "learn: reconcile journal"` — commit only, do not push (matches the standing rule for this
-   protocol; pushing anything, including reconciliation commits, requires an explicit user ask).
-
-**Historical rows are exempt.** Rows already in the table above the sentinel as of 2026-07-23
-predate this lifecycle and stay in place permanently as an audit trail — the hook only ever counts
-and acts on rows below the sentinel.
-
-**Safety valve**: the hook caps itself at 3 block attempts per session (tracked in a per-session
-counter file under `.claude/.auto-setup/`, gitignored). If reconciliation still isn't done on the
-4th attempt, it emits a `systemMessage` instead of blocking, so a stuck reconciliation can never
-hang a session indefinitely — the leftover rows just carry into next session's check.
+**Do not manually `git push` after a `learn:` commit** — the hook already handles it. If you need to
+push something else (non-learning work), that's still a separate explicit action as always.
 
 ## Guardrails
 
 - **Never edit anything under `repos/`** — upstream clones. Learnings about their tools go in OUR
   skill files.
-- **Never record secrets** — no tokens, no real customer DON ids; redact to `<REDACTED>`.
+- **Never record secrets** — no tokens, no real customer DON ids; redact to `<REDACTED>`. This is
+  doubly important now: a leaked secret in a `learn:` commit's diff is exactly what the auto-push
+  hook's secret-scan guardrail exists to catch, but that guardrail is a backstop, not a substitute
+  for not writing the secret in the first place.
 - **Never delete existing knowledge** to make room for new — correct it or append.
 - One learning = one journal row. If a task surfaced three lessons, that's three rows.
 - If the learning invalidates something in `docs/` user documentation claims, update that too.
+- **Keep `learn:` commits scoped to the knowledge-base surface** (`skills/`, `docs/`, `.claude/`,
+  `plans/`, `CLAUDE.md`, `README.md`, `rate limits.md`, `documentation/`) — the auto-push hook
+  blocks (doesn't push) any `learn:` commit that also touches a file outside that set, since such a
+  commit might be bundling in unrelated or sensitive changes that shouldn't go out unreviewed. If a
+  learning genuinely requires touching something outside that surface, split it into two commits:
+  the learning-doc commit (auto-pushed) and the other change (pushed manually, as always).

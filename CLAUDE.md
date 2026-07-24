@@ -122,16 +122,18 @@ endpoint/field/enum/limit**, a **new workflow-import failure cause**, a **plugin
    wrong passage fixed in place, the workflow import-debugging checklist, an operation schema file,
    `api-contracts.md`, the README troubleshooting table, a router trigger phrase…). Updating only
    this CLAUDE.md is wrong unless the learning is a truly global API rule.
-3. **Append one row to `docs/LEARNINGS.md`** (below its `RECONCILE-FROM-BELOW` sentinel row) and
-   `git commit` the change (`learn: <summary>`).
+3. **Append one permanent row to `docs/LEARNINGS.md`** (append-only — never rewrite or delete an
+   old row; rows with no single owning file go in the "Standing notes" section at the top instead)
+   and `git commit` the change with a `learn:`-prefixed subject (`learn: <summary>`).
 
-This journal is now a **staging area, not a permanent archive**: a `Stop` hook
-(`.claude/hooks/reconcile-learnings.sh`) blocks the end of a session while unreconciled rows exist
-below the sentinel, re-engaging you to confirm each row's fact actually landed in its owning
-file(s) and then delete the row — see `.claude/skills/capture-learnings/SKILL.md` § "End-of-session
-reconciliation" for the exact procedure. Rows with no single owning file move to that file's
-"Standing notes" section instead of being deleted. Rows already in the journal above the sentinel
-as of 2026-07-23 are historical and exempt — they stay permanently as an audit trail.
+**The commit auto-pushes to `origin/main` — you don't need to push it yourself.** A `PostToolUse`
+hook on `Bash` (`.claude/hooks/push-learnings.sh`) fires right after any commit whose subject starts
+with `learn:`, runs three guardrails against its diff (no secret-shaped strings; every changed file
+inside the known knowledge-base surface — `skills/`, `docs/`, `.claude/`, `plans/`, `CLAUDE.md`,
+`README.md`, `rate limits.md`, `documentation/`; `origin/main` hasn't diverged), and pushes only if
+all three pass. If a guardrail fails, the commit stays local and the hook says why — fix and commit
+again rather than pushing around it. See `.claude/skills/capture-learnings/SKILL.md` for the full
+guardrail detail and the (brief, since-reverted) staging/reconciliation model this replaced.
 
 Never edit files under `repos/` (upstream clones) — learnings about their tools go in our skill
 files. Never record secrets or real customer DON ids.

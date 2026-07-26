@@ -348,6 +348,22 @@ before you apply it, reporting field-compatibility conflicts as
 `ABSENT_IN_NEW` (a field the old subtype had that the new one drops) or
 `INCOMPATIBLE_TYPE` (a field kept but with a changed `field_type`).
 
+**Retiring an unwanted subtype (confirmed live 2026-07-26)**: there is no hard
+delete for a `custom_type_fragment`, but you can deprecate it — replay the
+fragment's complete existing payload (`type`, `leaf_type`, `subtype`,
+`subtype_display_name`, full `fields` array) through `schemas.custom.set` with
+**`deprecated: true`** added at the top level. **The field name is `deprecated`,
+not `is_deprecated`** — sending `is_deprecated: true` returns HTTP 400
+`bad_request` with no diagnostic. A successful call bumps `object_version` and
+a follow-up `schemas.custom.get` echoes the field back as `is_deprecated: true`
+(output name differs from input name). Effect verified: `schemas.subtypes.list
+{"leaf_type":"<leaf_type>"}` stops listing a deprecated subtype, while an
+active, non-deprecated subtype on the same call still appears — so this is a
+real suppression, not just cosmetic. Not confirmed: whether `custom-objects.create`
+/`works.create` using the deprecated subtype's `custom_schema_spec` is actually
+rejected, since `schemas.aggregated.get` still resolves its fields when the
+subtype is named explicitly.
+
 > Sourced from DevRev's object-customization and custom-objects guides
 > (developer.devrev.ai) — not independently live-tested in this repo yet.
 > Where it overlaps with facts already live-verified here, the live-verified

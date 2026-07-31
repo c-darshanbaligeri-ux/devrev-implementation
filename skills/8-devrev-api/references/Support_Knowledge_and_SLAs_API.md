@@ -79,6 +79,33 @@ return only the array + `cursor`); useful for pagination UI without a separate `
 Articles support `status` (draft/published), `scope` (internal/external),
 `tags`, and sharing via `shared_with`.
 
+**`articles.list` server-side filters (doc-cited 2026-07-31 from
+`developer.devrev.ai/beta/api-reference/articles/list-articles`) — do the filtering here, not
+client-side.** The endpoint accepts:
+
+| Filter | Type | Effect |
+| --- | --- | --- |
+| `applies_to_parts` | `array<string>` | Articles attached to any of the provided Parts (grounding-by-part is the fast path here). |
+| `parent` | `array<string>` | Articles under the provided **directory** ids ("collection" grouping). |
+| `status` | `array<article-status>` | e.g. `"archived"`. |
+| `article_type` | `array<article-type>` | Omitting it excludes content blocks. |
+| `authored_by` / `owned_by` / `created_by` / `modified_by` | `array<string>` | User-id filters. |
+| `brands` / `tags` / `scope` | `array` | Editorial filters. |
+| `shared_with.member` / `shared_with.role` | `string` | Sharing scope. |
+| `sync_metadata.*` | `array<string>` / status enum | Adaas / sync-history filters. |
+| `cursor` / `limit` / `mode` (`"after"`/`"before"`) | pagination | Default `limit: 50`. |
+
+**Doctrine reminder for KB grounding**: `applies_to_parts` is the retrieval axis (a KB article's
+attachment to a Trail Part). `parent` (the directory) is the *editorial* axis and rarely the
+right retrieval filter — use it only when you deliberately want "everything on this shelf" (release
+notes, compliance docs) rather than "everything relevant to this feature". Prefer
+`applies_to_parts` for test-case / agent-grounding work, `parent` for browsing.
+
+**Cross-reference**: HybridSearch (`namespace: article` — see
+`skills/7-agent-building/references/api-contracts.md`) is the semantic-discovery alternative when
+you don't have a Part id yet; take the returned id and call `articles.get` or read via
+`articles.list?applies_to_parts=<part>` for authoritative detail.
+
 ### 3a. Article body content — confirmed live 2026-07-21 (closes the prior open gap)
 
 The empty `resource: {}` payload above creates an article with **no body content** — it was

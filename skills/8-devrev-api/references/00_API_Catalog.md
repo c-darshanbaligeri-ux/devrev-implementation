@@ -22,6 +22,11 @@ AirSync connectors — see skills 6, 7, 9 for those.
 Detailed payloads and examples live in the domain docs — see `CLAUDE.md` for the
 routing table. This file is the lookup index; go to the domain doc to build a call.
 
+**Cross-domain grounding**: for how Parts (Trail), Articles (KB), and Directories
+(collections) wire together — including the retrieval priority ladder and the
+`applies_to_parts` / `is_part_of` traversal recipes — see
+`Trail_Articles_Directories_Model.md`.
+
 ---
 
 ## Works (issue, ticket, task, incident, opportunity)

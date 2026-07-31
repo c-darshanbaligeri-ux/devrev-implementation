@@ -74,6 +74,7 @@ an org.
 | Stock objects / schemas | `references/Stock_Object_Modification_and_Schemas_API.md` | schemas.custom.set, schemas.stock.*, schemas.aggregated.get (bulk-upgrade unverified — see doc) |
 | Stages / states / lifecycle | `references/Stages_States_and_StageDiagrams_API.md` | states.custom.*, stages.custom.*, stage-diagrams.* |
 | Full org build | `references/DevRev_Building_Org_Using_API_v1.md` | ordered end-to-end |
+| **Trail × Articles × Directories (cross-cutting)** | `references/Trail_Articles_Directories_Model.md` | how `is_part_of`, `applies_to_parts`, and `article.parent` wire together; retrieval ladder; grounding recipes |
 
 ## Common recipes
 

@@ -231,6 +231,29 @@ Common native operation IDs you can reference directly:
 | HybridSearch | `don:integration:dvrv-in-1:operation/devrev.hybrid_search` |
 | NLToSQL / NL2SQL | `don:integration:dvrv-in-1:operation/devrev.nl_to_sql` |
 
+### HybridSearch namespace enum (doc-cited 2026-07-31)
+
+Per `developer.devrev.ai/beta/api-reference/search/hybrid`, `search.hybrid`'s `namespace` query
+parameter is **required** and accepts exactly these 37 values (case-sensitive):
+
+```
+account, ai_agent, article, capability, component, conversation, custom_object, custom_part,
+dashboard, dataset, dev_user, directory, enhancement, feature, group, incident, issue,
+linkable, meeting, microservice, object_member, opportunity, part, product, question_answer,
+rev_org, rev_user, runnable, service_account, sys_user, tag, task, ticket, vista, widget, work
+```
+
+Notes for agent-skill authors:
+- **KB grounding** — pair `article` with `question_answer` (many customer Q&As live in the KB
+  as `question_answer` records, not `article`).
+- **Part-hierarchy discovery** — the API exposes `part` (aggregate) as well as the per-type
+  namespaces `product`, `capability`, `feature`, `enhancement`. Scope narrowly per ART-30502.
+- **Cross-object discovery** — `work` is the aggregate over `ticket`/`issue`/`opportunity`/`task`.
+- **Directory / custom object** — `directory` (Help Center collections) and `custom_object` are
+  first-class namespaces, not umbrella terms.
+- `query` is optional but capped at 400 chars (search phrases truncated at 50 chars, filter
+  clauses are not truncated). `limit` is capped at 50 per page.
+
 Custom object operation IDs follow the pattern:
 ```
 don:integration:dvrv-in-1:devo/<devo-id>:operation/custom_object.<operation_slug>

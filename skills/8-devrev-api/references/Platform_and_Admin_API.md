@@ -43,6 +43,26 @@ an already-attached artifact id to a second object returns
 This isn't mentioned anywhere else in the artifact docs; upload a fresh artifact (repeat
 `artifacts.prepare` + upload) per attachment target if the same file needs to live on two objects.
 
+**`artifacts.locate` — download URL retrieval (doc-cited 2026-07-31 from
+`developer.devrev.ai/beta/api-reference/artifacts/locate`):** returns
+`{ "url": "<presigned>", "expires_at": "<ISO-8601>" }`. Scope: `artifact:read` **plus parent-object
+read access** (the caller must be able to read whatever object the artifact is attached to).
+
+```bash
+curl -X GET "https://api.devrev.ai/artifacts.locate?id=<ARTIFACT_DON>" \
+  -H "Authorization: Bearer <TOKEN>"
+# → { "url": "https://s3.../...?<signed-query>", "expires_at": "2026-07-31T14:00:00Z" }
+```
+
+- The `url` is presigned S3 — a plain public GET with no DevRev auth header.
+- **TTL is per-response** via `expires_at` (no fixed duration documented) — read the timestamp,
+  don't cache the URL past it. Optional `version` query param picks a specific artifact version
+  (omitted = default/latest).
+- 404 on `.locate` = the artifact id does not exist or is not visible to the caller (parent-read
+  missing). 403 = the artifact exists but is behind a parent the caller can't read.
+- Same locate → presigned-URL → GET chain is what `articles.get`'s `extracted_content[0]` uses
+  to expose an article's body (see `Support_Knowledge_and_SLAs_API.md` §3a).
+
 ---
 
 ## 2. Webhooks

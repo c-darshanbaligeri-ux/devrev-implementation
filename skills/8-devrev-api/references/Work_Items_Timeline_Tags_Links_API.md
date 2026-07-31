@@ -165,13 +165,33 @@ Connect two objects. Built-in link types: `serves`, `is_part_of`,
 `is_dependent_on`, `is_related_to`. For custom relationships and full detail,
 see `Custom_Objects_and_Links_API.md`.
 
+**Modern shape (recommended for new code):** per `developer.devrev.ai/beta/guides/links` (2026-07-31),
+the `link_type` enum field is **deprecated** — pass a **link-type ID** in `custom_link_type` for
+BOTH built-in and custom link types (they now share the same `link-types.custom.*` management
+endpoints). Backward compatibility keeps the old `link_type: "<enum>"` shape working, but new
+integrations should look up the link-type id via `link-types.custom.list` (or its `.get`) and pass
+that id string.
+
+**Request shape (both source/target are flat DON strings, NOT nested objects):**
+
 ```bash
-# Link a ticket to an issue
+# Modern: use the link-type id
+curl -X POST 'https://api.devrev.ai/links.create' \
+-H 'Authorization: Bearer <TOKEN>' \
+-d '{ "custom_link_type": "don:core:...:custom_link_type/1",
+      "source": "<TICKET_ID>", "target": "<ISSUE_ID>" }'
+
+# Legacy (still works): use the deprecated enum
 curl -X POST 'https://api.devrev.ai/links.create' \
 -H 'Authorization: Bearer <TOKEN>' \
 -d '{ "link_type": "is_related_to",
       "source": "<TICKET_ID>", "target": "<ISSUE_ID>" }'
 ```
+
+**Request-vs-response shape mismatch (`links.list`):** in the request filter, `custom_link_type`
+is an **array of strings** (link-type ids); in the response, each link's `source`, `target`, and
+`custom_link_type` are **objects** (`{id, display_id, ...}`). Do not send nested objects on the
+create/filter side.
 
 - `links.list` — list an object's links.
 - `links.replace` — swap a link (atomic only for part-to-part default link types;

@@ -30,6 +30,18 @@ live response headers and pace off those. See
 `skills/8-devrev-api/SKILL.md` → "Accuracy notes" for the full write-up and
 `docs/LEARNINGS.md` for the dated journal entry.
 
+**Doc vs. reality on the window (2026-07-31):** `developer.devrev.ai/about/rate-limits`
+publicly states the window "resets every five minutes" and treats all APIs as
+equal-weight against a single per-token pool (no per-endpoint quotas, no burst
+allowance detail). The 2026-07-24 live observation above was a **60-second**
+rolling window on `works.list`, i.e. 5× shorter than the docs claim. Both may be
+true depending on org/plan — the public doc is the general policy, the observed
+value is what this org actually returned. **Trust the response headers over
+either number** (`X-Ratelimit-Reset` is the definitive next-reset timestamp;
+`Retry-After` is the definitive wait on 429). Neither the public doc nor the
+live observation documents burst behavior — treat `Retry-After` as the only
+safe retry cadence.
+
 ### Headers
 
 DevRev returns these headers with each API response:

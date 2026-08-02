@@ -1,4 +1,4 @@
-# skills/ — the 10 DevRev implementation domains
+# skills/ — the 11 DevRev implementation domains
 
 Numbered in **implementation-flow order** — the order a fresh org is built in, and the order to
 reason in when a request spans domains (start at the lowest number involved; greenfield/cross-domain
@@ -16,6 +16,7 @@ requests start at 0):
 | 7 | `7-agent-building` | Agent Studio create/debug/improve/test, guardrails, feature flags, NL2SQL annotations | Knowledge-owner (8 commands, 10 KB articles) |
 | 8 | `8-devrev-api` | Every public REST endpoint — catalog + per-domain payload docs | Knowledge-owner (horizontal foundation) |
 | 9 | `9-snapin-development` | Routes into the third-party `devrev` (`devrev-qk-agents`) plugin's snap-in vertical (PM/Architect/Tester); excludes that plugin's dashboard vertical | Router (knowledge lives in `repos/devrev-qk-agents`; plugin NOT auto-enabled — manual install) |
+| 10 | `10-api-conventions` | Cross-cutting API rules from `developer.devrev.ai/about/*` — auth tokens, cursor pagination, versioning header, rate-limit headers + 429, standard error JSON shape. Sits underneath every domain skill 1–9; defines no endpoint payloads of its own. | Knowledge-owner (scraped from developer.devrev.ai 2026-08-02) |
 
 **Working rules**
 - Always open the domain's `SKILL.md` first; it names the reference files that carry the exact

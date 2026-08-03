@@ -175,9 +175,9 @@ live-tested in this repo**, sourced from DevRev's docs:
 | --- | --- | --- |
 | `schemas.custom.set` | `custom_type_fragment:write` | Create/update a fragment, subtype, tenant field, override |
 | `schemas.custom.get` | none | Get a custom fragment |
-| `schemas.custom.list` | none | List custom fragments |
+| `schemas.custom.list` | none | List custom fragments. **Pass `is_custom_leaf_type: true` to see custom-leaf-type fragments** — a bare `{}` call returns stock-object fragments ONLY, and a `leaf_type` filter *alone* returns 0 rows (verified live 2026-08-04). There is no `type` filter (`{"type":"tenant_fragment"}` → 400 `invalid_field`). |
 | `schemas.stock.get` / `.list` | none | Inspect stock fields |
-| `schemas.aggregated.get` | none | Merged stock + custom view |
+| `schemas.aggregated.get` | none | Merged stock + custom view. Fields come back under **`custom_fields`** and **`stock_fields`** — there is **no `fields` key**, so reading `fields` silently reports zero fields (verified live 2026-08-04). |
 | `schemas.subtypes.prepare-update` | `custom_type_fragment:write` | Stage a subtype change |
 
 ---

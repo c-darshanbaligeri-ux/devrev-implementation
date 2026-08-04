@@ -459,6 +459,13 @@ Scope: `link-types.custom.create` / `.update` require `custom_link_type:write`;
 > `link-types.custom.delete`. To retire one, set `deprecated: true` via
 > `link-types.custom.update`. This preserves referential integrity so existing
 > links and old objects don't become corrupt. Name them carefully.
+>
+> **Verified live 2026-08-04**: once deprecated, a type disappears from a bare
+> `link-types.custom.list` (`{}`) — the endpoint filters deprecated types out by
+> default. Pass `{"is_deprecated": true}` to list only the retired ones, or
+> `link-types.custom.get` by id (works on active and deprecated alike, echoing
+> `is_deprecated`). So a bare `.list` returns exactly the resolvable types, and
+> absence from it is NOT evidence a type was deleted.
 
 ---
 

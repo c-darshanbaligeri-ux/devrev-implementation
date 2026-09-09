@@ -237,3 +237,19 @@ curl -X POST 'https://api.devrev.ai/atoms.get' \
   read/write scope, not a "timeline" scope (there isn't one).
 - Using a display ID (TKT-123) in links or `applies_to_part` — always use the DON.
 - Forgetting `custom_schema_spec` when a work item uses a subtype with custom fields.
+
+## Field notes — timeline pagination (confirmed live 2026-09-09)
+
+- **`timeline-entries.list` returns internal `timeline_comment` entries — after every
+  `timeline_change_event` on the object.** On a custom-object record with 100 links and two
+  internal comments (`visibility: "internal"`, 12–21 KB bodies), page 1 (`limit: 100`) was 100
+  change events and no comment; the comments were entries 101–104. An earlier note that the
+  endpoint "hides internal comments" was this pagination artifact. Always follow `next_cursor` to
+  the end before concluding a comment is absent. `visibility` in the request body is accepted but
+  did not change page 1's content.
+- Long comment bodies come back whole through this endpoint; the agent-side `FetchObjectContext`
+  tool cuts them at 2,000 characters (`is_truncated: true`) — read machine-readable comment blocks
+  through the REST endpoint from a script, not through the agent tool.
+- `*.list` endpoints (`custom-objects.list`, `articles.list`, `works.list`) clamp `limit` to 100
+  silently — a `limit` of 1,000 returns 100 rows plus `next_cursor`. `parts.list` returned 118 rows
+  for `limit: 200` on the same org, so the clamp is per endpoint; paginate regardless.

@@ -252,7 +252,13 @@ Notes for agent-skill authors:
 - **Directory / custom object** — `directory` (Help Center collections) and `custom_object` are
   first-class namespaces, not umbrella terms.
 - `query` is optional but capped at 400 chars (search phrases truncated at 50 chars, filter
-  clauses are not truncated). `limit` is capped at 50 per page.
+  clauses are not truncated). `limit` is capped at 50 per page. **Confirmed live 2026-09-09**
+  (`search.hybrid`, Fiserv PEx org): `limit` 51 → `400 value_not_permitted "'51' must be <= '50'"`;
+  a 1,000-char `query` → `400 … length must be <= '400'`. **A `part` result carries no
+  `description`** — only `display_id`, `id`, `name`, `owned_by`, `type` plus a ~500-char `snippet`
+  (article snippets run ~3.8 KB). Search finds candidates; read their text with `parts.get` /
+  `ExecuteSQL`, never from the result. `enhancement` returned nothing on that org (its Trail nodes
+  are `product` / `capability` / `feature`); `custom_object` and `ticket` did return records.
 
 Custom object operation IDs follow the pattern:
 ```

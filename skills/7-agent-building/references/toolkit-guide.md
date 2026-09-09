@@ -87,6 +87,12 @@ If the check finds missing or broken annotations, run the **6-phase auto-annotat
 - Always project the base `id` field
 - Never project struct fields directly — use dot notation
 
+**Field notes — confirmed live 2026-09-09** (`POST /internal/tables.query.execute` with a plain PAT, `{"query": "..."}`; result base64-encoded under `data`; tables via `/internal/tables.schemas.list` / `.get` — the same tables the agent-side ExecuteSQL tool queries):
+- A bare `SELECT column FROM table` throws `Binder Error: Could not find key "<column>" in struct` — the parenthesized `(t).column` form is mandatory, and a Binder Error can therefore mean *wrong syntax*, not a missing column. Re-test with `(t).column` before concluding a field doesn't bind.
+- **Stock snapshot tables truncate long text at ingest**: `devrev.feature` / `devrev.article` (and siblings) cap `description` at 4,096 chars and append a literal `... (truncated)` marker (4,111 total). `length((t).field)` equals the truncated text, so a length projection cannot detect it — detect with `(t).field LIKE '%(truncated)'` and read flagged rows whole via the REST get endpoint (`parts.get`, `articles.get`).
+- **Result sets cap at 1,000 rows, silently** (a 21,835-row table returned exactly 1,000; no error, no cursor). Chunk `IN (...)` lists and aggregate server-side.
+- Custom-object datasets flatten `tnt__` fields to bare column names, and a dataset's column set can lag or omit object fields entirely (one live dataset had no column for two real object fields) — `tables.schemas.get` is the authority on what binds, not the object's own schema.
+
 **The 6-phase workflow** (follow in order, do not skip phases):
 
 **Phase 1 — Schema-Only Analysis**

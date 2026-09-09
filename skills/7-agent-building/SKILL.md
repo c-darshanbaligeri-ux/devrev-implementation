@@ -41,7 +41,7 @@ ORG_PAT=your-org-access-token
 When working with DevRev agents, follow these principles from the guides:
 
 1. **Deterministic first** — If it can be a workflow, make it a workflow. Use AI only where it adds value.
-2. **FetchObjectContext > Search** — If you have an object ID, fetch it directly. Search is for discovery.
+2. **FetchObjectContext > Search** — If you have an object ID, fetch it directly. Search is for discovery. **Caveat (live 2026-09-09):** it caps every long text field at 2,000 characters (`is_truncated: true` / `[truncated to 2000 characters]`) — use it for structure and short fields; read long text through `ExecuteSQL` (project `length(field)` to prove completeness) or a direct API read. See `references/toolkit-guide.md` § Naming retrieval.
 3. **Minimal knowledge sources** — Fewer sources = less noise = better results.
 4. **Task Success before Accuracy** — Fix whether the problem is solved before fixing whether the info is correct.
 5. **Test before publish** — Always run bulk tests before going live.

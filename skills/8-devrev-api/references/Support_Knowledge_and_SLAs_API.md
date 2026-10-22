@@ -155,9 +155,11 @@ Confirmed facts from this live test:
   payload are NOT supported at all — content must go through the artifact-upload path.
 - **`scope` takes a number, not the string label** — `{"scope":"internal"}` 400s
   (`unexpected_json_type`, expected number); the correct values are `1` = internal, `2` = external
-  (default if omitted), per `schemas.stock.get`'s `scope` `uenum` definition. `scope` is also
-  `is_immutable`/`is_read_only` in that same schema — set it at create time; don't expect
-  `articles.update` to change it later (not independently re-tested, but the schema flags block it).
+  (default if omitted), per `schemas.stock.get`'s `scope` `uenum` definition. **Correction
+  (live 2026-10-22): `scope` is NOT immutable** — `articles.update {"id":"<ARTICLE_DON>","scope":2}`
+  returns 200 and flips an Internal article to External in place (same id, body, parts and tags);
+  the live stock schema carries no immutable/read-only flag on `scope`. Side effect: changing
+  `scope` **clears `shared_with`** ("Visible to"), so set the share after the scope. See §3c.
 - **The part-linking field is `applies_to_parts`, NOT `applies_to_part_ids`** — the latter 400s
   with `{"type":"invalid_field","field_name":"applies_to_part_ids"}`. `applies_to_parts` takes an
   array of part DONs, `max_items: 10`, and the response echoes back full part objects (not just
@@ -206,6 +208,42 @@ two collections, but the single-`parent`-field shape makes this the expected beh
 
 `directories.delete` is blocked if the directory still contains nested items (sub-collections or
 articles) — empty it first (not independently verified live this session; documented behavior).
+
+### 3c. Article visibility ("Visible to", public) — confirmed live 2026-10-22
+
+What the UI calls **"Visible to"** is the article's `shared_with` field (stock schema display
+name); each entry is a `shared_with_membership` `{member: <user or group id>, role: <role id>}`.
+Making an article public means scope External plus a share with the right groups:
+
+```bash
+# 1. Internal -> External (clears shared_with; skip if already External)
+curl -X POST 'https://api.devrev.ai/articles.update' -H 'Authorization: Bearer <TOKEN>' \
+  -d '{"id":"<ARTICLE_DON>","scope":2}'
+# 2. Share: shared_with is an OBJECT with "set" (replaces the whole list)
+curl -X POST 'https://api.devrev.ai/articles.update' -H 'Authorization: Bearer <TOKEN>' \
+-d '{"id":"<ARTICLE_DON>","shared_with":{"set":[
+      {"member":"<GROUP_DON All Users>","role":"<VIEWER_ROLE_DON>"},
+      {"member":"<GROUP_DON Customers>","role":"<VIEWER_ROLE_DON>"},
+      {"member":"<GROUP_DON Customer Admins>","role":"<VIEWER_ROLE_DON>"},
+      {"member":"<GROUP_DON Verified Customers>","role":"<VIEWER_ROLE_DON>"}]}}'
+```
+
+- Group ids come from `groups.list` (default groups, by name): `All Users` (every dev user,
+  `member_type: dev_user`), `Customers` (all external customers), `Customer Admins`, `Verified
+  Customers` (`rev_user`). The role id is the one existing shared articles in the org already carry
+  (read any shared article's `shared_with[].role.id`; `roles.get` on it returned 404).
+- `shared_with` as a plain array → `400 unexpected_json_type` (`expected: object`,
+  `field_name: shared_with`). `{"set":[...]}` is the working shape.
+- **An Internal-scope article refuses every customer (`rev_user`) group** with an opaque
+  `400 bad_request` (no `field_name`); dev-user groups (`All Users`) are accepted. Change `scope`
+  first.
+- **`access_level` is a write-only shortcut that rewrites `shared_with`**: `"internal"` → All Users
+  only; `"public"` → All Users + Customers. It is never returned by `articles.get` (stays absent),
+  the stock schema types it `unknown`, and on an Internal-scope article `"public"` is refused with
+  an opaque 400. Sending it after a custom share overwrites that share, so set `shared_with`
+  explicitly when the audience is wider than All Users + Customers.
+- `status` stays as it was through both calls; verify with `articles.get` (`scope.label`,
+  `shared_with[].member.name`).
 
 ---
 
@@ -280,7 +318,8 @@ curl -X POST 'https://api.devrev.ai/slas.assign' \
 
 - Posting a message: there is no `messages.create` — use `timeline-entries.create`
   against the conversation/ticket object.
-- Article visibility — set `scope` (internal vs external) and `status` (draft vs
-  published); an unpublished article won't surface to customers.
+- Article visibility — set `scope` (internal vs external), `status` (draft vs
+  published) and `shared_with` ("Visible to", §3c); an unpublished article won't surface to
+  customers, and an Internal one can't be shared with customer groups.
 - SLA not taking effect — creating an SLA isn't enough; `slas.assign` it to the
   object (or account), then check `sla-trackers.get`.

@@ -20,7 +20,7 @@
     "Principles that keep solutions good",
     "Output style",
     "Handing off to execution",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "0-solution-architecture",
    "lines": 131,
@@ -43,7 +43,7 @@
     "DON id scratchpad",
     "Safety",
     "Common pitfalls (from the references)",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "1-object-schema-customization",
    "lines": 352,
@@ -71,9 +71,9 @@
     "Pagination",
     "Rate limits",
     "Error response shape",
-    "DON ids, headers, base URL — see `skills/devrev-start/references/global-api-rules.md`",
+    "DON ids, headers, base URL — see `${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/references/global-api-rules.md`",
     "Verify",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "10-api-conventions",
    "lines": 180,
@@ -100,7 +100,7 @@
     "Endpoint section format",
     "Limits of this mirror — know what is *not* here",
     "Refresh",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "11-developer-docs",
    "lines": 162,
@@ -125,7 +125,7 @@
     "DON id scratchpad",
     "Safety",
     "Common pitfalls (from the reference §8)",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "2-stage-lifecycle-customization",
    "lines": 278,
@@ -155,7 +155,7 @@
     "DON id scratchpad",
     "Safety",
     "Common pitfalls",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "3-data-upload-and-org-build",
    "lines": 343,
@@ -178,7 +178,7 @@
     "Preconditions",
     "Why this indirection",
     "Background references (local)",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "4-dashboards-and-widgets",
    "lines": 75,
@@ -197,7 +197,7 @@
     "Known gotchas",
     "Safety",
     "Why this indirection",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "5-datasets",
    "lines": 93,
@@ -215,7 +215,7 @@
     "Debugging a failed import",
     "Reference index",
     "Capturing new learnings",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "6-workflows",
    "lines": 200,
@@ -262,7 +262,7 @@
     "Safety checklist",
     "Accuracy notes (verified against the DevRev API-to-scope reference)",
     "Verify",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "8-devrev-api",
    "lines": 186,
@@ -282,7 +282,7 @@
     "Preconditions",
     "Self-learning is plugin-scoped, not this-repo-scoped",
     "Why this indirection",
-    "Field notes (live-learned; see docs/LEARNINGS.md)"
+    "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "9-snapin-development",
    "lines": 114,

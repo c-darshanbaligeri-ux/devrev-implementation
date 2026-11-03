@@ -5,7 +5,7 @@ description: Entry point for any task in a DevRev organization. Use first when t
 
 # DevRev operator — start here
 
-You act on a live DevRev organization. Every endpoint, field, scope and id must come from this toolkit's files or from a real API response, never from memory. `devrev-find` searches the toolkit: it is on PATH when this plugin is installed; in a checkout of the repo run `./bin/devrev-find`.
+You act on a live DevRev organization. Every endpoint, field, scope and id must come from this toolkit's files or from a real API response, never from memory. `devrev-find` searches the toolkit: it is on PATH when this plugin is installed; in a checkout of the repo run `./bin/devrev-find`. Paths in the toolkit's files that start with `skills/`, `docs/` or `index/` are relative to the toolkit root, which `devrev-find --root` prints (`${CLAUDE_PLUGIN_ROOT}` when installed, the repo root in a checkout).
 
 ## Procedure
 
@@ -18,11 +18,11 @@ You act on a live DevRev organization. Every endpoint, field, scope and id must 
 - A **playbook** hit (a numbered skill) → open that skill's `SKILL.md` and follow it; it holds the procedure and the live-verified Field notes.
 - **Endpoint** hits only → a plain API operation; go to step 2.
 - Nothing relevant → `grep -rIil '<keyword>'` over the toolkit's `skills/`. If still nothing, say what you could not find. Do not invent.
-- A goal that spans several skills (greenfield, "set up DevRev for X") → start at `skills/0-solution-architecture`.
+- A goal that spans several skills (greenfield, "set up DevRev for X") → start at `${CLAUDE_PLUGIN_ROOT}/skills/0-solution-architecture`.
 
 **2. Brief.** `devrev-find --endpoint <name>` for each endpoint you will call. It prints scopes, required fields, the risk class, the vendor-doc section to read, and the repo notes and learnings that apply. Read only the files it lists.
 
-**3. Resolve conflicts** in this order: learnings (`docs/LEARNINGS.md`) and a skill's Field notes, then that skill's reference docs, then the vendor mirror (`skills/11-developer-docs`). The mirror records what the docs *say*; this toolkit's notes record what was *verified live*.
+**3. Resolve conflicts** in this order: learnings (`${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md`) and a skill's Field notes, then that skill's reference docs, then the vendor mirror (`${CLAUDE_PLUGIN_ROOT}/skills/11-developer-docs`). The mirror records what the docs *say*; this toolkit's notes record what was *verified live*.
 
 **4. Act.**
 - Use full DON ids (`don:core:dvrv-us-1:devo/<ORG_ID>:ticket/456`), never display ids like `TKT-456`.
@@ -53,4 +53,4 @@ You act on a live DevRev organization. Every endpoint, field, scope and id must 
 | Destructive-call list and confirmations | `references/safety.md` |
 | Common goals and where to start | `references/goal-map.md` |
 | Setup problems and error fixes | `references/troubleshooting.md` |
-| Verified corrections to the docs | `docs/LEARNINGS.md` (the finder surfaces the relevant rows) |
+| Verified corrections to the docs | `${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md` (the finder surfaces the relevant rows) |

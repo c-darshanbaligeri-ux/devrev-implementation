@@ -1,0 +1,12 @@
+{
+  "name": "devrev-operator",
+  "displayName": "DevRev Operator",
+  "description": "Operate a DevRev organization from Claude Code. Finds the right playbook and API endpoint for a goal (devrev-find), carries live-verified API knowledge plus the official developer docs, and gates API writes behind a safety hook.",
+  "author": {
+    "name": "c-darshanbaligeri-ux",
+    "url": "https://github.com/c-darshanbaligeri-ux"
+  },
+  "homepage": "https://github.com/c-darshanbaligeri-ux/devrev-implementation",
+  "repository": "https://github.com/c-darshanbaligeri-ux/devrev-implementation",
+  "keywords": ["devrev", "api", "support", "workflows", "agents", "snap-ins"]
+}

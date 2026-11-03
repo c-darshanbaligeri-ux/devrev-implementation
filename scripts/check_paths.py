@@ -52,6 +52,7 @@ def skill_dir_of(root: Path, f: Path):
 
 def check_one(root: Path, f: Path, line: str, missing: list, n: int) -> int:
     checked = 0
+    line = line.replace("${CLAUDE_PLUGIN_ROOT}/", "")  # plugin-ready paths are checked like any repo path
     sdir = skill_dir_of(root, f)
     for m in ABS_RE.finditer(line):
         path = m.group(1).rstrip("/.,;:)")

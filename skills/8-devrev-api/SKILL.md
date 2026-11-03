@@ -7,7 +7,7 @@ description: Reads and modifies DevRev data through the public REST API, coverin
 
 Use this to perform any DevRev operation via the REST API. It routes a request
 to the right endpoint and doc, and gives the order and safety checks. Read
-`skills/devrev-start/SKILL.md` and `skills/devrev-start/references/global-api-rules.md` first for the global rules; use `references/00_API_Catalog.md` to look up any
+`${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/SKILL.md` and `${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/references/global-api-rules.md` first for the global rules; use `references/00_API_Catalog.md` to look up any
 endpoint + scope.
 
 ## When to use
@@ -18,10 +18,10 @@ an org.
 
 ## When not to use
 
-- Workflows & agent-callable skills → `skills/6-workflows`
-- AI agent configs → `skills/7-agent-building`
-- Dashboards → `skills/4-dashboards-and-widgets`
-- Datasets → `skills/5-datasets`
+- Workflows & agent-callable skills → `${CLAUDE_PLUGIN_ROOT}/skills/6-workflows`
+- AI agent configs → `${CLAUDE_PLUGIN_ROOT}/skills/7-agent-building`
+- Dashboards → `${CLAUDE_PLUGIN_ROOT}/skills/4-dashboards-and-widgets`
+- Datasets → `${CLAUDE_PLUGIN_ROOT}/skills/5-datasets`
 
 ## Preconditions
 
@@ -75,7 +75,7 @@ an org.
 | Stages / states / lifecycle | `references/Stages_States_and_StageDiagrams_API.md` | states.custom.*, stages.custom.*, stage-diagrams.* |
 | Full org build | `references/DevRev_Building_Org_Using_API_v1.md` | ordered end-to-end |
 | **Trail × Articles × Directories (cross-cutting)** | `references/Trail_Articles_Directories_Model.md` | how `is_part_of`, `applies_to_parts`, and `article.parent` wire together; retrieval ladder; grounding recipes |
-| **Full request-field table / beta endpoint (official docs)** | `skills/11-developer-docs/api-reference/<resource>.md` (beta: `skills/11-developer-docs/beta/api-reference/<resource>.md`) | every endpoint's params, scopes, response codes, cURL example — what the docs *say*; the live-verified notes in the domain docs above win on conflict |
+| **Full request-field table / beta endpoint (official docs)** | `${CLAUDE_PLUGIN_ROOT}/skills/11-developer-docs/api-reference/<resource>.md` (beta: `${CLAUDE_PLUGIN_ROOT}/skills/11-developer-docs/beta/api-reference/<resource>.md`) | every endpoint's params, scopes, response codes, cURL example — what the docs *say*; the live-verified notes in the domain docs above win on conflict |
 
 ## Common recipes
 
@@ -153,7 +153,7 @@ curl -X POST 'https://api.devrev.ai/ping' -H "Authorization: Bearer $DEVREV_PAT"
 curl -X POST 'https://api.devrev.ai/works.list' -H "Authorization: Bearer $DEVREV_PAT" -d '{ "type": ["ticket"], "limit": 5 }'
 ```
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
 differ from the references. Add entries via the `capture-learnings` protocol

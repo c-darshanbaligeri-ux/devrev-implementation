@@ -61,7 +61,7 @@ The actual domain knowledge lives in `repos/aai-skills/plugins/dashboard-dev/ski
 | `references/plugin-and-toolchain-overview.md` | Background on how the dashboard-dev toolchain works: plugin structure, the 7-step end-to-end flow, the local DuckDB/Parquet widget validator, federated skill architecture, manual preview surfaces |
 | `references/widget-api-and-dashboard-json.md` | The raw `widgets.create`/`widgets.get` API shapes and dashboard JSON skeleton — for understanding what the pipeline produces (NOT for hand-writing widget JSON; the HARD RULE above still applies) |
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
 differ from the references. Add entries via the `capture-learnings` protocol

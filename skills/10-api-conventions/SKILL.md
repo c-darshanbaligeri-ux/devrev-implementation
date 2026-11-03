@@ -8,7 +8,7 @@ description: Cross-cutting rules every DevRev REST call follows, namely token ty
 These are the cross-cutting rules the DevRev "About" section of developer.devrev.ai
 documents: tokens, pagination, versioning, rate limits, and error shape. Every
 domain skill in this repo sits on top of these rules. Read
-`skills/devrev-start/SKILL.md` first for the operating procedure and global rules; use this skill when you're
+`${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/SKILL.md` first for the operating procedure and global rules; use this skill when you're
 building or debugging the *plumbing* around any endpoint call.
 
 ## When to use
@@ -25,12 +25,12 @@ Trigger when the user or your own workflow needs:
 
 ## When not to use
 
-- Specific endpoint payloads or scopes → `skills/8-devrev-api`
-- Schema/subtype/custom-object shape → `skills/1-object-schema-customization`
-- Stage/state lifecycle → `skills/2-stage-lifecycle-customization`
-- Workflow/agent authoring → `skills/6-workflows`, `skills/7-agent-building`
-- Snap-in build/deploy → `skills/9-snapin-development`
-- Official docs outside the About section (guides, SDKs, snap-in / AirSync reference, per-endpoint field tables) → `skills/11-developer-docs`
+- Specific endpoint payloads or scopes → `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api`
+- Schema/subtype/custom-object shape → `${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization`
+- Stage/state lifecycle → `${CLAUDE_PLUGIN_ROOT}/skills/2-stage-lifecycle-customization`
+- Workflow/agent authoring → `${CLAUDE_PLUGIN_ROOT}/skills/6-workflows`, `${CLAUDE_PLUGIN_ROOT}/skills/7-agent-building`
+- Snap-in build/deploy → `${CLAUDE_PLUGIN_ROOT}/skills/9-snapin-development`
+- Official docs outside the About section (guides, SDKs, snap-in / AirSync reference, per-endpoint field tables) → `${CLAUDE_PLUGIN_ROOT}/skills/11-developer-docs`
 - Anything that isn't in the six developer.devrev.ai "About" pages listed below
 
 ## References — one file per developer.devrev.ai "About" page
@@ -45,11 +45,11 @@ Trigger when the user or your own workflow needs:
 | `references/errors.md` | Success codes (200/201/204); JSON error shape `{"message":"..."}`; common 4xx/5xx (400/401/403/404/429/500/503); per-endpoint extras (301/404/409) |
 
 > **Cross-checked 2026-11-03** against a fresh scrape of the same six pages in
-> `skills/11-developer-docs/about/`: no factual changes since the 2026-08-02 scrape — current version
+> `${CLAUDE_PLUGIN_ROOT}/skills/11-developer-docs/about/`: no factual changes since the 2026-08-02 scrape — current version
 > `2022-10-20`, the `X-Devrev-Version` / `X-Devrev-Scope: beta` headers, the 5-minute window and
 > `X-Ratelimit-*` headers, the `next_cursor` field, the four token types and PAT steps, the status-code
 > tables, and the SDK list are all unchanged. That mirror also covers everything *outside* `about/`
-> (guides, SDKs, snap-ins, AirSync, per-endpoint tables) — see `skills/11-developer-docs/INDEX.md`.
+> (guides, SDKs, snap-ins, AirSync, per-endpoint tables) — see `${CLAUDE_PLUGIN_ROOT}/skills/11-developer-docs/INDEX.md`.
 
 ## Working rules
 
@@ -60,7 +60,7 @@ call in this repo obeys them.
 
 - Every request carries `Authorization: Bearer <token>` — the four token types
   (PAT, AAT, SUT, Session) are all bearer JWTs. For this repo the token is
-  always a **PAT** read from `.env` as `DEVREV_PAT` (see `skills/devrev-start/references/global-api-rules.md`).
+  always a **PAT** read from `.env` as `DEVREV_PAT` (see `${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/references/global-api-rules.md`).
 - PATs **cannot be renewed** — generate a new one and update `.env` before the
   old one expires.
 - If you see `invalid token`, decode the payload **locally** to inspect its
@@ -83,7 +83,7 @@ call in this repo obeys them.
 - Read the cursor from the response and pass it back as `cursor` (query string
   for GET, JSON body for POST) to fetch the next page. The docs name the field
   `next_cursor`, and live responses confirm that for `works.list` / `parts.list`
-  (`skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md`), but
+  (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md`), but
   other list ops return a plain `cursor` key (`schemas.custom.list` and the
   custom state/stage lists — see the Field notes in skills 1 and 2). **Follow
   whichever of `next_cursor` / `cursor` is present; stop only when neither is.**
@@ -93,7 +93,7 @@ call in this repo obeys them.
 - If neither key is present, you're on the last page.
 - Page-size / `limit` semantics (default, max) are not documented on the About
   page as of scrape date 2026-08-02 — read the specific endpoint doc in
-  `skills/8-devrev-api/references/` for that.
+  `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/` for that.
 
 ### Rate limits
 
@@ -132,11 +132,11 @@ call in this repo obeys them.
 - Per-endpoint extras: `301 Moved Permanently` (the resource ID changed; the
   new ID is in the `Location` header — treat as a hint to update stored IDs).
 
-### DON ids, headers, base URL — see `skills/devrev-start/references/global-api-rules.md`
+### DON ids, headers, base URL — see `${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/references/global-api-rules.md`
 
 The base URL (`https://api.devrev.ai`), the `Content-Type` / `Accept:
 application/json` header pair, and the "always use DON ids, never display IDs"
-rule are stated in `skills/devrev-start/references/global-api-rules.md`, not on
+rule are stated in `${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/references/global-api-rules.md`, not on
 any developer.devrev.ai About page. This skill doesn't restate them — they're
 global.
 
@@ -168,7 +168,7 @@ curl -s -G 'https://api.devrev.ai/works.list' \
   --data-urlencode 'cursor=<value>'
 ```
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 Dated facts discovered while operating this domain — errors hit, restrictions
 found, behaviors that differ from the references. Add entries via the

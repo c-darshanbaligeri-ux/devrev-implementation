@@ -14,8 +14,8 @@ For anything beyond a one-step workflow, **authoring a complete template JSON an
 
 ## When not to use
 
-- **Snap-in development** is not a workflow task — use `skills/9-snapin-development`. Snap-in *operations* (third-party namespaces) may still be referenced inside workflow templates by their namespace.
-- **AI agent configuration** (creating/modifying agent configs, guardrails, knowledge sync, testing agents) → `skills/7-agent-building`.
+- **Snap-in development** is not a workflow task — use `${CLAUDE_PLUGIN_ROOT}/skills/9-snapin-development`. Snap-in *operations* (third-party namespaces) may still be referenced inside workflow templates by their namespace.
+- **AI agent configuration** (creating/modifying agent configs, guardrails, knowledge sync, testing agents) → `${CLAUDE_PLUGIN_ROOT}/skills/7-agent-building`.
 
 ## Step 0: Check what's available in your session
 
@@ -67,7 +67,7 @@ the default template rather than composing from operation lookups):
 4. **Build the full JSON** following `references/template-json-format.md` — this covers the wrapper envelope, step/port structure, all `input_values` value types, trigger filters, loops and variables, sleep/wait, Ask AI, HTTP, and the Code node, plus a full validation checklist. Read it now if you haven't already; don't try to reconstruct the format from memory or from the examples alone — several field-type rules (`uenum` needing `allowed_values`, `array` needing `base_type`, etc.) are import-breaking if missed and aren't obvious from looking at examples alone.
 5. **Write the output** to `templates/<workflow_name>.json` in the user's working directory, and show them a summary of what it does (trigger, steps, branches) — not the raw JSON, unless they ask for it.
 6. **Tell the user how to get it live**: import it via **Workflows → Import** in the DevRev app (`https://app.devrev.ai/?view=workflows`), or hand it to `references/manage-workflows-api.md`'s create/publish flow if they specifically want it built up through API calls instead.
-7. **After the user confirms it imported/worked**, copy the template into `skills/6-workflows/examples/working-<descriptive-name>.json` and add a row to the table in `references/template-json-format.md`'s example list. This is how the skill gets better over time — every confirmed-working template becomes a pattern the next request can study.
+7. **After the user confirms it imported/worked**, copy the template into `${CLAUDE_PLUGIN_ROOT}/skills/6-workflows/examples/working-<descriptive-name>.json` and add a row to the table in `references/template-json-format.md`'s example list. This is how the skill gets better over time — every confirmed-working template becomes a pattern the next request can study.
 
 ## Debugging a failed import
 
@@ -101,10 +101,10 @@ This skill already has two built-in learning channels — use them, plus the jou
 - **Operation schema surprise** (field the schema doc missed/got wrong): fix
   `operations/schemas/<slug>.md` in place.
 
-In all cases also append a row to `docs/LEARNINGS.md` and commit — full protocol:
+In all cases also append a row to `${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md` and commit — full protocol:
 `.claude/skills/capture-learnings/SKILL.md`.
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 - **2026-07-18 — Step-by-step CRUD build works end-to-end, confirmed live.** Built and deleted two
   full workflows via raw API only (no import): a 4-step generic workflow

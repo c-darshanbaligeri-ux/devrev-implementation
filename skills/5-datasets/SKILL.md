@@ -80,7 +80,7 @@ State the impact clearly and get explicit user confirmation before running these
 
 The actual domain knowledge lives in `repos/aai-skills/plugins/dataset-builder/skills/`. This file intentionally does not duplicate that content — it only routes and states the decision rules. Read the target skill's SKILL.md or command file for the real implementation details.
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
 differ from the references. Add entries via the `capture-learnings` protocol

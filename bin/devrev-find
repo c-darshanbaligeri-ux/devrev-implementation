@@ -5,6 +5,7 @@
     devrev-find --endpoint works.create                      full brief for one endpoint (what to read, fields, notes)
     devrev-find --risk works.delete                          read | write | destructive
     devrev-find --list-playbooks                             every skill with its one-line purpose
+    devrev-find --root                                       the toolkit root directory
     options: -n N (endpoints shown, default 5)   --kind endpoint|playbook|learning|all   --json
 
 It searches the generated index in <repo>/index/ (rebuild with `python3 -I scripts/build_index.py`) and prints
@@ -356,10 +357,14 @@ def main():
     ap.add_argument("--endpoint", metavar="NAME", help="full brief for one endpoint, e.g. works.create")
     ap.add_argument("--risk", metavar="NAME", help="classify an endpoint name as read | write | destructive")
     ap.add_argument("--list-playbooks", action="store_true")
+    ap.add_argument("--root", action="store_true", help="print the toolkit root directory (use it for shell snippets)")
     ap.add_argument("-n", type=int, default=5, help="number of endpoints to show (default 5)")
     ap.add_argument("--kind", choices=["endpoint", "playbook", "learning", "all"], default="all")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     a = ap.parse_args()
+    if a.root:
+        print(ROOT)
+        return 0
     if a.risk:
         print(devrev_risk.classify(a.risk))
         return 0

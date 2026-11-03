@@ -15,31 +15,31 @@ page. Read the live page (the `Source:` line) when you need the authoritative, c
 ## Precedence — read this first
 
 1. **This mirror records what the vendor docs *say*. Live-verified facts in this repo win.** If a domain
-   skill's *Field notes*, `docs/LEARNINGS.md` or the root `CLAUDE.md` disagrees with a mirror page, trust
+   skill's *Field notes*, `${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md` or the root `CLAUDE.md` disagrees with a mirror page, trust
    the repo — the documentation is known to lag reality (see the corrections already recorded for rate
    limits, stage deprecation, `objects.bulk-upgrade`, etc.).
 2. **Never write a learning into a mirror file.** `scripts/build_docs.py` deletes and regenerates every
    generated file, so a hand edit is silently lost on the next refresh. Capture discrepancies with
-   `.claude/skills/capture-learnings` into the *owning skill* (e.g. `skills/8-devrev-api`), as usual.
+   `.claude/skills/capture-learnings` into the *owning skill* (e.g. `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api`), as usual.
 3. **Public first.** Use `api-reference/` by default. `beta/` documents early-access endpoints; how beta is
-   selected on the wire is in `skills/10-api-conventions/references/versioning.md`.
+   selected on the wire is in `${CLAUDE_PLUGIN_ROOT}/skills/10-api-conventions/references/versioning.md`.
 
 ## When to use / when not to use
 
 | Use this skill for | Use something else for |
 | --- | --- |
-| "What does the official doc say about `X`?" | Making the call → `skills/8-devrev-api` (live-verified payloads, DON ids, scope gotchas) |
-| The complete request-field table for an endpoint, or a **beta** endpoint | Cross-cutting auth / pagination / rate-limit / error rules → `skills/10-api-conventions` |
-| Webhook event payloads, signature/echo-challenge verification | Designing the solution → `skills/0-solution-architecture` |
-| PLuG / mobile SDK install, init, identity, events | Building a snap-in or AirSync connector end to end → `skills/9-snapin-development` (the plugin pipeline); read the reference pages here |
-| Snap-in manifest, functions, keyrings, CLI, quotas; AirSync data model & object types | Custom objects / fields in a live org → `skills/1-object-schema-customization` |
+| "What does the official doc say about `X`?" | Making the call → `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api` (live-verified payloads, DON ids, scope gotchas) |
+| The complete request-field table for an endpoint, or a **beta** endpoint | Cross-cutting auth / pagination / rate-limit / error rules → `${CLAUDE_PLUGIN_ROOT}/skills/10-api-conventions` |
+| Webhook event payloads, signature/echo-challenge verification | Designing the solution → `${CLAUDE_PLUGIN_ROOT}/skills/0-solution-architecture` |
+| PLuG / mobile SDK install, init, identity, events | Building a snap-in or AirSync connector end to end → `${CLAUDE_PLUGIN_ROOT}/skills/9-snapin-development` (the plugin pipeline); read the reference pages here |
+| Snap-in manifest, functions, keyrings, CLI, quotas; AirSync data model & object types | Custom objects / fields in a live org → `${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization` |
 
 ## Layout
 
 | Path | What is in it | Files |
 | --- | --- | --- |
 | `INDEX.md` | Every page → local file → source URL, grouped by site section, with totals | 1 |
-| `COVERAGE.md` | Public/beta endpoints on the site vs. the names in `skills/8-devrev-api/references/00_API_Catalog.md` | 1 |
+| `COVERAGE.md` | Public/beta endpoints on the site vs. the names in `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/00_API_Catalog.md` | 1 |
 | `about/` | Authentication, pagination, versioning, rate limits, errors, for-developers | 6 |
 | `guides/` | `webhooks`, `object-customization`, `custom-objects`, `timeline-entries` | 4 |
 | `changelog/` | Public API changelog entries | 10 |
@@ -106,7 +106,7 @@ Each endpoint in `api-reference/<resource>.md` / `beta/api-reference/<resource>.
 
 - **Nested object types appear by name only** (e.g. `custom-schema-spec`, `set-tag-with-value`) — that is
   all the endpoint page shows. For their shape use the matching `*.get`/schema endpoints live
-  (`skills/1-object-schema-customization`, `skills/8-devrev-api`) or another mirror page.
+  (`${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization`, `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api`) or another mirror page.
 - **Responses are examples, not schemas**: status codes plus one example 2xx body whose values are
   placeholders (`"string"`, `0`).
 - **Only the cURL sample** is kept; the other language tabs are not present in the page source.
@@ -135,10 +135,10 @@ git diff --stat skills/11-developer-docs      # review what the docs changed
   that is the signal the site markup changed; fix the parser, do not hand-patch output.
 - **Commit refreshes with a `docs:` prefix, not `learn:`.** The `learn:` prefix triggers the
   auto-push hook (`.claude/hooks/push-learnings.sh`), which is meant for single self-learning facts.
-- After a refresh, re-read the diff of `about/` against `skills/10-api-conventions/references/` (that
+- After a refresh, re-read the diff of `about/` against `${CLAUDE_PLUGIN_ROOT}/skills/10-api-conventions/references/` (that
   skill keeps its own curated copy of the six About pages) and update it if the docs changed.
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 - **2026-11-03 · How the site can (and cannot) be fetched.** The sitemap lists 980 URLs: 751 endpoint
   pages (311 public + 440 beta), 228 narrative pages (200 public guides/SDK/snap-in/AirSync/changelog

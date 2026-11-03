@@ -5,7 +5,7 @@ description: Uploads files and artifacts, attaches them to objects, migrates dat
 
 # Data upload & org build — executable playbook
 
-Upload files and artifacts to DevRev, migrate data programmatically, and build a complete customer organization from scratch through the API. Rules that apply to every call are in `skills/devrev-start/references/global-api-rules.md`; use this skill for file uploads, bulk data loads, or end-to-end org setup requests.
+Upload files and artifacts to DevRev, migrate data programmatically, and build a complete customer organization from scratch through the API. Rules that apply to every call are in `${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/references/global-api-rules.md`; use this skill for file uploads, bulk data loads, or end-to-end org setup requests.
 
 ## When to use
 
@@ -19,15 +19,15 @@ Trigger when the user wants to:
 
 ## When not to use
 
-- Object schema customization (fields, subtypes, custom objects) → `skills/1-object-schema-customization`
-- Stage/state/lifecycle customization → `skills/2-stage-lifecycle-customization`
-- Raw API calls with no data loading → `skills/8-devrev-api`
+- Object schema customization (fields, subtypes, custom objects) → `${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization`
+- Stage/state/lifecycle customization → `${CLAUDE_PLUGIN_ROOT}/skills/2-stage-lifecycle-customization`
+- Raw API calls with no data loading → `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api`
 
 ## Preconditions
 
 1. Token in `.env` (`DEVREV_PAT`). If missing, tell the user exactly what to put in it and stop — never fabricate a token.
 2. Verify token works: `POST https://api.devrev.ai/ping` before starting.
-3. Required scopes (from `skills/8-devrev-api/references/Platform_and_Admin_API.md` §1 and `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md`):
+3. Required scopes (from `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Platform_and_Admin_API.md` §1 and `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md`):
    - `artifact:create` for `artifacts.prepare`
    - `artifact:read` for `artifacts.download` / `.get` / `.list` (plus parent object's read scope)
    - Object-specific write scopes for bulk record creation (e.g. `ticket:write`, `account:write`, `custom_type_fragment:write` for custom objects)
@@ -39,7 +39,7 @@ Every playbook step cites the exact reference file and section. Follow the order
 
 ### Playbook 1 — Upload a file (artifact)
 
-**Reference**: `skills/8-devrev-api/references/Platform_and_Admin_API.md` §1 (Artifacts).
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Platform_and_Admin_API.md` §1 (Artifacts).
 
 **You cannot POST bytes to `artifacts.create`** — always use the prepare-then-upload flow (§14 pitfall).
 
@@ -78,7 +78,7 @@ curl -X POST 'https://api.devrev.ai/artifacts.download' \
 
 ### Playbook 2 — Build a complete org from scratch (end-to-end)
 
-**Reference**: `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` (entire file).
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` (entire file).
 
 This is the standard, repeatable procedure to build out a customer organization in DevRev through the API. It consolidates four core building blocks — object customization, parts creation, Trails, and custom links — into one ordered workflow.
 
@@ -101,24 +101,24 @@ Every request needs standard headers (`Authorization: Bearer $DEVREV_PAT`, `Cont
 
 #### Phase 1 — Customize objects
 
-**Reference**: `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 1.
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 1.
 
 Object customization tailors DevRev's built-in objects (issue, ticket, opportunity, account, contact, part) or defines entirely new object types. The model is additive — you layer definitions on top of stock fields; built-in fields are never modified.
 
-**ROUTE to `skills/1-object-schema-customization`** for:
+**ROUTE to `${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization`** for:
 - Adding a subtype with custom fields (§1.2)
 - Tenant custom fields (§1.3)
 - Custom stages & dependent fields (§1.4)
 - Custom objects (§1.5)
 
-**ROUTE to `skills/2-stage-lifecycle-customization`** for:
+**ROUTE to `${CLAUDE_PLUGIN_ROOT}/skills/2-stage-lifecycle-customization`** for:
 - Creating states, stages, and stage diagrams (§1.4)
 
 After Phase 1, you have: subtypes, custom fields, custom objects, and optionally custom stages/diagrams defined. Save all DON ids.
 
 #### Phase 2 — Create parts (the product hierarchy)
 
-**Reference**: `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 2.
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 2.
 
 Parts are the backbone of the customer's product model. Customer parts (product → capability → feature) form the hierarchy; builder parts (runnable, linkable) are internal components that power them.
 
@@ -161,7 +161,7 @@ Parts are the backbone of the customer's product model. Customer parts (product 
 
 #### Phase 3 — Build the Trail
 
-**Reference**: `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 3.
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 3.
 
 **There is no `trails.create` endpoint** (§3). A Trail is the rendered view of the part hierarchy you just built plus the links between parts. Building the Trail means: (1) the `parent_part` relationships from Phase 2, and (2) connecting builder parts to the customer parts they power.
 
@@ -184,11 +184,11 @@ Common built-in link types: `serves`, `is_part_of`, `is_dependent_on`, `is_relat
 
 #### Phase 4 — Define custom links & connect objects
 
-**Reference**: `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 4.
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 4.
 
 When you need a relationship that the built-in link types don't cover (e.g. tying a custom object to a ticket), define a custom link type once, then create link instances from it. Custom link types can be created between work objects, identity objects (account, rev/dev user, rev org), part objects, and any custom object leaf type.
 
-**ROUTE to `skills/1-object-schema-customization` Playbook 4** for the full custom link type creation flow.
+**ROUTE to `${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization` Playbook 4** for the full custom link type creation flow.
 
 #### Phase 5 — Add work & verify
 
@@ -208,11 +208,11 @@ curl -X POST 'https://api.devrev.ai/works.create' \
 - `links.list` on a part — confirm builder parts, custom links, and work are attached.
 - `schemas.custom.list` / `custom-objects.list` — confirm your fragments and custom objects.
 
-**End-to-end worked example** (§end-to-end): see `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §"End-to-end worked example" for a numbered step-by-step walkthrough.
+**End-to-end worked example** (§end-to-end): see `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §"End-to-end worked example" for a numbered step-by-step walkthrough.
 
 ### Playbook 3 — Bulk record creation (data migration)
 
-**Reference**: `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` (concept); no public bulk-create endpoint exists.
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` (concept); no public bulk-create endpoint exists.
 
 **Be HONEST**: there is no public bulk-create endpoint in the API catalog. Bulk loads = deterministic scripted loops over `*.create`, made idempotent via `unique_key` (custom objects) or check-before-create (`*.list` filter). Safe to re-run; fail loudly on non-2xx.
 
@@ -221,12 +221,12 @@ curl -X POST 'https://api.devrev.ai/works.create' \
 1. **Prepare the data** — parse the CSV or source data into a list of records to create.
 
 2. **Create records in order** (respect dependencies):
-   - **Customer data ordering** (`skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` §8, build order): `accounts.create` → `rev-orgs.create` → `rev-users.create`, top-down, saving each DON id.
+   - **Customer data ordering** (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` §8, build order): `accounts.create` → `rev-orgs.create` → `rev-users.create`, top-down, saving each DON id.
    - **Parts ordering** (Phase 2): product → capability → feature, saving each DON id and passing `parent_part` to children.
    - **Work items** (Phase 5): after parts exist, create work items with `applies_to_part`.
 
 3. **Idempotency**:
-   - For **custom objects**: pass a stable `unique_key` on `custom-objects.create` (`skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §1.5, Custom objects). Repeating the call with the same key won't create a duplicate.
+   - For **custom objects**: pass a stable `unique_key` on `custom-objects.create` (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §1.5, Custom objects). Repeating the call with the same key won't create a duplicate.
    - For **work items (tickets/issues/etc.) specifically**: `works.create` has a real idempotency key — `external_ref` (must be unique within the work type). **Confirmed live 2026-07-18**: re-running `works.create` with the same `external_ref` returns **HTTP 409** `{"type":"conflict"}` rather than creating a duplicate or silently no-op-ing. Catch the 409 and look the record up via `works.list` with `{"external_ref": ["<value>"]}` (field name is singular `external_ref`, even though it takes an array — `external_refs` returns HTTP 400 `invalid_field`). Prefer this over generic check-before-create for work items.
    - For **other stock objects** (accounts, etc.) with no `external_ref`-equivalent: no native `unique_key`. Check-before-create pattern: `*.list` filtered by a unique attribute (e.g. account name or user email), create only if not found. Keep a DON scratchpad or persist to a run file.
 
@@ -263,7 +263,7 @@ done < accounts.csv
 
 ### Ordered customer data creation
 
-**Reference**: `skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` §8 "Object relationships (build order)".
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` §8 "Object relationships (build order)".
 
 When creating customer identity objects, follow this top-down order (each tier saves DON ids for the next):
 
@@ -277,9 +277,9 @@ When creating customer identity objects, follow this top-down order (each tier s
 
 | File | When to read it |
 | --- | --- |
-| `skills/8-devrev-api/references/Platform_and_Admin_API.md` | Artifact upload/download (§1); webhooks, jobs, schedules, vistas, observability, web-crawler, snap-widgets, commands, code-changes, auth-tokens (§2–12); common pitfalls (§14) |
-| `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` | Entire file — end-to-end org build playbook (§4 setup at a glance, Phase 0–5), key concepts (§3), worked example (§end-to-end), troubleshooting (§troubleshooting), best practices (§best practices) |
-| `skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` | Accounts, rev-orgs, rev-users, dev-users, groups — payloads and the §8 build order (account → rev_org → rev_user) used by customer data loads |
+| `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Platform_and_Admin_API.md` | Artifact upload/download (§1); webhooks, jobs, schedules, vistas, observability, web-crawler, snap-widgets, commands, code-changes, auth-tokens (§2–12); common pitfalls (§14) |
+| `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` | Entire file — end-to-end org build playbook (§4 setup at a glance, Phase 0–5), key concepts (§3), worked example (§end-to-end), troubleshooting (§troubleshooting), best practices (§best practices) |
+| `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` | Accounts, rev-orgs, rev-users, dev-users, groups — payloads and the §8 build order (account → rev_org → rev_user) used by customer data loads |
 
 ## DON id scratchpad
 
@@ -311,16 +311,16 @@ After bulk data loads:
 
 From the references:
 
-- **Artifact upload**: you can't POST bytes to `artifacts.create` — always `artifacts.prepare` first, upload to the returned URL, then reference the artifact id on the parent object (`skills/8-devrev-api/references/Platform_and_Admin_API.md` §14).
-- **Wrong order**: customization must precede data because records need schemas/stages. Data precedes analytics because dashboards need records. Follow Phase 0 → 1 → 2 → 3 → 4 → 5 (`skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §4, §best practices).
-- **Display IDs in links**: always pass the full DON id (`don:core:...:ticket/456`), never a display ID like `TKT-456`, in `parent_part`, `applies_to_part`, and link calls (`skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §troubleshooting, §best practices).
-- **Orphaned parts mid-move**: use `links.replace` to re-parent a part atomically (only for part-to-part default link types), not delete-then-create (`skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 3 note, §troubleshooting, §best practices).
-- **Wrong namespace prefix**: `tnt__` for tenant fields, `ctype__` for subtype fields — a mismatched prefix silently fails to match with no error (`skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §troubleshooting, §best practices).
-- **Custom objects inaccessible**: they start with zero access by default (even for admins) — grant object- and field-level roles in Settings (`skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 1 §1.5, §troubleshooting, §best practices).
+- **Artifact upload**: you can't POST bytes to `artifacts.create` — always `artifacts.prepare` first, upload to the returned URL, then reference the artifact id on the parent object (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Platform_and_Admin_API.md` §14).
+- **Wrong order**: customization must precede data because records need schemas/stages. Data precedes analytics because dashboards need records. Follow Phase 0 → 1 → 2 → 3 → 4 → 5 (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §4, §best practices).
+- **Display IDs in links**: always pass the full DON id (`don:core:...:ticket/456`), never a display ID like `TKT-456`, in `parent_part`, `applies_to_part`, and link calls (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §troubleshooting, §best practices).
+- **Orphaned parts mid-move**: use `links.replace` to re-parent a part atomically (only for part-to-part default link types), not delete-then-create (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 3 note, §troubleshooting, §best practices).
+- **Wrong namespace prefix**: `tnt__` for tenant fields, `ctype__` for subtype fields — a mismatched prefix silently fails to match with no error (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` §troubleshooting, §best practices).
+- **Custom objects inaccessible**: they start with zero access by default (even for admins) — grant object- and field-level roles in Settings (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` Phase 1 §1.5, §troubleshooting, §best practices).
 - **Duplicate records**: pass a stable `unique_key` on `custom-objects.create` for idempotency; for stock objects, check-before-create with `*.list` filter.
 - **No bulk-create endpoint**: there is no public bulk-create endpoint — bulk loads = deterministic scripted loops over `*.create`, idempotent via `unique_key` or check-before-create, safe to re-run, fail loudly on non-2xx (documented honestly here).
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
 differ from the references. Add entries via the `capture-learnings` protocol
@@ -331,7 +331,7 @@ better home or needs domain-level visibility.
 - **2026-07-18 · Artifact upload path works end-to-end.** `POST /artifacts.prepare` (body: `{"file_name","file_type"}`) returns `{id, url, form_data[]}` with a pre-signed S3 URL. Then `POST` (multipart form) all the `form_data[]` fields plus `file=@<path>` to `url`. Success is **HTTP 204** (empty body). Verify immediately with `GET /artifacts.get?id=<don>` — the file name + size land within seconds.
 - **2026-07-18 · No public artifact delete endpoint.** Verified live: `artifacts.delete`, `artifact-versions.delete`, `artifact-versions.delete-one` all return HTTP 404 route-not-found. Artifacts persist by design (content-hash addressable). Any test upload lives forever unless purged via infra — plan accordingly.
 - **2026-07-18 · Attaching an artifact to a work item at create time works via the `artifacts` array on `works.create`.** `{"type":"ticket", ..., "artifacts":["<ARTIFACT_DON>"]}` → HTTP 201, and the response's `work.artifacts[]` contains the full artifact object (`display_id`, `file.name`, `file.size`, `file.type`). Verified with `works.get` afterwards — the artifact is retained.
-- **2026-07-18 · An artifact can be attached to exactly ONE parent, ever.** Re-attaching the same artifact id to a second object (tried: a `timeline_comment` after it was already on a `ticket`) returns **HTTP 400** `{"type":"artifact_already_attached_to_a_parent","existing_parent":"<don>","is_same":false}`. This is undocumented in `skills/8-devrev-api/references/Platform_and_Admin_API.md` §1 — that section implies an artifact id can just be "referenced on the parent object" with no exclusivity caveat. If you need the same file on two objects, `artifacts.prepare` + upload it twice (two artifact ids).
+- **2026-07-18 · An artifact can be attached to exactly ONE parent, ever.** Re-attaching the same artifact id to a second object (tried: a `timeline_comment` after it was already on a `ticket`) returns **HTTP 400** `{"type":"artifact_already_attached_to_a_parent","existing_parent":"<don>","is_same":false}`. This is undocumented in `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Platform_and_Admin_API.md` §1 — that section implies an artifact id can just be "referenced on the parent object" with no exclusivity caveat. If you need the same file on two objects, `artifacts.prepare` + upload it twice (two artifact ids).
 - **2026-07-18 · `timeline-entries.create` (comment) also accepts an `artifacts` array and works end-to-end.** `POST /timeline-entries.create` with `{"type":"timeline_comment","object":"<WORK_DON>","body":"...","artifacts":["<ARTIFACT_DON>"]}` → HTTP 201, returns `{"timeline_entry": {...}}` (note the wrapper key is `timeline_entry`, singular). This satisfies the "attach to a timeline entry" path distinct from attaching directly on `works.create`. Not previously exercised in Phase 2/2b.
 - **2026-07-18 · `works.create` has a real idempotency key: `external_ref`.** Re-running `works.create` with an identical `external_ref` on the same work type returns **HTTP 409** `{"message":"Conflict","type":"conflict"}` — it does NOT silently create a duplicate, and does NOT silently no-op; the caller must catch the 409 and treat it as "already exists." This is a materially better idempotency mechanism than the SKILL.md's documented "check-before-create via `*.list` filter" fallback for stock objects — `external_ref` gives you a real uniqueness constraint, closer to `custom-objects.create`'s `unique_key`. Recommended pattern: set a stable `external_ref` on every `works.create`, treat HTTP 409 as "already exists, look it up," and always look it up via `works.list` (see next note for the correct filter field name).
 - **2026-07-18 · `works.list` filter field is `external_ref` (singular key, array value), NOT `external_refs`.** `{"external_refs":[...]}` → HTTP 400 `{"type":"invalid_field","field_name":"external_refs"}`. Correct payload: `{"external_ref":["e2e-orgbuild-test-1"]}` → HTTP 200 with the matching work in `works[]`. This is the check-before-create lookup call the SKILL.md's bulk pattern relies on — get the field name right or the whole idempotent-reprocessing pattern breaks silently (400, not a graceful empty list).

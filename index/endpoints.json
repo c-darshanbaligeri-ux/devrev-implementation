@@ -34,7 +34,7 @@
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
      "line": 224,
-     "snippet": "- **Customer data ordering** (`skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` §8, build order"
+     "snippet": "- **Customer data ordering** (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Customers_Users_and_Orgs_A"
     },
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
@@ -2909,7 +2909,7 @@
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
      "line": 229,
-     "snippet": "- For **custom objects**: pass a stable `unique_key` on `custom-objects.create` (`skills/8-devrev-api/referenc"
+     "snippet": "- For **custom objects**: pass a stable `unique_key` on `custom-objects.create` (`${CLAUDE_PLUGIN_ROOT}/skills"
     },
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
@@ -3132,7 +3132,7 @@
     {
      "file": "skills/1-object-schema-customization/SKILL.md",
      "line": 223,
-     "snippet": "4. **Attach a stage diagram** (optional) — for lifecycle control, create a stage diagram (see `skills/2-stage-"
+     "snippet": "4. **Attach a stage diagram** (optional) — for lifecycle control, create a stage diagram (see `${CLAUDE_PLUGIN"
     },
     {
      "file": "skills/2-stage-lifecycle-customization/SKILL.md",
@@ -8052,7 +8052,7 @@
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
      "line": 224,
-     "snippet": "- **Customer data ordering** (`skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` §8, build order"
+     "snippet": "- **Customer data ordering** (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Customers_Users_and_Orgs_A"
     },
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
@@ -8378,7 +8378,7 @@
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
      "line": 224,
-     "snippet": "- **Customer data ordering** (`skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md` §8, build order"
+     "snippet": "- **Customer data ordering** (`${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Customers_Users_and_Orgs_A"
     },
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
@@ -13514,7 +13514,7 @@
     {
      "file": "skills/1-object-schema-customization/SKILL.md",
      "line": 223,
-     "snippet": "4. **Attach a stage diagram** (optional) — for lifecycle control, create a stage diagram (see `skills/2-stage-"
+     "snippet": "4. **Attach a stage diagram** (optional) — for lifecycle control, create a stage diagram (see `${CLAUDE_PLUGIN"
     },
     {
      "file": "skills/1-object-schema-customization/SKILL.md",
@@ -13565,7 +13565,7 @@
   }
  ],
  "meta": {
-  "core_hash": "2ea8bd3552e80072",
+  "core_hash": "41c1b08f1a087951",
   "count": 302
  }
 }

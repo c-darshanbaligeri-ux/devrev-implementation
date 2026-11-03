@@ -5,7 +5,7 @@ description: Customizes object lifecycles with custom states and stages, stage d
 
 # Stage & lifecycle customization — executable playbook
 
-Customize the lifecycle of DevRev objects programmatically: define states (broad categories), stages (specific steps within a state), and stage diagrams (allowed transitions). Applies to issue, ticket, custom objects, and any leaf type. Rules that apply to every call are in `skills/devrev-start/references/global-api-rules.md`; use this skill for any stage/state/lifecycle customization request.
+Customize the lifecycle of DevRev objects programmatically: define states (broad categories), stages (specific steps within a state), and stage diagrams (allowed transitions). Applies to issue, ticket, custom objects, and any leaf type. Rules that apply to every call are in `${CLAUDE_PLUGIN_ROOT}/skills/devrev-start/references/global-api-rules.md`; use this skill for any stage/state/lifecycle customization request.
 
 ## When to use
 
@@ -19,24 +19,24 @@ Trigger when the user wants to:
 
 ## When not to use
 
-- Object schema customization (fields, subtypes, custom objects) → `skills/1-object-schema-customization`
-- File uploads or data migration or building a fresh org → `skills/3-data-upload-and-org-build`
-- Raw API calls with no lifecycle changes → `skills/8-devrev-api`
+- Object schema customization (fields, subtypes, custom objects) → `${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization`
+- File uploads or data migration or building a fresh org → `${CLAUDE_PLUGIN_ROOT}/skills/3-data-upload-and-org-build`
+- Raw API calls with no lifecycle changes → `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api`
 
 ## Preconditions
 
 1. Token in `.env` (`DEVREV_PAT`). If missing, tell the user exactly what to put in it and stop — never fabricate a token.
 2. Verify token works: `POST https://api.devrev.ai/ping` before starting.
-3. Required scopes (from `skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md` §7):
+3. Required scopes (from `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md` §7):
    - `custom_state:write` for `states.custom.create` / `.update`
    - `custom_stage:write` for `stages.custom.create` / `.update`
    - `stage_diagram:write` for `stage-diagrams.create` / `.update`
    - No scope needed for `*.get` / `*.list` calls
-4. Parent objects must exist: if assigning a stage diagram to a subtype, the subtype's schema fragment must exist (see `skills/1-object-schema-customization`). If referencing a part or other object, have its DON id ready.
+4. Parent objects must exist: if assigning a stage diagram to a subtype, the subtype's schema fragment must exist (see `${CLAUDE_PLUGIN_ROOT}/skills/1-object-schema-customization`). If referencing a part or other object, have its DON id ready.
 
 ## Playbook
 
-**Reference**: `skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md` (entire file).
+**Reference**: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md` (entire file).
 
 **Ordering matters** (§1): create states first, then stages (each stage needs a valid `state` at creation), then the stage diagram (which references stage DON ids), then optionally assign the diagram to a subtype/leaf type via its schema fragment.
 
@@ -122,7 +122,7 @@ curl -X POST 'https://api.devrev.ai/stage-diagrams.create' \
 
 - **Required**: `leaf_type` (e.g. `issue`, `ticket`, or a custom leaf type), `name`, and a `stages` array.
 - **Optional**: `is_custom_leaf_type: true` if applying to a custom object; `is_default: true` to make this the default diagram for the leaf type.
-- Each stage node: `stage_id` (required), `is_start` (marks the entry stage — exactly one stage must have this), `transitions` (array of allowed `target_stage_id`), and an `is_deprecated` flag that is **rejected (HTTP 400) when `true`** — do not use it to retire a stage; see the "Stage deprecation" warning under Safety. <!-- corrected 2026-11-03: was "optionally `is_deprecated` to retire a stage without breaking the diagram"; see docs/LEARNINGS.md -->
+- Each stage node: `stage_id` (required), `is_start` (marks the entry stage — exactly one stage must have this), `transitions` (array of allowed `target_stage_id`), and an `is_deprecated` flag that is **rejected (HTTP 400) when `true`** — do not use it to retire a stage; see the "Stage deprecation" warning under Safety. <!-- corrected 2026-11-03: was "optionally `is_deprecated` to retire a stage without breaking the diagram"; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md -->
 - A stage with no outgoing transitions is effectively terminal (e.g. Resolved).
 - Save the returned `STAGE_DIAGRAM_ID` in your scratchpad.
 - **Verify**: `stage-diagrams.list` filtered by `leaf_type` or `name` (no scope required).
@@ -225,7 +225,7 @@ Effects can `require`, `show`, or constrain `allowed_values` for fields. Include
 
 | File | When to read it |
 | --- | --- |
-| `skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md` | Entire file — concepts (§1), creating states (§2), creating stages (§3), creating stage diagrams (§4), assigning diagrams to subtypes (§5), dependent-field conditions (§6), quick reference table (§7), common pitfalls (§8) |
+| `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md` | Entire file — concepts (§1), creating states (§2), creating stages (§3), creating stage diagrams (§4), assigning diagrams to subtypes (§5), dependent-field conditions (§6), quick reference table (§7), common pitfalls (§8) |
 
 ## DON id scratchpad
 
@@ -255,7 +255,7 @@ After any lifecycle change:
 - **Deleting a stage that's referenced by a diagram**: do not delete — there is no delete endpoint anyway. Deprecating it instead (`is_deprecated: true`) is the documented fallback but **does not work live** (HTTP 400 `bad_request` — see Field notes); as of this session there is no working retirement mechanism, so choose stages conservatively since they're effectively permanent once added to a diagram.
 - **Immutable fields**: `is_default` and `leaf_type` on a stage diagram cannot be changed after creation (§4, §8). Choose them carefully at creation time.
 
-## Field notes (live-learned; see docs/LEARNINGS.md)
+## Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)
 
 Dated facts discovered while operating this domain — errors hit, restrictions found, behaviors that
 differ from the references. Add entries via the `capture-learnings` protocol
@@ -267,7 +267,7 @@ better home or needs domain-level visibility.
 - **2026-07-18 · Warning to add before creating**: because there is no cleanup path, treat every `states.custom.create` / `stages.custom.create` as durable. Test in a dev tenant where clutter is acceptable, or use existing state/stage IDs by list-first instead of create.
 - **2026-07-18 · Response wrapper is `custom_state` / `custom_stage` (not `state` / `stage`).** `.create` returns `{"custom_state": {"id": "..."}}`; `.list` returns `{"result": [...], "cursor": "..."}`. Parsers assuming the shorter name silently return null IDs.
 - **2026-07-18 · Regression orphans**: `custom_stage/44` and `custom_state/6` in `devo/1139FmGETi` were created by regression testing and renamed to `zzz_ORPHAN_REGRESSION_DELETE_ME` — they'll appear at the bottom of the stages/states list in DevRev Settings until manually purged from the UI. Manual UI delete works even when the API doesn't.
-- **[Conclusion superseded 2026-07-19 — attachment DOES work via a bare-string `stage_diagram`; see the correction below. The `stage_diagram_id` rejection itself still holds.] 2026-07-18 · E2E pass: `stage_diagram_id` on `schemas.custom.set` is REJECTED — the documented subtype/custom-leaf-type diagram-attachment mechanism does not work via the public API.** `POST schemas.custom.set` with `{"type":"tenant_fragment","leaf_type":"regression_test_asset","is_custom_leaf_type":true,"stage_diagram_id":"don:core:dvrv-us-1:devo/1139FmGETi:stage_diagram/9",...}` → `{"message":"Bad Request","type":"invalid_field","field_name":"stage_diagram_id"}`. Also tried field-name variants `stage_diagram`, `diagram_id`, `stagediagram_id`, `stage_diagram_ref`, `lifecycle_id`, `workflow_diagram_id`, and a nested `{"stage_diagram":{"id":"..."}}` shape — all rejected identically (`invalid_field`). Repeated on a subtype fragment (`type: custom_type_fragment`, `leaf_type: issue`, `subtype: regression_test_bug`) with the same `stage_diagram_id` rejection. `schemas.subtypes.prepare-update` also rejects both `subtype` and `stage_diagram_id` as `invalid_field` — it only accepts `leaf_type` (returns `{"added_fields":[...]}` showing fields that would be added by upgrading records). By contrast, `schemas.aggregated.get` DOES expose a **read-only** `stage_diagram_id` key for stock leaf types that already have a diagram (e.g. `ticket` → `"stage_diagram_id":{"id":"don:core:...:stage_diagram/6","name":"ticket_transitions"}`), proving the field exists in the data model — but no working write path was found this session. (Resolved 2026-07-19: `skills/8-devrev-api/references/Custom_Objects_and_Links_API.md` now documents the working `stage_diagram` mechanism.)
+- **[Conclusion superseded 2026-07-19 — attachment DOES work via a bare-string `stage_diagram`; see the correction below. The `stage_diagram_id` rejection itself still holds.] 2026-07-18 · E2E pass: `stage_diagram_id` on `schemas.custom.set` is REJECTED — the documented subtype/custom-leaf-type diagram-attachment mechanism does not work via the public API.** `POST schemas.custom.set` with `{"type":"tenant_fragment","leaf_type":"regression_test_asset","is_custom_leaf_type":true,"stage_diagram_id":"don:core:dvrv-us-1:devo/1139FmGETi:stage_diagram/9",...}` → `{"message":"Bad Request","type":"invalid_field","field_name":"stage_diagram_id"}`. Also tried field-name variants `stage_diagram`, `diagram_id`, `stagediagram_id`, `stage_diagram_ref`, `lifecycle_id`, `workflow_diagram_id`, and a nested `{"stage_diagram":{"id":"..."}}` shape — all rejected identically (`invalid_field`). Repeated on a subtype fragment (`type: custom_type_fragment`, `leaf_type: issue`, `subtype: regression_test_bug`) with the same `stage_diagram_id` rejection. `schemas.subtypes.prepare-update` also rejects both `subtype` and `stage_diagram_id` as `invalid_field` — it only accepts `leaf_type` (returns `{"added_fields":[...]}` showing fields that would be added by upgrading records). By contrast, `schemas.aggregated.get` DOES expose a **read-only** `stage_diagram_id` key for stock leaf types that already have a diagram (e.g. `ticket` → `"stage_diagram_id":{"id":"don:core:...:stage_diagram/6","name":"ticket_transitions"}`), proving the field exists in the data model — but no working write path was found this session. (Resolved 2026-07-19: `${CLAUDE_PLUGIN_ROOT}/skills/8-devrev-api/references/Custom_Objects_and_Links_API.md` now documents the working `stage_diagram` mechanism.)
 - **2026-07-18 · CORRECTED 2026-07-18 (later same day): the `custom_schema_spec: {"tenant_fragment": true}` shape specifically is rejected — POST itself is fine.** The original finding here overgeneralized from one test. Precise, re-verified behavior: `POST schemas.aggregated.get -d '{"leaf_type":"ticket","custom_schema_spec":{"tenant_fragment":true}}'` → `HTTP 400 invalid_field field_name: tenant_fragment` (reproduced on both `ticket` and a custom leaf type) — tenant/custom fields are included by default, so the fix is to **omit `custom_schema_spec` entirely** for that case, not necessarily to switch to GET. `POST schemas.aggregated.get -d '{"leaf_type":"issue"}'` (no `custom_schema_spec`) returns `HTTP 200` with the full merged field set under `{"schema": {...}}`, and `POST ... -d '{"leaf_type":"issue","custom_schema_spec":{"subtype":"<name>"}}'` also works via POST — only the `tenant_fragment` key inside `custom_schema_spec` is the problem, not the POST method or `custom_schema_spec` itself. A bare `GET schemas.aggregated.get?leaf_type=<type>` also works and is equivalent when no subtype filtering is needed. This affects skill 1's docs too (same example shape appears there) — corrected in both places.
 - **2026-07-18 · E2E pass: `is_deprecated: true` on a stage node is REJECTED outright, at both create and update time — the documented stage-retirement mechanism does not work.** Isolated tests on `stage-diagrams.update`: setting `is_deprecated: true` on the start stage → `{"message":"Bad Request","type":"bad_request"}`; on a middle stage (not start, has dependents) → same `bad_request`; on a terminal stage with no outgoing transitions and no incoming transitions left pointing at it → same `bad_request`. Also tested at `stage-diagrams.create` time on a brand-new diagram never touched by `.update` (so not a stale-diagram artifact) — same `bad_request`, HTTP 400. The identical payload with `is_deprecated` simply omitted succeeds (`stage-diagrams.create` → HTTP 201; `stage-diagrams.update` → HTTP 200). Setting `is_deprecated: false` explicitly is accepted as a no-op, confirming the field is parsed but `true` specifically is rejected. This contradicted this SKILL.md's Safety and Common pitfalls sections and reference §4/§8, which described `is_deprecated: true` as the supported way to retire a stage (all since corrected). **As of this session there is no known working mechanism to retire/deprecate a stage inside a diagram via the public API** — treat every stage added to a diagram as permanent for as long as that diagram exists.
 - **2026-07-18 · E2E pass: `stage-diagrams.list?leaf_type=<custom_leaf_type>` alone returns empty for custom leaf types — `is_custom_leaf_type=true` must be passed alongside it.** Two diagrams created for the custom leaf type `regression_test_asset` were confirmed to exist via `stage-diagrams.get?id=...` and appeared in `stage-diagrams.list?is_custom_leaf_type=true` (unfiltered by leaf_type) — but `stage-diagrams.list?leaf_type=regression_test_asset` alone returned `{"result":[]}`. Adding `&is_custom_leaf_type=true` to the same query returned both diagrams correctly. Reference §4 "Read" bullet lists `leaf_type`, `name`, `is_custom_leaf_type` as if independently optional filters; for custom leaf types they are not independent — `is_custom_leaf_type=true` is required alongside `leaf_type` to get a match.

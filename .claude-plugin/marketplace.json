@@ -1,0 +1,14 @@
+{
+  "name": "devrev-implementation",
+  "description": "DevRev operating toolkit for Claude Code.",
+  "owner": {
+    "name": "c-darshanbaligeri-ux"
+  },
+  "plugins": [
+    {
+      "name": "devrev-operator",
+      "source": "./",
+      "description": "Operate a DevRev organization from Claude Code: find the right playbook and API for a goal, with live-verified notes, the official developer docs and a safety hook for API writes."
+    }
+  ]
+}

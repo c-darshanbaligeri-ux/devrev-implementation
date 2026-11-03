@@ -236,7 +236,9 @@
   },
   {
    "date": "2026-07-18",
-   "endpoints": [],
+   "endpoints": [
+    "workflows.create"
+   ],
    "files": "`skills/6-workflows/references/manage-workflows-api.md`, `skills/6-workflows/SKILL.md`",
    "kind": "row",
    "line": 54,
@@ -464,7 +466,14 @@
   },
   {
    "date": "2026-07-18",
-   "endpoints": [],
+   "endpoints": [
+    "workflow-steps.create",
+    "workflow-steps.update",
+    "workflow-versions.get",
+    "workflows.create",
+    "workflows.delete",
+    "workflows.get"
+   ],
    "files": "`skills/6-workflows/references/manage-workflows-api.md` (DON ID formats + endpoint table), `skills/6-workflows/SKILL.md` (Field notes)",
    "kind": "row",
    "line": 77,
@@ -480,7 +489,9 @@
   },
   {
    "date": "2026-07-18",
-   "endpoints": [],
+   "endpoints": [
+    "workflow-steps.update"
+   ],
    "files": "`skills/6-workflows/references/manage-workflows-api.md`, `skills/6-workflows/SKILL.md` (Field notes)",
    "kind": "row",
    "line": 79,
@@ -488,7 +499,10 @@
   },
   {
    "date": "2026-07-18",
-   "endpoints": [],
+   "endpoints": [
+    "workflow-versions.publish",
+    "workflows.update"
+   ],
    "files": "`skills/6-workflows/references/manage-workflows-api.md`, `skills/6-workflows/SKILL.md` (Field notes)",
    "kind": "row",
    "line": 80,
@@ -496,7 +510,9 @@
   },
   {
    "date": "2026-07-18",
-   "endpoints": [],
+   "endpoints": [
+    "workflows.trigger"
+   ],
    "files": "`skills/6-workflows/references/manage-workflows-api.md` (error table + trigger section), `skills/6-workflows/SKILL.md` (Field notes), `skills/6-workflows/scripts/trigger_manual_workflow.py` (status-co",
    "kind": "row",
    "line": 81,
@@ -512,7 +528,11 @@
   },
   {
    "date": "2026-07-18",
-   "endpoints": [],
+   "endpoints": [
+    "workflows.delete",
+    "workflows.get",
+    "workflows.list"
+   ],
    "files": "(no doc change — clean test hygiene, recorded for audit trail)",
    "kind": "row",
    "line": 83,
@@ -1025,7 +1045,17 @@
   },
   {
    "date": "2026-11-03",
-   "endpoints": [],
+   "endpoints": [
+    "keyrings.list",
+    "workflow-steps.list",
+    "workflow-steps.update",
+    "workflow-versions.list",
+    "workflow-versions.publish",
+    "workflows.components.validate",
+    "workflows.get",
+    "workflows.templates.instantiate",
+    "workflows.update-status"
+   ],
    "files": "`skills/6-workflows/references/manage-workflows-api.md` (auth note, endpoint table: 8 new rows and the corrected `workflows.update` and `workflow-versions.publish` rows, new \"Process: importing a temp",
    "kind": "row",
    "line": 133,

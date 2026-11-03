@@ -21,6 +21,18 @@
 | Create a product part | `skills/8-devrev-api` | `parts.create` |
 | Check who the token belongs to | `skills/10-api-conventions` | `dev-users.self`, `ping` |
 
+## Workflows and automations (skill 6 owns them)
+
+| Goal | Start with | Do this |
+| --- | --- | --- |
+| Build an automation ("when X happens, do Y") | `skills/6-workflows` | `devrev-find "<goal>"` lists matching triggers and steps; `devrev-find --operation <slug>` gives ports and example templates; author the template from the closest example |
+| Give an AI agent a callable skill | `skills/6-workflows` | Start from `skills/6-workflows/examples/default-ai-agent-skill-template.json`; follow the agent-skill rules in the skill |
+| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draft), `workflow-versions.list`, `workflows.components.validate`, then `workflows.update-status` for a new workflow or `workflow-versions.publish` for an already-published one. The last step switches automation on: confirm with the user first |
+| Run a workflow now | `skills/6-workflows` | `workflows.trigger` (the workflow must be active, not a draft) |
+| Find or inspect existing workflows | `skills/6-workflows` | `workflows.list`, `workflows.get` |
+| Attach a connection to a Code step | `skills/6-workflows` | `keyrings.list`, `workflow-steps.list`, then `workflow-steps.update` with `keyrings` |
+| Find out why a template will not import | `skills/6-workflows` | "Debugging a failed import", then `workflows.components.validate` on the draft |
+
 ## Work that has its own playbook
 
 | Goal | Playbook |

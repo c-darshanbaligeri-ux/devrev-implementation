@@ -10672,7 +10672,7 @@
     },
     {
      "file": "skills/devrev-start/references/goal-map.md",
-     "line": 30,
+     "line": 42,
      "snippet": "| Customize stages, states or lifecycles | `skills/2-stage-lifecycle-customization` (`states.custom.create`, `"
     },
     {
@@ -13572,10 +13572,877 @@
    "scopes_text": "Depends on the object type in the id field",
    "summary": "Updates a work item's information.",
    "title": "Update Work"
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/dev-orgs.self",
+   "methods": [
+    "POST"
+   ],
+   "name": "dev-orgs.self",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 39,
+     "snippet": "| `dev-orgs.self` / `dev-users.self` | POST | `/internal/dev-orgs.self`, `/dev-users.self` | Read-only: which "
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 39,
+     "snippet": "| `dev-orgs.self` / `dev-users.self` | POST | `/internal/dev-orgs.self`, `/dev-users.self` | Read-only: which "
+    }
+   ],
+   "purpose": "Read-only: which org (name) and which user the token acts as. Check these before writing.",
+   "required": [],
+   "resource": "dev-orgs",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Read-only: which org (name) and which user the token acts as.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/keyrings.list",
+   "methods": [
+    "POST"
+   ],
+   "name": "keyrings.list",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 38,
+     "snippet": "| `keyrings.list` | POST | `/internal/keyrings.list` | List the org's connections (keyrings) with `{}`. Use a "
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 38,
+     "snippet": "| `keyrings.list` | POST | `/internal/keyrings.list` | List the org's connections (keyrings) with `{}`. Use a "
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 33,
+     "snippet": "| Attach a connection to a Code step | `skills/6-workflows` | `keyrings.list`, `workflow-steps.list`, then `wo"
+    }
+   ],
+   "purpose": "List the org's connections (keyrings) with `{}`. Use a keyring's `id` as `reference` when attaching a connection to a step.",
+   "required": [],
+   "resource": "keyrings",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "List the org's connections (keyrings) with {}.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-steps.create",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflow-steps.create",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 113,
+     "snippet": "`default-ai-agent-skill-template.json`). `workflows.create`→`workflow-steps.create`(×N)→"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 118,
+     "snippet": "- **`workflow-steps.create`'s `operation` field is a DON string, NOT `{namespace, slug}`.**"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 44,
+     "snippet": "| `workflow-steps.create` | POST | `/internal/workflow-steps.create` | Add a step to a workflow |"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 44,
+     "snippet": "| `workflow-steps.create` | POST | `/internal/workflow-steps.create` | Add a step to a workflow |"
+    }
+   ],
+   "purpose": "Add a step to a workflow",
+   "required": [],
+   "resource": "workflow-steps",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Add a step to a workflow",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-steps.delete",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflow-steps.delete",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 47,
+     "snippet": "| `workflow-steps.delete` | POST | `/internal/workflow-steps.delete` | Remove a step |"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 47,
+     "snippet": "| `workflow-steps.delete` | POST | `/internal/workflow-steps.delete` | Remove a step |"
+    }
+   ],
+   "purpose": "Remove a step",
+   "required": [],
+   "resource": "workflow-steps",
+   "risk": "destructive",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Remove a step",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-steps.get",
+   "methods": [
+    "GET"
+   ],
+   "name": "workflow-steps.get",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 153,
+     "snippet": "`workflow-steps.get`/`workflow-versions.get` response confirms the nesting rendered correctly"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 42,
+     "snippet": "| `workflow-versions.get` | GET | `/internal/workflow-versions.get` | Fetch a version's metadata/`triggers` — "
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 46,
+     "snippet": "| `workflow-steps.get` | GET | `/internal/workflow-steps.get` | Fetch a single step |"
+    }
+   ],
+   "purpose": "Fetch a single step",
+   "required": [],
+   "resource": "workflow-steps",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Fetch a single step",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-steps.list",
+   "methods": [
+    "GET"
+   ],
+   "name": "workflow-steps.list",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 37,
+     "snippet": "| `workflow-steps.list` | GET | `/internal/workflow-steps.list` | List the steps of a version (`workflow_versi"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 37,
+     "snippet": "| `workflow-steps.list` | GET | `/internal/workflow-steps.list` | List the steps of a version (`workflow_versi"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 33,
+     "snippet": "| Attach a connection to a Code step | `skills/6-workflows` | `keyrings.list`, `workflow-steps.list`, then `wo"
+    }
+   ],
+   "purpose": "List the steps of a version (`workflow_version=<version DON>` as a query parameter in the live test; DevRev's own script POSTs the same field in a body). Use it to find a step's DON before `workflow-steps.update`.",
+   "required": [],
+   "resource": "workflow-steps",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "List the steps of a version (workflow_version=<version DON> as a query parameter in the live test; DevRev's own script POSTs the same field in a body).",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-steps.update",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflow-steps.update",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 114,
+     "snippet": "`workflow-steps.update`(×N to wire `input_values`/`next_steps`)→`workflows.get`/"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 139,
+     "snippet": "the *upstream* step via `workflow-steps.update` — the key is `next_step` (a full step DON"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 37,
+     "snippet": "| `workflow-steps.list` | GET | `/internal/workflow-steps.list` | List the steps of a version (`workflow_versi"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 45,
+     "snippet": "| `workflow-steps.update` | POST | `/internal/workflow-steps.update` | Edit a step's config/connections. To at"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 33,
+     "snippet": "| Attach a connection to a Code step | `skills/6-workflows` | `keyrings.list`, `workflow-steps.list`, then `wo"
+    }
+   ],
+   "purpose": "Edit a step's config/connections. To attach a connection (for example a PAT connection on a Code step) send `{\"id\":\"<step DON>\",\"keyrings\":[{\"name\":\"<connection name, lowercase, spaces as _>\",\"reference\":\"<keyring id>\"}]}`.",
+   "required": [],
+   "resource": "workflow-steps",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Edit a step's config/connections.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-versions.get",
+   "methods": [
+    "GET"
+   ],
+   "name": "workflow-versions.get",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 115,
+     "snippet": "`workflow-versions.get` to verify→`workflows.delete`→`workflows.get` 404 to confirm gone. All"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 153,
+     "snippet": "`workflow-steps.get`/`workflow-versions.get` response confirms the nesting rendered correctly"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 42,
+     "snippet": "| `workflow-versions.get` | GET | `/internal/workflow-versions.get` | Fetch a version's metadata/`triggers` — "
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 42,
+     "snippet": "| `workflow-versions.get` | GET | `/internal/workflow-versions.get` | Fetch a version's metadata/`triggers` — "
+    }
+   ],
+   "purpose": "Fetch a version's metadata/`triggers` — **live-verified 2026-07-19: does NOT return the inline step graph**, despite the name suggesting it does. To verify step wiring (`next_steps`, `block_step`, etc.) after building via raw CRUD, call `workflow-steps.get` on each step individually and inspect its `next_steps`/`block_step` fields — that's the only way to confirm the graph, not this endpoint.",
+   "required": [],
+   "resource": "workflow-versions",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Fetch a version's metadata/triggers — live-verified 2026-07-19: does NOT return the inline step graph, despite the name suggesting it does.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-versions.list",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflow-versions.list",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 36,
+     "snippet": "| `workflow-versions.list` | POST | `/internal/workflow-versions.list` | List a workflow's versions (body `{\"w"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 36,
+     "snippet": "| `workflow-versions.list` | POST | `/internal/workflow-versions.list` | List a workflow's versions (body `{\"w"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 30,
+     "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
+    }
+   ],
+   "purpose": "List a workflow's versions (body `{\"workflow\":[\"<workflow DON>\"]}`; the 2026-11-03 live test used a GET with `workflow=` as a query parameter). The draft shows `\"status\": \"draft\"`.",
+   "required": [],
+   "resource": "workflow-versions",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "List a workflow's versions (body {\"workflow\":[\"<workflow DON>\"]}; the 2026-11-03 live test used a GET with workflow= as a query parameter).",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflow-versions.publish",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflow-versions.publish",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 172,
+     "snippet": "- **Publishing correction, more precise than the existing note**: `workflow-versions.publish`"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 180,
+     "snippet": "run, and the same call is in DevRev's own `workflow-skill`). `workflow-versions.publish` is for"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 43,
+     "snippet": "| `workflow-versions.publish` | POST | `/internal/workflow-versions.publish` | Publish a draft version live — "
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 43,
+     "snippet": "| `workflow-versions.publish` | POST | `/internal/workflow-versions.publish` | Publish a draft version live — "
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 30,
+     "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
+    }
+   ],
+   "purpose": "Publish a draft version live — **live-verified 2026-07-19: rejected while the workflow is in `Workflow_StatusEnumDraft`** (`HTTP 400 bad_request`, `debug_message` states the enum by name); 8 other plausible names (`workflows.deploy`/`.activate`/`.publish`/`.enable`/`.status.update`, `workflow-versions.deploy`/`.activate`/`.set-active`) all 404. **This route is only for a workflow that is already published** (a new version of a live workflow; body `{\"id\":\"<version id>\",\"notes\":\"…\"}`). A brand-new draft workflow is published with `workflows.update-status` (the 2026-07-19 probe never tried that name).",
+   "required": [],
+   "resource": "workflow-versions",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Publish a draft version live — live-verified 2026-07-19: rejected while the workflow is in Workflow_StatusEnumDraft (HTTP 400 bad_request, debug_message states the enum by name); 8 other plausible names (workflows.deploy/.activate/.publish/",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.components.validate",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.components.validate",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 34,
+     "snippet": "| `workflows.components.validate` | POST | `/internal/workflows.components.validate` | The Workflows app's **V"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 34,
+     "snippet": "| `workflows.components.validate` | POST | `/internal/workflows.components.validate` | The Workflows app's **V"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 30,
+     "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 34,
+     "snippet": "| Find out why a template will not import | `skills/6-workflows` | \"Debugging a failed import\", then `workflow"
+    }
+   ],
+   "purpose": "The Workflows app's **Validate** button. Body `{\"components\":[{\"type\":\"workflow\",\"workflow_version_id\":\"<version DON>\"}]}`. Returns `{\"valid\": true}`, or `errors` and `warnings` lists. Read-only.",
+   "required": [],
+   "resource": "workflows",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "The Workflows app's Validate button.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.create",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.create",
+   "notes": [
+    {
+     "file": "skills/0-solution-architecture/examples/example-lending-onboarding.md",
+     "line": 144,
+     "snippet": "- **Risks / verify:** `workflows.create` builds a shell only (node wiring is manual UI) — plan build effort ac"
+    },
+    {
+     "file": "skills/0-solution-architecture/references/estimation-and-delivery.md",
+     "line": 82,
+     "snippet": "- **Product/DevRev limitations** — e.g. `workflows.create` builds a shell only (node wiring is manual UI); cus"
+    },
+    {
+     "file": "skills/0-solution-architecture/references/extensibility-and-apis.md",
+     "line": 90,
+     "snippet": "- Use the API for: initial schema/object provisioning at scale, external systems creating/reading DevRev objec"
+    },
+    {
+     "file": "skills/0-solution-architecture/references/patterns-and-recipes.md",
+     "line": 149,
+     "snippet": "- `workflows.create` API builds a **shell only** — node wiring is manual UI. For fully code-defined scheduling"
+    },
+    {
+     "file": "skills/0-solution-architecture/references/workflows-automation.md",
+     "line": 70,
+     "snippet": "**Known gap:** `workflows.create` API produces a workflow shell only — node wiring is still a manual UI step. "
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 113,
+     "snippet": "`default-ai-agent-skill-template.json`). `workflows.create`→`workflow-steps.create`(×N)→"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 131,
+     "snippet": "(visible in any existing object's `id`, or in `workflows.create`'s own response) and substitute"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 31,
+     "snippet": "| `workflows.create` | POST | `/internal/workflows.create` | Create a new workflow shell. **Required body fiel"
+    }
+   ],
+   "purpose": "Create a new workflow shell. **Required body field: `title` (not `name`).** Verified 2026-07-18: an empty body returns HTTP 400 `missing_required_field: title`; a body with `name` or `state` returns HTTP 400 `invalid_field`. Minimum valid body: `{\"title\": \"...\"}`.",
+   "required": [],
+   "resource": "workflows",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Create a new workflow shell.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.delete",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.delete",
+   "notes": [
+    {
+     "file": "skills/1-object-schema-customization/SKILL.md",
+     "line": 346,
+     "snippet": "- **2026-07-18 · `schemas.custom.set` auto-creates a workflow.** Creating a custom leaf type triggers DevRev t"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 115,
+     "snippet": "`workflow-versions.get` to verify→`workflows.delete`→`workflows.get` 404 to confirm gone. All"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 195,
+     "snippet": "- **`workflows.delete` → `workflows.get` cycle is clean and immediate.** `workflows.delete`"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 40,
+     "snippet": "| `workflows.delete` | POST | `/internal/workflows.delete` | Delete a workflow |"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 40,
+     "snippet": "| `workflows.delete` | POST | `/internal/workflows.delete` | Delete a workflow |"
+    },
+    {
+     "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
+     "line": 183,
+     "snippet": "same tier as `works.delete`/`custom-objects.delete`/`workflows.delete` — safe to clean up"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 9,
+     "snippet": "| Any `*.delete` | `works.delete`, `custom-objects.delete`, `workflows.delete`, `tags.delete` and `links.delet"
+    }
+   ],
+   "purpose": "Delete a workflow",
+   "required": [],
+   "resource": "workflows",
+   "risk": "destructive",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Delete a workflow",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.get",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.get",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 114,
+     "snippet": "`workflow-steps.update`(×N to wire `input_values`/`next_steps`)→`workflows.get`/"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 115,
+     "snippet": "`workflow-versions.get` to verify→`workflows.delete`→`workflows.get` 404 to confirm gone. All"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 30,
+     "snippet": "| `workflows.get` | POST | `/internal/workflows.get` | Fetch one workflow (steps, version, status) |"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 30,
+     "snippet": "| `workflows.get` | POST | `/internal/workflows.get` | Fetch one workflow (steps, version, status) |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 32,
+     "snippet": "| Find or inspect existing workflows | `skills/6-workflows` | `workflows.list`, `workflows.get` |"
+    }
+   ],
+   "purpose": "Fetch one workflow (steps, version, status)",
+   "required": [],
+   "resource": "workflows",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Fetch one workflow (steps, version, status)",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.list",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.list",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 29,
+     "snippet": "| `workflows.list` | POST | `/internal/workflows.list` | List existing workflows |"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 29,
+     "snippet": "| `workflows.list` | POST | `/internal/workflows.list` | List existing workflows |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 32,
+     "snippet": "| Find or inspect existing workflows | `skills/6-workflows` | `workflows.list`, `workflows.get` |"
+    }
+   ],
+   "purpose": "List existing workflows",
+   "required": [],
+   "resource": "workflows",
+   "risk": "read",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "List existing workflows",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.templates.instantiate",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.templates.instantiate",
+   "notes": [
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 33,
+     "snippet": "| `workflows.templates.instantiate` | POST | `/internal/workflows.templates.instantiate` | Create a workflow ("
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 33,
+     "snippet": "| `workflows.templates.instantiate` | POST | `/internal/workflows.templates.instantiate` | Create a workflow ("
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 30,
+     "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
+    }
+   ],
+   "purpose": "Create a workflow (or a new draft version of one) from a template. Body `{\"template_version\": \"2.0.0\", \"workflow_template_v2\": {…parsed inner template…}}`; add `\"workflow\": \"<workflow DON>\"` and `\"override_draft\": true` to import as a new version of an existing workflow. The result is a **draft**. See \"Process: importing a template via the API\". Scope `workflow:write`.",
+   "required": [],
+   "resource": "workflows",
+   "risk": "write",
+   "scopes": [
+    "workflow:write"
+   ],
+   "scopes_text": "",
+   "summary": "Create a workflow (or a new draft version of one) from a template.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.trigger",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.trigger",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 187,
+     "snippet": "precisely (then deleted it — see below): `workflows.trigger` on a draft workflow (either an"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 191,
+     "snippet": "not just confirming, the prior finding. (A 404 does occur for `workflows.trigger` against a"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 41,
+     "snippet": "| `workflows.trigger` | POST | `/internal/workflows.trigger` | Fire a manual/API-triggered workflow |"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 41,
+     "snippet": "| `workflows.trigger` | POST | `/internal/workflows.trigger` | Fire a manual/API-triggered workflow |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 31,
+     "snippet": "| Run a workflow now | `skills/6-workflows` | `workflows.trigger` (the workflow must be active, not a draft) |"
+    }
+   ],
+   "purpose": "Fire a manual/API-triggered workflow",
+   "required": [],
+   "resource": "workflows",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Fire a manual/API-triggered workflow",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.update",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.update",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 167,
+     "snippet": "- **`workflows.update` accepts `labels` (array) and `description` (string) at the top level** —"
+    },
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 176,
+     "snippet": "exists (all 404 `route not found`), and `workflows.update` rejects both `status` and `state` as"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 32,
+     "snippet": "| `workflows.update` | POST | `/internal/workflows.update` | Update workflow-level metadata. Verified 2026-07-"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 32,
+     "snippet": "| `workflows.update` | POST | `/internal/workflows.update` | Update workflow-level metadata. Verified 2026-07-"
+    }
+   ],
+   "purpose": "Update workflow-level metadata. Verified 2026-07-18: accepts `labels` (array — use `[\"skill\"]` to mark an agent-callable skill after building it via raw CRUD, mirroring the template format's top-level `labels`) and `description` (string); both persist and round-trip through `workflows.get`. Rejects `status`/`state` (`HTTP 400 invalid_field`) — status is changed through the separate `workflows.update-status` route below, not here.",
+   "required": [],
+   "resource": "workflows",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "Update workflow-level metadata.",
+   "title": ""
+  },
+  {
+   "beta_doc": null,
+   "catalog": null,
+   "channels": [
+    "internal"
+   ],
+   "doc": "skills/6-workflows/references/manage-workflows-api.md",
+   "fields": [],
+   "has_variants": false,
+   "internal_path": "/internal/workflows.update-status",
+   "methods": [
+    "POST"
+   ],
+   "name": "workflows.update-status",
+   "notes": [
+    {
+     "file": "skills/6-workflows/SKILL.md",
+     "line": 178,
+     "snippet": "`workflows.update-status`, which is the API route out of draft for a brand-new workflow"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 32,
+     "snippet": "| `workflows.update` | POST | `/internal/workflows.update` | Update workflow-level metadata. Verified 2026-07-"
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 35,
+     "snippet": "| `workflows.update-status` | POST | `/internal/workflows.update-status` | The app's **Deploy** for a brand-ne"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 30,
+     "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
+    },
+    {
+     "file": "skills/devrev-start/references/troubleshooting.md",
+     "line": 15,
+     "snippet": "| Workflow trigger returns 400 \"is not active\" | The workflow is still a draft | Publish it first: `workflows."
+    }
+   ],
+   "purpose": "The app's **Deploy** for a brand-new (draft) workflow. Body `{\"id\":\"<workflow DON>\",\"status\":\"active\"}` publishes the draft **and switches the workflow on**; `\"inactive\"` switches it off.",
+   "required": [],
+   "resource": "workflows",
+   "risk": "write",
+   "scopes": [],
+   "scopes_text": "",
+   "summary": "The app's Deploy for a brand-new (draft) workflow.",
+   "title": ""
   }
  ],
  "meta": {
-  "core_hash": "d6d3b75b16ea52e4",
-  "count": 302
+  "core_hash": "b082c9fd64267fa0",
+  "count": 321
  }
 }

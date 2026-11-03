@@ -3,10 +3,14 @@
 
     devrev-find "create a support ticket for a customer"     ranked playbooks, endpoints, learnings
     devrev-find --endpoint works.create                      full brief for one endpoint (what to read, fields, notes)
+    devrev-find --operation add_comment                      one workflow operation: ports, allowed values, examples
     devrev-find --risk works.delete                          read | write | destructive
     devrev-find --list-playbooks                             every skill with its one-line purpose
     devrev-find --root                                       the toolkit root directory
-    options: -n N (endpoints shown, default 5)   --kind endpoint|playbook|learning|all   --json
+    options: -n N (endpoints shown, default 5)   --kind endpoint|playbook|operation|learning|all   --json
+
+Automation-shaped goals ("when a ticket is created, notify...") also list matching workflow operations (triggers,
+actions, controls) from index/operations.json, the catalog of the 400+ steps a workflow template can use.
 
 It searches the generated index in <repo>/index/ (rebuild with `python3 -I scripts/build_index.py`) and prints
 ABSOLUTE paths, so it works the same from the repo checkout and from an installed plugin. Read only the files it
@@ -207,6 +211,137 @@ def learning_doc(r):
     return c
 
 
+def operation_doc(o):
+    c = Counter()
+    for t in tokenize(o["slug"].replace("_", " ")) + [o["slug"]]:
+        c[t] += 4
+    for t in tokenize(o["title"]):
+        c[t] += 2
+    for t in tokenize(o["desc"] + " " + " ".join(o["tags"])):
+        c[t] += 1
+    return c
+
+
+def operation_weights(query, weights):
+    """The goal's weights plus the parts of any snake_case word (ticket_created -> ticket, creat)."""
+    w = dict(weights)
+    for raw in re.findall(r"[a-z0-9_]+", query.lower()):
+        if "_" in raw:
+            for part in (x for x in raw.split("_") if x and x not in STOP):
+                w[stem(part)] = max(w.get(stem(part), 0), 0.8)
+    return w
+
+
+TRIGGER_LEAD = ("when ", "whenever ", "if ", "every time ", "each time ", "as soon as ", "once ")
+
+
+def search_operations(query, weights, syn, resource_names, limit=3):
+    """Best triggers and best non-trigger steps for a goal (a workflow needs one of each kind).
+
+    A multi-step goal ("when a ticket is created, wait a day, then notify the team") is split into clauses: the
+    opening "when ..." clause picks the trigger, every other clause picks its own step, so one clause's words cannot
+    drown out another's.
+    """
+    corpus = Corpus([(o, operation_doc(o)) for o in load("operations.json")["operations"]])
+    whole = corpus.search(operation_weights(query, weights), 80)
+    trig = [(round(s, 2), o) for s, o in whole if o["kind"] == "trigger"][:limit]
+    clauses = [c.strip() for c in re.split(r",|;|\bthen\b|\band then\b|\band\b|\bafter that\b", query.lower()) if c.strip()]
+    steps = []
+    if len(clauses) > 1:
+        for c in clauses[:5]:
+            if c.startswith(TRIGGER_LEAD):
+                continue
+            cw = expand(c, syn, resource_names)[0]
+            taken = 0
+            for s, o in corpus.search(operation_weights(c, cw), 40):
+                if o["kind"] != "trigger" and all(o is not x[1] for x in steps):
+                    steps.append((round(s, 2), o))
+                    taken += 1
+                    if taken == 2:
+                        break
+    if not steps:  # a one-clause goal (or nothing matched per clause): the whole-goal ranking decides
+        steps = [(round(s, 2), o) for s, o in whole if o["kind"] != "trigger"][:limit]
+    return trig + steps[: limit * 2]
+
+
+def fmt_operation(o, brief=True):
+    lines = [f"{o['slug']}  [{o['kind']}]  {o['namespace'] or 'devrev'}  — {o['title']}"]
+    if o["desc"]:
+        lines.append("    " + short(o["desc"], 150))
+    if not brief:
+        lines.append(f"    id: {o['id'] or '—'}   tags: {', '.join(o['tags']) or '—'}   scopes: {', '.join(o['scopes']) or '—'}")
+    return "\n".join(lines)
+
+
+def norm_slug(name):
+    n = name.strip().lower().replace(" ", "_").replace("-", "_")
+    for prefix in ("operation_devrev.", "operation-devrev.", "devrev.", "custom_object."):
+        if n.startswith(prefix.replace("-", "_")):
+            n = n[len(prefix):]
+    return n
+
+
+def schema_enums(o, limit=12):
+    """(field, 'a, b, c [default x]') for each top-level input-port field of the schema file that lists allowed values."""
+    if not o.get("schema") or not (ROOT / o["schema"]).exists():
+        return []
+    out, in_input, field, vals = [], False, None, None
+    for line in (ROOT / o["schema"]).read_text(encoding="utf-8").split("\n"):
+        if line.startswith("## "):
+            in_input = line.startswith("## Input Port")
+            field = None
+            continue
+        if not in_input:
+            continue
+        m = re.match(r"^- \*\*`([^`]+)`\*\*", line)
+        if m:
+            field, vals = m.group(1), None
+            continue
+        m = re.match(r"^  - Allowed: (.+)$", line)
+        if m and field:
+            vals = m.group(1).replace("`", "")
+            out.append([field, short(vals, 160)])
+            continue
+        m = re.match(r"^  - Default: (.+)$", line)
+        if m and field and out and out[-1][0] == field:
+            out[-1][1] += f"  [default {m.group(1).replace('`', '')}]"
+    return [tuple(x) for x in out[:limit]]
+
+
+def cmd_operation(name, as_json):
+    ops = {o["slug"]: o for o in load("operations.json")["operations"]}
+    key = norm_slug(name)
+    o = ops.get(key)
+    if o is None:
+        close = sorted(s for s in ops if key in s or s in key)[:10]
+        print(f"devrev-find: no workflow operation with slug {key!r}." + (f" Did you mean: {', '.join(close)}" if close else
+              " Search by goal instead, e.g. devrev-find \"when a ticket is created\""))
+        return 1
+    if as_json:
+        print(json.dumps({"operation": o}, indent=1))
+        return 0
+    print(fmt_operation(o, brief=False))
+    print(f"\nIN A TEMPLATE:  \"operation\": {{\"namespace\": \"{o['namespace'] or 'devrev'}\", \"slug\": \"{o['slug']}\"}}")
+    for side, label in (("in", "inputs"), ("out", "outputs")):
+        for port, fields in o["ports"].get(side, {}).items():
+            shown = ", ".join(fields[:40]) + (f", … (+{len(fields) - 40})" if len(fields) > 40 else "") if fields else "none listed"
+            print(f"{label} (port `{port}`; * = required; types as documented): {shown}")
+    if not any(o["ports"].get(side) for side in ("in", "out")):
+        print("ports: dynamic or not documented; copy the port block from an example template that uses it.")
+    allowed = schema_enums(o)
+    if allowed:
+        print("allowed values (input port):")
+        for field, vals in allowed:
+            print(f"  {field}: {vals}")
+    print(f"\nCATALOG ENTRY: {ab(o['doc'].split('#')[0])}:{o['line']}")
+    if o["schema"]:
+        print(f"SCHEMA (allowed values, defaults, nested fields): {ab(o['schema'])}")
+    if o["examples"]:
+        print("USED IN (study these first): " + ", ".join(f"{ab('skills/6-workflows/examples')}/{x}" for x in o["examples"][:6]))
+    print("NEXT: skills/6-workflows/SKILL.md has the authoring procedure and references/template-json-format.md the value types.")
+    return 0
+
+
 def ab(rel):
     return str(ROOT / rel) if rel else ""
 
@@ -226,8 +361,13 @@ def fmt_endpoint(e, brief=False):
     lines.append(f"    scopes: {scopes}" + (f"   (catalog: {short(cat, 90)})" if cat and not e["scopes"] else ""))
     if e["required"]:
         lines.append("    required: " + ", ".join(e["required"][:10]) + ("  (+ one-of variants)" if e["has_variants"] else ""))
+    if e.get("internal_path"):
+        lines.append(f"    path: {e['internal_path']}  (internal route; auth: DEVREV_PAT in the Authorization header)")
+    if brief and e.get("purpose"):
+        lines.append("    details: " + short(e["purpose"].replace("`", ""), 700))
     if e["doc"]:
-        lines.append(f"    read: {ab(e['doc'].split('#')[0])}  → section {e['doc'].split('#')[1] if '#' in e['doc'] else ''}")
+        where = e["doc"].split("#")[1] if "#" in e["doc"] else 'the "Endpoints" table, then the matching "Process:" section'
+        lines.append(f"    read: {ab(e['doc'].split('#')[0])}  → {'section ' if '#' in e['doc'] else ''}{where}")
     if e.get("beta_doc") and brief:
         lines.append(f"    beta variant: {ab(e['beta_doc'].split('#')[0])}  → section {e['beta_doc'].split('#')[1]}")
     for n in e["notes"][: (6 if brief else 2)]:
@@ -320,6 +460,14 @@ def cmd_search(query, n, kind, as_json):
             api = next((p for p in pbs if p["id"] == "8-devrev-api"), None)
             if api:
                 res["playbooks"] = res["playbooks"][:2] + [(res["playbooks"][-1][0], api)]
+    if kind in ("operation", "all"):
+        words = re.findall(r"[a-z0-9_]+", query.lower())
+        joined = " " + " ".join(words) + " "
+        automation_shaped = ({stem(x) for x in words} & {stem(x) for x in syn.get("automation", [])}
+                             or any(f" {ph} " in joined for ph in syn.get("automation_phrases", [])))
+        top_playbook = res["playbooks"][0][1]["id"] if res.get("playbooks") else ""
+        if automation_shaped or top_playbook == "6-workflows" or kind == "operation":
+            res["operations"] = search_operations(query, weights, syn, {e["resource"] for e in eps})
     if kind in ("learning", "all"):
         top = {e["name"] for _, e in ep_hits[:n]}
         ranked = Corpus([(r, learning_doc(r)) for r in lrn]).search(weights, 12)
@@ -339,12 +487,17 @@ def cmd_search(query, n, kind, as_json):
         for i, (s, e) in enumerate(res["endpoints"], 1):
             print(f" {i}. " + fmt_endpoint(e).replace("\n", "\n    "))
         print()
+    if res.get("operations"):
+        print("WORKFLOW OPERATIONS — steps a workflow template can use (devrev-find --operation <slug> for ports and examples)")
+        for i, (s, o) in enumerate(res["operations"], 1):
+            print(f" {i}. " + fmt_operation(o).replace("\n", "\n    "))
+        print()
     if res.get("learnings"):
         print("LEARNINGS worth reading (docs/LEARNINGS.md — these correct the vendor docs)")
         for s, r in res["learnings"]:
             print(f"  - {r['date']} (~line {r['line']}) {short(r['text'], 230)}")
         print()
-    if not (res.get("playbooks") or res.get("endpoints")):
+    if not (res.get("playbooks") or res.get("endpoints") or res.get("operations")):
         print(f"No confident match. Fall back to a text search, e.g.:\n  grep -rIil '<keyword>' {ROOT}/skills --include='*.md' | head")
         return 1
     print("NEXT: `devrev-find --endpoint <name>` gives the full brief for one endpoint. Open only the files listed above.")
@@ -355,11 +508,12 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("query", nargs="*", help="the goal, in plain words")
     ap.add_argument("--endpoint", metavar="NAME", help="full brief for one endpoint, e.g. works.create")
+    ap.add_argument("--operation", metavar="SLUG", help="brief for one workflow operation, e.g. add_comment or ticket_created")
     ap.add_argument("--risk", metavar="NAME", help="classify an endpoint name as read | write | destructive")
     ap.add_argument("--list-playbooks", action="store_true")
     ap.add_argument("--root", action="store_true", help="print the toolkit root directory (use it for shell snippets)")
     ap.add_argument("-n", type=int, default=5, help="number of endpoints to show (default 5)")
-    ap.add_argument("--kind", choices=["endpoint", "playbook", "learning", "all"], default="all")
+    ap.add_argument("--kind", choices=["endpoint", "playbook", "operation", "learning", "all"], default="all")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     a = ap.parse_args()
     if a.root:
@@ -374,6 +528,8 @@ def main():
         return 0
     if a.endpoint:
         return cmd_endpoint(a.endpoint, a.json)
+    if a.operation:
+        return cmd_operation(a.operation, a.json)
     if not a.query:
         ap.print_help()
         return 1

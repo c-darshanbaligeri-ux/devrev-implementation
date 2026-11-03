@@ -3,8 +3,9 @@
 
     python3 -I scripts/eval_finder.py [--min-hit3 0.9] [--verbose]
 
-Each case lists acceptable endpoints and/or playbooks; a hit means one of them is in the finder's top 1 / top 3 for
-that kind. Exit status 1 when hit@3 is below the threshold (so it can gate commits and tests).
+Each case lists acceptable endpoints, playbooks and/or workflow operations (`expect_operations`, slugs); a hit means
+one of them is in the finder's top 1 / top 3 for that kind. Operations are ranked within their own group: triggers
+among triggers, everything else among the other steps, because a workflow needs one of each. Exit status 1 when hit@3 is below the threshold (so it can gate commits and tests).
 """
 import argparse
 import json
@@ -31,6 +32,7 @@ def main() -> int:
     cases = json.loads((ROOT / "evals" / "finder-cases.json").read_text(encoding="utf-8"))["cases"]
     known = {e["name"] for e in json.loads((ROOT / "index" / "endpoints.json").read_text(encoding="utf-8"))["endpoints"]}
     skills = {p["id"] for p in json.loads((ROOT / "index" / "playbooks.json").read_text(encoding="utf-8"))["playbooks"]}
+    op_kind = {o["slug"]: o["kind"] for o in json.loads((ROOT / "index" / "operations.json").read_text(encoding="utf-8"))["operations"]}
     total = hit1 = hit3 = 0
     misses = []
     for c in cases:
@@ -40,19 +42,27 @@ def main() -> int:
         for s in c.get("expect_playbooks", []):
             if s not in skills:
                 raise SystemExit(f"case {c['id']}: expected playbook {s!r} is not in the index")
+        for o in c.get("expect_operations", []):
+            if o not in op_kind:
+                raise SystemExit(f"case {c['id']}: expected operation {o!r} is not in the index")
         res = run(c["prompt"])
-        for kind, key, got_key in (("endpoint", "expect_endpoints", "endpoints"), ("playbook", "expect_playbooks", "playbooks")):
+        for kind, key, got_key in (("endpoint", "expect_endpoints", "endpoints"), ("playbook", "expect_playbooks", "playbooks"),
+                                   ("operation", "expect_operations", "operations")):
             want = set(c.get(key, []))
             if not want:
                 continue
-            ranked = [(x[1]["name"] if kind == "endpoint" else x[1]["id"]) for x in res.get(got_key, [])]
+            if kind == "operation":
+                group = "trigger" if any(op_kind[w] == "trigger" for w in want) else "step"
+                ranked = [x[1]["slug"] for x in res.get(got_key, []) if (x[1]["kind"] == "trigger") == (group == "trigger")]
+            else:
+                ranked = [(x[1]["name"] if kind == "endpoint" else x[1]["id"]) for x in res.get(got_key, [])]
             total += 1
             h1 = bool(ranked[:1] and ranked[0] in want)
             h3 = any(r in want for r in ranked[:3])
             hit1 += h1
             hit3 += h3
             if a.verbose or not h3:
-                print(f"{'ok  ' if h3 else 'MISS'} {c['id']:20} {kind:8} want {sorted(want)} got {ranked[:3]}")
+                print(f"{'ok  ' if h3 else 'MISS'} {c['id']:20} {kind:9} want {sorted(want)} got {ranked[:3]}")
             if not h3:
                 misses.append(c["id"])
     print(f"cases={len(cases)} checks={total}  hit@1={hit1}/{total} ({hit1 / total:.0%})  hit@3={hit3}/{total} ({hit3 / total:.0%})")

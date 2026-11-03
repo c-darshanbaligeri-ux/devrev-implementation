@@ -1,39 +1,375 @@
 {
  "_comment": "Generic goals a human might type to Claude Code, each with the endpoint(s) and/or skill(s) `devrev-find` must put in its top 3. Run: python3 -I scripts/eval_finder.py. Add a case whenever a real request finds the wrong thing; fix the synonyms, not the case. `expect_*` lists are alternatives: any one in the top 3 counts as a hit.",
  "cases": [
-  {"id": "create-ticket", "prompt": "create a support ticket for a customer", "expect_endpoints": ["works.create"], "expect_playbooks": ["8-devrev-api"]},
-  {"id": "list-open-tickets", "prompt": "show me all open tickets", "expect_endpoints": ["works.list"]},
-  {"id": "get-account", "prompt": "get the details of an account", "expect_endpoints": ["accounts.get"]},
-  {"id": "create-account", "prompt": "add a new customer company", "expect_endpoints": ["accounts.create"]},
-  {"id": "comment-on-ticket", "prompt": "add a comment to a ticket", "expect_endpoints": ["timeline-entries.create"]},
-  {"id": "delete-webhook", "prompt": "remove a webhook", "expect_endpoints": ["webhooks.delete"]},
-  {"id": "webhook-on-create", "prompt": "notify my server when a ticket is created", "expect_endpoints": ["webhooks.create"]},
-  {"id": "search-kb", "prompt": "search the knowledge base for an article", "expect_endpoints": ["articles.list", "search.core", "search.hybrid"]},
-  {"id": "count-tickets", "prompt": "how many tickets are there", "expect_endpoints": ["works.count"]},
-  {"id": "whoami", "prompt": "who am I authenticated as", "expect_endpoints": ["dev-users.self"]},
-  {"id": "assign-ticket", "prompt": "assign a ticket to a teammate", "expect_endpoints": ["works.update"]},
-  {"id": "merge-accounts", "prompt": "merge duplicate customer accounts", "expect_endpoints": ["accounts.merge"]},
-  {"id": "create-sla", "prompt": "set up an SLA for enterprise customers", "expect_endpoints": ["slas.create"]},
-  {"id": "attach-file", "prompt": "attach a file to a ticket", "expect_endpoints": ["artifacts.prepare"]},
-  {"id": "list-conversations", "prompt": "list customer conversations", "expect_endpoints": ["conversations.list"]},
-  {"id": "tag-ticket", "prompt": "tag a ticket as urgent", "expect_endpoints": ["tags.create", "works.update", "tags.list"]},
-  {"id": "link-tickets", "prompt": "link a ticket to an issue", "expect_endpoints": ["links.create"]},
-  {"id": "check-token", "prompt": "check that my token works", "expect_endpoints": ["ping", "dev-users.self"]},
-  {"id": "export-accounts", "prompt": "export all accounts", "expect_endpoints": ["accounts.export"]},
-  {"id": "create-part", "prompt": "create a product part", "expect_endpoints": ["parts.create"]},
-  {"id": "exact-name", "prompt": "what fields does works.create accept", "expect_endpoints": ["works.create"]},
-  {"id": "custom-field", "prompt": "add a custom field to accounts", "expect_playbooks": ["1-object-schema-customization"]},
-  {"id": "custom-object", "prompt": "create a custom object for campaigns", "expect_playbooks": ["1-object-schema-customization"]},
-  {"id": "stages", "prompt": "customize the stages of a ticket", "expect_playbooks": ["2-stage-lifecycle-customization"]},
-  {"id": "load-csv", "prompt": "load a CSV of customers into DevRev", "expect_playbooks": ["3-data-upload-and-org-build"]},
-  {"id": "dashboard", "prompt": "build me a support dashboard", "expect_playbooks": ["4-dashboards-and-widgets"]},
-  {"id": "dataset", "prompt": "create a dataset for reporting", "expect_playbooks": ["5-datasets"]},
-  {"id": "automation", "prompt": "when a ticket is created notify the team automatically", "expect_playbooks": ["6-workflows"]},
-  {"id": "agent-skill", "prompt": "let the AI agent look up order status", "expect_playbooks": ["6-workflows", "7-agent-building"]},
-  {"id": "connector", "prompt": "build a HubSpot connector", "expect_playbooks": ["9-snapin-development"]},
-  {"id": "solution-design", "prompt": "design a DevRev solution for a fintech company", "expect_playbooks": ["0-solution-architecture"]},
-  {"id": "rate-limit", "prompt": "why did I get a 429 too many requests", "expect_playbooks": ["10-api-conventions"]},
-  {"id": "sdk-install", "prompt": "how do I install the Android SDK", "expect_playbooks": ["11-developer-docs"]},
-  {"id": "webhook-signature", "prompt": "what does the official doc say about webhook signature verification", "expect_playbooks": ["11-developer-docs", "8-devrev-api"]}
+  {
+   "id": "create-ticket",
+   "prompt": "create a support ticket for a customer",
+   "expect_endpoints": [
+    "works.create"
+   ],
+   "expect_playbooks": [
+    "8-devrev-api"
+   ]
+  },
+  {
+   "id": "list-open-tickets",
+   "prompt": "show me all open tickets",
+   "expect_endpoints": [
+    "works.list"
+   ]
+  },
+  {
+   "id": "get-account",
+   "prompt": "get the details of an account",
+   "expect_endpoints": [
+    "accounts.get"
+   ]
+  },
+  {
+   "id": "create-account",
+   "prompt": "add a new customer company",
+   "expect_endpoints": [
+    "accounts.create"
+   ]
+  },
+  {
+   "id": "comment-on-ticket",
+   "prompt": "add a comment to a ticket",
+   "expect_endpoints": [
+    "timeline-entries.create"
+   ]
+  },
+  {
+   "id": "delete-webhook",
+   "prompt": "remove a webhook",
+   "expect_endpoints": [
+    "webhooks.delete"
+   ]
+  },
+  {
+   "id": "webhook-on-create",
+   "prompt": "notify my server when a ticket is created",
+   "expect_endpoints": [
+    "webhooks.create"
+   ]
+  },
+  {
+   "id": "search-kb",
+   "prompt": "search the knowledge base for an article",
+   "expect_endpoints": [
+    "articles.list",
+    "search.core",
+    "search.hybrid"
+   ]
+  },
+  {
+   "id": "count-tickets",
+   "prompt": "how many tickets are there",
+   "expect_endpoints": [
+    "works.count"
+   ]
+  },
+  {
+   "id": "whoami",
+   "prompt": "who am I authenticated as",
+   "expect_endpoints": [
+    "dev-users.self"
+   ]
+  },
+  {
+   "id": "assign-ticket",
+   "prompt": "assign a ticket to a teammate",
+   "expect_endpoints": [
+    "works.update"
+   ]
+  },
+  {
+   "id": "merge-accounts",
+   "prompt": "merge duplicate customer accounts",
+   "expect_endpoints": [
+    "accounts.merge"
+   ]
+  },
+  {
+   "id": "create-sla",
+   "prompt": "set up an SLA for enterprise customers",
+   "expect_endpoints": [
+    "slas.create"
+   ]
+  },
+  {
+   "id": "attach-file",
+   "prompt": "attach a file to a ticket",
+   "expect_endpoints": [
+    "artifacts.prepare"
+   ]
+  },
+  {
+   "id": "list-conversations",
+   "prompt": "list customer conversations",
+   "expect_endpoints": [
+    "conversations.list"
+   ]
+  },
+  {
+   "id": "tag-ticket",
+   "prompt": "tag a ticket as urgent",
+   "expect_endpoints": [
+    "tags.create",
+    "works.update",
+    "tags.list"
+   ]
+  },
+  {
+   "id": "link-tickets",
+   "prompt": "link a ticket to an issue",
+   "expect_endpoints": [
+    "links.create"
+   ]
+  },
+  {
+   "id": "check-token",
+   "prompt": "check that my token works",
+   "expect_endpoints": [
+    "ping",
+    "dev-users.self"
+   ]
+  },
+  {
+   "id": "export-accounts",
+   "prompt": "export all accounts",
+   "expect_endpoints": [
+    "accounts.export"
+   ]
+  },
+  {
+   "id": "create-part",
+   "prompt": "create a product part",
+   "expect_endpoints": [
+    "parts.create"
+   ]
+  },
+  {
+   "id": "exact-name",
+   "prompt": "what fields does works.create accept",
+   "expect_endpoints": [
+    "works.create"
+   ]
+  },
+  {
+   "id": "custom-field",
+   "prompt": "add a custom field to accounts",
+   "expect_playbooks": [
+    "1-object-schema-customization"
+   ]
+  },
+  {
+   "id": "custom-object",
+   "prompt": "create a custom object for campaigns",
+   "expect_playbooks": [
+    "1-object-schema-customization"
+   ]
+  },
+  {
+   "id": "stages",
+   "prompt": "customize the stages of a ticket",
+   "expect_playbooks": [
+    "2-stage-lifecycle-customization"
+   ]
+  },
+  {
+   "id": "load-csv",
+   "prompt": "load a CSV of customers into DevRev",
+   "expect_playbooks": [
+    "3-data-upload-and-org-build"
+   ]
+  },
+  {
+   "id": "dashboard",
+   "prompt": "build me a support dashboard",
+   "expect_playbooks": [
+    "4-dashboards-and-widgets"
+   ]
+  },
+  {
+   "id": "dataset",
+   "prompt": "create a dataset for reporting",
+   "expect_playbooks": [
+    "5-datasets"
+   ]
+  },
+  {
+   "id": "automation",
+   "prompt": "when a ticket is created notify the team automatically",
+   "expect_playbooks": [
+    "6-workflows"
+   ]
+  },
+  {
+   "id": "agent-skill",
+   "prompt": "let the AI agent look up order status",
+   "expect_playbooks": [
+    "6-workflows",
+    "7-agent-building"
+   ]
+  },
+  {
+   "id": "connector",
+   "prompt": "build a HubSpot connector",
+   "expect_playbooks": [
+    "9-snapin-development"
+   ]
+  },
+  {
+   "id": "solution-design",
+   "prompt": "design a DevRev solution for a fintech company",
+   "expect_playbooks": [
+    "0-solution-architecture"
+   ]
+  },
+  {
+   "id": "rate-limit",
+   "prompt": "why did I get a 429 too many requests",
+   "expect_playbooks": [
+    "10-api-conventions"
+   ]
+  },
+  {
+   "id": "sdk-install",
+   "prompt": "how do I install the Android SDK",
+   "expect_playbooks": [
+    "11-developer-docs"
+   ]
+  },
+  {
+   "id": "webhook-signature",
+   "prompt": "what does the official doc say about webhook signature verification",
+   "expect_playbooks": [
+    "11-developer-docs",
+    "8-devrev-api"
+   ]
+  },
+  {
+   "id": "wf-ticket-trigger",
+   "prompt": "when a ticket is created, do something automatically",
+   "expect_operations": [
+    "ticket_created"
+   ],
+   "expect_playbooks": [
+    "6-workflows"
+   ]
+  },
+  {
+   "id": "wf-add-comment",
+   "prompt": "add a comment to the ticket from a workflow step",
+   "expect_operations": [
+    "add_comment"
+   ]
+  },
+  {
+   "id": "wf-wait",
+   "prompt": "wait one day and then continue the workflow",
+   "expect_operations": [
+    "sleep_for"
+   ]
+  },
+  {
+   "id": "wf-loop",
+   "prompt": "loop over every issue in a workflow",
+   "expect_operations": [
+    "loop_over_issues"
+   ]
+  },
+  {
+   "id": "wf-notify",
+   "prompt": "notify the team by email when something happens",
+   "expect_operations": [
+    "send_notification"
+   ]
+  },
+  {
+   "id": "wf-http",
+   "prompt": "call an external api from a workflow",
+   "expect_operations": [
+    "http"
+   ]
+  },
+  {
+   "id": "wf-branch",
+   "prompt": "branch the workflow on a condition",
+   "expect_operations": [
+    "if_else"
+   ]
+  },
+  {
+   "id": "wf-code",
+   "prompt": "run a python script in a workflow step",
+   "expect_operations": [
+    "invoke_code"
+   ]
+  },
+  {
+   "id": "wf-create-issue",
+   "prompt": "a workflow step that creates an issue",
+   "expect_operations": [
+    "create_issue"
+   ]
+  },
+  {
+   "id": "wf-timer",
+   "prompt": "run a workflow every day on a schedule",
+   "expect_operations": [
+    "timer_trigger"
+   ]
+  },
+  {
+   "id": "wf-import",
+   "prompt": "import a workflow template into my org",
+   "expect_endpoints": [
+    "workflows.templates.instantiate"
+   ],
+   "expect_playbooks": [
+    "6-workflows"
+   ]
+  },
+  {
+   "id": "wf-publish",
+   "prompt": "publish a workflow and switch it on",
+   "expect_endpoints": [
+    "workflows.update-status"
+   ]
+  },
+  {
+   "id": "wf-validate",
+   "prompt": "validate a workflow before publishing it",
+   "expect_endpoints": [
+    "workflows.components.validate"
+   ]
+  },
+  {
+   "id": "wf-run",
+   "prompt": "trigger a workflow manually",
+   "expect_endpoints": [
+    "workflows.trigger"
+   ]
+  },
+  {
+   "id": "wf-connection",
+   "prompt": "attach a connection to a code step",
+   "expect_endpoints": [
+    "workflow-steps.update",
+    "keyrings.list"
+   ]
+  },
+  {
+   "id": "wf-agent-skill",
+   "prompt": "build an agent callable skill workflow",
+   "expect_operations": [
+    "ai_agent_skill_trigger"
+   ],
+   "expect_playbooks": [
+    "6-workflows"
+   ]
+  }
  ]
 }

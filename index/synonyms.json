@@ -1,5 +1,5 @@
 {
- "_comment": "Hand-written query expansion for bin/devrev-find. `terms` maps a word people say to API resource / object names the endpoint index uses; `verbs` maps a canonical verb to the words that mean it; `phrases` maps a multi-word phrase to endpoint names or a canonical verb. Edit this file when a real request fails to find the right endpoint, then run scripts/build_index.py.",
+ "_comment": "Hand-written query expansion for bin/devrev-find. `terms` maps a word people say to API resource / object names the endpoint index uses; `verbs` maps a canonical verb to the words that mean it; `phrases` maps a multi-word phrase to endpoint names or a canonical verb. Edit this file when a real request fails to find the right endpoint, then run scripts/build_index.py. `automation` and `automation_phrases` list the words and phrases that make a goal automation-shaped, so the finder also lists matching workflow operations (index/operations.json).",
  "terms": {
   "ticket": [
    "works",
@@ -236,9 +236,6 @@
   "download": [
    "artifacts"
   ],
-  "webhook": [
-   "webhooks"
-  ],
   "webhooks": [
    "webhooks"
   ],
@@ -246,7 +243,9 @@
    "webhooks"
   ],
   "notify": [
-   "webhooks"
+   "webhooks",
+   "send_notification",
+   "notifications"
   ],
   "callback": [
    "webhooks"
@@ -292,7 +291,7 @@
    "states"
   ],
   "workflow": [
-   "stage-diagrams"
+   "workflows"
   ],
   "part": [
    "parts"
@@ -343,7 +342,8 @@
   ],
   "schedule": [
    "schedules",
-   "org-schedules"
+   "org-schedules",
+   "timer_trigger"
   ],
   "calendar": [
    "schedules"
@@ -406,6 +406,115 @@
   ],
   "attach": [
    "artifacts"
+  ],
+  "workflows": [
+   "workflows"
+  ],
+  "automation": [
+   "workflows"
+  ],
+  "automations": [
+   "workflows"
+  ],
+  "automate": [
+   "workflows"
+  ],
+  "automated": [
+   "workflows"
+  ],
+  "automatically": [
+   "workflows"
+  ],
+  "whenever": [
+   "workflows"
+  ],
+  "scheduled": [
+   "timer_trigger"
+  ],
+  "recurring": [
+   "timer_trigger"
+  ],
+  "cron": [
+   "timer_trigger"
+  ],
+  "daily": [
+   "timer_trigger"
+  ],
+  "weekly": [
+   "timer_trigger"
+  ],
+  "hourly": [
+   "timer_trigger"
+  ],
+  "periodically": [
+   "timer_trigger"
+  ],
+  "wait": [
+   "sleep_for",
+   "sleep_until"
+  ],
+  "delay": [
+   "sleep_for",
+   "sleep_until"
+  ],
+  "pause": [
+   "sleep_for",
+   "sleep_until"
+  ],
+  "sleep": [
+   "sleep_for",
+   "sleep_until"
+  ],
+  "branch": [
+   "if_else"
+  ],
+  "condition": [
+   "if_else"
+  ],
+  "conditional": [
+   "if_else"
+  ],
+  "iterate": [
+   "loop"
+  ],
+  "notified": [
+   "send_notification",
+   "notifications"
+  ],
+  "alert": [
+   "send_notification",
+   "notifications"
+  ],
+  "email": [
+   "send_notification",
+   "notifications"
+  ],
+  "script": [
+   "invoke_code"
+  ],
+  "python": [
+   "invoke_code"
+  ],
+  "javascript": [
+   "invoke_code"
+  ],
+  "manually": [
+   "manual_trigger"
+  ],
+  "button": [
+   "manual_trigger"
+  ],
+  "summarize": [
+   "ask_ai"
+  ],
+  "summarise": [
+   "ask_ai"
+  ],
+  "llm": [
+   "ask_ai"
+  ],
+  "webhook": [
+   "webhooks"
   ]
  },
  "verbs": {
@@ -532,6 +641,97 @@
   ],
   "kb article": [
    "articles"
+  ],
+  "import a workflow": [
+   "workflows.templates.instantiate"
+  ],
+  "import workflow": [
+   "workflows.templates.instantiate"
+  ],
+  "import a template": [
+   "workflows.templates.instantiate"
+  ],
+  "upload a workflow": [
+   "workflows.templates.instantiate"
+  ],
+  "workflow template": [
+   "workflows.templates.instantiate",
+   "workflows"
+  ],
+  "publish a workflow": [
+   "workflows.update-status"
+  ],
+  "deploy a workflow": [
+   "workflows.update-status"
+  ],
+  "activate a workflow": [
+   "workflows.update-status"
+  ],
+  "turn on a workflow": [
+   "workflows.update-status"
+  ],
+  "go live": [
+   "workflows.update-status"
+  ],
+  "validate a workflow": [
+   "workflows.components.validate"
+  ],
+  "validate the workflow": [
+   "workflows.components.validate"
+  ],
+  "validate a template": [
+   "workflows.components.validate"
+  ],
+  "trigger a workflow": [
+   "workflows.trigger"
+  ],
+  "run a workflow": [
+   "workflows.trigger"
+  ],
+  "set up a workflow": [
+   "workflows"
+  ],
+  "build a workflow": [
+   "workflows"
+  ],
+  "create a workflow": [
+   "workflows"
+  ],
+  "attach a connection": [
+   "workflow-steps.update",
+   "keyrings.list"
+  ],
+  "external api": [
+   "http"
   ]
- }
+ },
+ "automation": [
+  "automate",
+  "automation",
+  "automatically",
+  "whenever",
+  "workflow",
+  "workflows",
+  "trigger",
+  "schedule",
+  "scheduled",
+  "timer",
+  "delay",
+  "wait",
+  "loop",
+  "branch",
+  "condition",
+  "escalate",
+  "notify",
+  "notification",
+  "route",
+  "routing"
+ ],
+ "automation_phrases": [
+  "when a",
+  "when an",
+  "every time",
+  "each time",
+  "as soon as"
+ ]
 }

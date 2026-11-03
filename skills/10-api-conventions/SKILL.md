@@ -63,8 +63,11 @@ call in this repo obeys them.
   always a **PAT** read from `.env` as `DEVREV_PAT` (see repo-root `CLAUDE.md`).
 - PATs **cannot be renewed** — generate a new one and update `.env` before the
   old one expires.
-- If you see `invalid token`, decode the JWT at `jwt.io` to inspect its
-  subject/expiry; do not "retry with a different scope" blindly.
+- If you see `invalid token`, decode the payload **locally** to inspect its
+  subject and expiry (this prints the claims only, never the signature):
+  `python3 -c 'import base64,json,os;p=os.environ["DEVREV_PAT"].split(".")[1];print(json.dumps(json.loads(base64.urlsafe_b64decode(p+"="*(-len(p)%4))),indent=2))'`.
+  **Never paste a token into a website** (jwt.io or any other) and never print the
+  full token in your output. Do not "retry with a different scope" blindly.
 
 ### Version header
 
@@ -77,9 +80,17 @@ call in this repo obeys them.
 ### Pagination
 
 - All `.list` endpoints use **cursor-based** pagination.
-- Read the response field `next_cursor`. If present, pass it back as the query
-  parameter `cursor` (`.../works.list?cursor=<value>`) to fetch the next page.
-- If `next_cursor` is absent, you're on the last page.
+- Read the cursor from the response and pass it back as `cursor` (query string
+  for GET, JSON body for POST) to fetch the next page. The docs name the field
+  `next_cursor`, and live responses confirm that for `works.list` / `parts.list`
+  (`skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md`), but
+  other list ops return a plain `cursor` key (`schemas.custom.list` and the
+  custom state/stage lists — see the Field notes in skills 1 and 2). **Follow
+  whichever of `next_cursor` / `cursor` is present; stop only when neither is.**
+  Checking `next_cursor` alone would silently truncate those results.
+  *(Per-op key names are live-observed in the notes above; not re-verified in
+  this session.)*
+- If neither key is present, you're on the last page.
 - Page-size / `limit` semantics (default, max) are not documented on the About
   page as of scrape date 2026-08-02 — read the specific endpoint doc in
   `skills/8-devrev-api/references/` for that.

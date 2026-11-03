@@ -23,7 +23,7 @@ Authenticating to DevRev APIs requires a PAT, which uniquely identifies a dev us
 
 Example use case: a VS Code plugin that pulls issues from DevRev for a particular dev user would rely on that user's PAT to authenticate.
 
-If you receive an `invalid token` error, you can validate the token at [jwt.io](https://jwt.io/).
+If you receive an `invalid token` error, inspect the token's claims. The official page suggests a web decoder; **in this repo decode locally instead and never paste a token into a third-party site** (command in `../SKILL.md`, "Auth header").
 
 ## Generate a personal access token (PAT)
 

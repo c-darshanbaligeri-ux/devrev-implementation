@@ -6,10 +6,6 @@
       "headers": {
         "Authorization": "Bearer ${DEVREV_PAT}"
       }
-    },
-    "snapin-builder": {
-      "type": "http",
-      "url": "https://snapin-builder-mcp.onrender.com/mcp"
     }
   }
 }

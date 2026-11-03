@@ -1,0 +1,118 @@
+# Install Plug search
+
+Source: <https://developer.devrev.ai/sdks/web/install-search>
+Scraped: 2026-11-03
+
+To get the Plug search widget to appear on your website and web app, insert the code snippet provided below on every page where you want the widget to appear for website visitors.
+
+## Unique app ID
+
+Ensure to replace the app ID with your app ID which identifies your Plug search widget. You can access your app ID from your DevRev account by following these steps.
+
+1. In DevRev, go to **Settings** > **Support** > **Plug Settings** through the settings icon in the top-left corner.
+2. Click **Enable Plug Widget** if it isn't already enabled.
+3. Copy your **Unique App ID** from the **Configuration tab**.
+
+  #### Setup
+    Place the following code in the `<head>` section of your HTML page:
+
+    ```html
+    <script
+      src="https://plug-platform.devrev.ai/static/plug.js"                         
+      type="text/javascript">
+    </script>
+    ```
+
+    Place the following code in the `<body>` section of your HTML page:
+
+    ```html
+    <script>
+        window.plugSDK.init({
+            app_id: '<your_unique_app_id>',
+            disable_plug_chat_window: true,
+        });
+
+        window.plugSDK.onEvent((payload) => {
+        if (payload.type === 'ON_PLUG_WIDGET_READY') {
+            window.plugSDK.initSearchAgent();
+        }
+        });
+    </script>
+    ```
+  
+
+  #### Setup for React
+    Place this code inside the react component where you want to render the chat widget. Typically you should do it as top level component like `App.js`.
+
+    ```jsx
+    useEffect(() => {
+        window.plugSDK.init({
+      app_id: '<your_unique_app_id>',
+      disable_plug_chat_window: true,
+    });
+
+    window.plugSDK.onEvent((payload) => {
+      if (payload.type === 'ON_PLUG_WIDGET_READY') {
+        window.plugSDK.initSearchAgent();
+      }
+    });
+     }, []);
+    ```
+  
+
+To toggle `searchAgent`, call the following method on any event required:
+
+```
+window.plugSDK.toggleSearchAgent();
+```
+
+To prefill search input from outside the window, call the following method:
+
+```
+window.plugSDK.prefillSearchQuery(query:"string")
+```
+
+You should now have the Plug search widget installed on your website. Facing some issues? Reach out to us through our own Plug chat widget from the bottom right of your screen.
+
+Once the widget is installed on your website, every user who visits your website is considered an anonymous user. Anonymous users are the users that come to your site and haven't yet logged in or shared any information.
+
+After integrating the Plug widget, you can personalize and contextualize customer engagement. Learn how to [identify your customers](user-identity.md) and update their information.
+
+## Bind a hotkey to toggle search agent
+
+You can bind the `toggleSearchAgent` method to a hotkey, such as `Cmd + K` (or `Ctrl + K` for Windows), to toggle the search agent. Here's an example implementation:
+
+  #### Setup
+    ```html
+    <script>
+      // Bind Cmd+K (or Ctrl+K) to toggle the search agent
+      document.addEventListener("keydown", function (event) {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+          event.preventDefault(); // Prevent default behavior
+          window.plugSDK.toggleSearchAgent();
+        }
+      });
+    </script>
+    ```
+  
+
+  #### Setup for React
+    ```jsx
+    useEffect(() => {
+      const handleKeyDown = event => {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+          event.preventDefault(); // Prevent default behavior
+          window.plugSDK.toggleSearchAgent();
+        }
+      };
+      // Attach the event listener
+      document.addEventListener("keydown", handleKeyDown);
+      // Clean up the event listener on unmount
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }, []);
+    ```
+  
+
+You can modify the keydown event listener to bind it to other keys, or key combinations, or use any other user events based on your application’s needs.

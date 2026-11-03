@@ -1,0 +1,471 @@
+# Release notes
+
+Source: <https://developer.devrev.ai/sdks/android/release-notes>
+Scraped: 2026-11-03
+
+This page documents all notable changes, improvements, and fixes for the DevRev SDK for Android. This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 2.4.2
+
+### Added
+
+* Added support for masking all text in session replays.
+
+### Fixed
+
+* Fixed an issue where dialogs were not captured correctly in session replays.
+
+## 2.4.1
+
+### Added
+
+* Added support for session recording on Android 17
+
+### Fixed
+
+* Fixed an issue where session recording restarted automatically when the app was relaunched after recording had been stopped or paused.
+* Fixed an issue with crash and ANR report uploads.
+
+## 2.4.0
+
+### Fixed
+
+* Fixed an issue with session recordings uploads adding to the robustness of the setup.
+* Fixed an issue with device keystore for reliable capturing of sessions.
+
+## 2.3.15
+
+### Added
+
+* Added support for UI-based rate limiting.
+
+### Fixed
+
+* Fixed missing or incorrect screen names in session replay events for legacy and Jetpack Compose navigation.
+* Fixed a race condition when starting session recording that could cause unstable recording startup.
+
+## 2.3.14
+
+### Fixed
+
+* Improved masking accuracy on Flutter screens so masks stay aligned with the captured content.
+* Reduced startup jank and ANRs during session recording.
+* Improved session recording and upload stability.
+
+## 2.3.13
+
+### Changed
+
+* For apps that opt into `alwaysUseRemoteConfig(false)`, a version filter change now applies to a running session on the next background config refresh, ending the session and discarding its captured data. By default, filter changes still take effect only when the next session starts, and no in-progress session or its data is affected.
+* The SDK version filter now suppresses all capture for an excluded version — session replay, crash, and ANR — where previously it suppressed only session replay. No session is started for an excluded version, so `DevRev.isRecording` now reports `false` for it, where it previously reported `true`.
+* Invalid or incomplete filter rules are now applied as configured instead of being ignored, so a malformed allowlist or blocklist can stop recording where it previously recorded every version.
+* The SDK version filter now matches version values with one or two components (such as `2` or `2.3`), not only full `x.y.z` values.
+
+## 2.3.12
+
+### Added
+
+* Added an SDK version filter for session replay, so replay can be enabled or disabled for specific SDK versions from the dashboard. Crash and ANR capture keep working, but the session-started listener callback does not fire while replay is suppressed.
+
+### Changed
+
+* On cold start, the SDK now validates the cached session token with the backend before restoring the session, which adds one network request per launch. If the backend is unreachable, it falls back to the cached session and revalidates on the next launch.
+
+### Security
+
+* The Plug support widget activity is no longer exported, so other apps on the device cannot launch it.
+
+### Fixed
+
+* Fixed a main-thread deadlock when resolving external masks with Flutter.
+* Fixed a crash in the screenshot capturer caused by a recycled bitmap on cancel.
+* Fixed a stale identity issue across orgs on cold start.
+* Fixed an ANR caused by a slow downstream crash handler.
+* Fixed an issue with mask coordinate clipping.
+
+## 2.3.11
+
+### Fixed
+
+* Reverted the WebView masking-delay change from 2.3.10 that caused a regression.
+
+## 2.3.10
+
+### Fixed
+
+* Fixed an AppCompat ContentFrameLayout crash during session recording.
+* Fixed a screenshot-related ANR when capturing WebView dialogs.
+* Fixed a masking delay during WebView page navigation.
+
+## 2.3.9
+
+### Fixed
+
+* Fixed an issue related to rapid navigations.
+* Fixed an ANR related to animated dialog captures.
+* Fixed an issue related to keyboard scrolls on WebViews.
+* Fixed an issue related to dispatch window callback mutations.
+
+## 2.3.8
+
+### Added
+
+* Added support for pre-filled messages while creating support chat conversations.
+
+### Fixed
+
+* Fixed masking issues on rapid scrolls.
+* Fixed an issue with missing crash types.
+
+## 2.3.7
+
+### Fixed
+
+* Implemented WebView masking for Canvas Technology.
+* Fixed an issue with WebView masking.
+* Fixed masking displacement on fast scrolling.
+
+## 2.3.6
+
+### Fixed
+
+* Fixed an issue where Ktor classes were getting stripped due to ProGuard rules.
+* Fixed a crash related to blank user identifier in identification calls.
+* Fixed a crash in support chat when the SDK was not fully initialized.
+* Fixed a SIGABRT crash on Android 16+ caused by stale MotionEvent references.
+* Fixed an issue with redundant backslash replacement in event capture serialization.
+
+## 2.3.5
+
+### Fixed
+
+* Fixed ANRs and crashes caused by Keystore Binder IPC during app termination in session recording.
+* Optimized masking performance for better dynamic WebViews in Cordova.
+* Added a fix for incorrect session engagement time.
+
+## 2.3.4
+
+### Changed
+
+* Optimized external masking (Flutter, Jetpack Compose).
+
+### Fixed
+
+* Fixed incorrect engagement time for sessions that were pending upload.
+
+## 2.3.3
+
+### Added
+
+* Added a config flag to enable real-time AI agent response streaming in support chat.
+* Added support for `setArticleSearchFilters`.
+
+### Changed
+
+* Updated support widget using the `updateFeatureConfiguration` function.
+
+### Fixed
+
+* Fixed a crash related to `MotionEvent`.
+* Prevented a potential runtime crash due to corrupted `SharedPreferences`.
+
+## 2.3.2
+
+### Added
+
+* Added `@JvmOverloads` to `configure()` for Java backward compatibility.
+* Added builder pattern to `FeatureConfiguration`.
+
+### Changed
+
+* Updated README with `FeatureConfiguration` documentation.
+
+### Fixed
+
+* Fixed VerifyError crash by disabling R8 optimization.
+
+## 2.3.1
+
+### Fixed
+
+* Fixed an issue with masking on WebViews.
+
+## 2.3.0
+
+### Added
+
+* Feature configuration for screen capture, auto-start recording, Plug chat theme, and remote config (fresh vs cached/lazy fetch).
+
+### Changed
+
+* Deprecated `setShouldPreferSystemTheme` in favor of `SupportWidgetTheme.prefersSystemTheme` via `FeatureConfiguration`.
+* Updated WorkManager dependency to 2.10.1.
+
+### Fixed
+
+* Fixed memory leaks detected via LeakCanary in session recording, activity lifecycle, and screenshot services.
+* Fixed a potential crash when the current activity is null during screenshot capture.
+* Fixed blurred and distorted bitmaps captured for `SurfaceView` or `FlutterView` on certain devices.
+
+## 2.2.14
+
+### Fixed
+
+* Fixed an issue with session recordings on QR scan screens.
+
+## 2.2.13
+
+### Added
+
+* Added the `isAsyncConfigFetchEnabled` API to enable/disable async config fetch optimization.
+
+### Fixed
+
+* Fixed memory leaks in session recording service that could retain destroyed activities and services.
+
+## 2.2.12
+
+### Changed
+
+* Removed redundant dependencies for reduced SDK size and enhanced security.
+
+### Fixed
+
+* Improved session capturing stability and reliability.
+
+## 2.2.11
+
+### Fixed
+
+* Fixed an issue with bitmap capture for Flutter's `SurfaceView`.
+
+## 2.2.10
+
+### Added
+
+* Added a capture error API to allow apps to report runtime errors through the SDK.
+
+### Changed
+
+* Refined rage tap detection logic to avoid misclassifying double taps as rage taps.
+* Optimized session recording and network request handling to reduce overhead during active sessions.
+
+### Fixed
+
+* Fixed incorrect engagement time calculation in crash scenarios.
+* Fixed ANRs occurring during SDK initialization.
+
+## 2.2.9
+
+### Added
+
+* Support for session capturing on Android 16 devices.
+* Support for tracking hybrid platforms and their versions.
+
+### Changed
+
+* Improved masking behavior on `RecyclerView` scrolls.
+* Improved session upload reliability and stability.
+* Optimized network bandwidth usage.
+
+### Fixed
+
+* Fixed an issue in the logout flow.
+
+## 2.2.8
+
+### Deprecated
+
+* Deprecated the `identifyAnonymousUser()` method.
+
+### Fixed
+
+* Resolved a potential OutOfMemory crash.
+
+## 2.2.7
+
+### Added
+
+* Added `sendException` method to track handled exceptions.
+* Added APIs to control user interaction tracking.
+
+### Fixed
+
+* Resolved potential out of memory crashes.
+
+## 2.2.6
+
+### Fixed
+
+* Resolved potential issues that could cause app crashes during network operations.
+* When adding session properties before initialization, they are now properly queued and executed.
+
+## 2.2.5
+
+### Fixed
+
+* Added extra safeguards to prevent crashes related to uninitialized properties.
+* Enhanced the stability of session-recording flows for a more reliable experience.
+
+## 2.2.4
+
+### Added
+
+* Added better observability for SDK configuration and identification steps.
+
+## 2.2.3
+
+### Fixed
+
+* Improved the user identification process.
+* Fixed an issue related to long session engagement times.
+
+## 2.2.2
+
+### Fixed
+
+* Improved the presentation of the support widget in edge-to-edge scenarios.
+* Improved the session analytics and metrics.
+
+## 2.2.1
+
+### Fixed
+
+* Improved the Flutter session replay experience.
+
+## 2.2.0
+
+> 📝 **Note**: Version 2.1.0 has been skipped to maintain version parity across different mobile platforms.
+
+### Added
+
+* Added an external masking API for custom masking use cases.
+
+### Fixed
+
+* Fixed an issue related to rendering of the event properties.
+* Improved the verified identification flow.
+* Fixed an issue with the session upload flow.
+
+## 2.0.4
+
+### Fixed
+
+* Fixed an issue with upload failure due to ClassCastException in the WorkManager.
+
+## 2.0.3
+
+### Fixed
+
+* Fixed an issue with manual unmasking of input components.
+* Fixed an issue with session uploads when the app is rapidly killed.
+
+## 2.0.2
+
+### Fixed
+
+* Fixed an issue with missing sessions when migrating from 1.x.x to 2.x.x.
+
+## 2.0.1
+
+### Changed
+
+* Improved the backward compatibility between v1.x.x and v2.x.x.
+
+## 2.0.0
+
+### Changed
+
+* Improved the communication with the DevRev backend.
+* Improved the encryption techniques used throughout the SDK.
+
+## 1.1.5
+
+### Added
+
+* Added `setShouldPreferSystemTheme` for dynamic theme handling.
+* Added support for masking Compose views in session recordings and analytics.
+
+### Fixed
+
+* Improved the initialization sequence of the observability SDK.
+
+## 1.1.4
+
+### Changed
+
+* Improved the handling of custom fields in user, account, and organization traits.
+* Improved error descriptions in logs for better identification of issues in the field.
+* Improved the handling of masking via HTML classes.
+
+## 1.1.3
+
+### Changed
+
+* Enhanced the session analytics feature to work better across different environments.
+
+### Fixed
+
+* Fixed bugs related to on-demand sessions, providing a more stable experience.
+
+## 1.1.2
+
+### Fixed
+
+* Fixed the session recording experience in the SDK.
+
+## 1.1.1
+
+### Added
+
+* Added new methods that allow tracking of screen transitions to understand user navigation within your app.
+
+### Fixed
+
+* Fixed the session recording upload bug.
+
+## 1.1.0
+
+### Added
+
+* Introduced a logout mechanism that clears the user's credentials, unregisters the device from receiving push notifications, and stops the session recording.
+* Added a boolean flag to check if the SDK has been configured.
+* Added a boolean flag to check if the user has been identified.
+* Added a boolean flag to check if the session is being recorded.
+* Added a boolean flag to check if monitoring is enabled.
+* Added a boolean flag to check if on-demand sessions are enabled.
+
+## 1.0.3
+
+### Added
+
+* A new flag `prefersDialogMode` to open the support chat in the app's main task/activity.
+
+### Fixed
+
+* Fixed a crash when the application theme is not a descendant of `Theme.AppCompat`.
+* Fixed back navigation handling in support chat on physical back button press.
+* Fixed data retention in editable views in case of configuration changes like rotation, keyboard switch, etc.
+
+## 1.0.2
+
+### Fixed
+
+* Improved the push notifications for verified users.
+* Fixed the start recording failures.
+* Fixed masking for React Native.
+
+## 1.0.1
+
+### Changed
+
+* Improved the user identification mechanism.
+
+## 1.0.0
+
+### Added
+
+* Added the Session Analytics feature, which allows you to monitor the health of your application and its components.
+* Added support for Push Notifications for the Plug support chat.
+* Added support to create new conversations in the Plug support chat.
+* Added support for in-app link handling.

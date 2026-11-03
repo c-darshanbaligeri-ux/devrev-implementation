@@ -2,7 +2,7 @@
 
 ## Identity
 
-This is the unified operating environment for all DevRev implementation work, including snap-in development (via a routed third-party plugin, `skills/9` — the one area not covered by this repo's own native skills). It is not a buildable software project — it's a workspace containing skills + references + cloned toolchains (`repos/`) + a hosted DevRev MCP. Everything needed to design a solution, customize DevRev organizations, upload data, build dashboards, create datasets, author workflows, develop AI agents, and build snap-ins/AirSync connectors lives here in a plug-and-play configuration, spanning design (skill 0) through build (skills 1–9).
+This is the unified operating environment for all DevRev implementation work, including snap-in development (via a routed third-party plugin, `skills/9` — the one area not covered by this repo's own native skills). It is not a buildable software project — it's a workspace containing skills + references + cloned toolchains (`repos/`) + a hosted DevRev MCP. Everything needed to design a solution, customize DevRev organizations, upload data, build dashboards, create datasets, author workflows, develop AI agents, and build snap-ins/AirSync connectors lives here in a plug-and-play configuration, spanning design (skill 0) through build (skills 1–9), plus cross-cutting API conventions (skill 10) and an offline mirror of the official developer docs (skill 11).
 
 ## Routing table
 
@@ -21,11 +21,14 @@ When the user asks to work with DevRev, match the request to a skill and **read 
 | Make any raw DevRev REST API call ("call works.list", "get account details", "create a ticket via API") | `skills/8-devrev-api` |
 | Build, plan, update, or test a snap-in or AirSync connector ("build a HubSpot connector", "sync Asana into DevRev", "add pagination to the Trello connector") | `skills/9-snapin-development` (routes to a third-party plugin, manual install required — never `skills/4`'s dashboard vertical) |
 | Cross-cutting API plumbing — auth token types, cursor pagination fields, versioning header, rate-limit / `Retry-After` / 429 behavior, standard error JSON shape, choosing between public and beta APIs ("why did I get a 429", "how do I paginate", "what's the token header format", "how do I opt into beta") | `skills/10-api-conventions` |
+| What the **official developer docs** say — a full request-field table for any endpoint (public or beta), webhook payload/signature details, PLuG or mobile SDK setup, snap-in framework / manifest / CLI reference, AirSync data model and object types, the Guides, changelogs ("what does the doc say about X", "which fields does Y accept", "how do I install the Android SDK") | `skills/11-developer-docs` (reference mirror — what the docs *say*; live-verified notes in the domain skills win) |
 | "Update the repos" / "pull latest" / "sync repos to main" / "refresh the cloned repos" (explicit request only — never automatically) | `.claude/skills/update-repos` |
 | "Remember this so we don't hit it again", any correction, any undocumented restriction/behavior discovered mid-task | `.claude/skills/capture-learnings` (routes the fix to the specific owning file + `docs/LEARNINGS.md`) |
 | Route unclear or genuinely spanning multiple skills | `.claude/skills/implementation-router` (uses this same routing table to pick a skill, or picks the lowest-numbered one for cross-domain requests) |
 
 **Rule**: open the matched SKILL.md file and follow its playbook. Do not reconstruct API endpoint formats, payload structures, scope names, or JSON schemas from training data — every API fact must come from the skill's reference files.
+
+**Official docs vs. live reality**: `skills/11-developer-docs` is a generated mirror of developer.devrev.ai — it records what the docs *say*. Facts verified live in this repo (domain-skill Field notes, `docs/LEARNINGS.md`, this file) win on any conflict. Never write a learning into the mirror (a refresh regenerates and deletes it); route it to the owning skill via `capture-learnings`. Commit mirror refreshes with a `docs:` prefix, not `learn:`.
 
 ## Plug and play
 

@@ -30,6 +30,7 @@ Trigger when the user or your own workflow needs:
 - Stage/state lifecycle → `skills/2-stage-lifecycle-customization`
 - Workflow/agent authoring → `skills/6-workflows`, `skills/7-agent-building`
 - Snap-in build/deploy → `skills/9-snapin-development`
+- Official docs outside the About section (guides, SDKs, snap-in / AirSync reference, per-endpoint field tables) → `skills/11-developer-docs`
 - Anything that isn't in the six developer.devrev.ai "About" pages listed below
 
 ## References — one file per developer.devrev.ai "About" page
@@ -42,6 +43,13 @@ Trigger when the user or your own workflow needs:
 | `references/versioning.md` | Current public version `2022-10-20`, override via `X-Devrev-Version` header; opt into beta APIs via `X-Devrev-Scope: beta`; each public version supported for at least 1 year |
 | `references/rate-limits.md` | 5-minute rolling window, aggregate per authenticated user; 429 with `Retry-After: <seconds>`; quota headers `X-Ratelimit-Limit` / `X-Ratelimit-Remaining` / `X-Ratelimit-Reset` (Unix epoch seconds); uniform per-endpoint weight |
 | `references/errors.md` | Success codes (200/201/204); JSON error shape `{"message":"..."}`; common 4xx/5xx (400/401/403/404/429/500/503); per-endpoint extras (301/404/409) |
+
+> **Cross-checked 2026-11-03** against a fresh scrape of the same six pages in
+> `skills/11-developer-docs/about/`: no factual changes since the 2026-08-02 scrape — current version
+> `2022-10-20`, the `X-Devrev-Version` / `X-Devrev-Scope: beta` headers, the 5-minute window and
+> `X-Ratelimit-*` headers, the `next_cursor` field, the four token types and PAT steps, the status-code
+> tables, and the SDK list are all unchanged. That mirror also covers everything *outside* `about/`
+> (guides, SDKs, snap-ins, AirSync, per-endpoint tables) — see `skills/11-developer-docs/INDEX.md`.
 
 ## Working rules
 

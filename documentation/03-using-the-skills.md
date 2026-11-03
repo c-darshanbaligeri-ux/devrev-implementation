@@ -231,6 +231,41 @@ snap-in development"](01-getting-started.md). This skill also **explicitly exclu
 plugin's Implementation (dashboard) vertical — that vertical hand-writes widget JSON and violates
 skill 4's hard rule; dashboards always go through skill 4.
 
+## 10 — API conventions
+
+**Covers**: the plumbing every REST call shares — the four token types and PAT handling, cursor
+pagination (`next_cursor`), the `X-Devrev-Version` / `X-Devrev-Scope: beta` headers, rate-limit headers
+and 429 / `Retry-After`, and the standard error shape.
+
+**Example prompts**
+- "Why did I get a 429, and how long should I wait?"
+- "How do I page through all the results of a `.list` call?"
+- "How do I opt into a beta endpoint?"
+
+**Under the hood**: curated rewrites of the six developer.devrev.ai "About" pages (cross-checked against
+a fresh scrape on 2026-11-03) plus short working rules. It defines no endpoint payloads — those live in
+skill 8.
+
+## 11 — Official developer docs (reference mirror)
+
+**Covers**: an offline, greppable copy of the whole developer.devrev.ai site (980 pages → 323 Markdown
+files): the public **and beta** API reference with a field table, scopes, response codes and cURL
+example per endpoint; the Guides (webhooks, object customization, custom objects, restricted timeline
+messages); the PLuG Web SDK and the Android / iOS / React Native / Cordova / Flutter SDKs; the snap-in
+framework reference; AirSync (data model, object types, extraction and loading); and the changelogs.
+
+**Example prompts**
+- "What does the official doc say `parts.create` accepts?"
+- "How do I verify a webhook signature?"
+- "Show me the Android SDK quickstart."
+- "Which AirSync object types exist, and what fields does `account` expose?"
+
+**Under the hood**: it records what the docs *say*. Facts verified live in this repo (the other skills'
+Field notes, `docs/LEARNINGS.md`) win on any conflict, and learnings are never written into the mirror
+because a refresh regenerates it. `INDEX.md` maps every page to its source URL; `COVERAGE.md` shows which
+site endpoints the skill-8 catalog does not name. To refresh it, follow the "Refresh" section of the
+skill's `SKILL.md` and commit with a `docs:` prefix (not `learn:`, which auto-pushes).
+
 ## The hosted MCP (always on)
 
 Alongside the skills, the hosted DevRev MCP server (`.mcp.json`) gives the agent direct

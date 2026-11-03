@@ -47,7 +47,27 @@ curl -X POST 'https://api.devrev.ai/webhooks.create' \
 ```
 
 `webhooks.get/list/update/delete/event` — no explicit scope (default scopes N/A).
-See the Webhooks guide for signature verification and event payloads.
+**Delivery model, verification and security** (doc-cited 2026-11-03 from
+`developer.devrev.ai/guides/webhooks`; mirrored at `skills/11-developer-docs/guides/webhooks.md` — not
+live-verified here, and the guide leaves one detail open, flagged below):
+
+- **Registration handshake.** `webhooks.create` returns the webhook with a `secret` and
+  `status: "unverified"`. DevRev then POSTs a `type: "verify"` event carrying `verify.challenge`; the
+  endpoint must answer `200 {"challenge": "<same value>"}` **within 3 minutes** of the create call, after
+  which the webhook becomes active.
+- **Event envelope.** Every delivery is a `POST` of one schema: `id`, `webhook_id`, `timestamp`, `type`, and a
+  field named after the type that holds the object (e.g. `work_created: {...}`). Events are object
+  create/update/delete mutations; object payloads use the same schemas as the REST API.
+- **Verify every request.** The `X-DevRev-Signature` header is an HMAC-SHA256 with the webhook `secret` as the
+  key and the **raw request body** as the message; discard on mismatch. HMAC does not stop replays — also
+  reject a stale `timestamp`. *Open point:* the guide does not state the header's encoding (hex vs. base64);
+  inspect a real delivery before hard-coding the comparison.
+- **Respond fast, tolerate duplicates.** Reply within **3 seconds** (do real work asynchronously) or the
+  delivery is aborted and retried — 3 attempts: immediately, after 30 s, after 3 min. Deliveries are
+  concurrent and only semi-ordered, and the endpoint must handle duplicates of the same event; use object
+  timestamps/versions to order events per object.
+- **Degraded state.** Sustained failures mark the endpoint degraded: queued events are failed without
+  delivery attempts until verify requests succeed again and the webhook is promoted back to active.
 
 ---
 

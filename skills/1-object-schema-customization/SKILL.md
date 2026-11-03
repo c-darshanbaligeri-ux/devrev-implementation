@@ -269,6 +269,8 @@ Open these files as needed:
 | --- | --- |
 | `references/Custom_Objects_and_Links_API.md` | Defining custom object types (§1); creating custom link types (§3); linking work items and custom objects (§4); custom object stage/tags/part/subtype fields (§1 Steps 3-5) |
 | `references/Stock_Object_Modification_and_Schemas_API.md` | Adding fields to stock objects (§4); inspecting stock schemas (§2); viewing the aggregated schema (§3); managing subtypes (§5); field overrides (§4b); upgrading records after schema changes (§7) |
+| `skills/11-developer-docs/guides/object-customization.md` | The official Object Customization guide — fragment / subtype / custom-field concepts, supported field types and prefixes, **unified-enum (uenum) fields**, fragment versioning and object upgrades, deprecating fragments, UI hints, stock-field overrides, custom stages and stage diagrams, dependent fields. It records what the docs *say*; the `references/` above hold the live-verified payloads and win on conflict |
+| `skills/11-developer-docs/guides/custom-objects.md` | The official Custom Objects guide — lifecycle (create / get / list / update / delete), referencing custom objects from other objects, subtypes, unique keys, access control and field-level access control. Same precedence rule |
 
 ## DON id scratchpad
 

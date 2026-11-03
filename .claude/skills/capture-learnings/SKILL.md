@@ -60,6 +60,7 @@ Route by what the learning is about — this table is the heart of the protocol:
 | Bootstrap/hook/CLI-install/plugin-loading issues | `.claude/hooks/bootstrap-workspace.sh` (fix) + `README.md` troubleshooting table (symptom/fix row) |
 | MCP server behavior | `.mcp.json` (if config) + `skills/8-devrev-api/references/devrev-mcp-claude-code-setup.md` |
 | Routing mistakes (request went to the wrong skill) | `.claude/skills/implementation-router/SKILL.md` + the misrouted skill's frontmatter description (add the trigger phrase) |
+| The official developer docs disagree with live behavior, or a page in the developer-docs mirror is wrong or stale | The **owning domain skill's** Field notes (e.g. `skills/8-devrev-api`) — **never** a file under `skills/11-developer-docs/` (generated; a refresh deletes hand edits). A parse/fetch defect in the mirror itself is fixed in `skills/11-developer-docs/scripts/`, then re-run |
 | A truly global rule (affects every call) | `CLAUDE.md` → "Global API rules" — this is the ONLY case where CLAUDE.md is the primary target |
 | Snap-in/AirSync connector build behavior, MCP tool quirks, or a `devrev-qk-agents` plugin mistake | `skills/9-snapin-development/SKILL.md` → "Field notes". If the plugin's own `/devrev:improve-skill` proposes a patch inside `repos/devrev-qk-agents/`, that satisfies THIS repo's "never edit `repos/`" rule only if you ALSO record the same fact here — the `repos/` patch is disposable and will be overwritten by `update-repos` |
 

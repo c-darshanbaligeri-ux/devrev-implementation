@@ -23,6 +23,8 @@ every fact must come from the matched skill's reference files.
 | Build, debug, improve, or test AI agents (Agent Studio) | `skills/7-agent-building/SKILL.md` |
 | Any raw DevRev REST API call | `skills/8-devrev-api/SKILL.md` |
 | Build, plan, update, or test a snap-in or AirSync connector | `skills/9-snapin-development/SKILL.md` |
+| Cross-cutting API plumbing: token types, pagination cursor, versioning/beta header, rate-limit headers + 429, standard error shape | `skills/10-api-conventions/SKILL.md` |
+| What the official developer docs say: a full request-field table for an endpoint (public or beta), webhook payloads/signature, PLuG or mobile SDK setup, snap-in manifest/CLI reference, AirSync data model/object types, Guides, changelogs | `skills/11-developer-docs/SKILL.md` (reference mirror — live-verified notes in the domain skills win on conflict) |
 | "Update the repos" / "pull latest" / "sync to main" | `.claude/skills/update-repos/SKILL.md` |
 | Hit an unexpected error/restriction, discovered undocumented API behavior, or was corrected by the user — mid-task, any domain | `.claude/skills/capture-learnings/SKILL.md` (run it immediately, then continue the task) |
 

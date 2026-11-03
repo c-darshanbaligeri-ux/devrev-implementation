@@ -10,6 +10,7 @@ This document tracks the source lineage and adaptations for all artifacts in the
 - **S4** = `/Users/q15137/Documents/The one/aai-custom-computer-capabilities/3-computer-capabilities-nxt/agent-building-toolkit` — agent-building toolkit
 - **S5** = `/Users/q15137/Documents/The one/plan-skill-workspace/devrev-solution-architect` — standalone design-phase skill (2026-07-18 merge; built independently of S1–S4, with zero prior shared authorship)
 - **S6** = `/Users/q15137/Documents/The one/devrev-snapins-main` (repo `QK-SnapIn/devrev-qk-agents`) — standalone Claude Code plugin for snap-in/AirSync connector development (2026-07-18 merge; third-party org, not `devrev/aai-skills`)
+- **S7** = `https://developer.devrev.ai` (sitemap of 980 URLs) — the official DevRev developer docs, fetched 2026-11-03 by `skills/11-developer-docs/scripts/` and mirrored as `skills/11-developer-docs/`. Unlike S1–S6 this is not a local workspace: it is regenerated, not copied.
 
 ## Provenance Table
 
@@ -39,6 +40,11 @@ This document tracks the source lineage and adaptations for all artifacts in the
 | `skills/8-devrev-api/SKILL.md` | S1 `SKILL.md` | Path updates (doc references → references/); token guidance updated (DEVREV_PAT from .env, alias DEVREV_TOKEN); added "When not to use" line (workflows/agents/dashboards/datasets → other skills) |
 | **skills/9-snapin-development** | | |
 | `SKILL.md` | Authored new | Router-only; a fourth species (external-plugin router — see docs/ARCHITECTURE.md). Routes to the `devrev` plugin (`devrev-qk-agents`, S6) for the snap-in vertical only. Documents 2 required MCP servers as manual opt-in (not wired into `.mcp.json`); flags a 3rd MCP ("devrev-sdk MCP") as NOT VERIFIED (setup command undocumented in S6). Explicitly excludes S6's own "Implementation" (dashboard) vertical — it hand-writes widget JSON, violating skills/4's hard rule. Notes the plugin's own self-learning command (`/devrev:improve-skill`) patches `repos/devrev-qk-agents/`, which conflicts with this repo's never-edit-`repos/` rule — resolved by requiring a duplicate Field-notes entry here. Also flags a `connector-dev` plugin gap in the already-cloned `repos/aai-skills` (declared in that repo's own marketplace.json but its source directory doesn't exist at the pinned SHA — upstream drift, not introduced here). |
+| **skills/10-api-conventions** | | |
+| `SKILL.md`, `references/` (6 files) | Scraped from the developer.devrev.ai "About" pages (2026-08-02) | Curated rewrites plus working rules; cross-checked against S7 on 2026-11-03 — no factual changes |
+| **skills/11-developer-docs** | | |
+| everything except `SKILL.md` and `scripts/` | S7 (generated) | 980 sitemap URLs → 323 files. Narrative pages come from each page's `/llms.txt` Markdown; API endpoint pages (no Markdown or OpenAPI form exists) are parsed from their HTML into per-resource field tables; 7 Mermaid diagrams that the Markdown endpoint mangles are recovered from the page HTML |
+| `SKILL.md`, `scripts/fetch_docs.py`, `scripts/build_docs.py` | Authored new | Precedence rule (live-verified facts win), layout, grep recipes, mirror limits, refresh procedure, dated Field notes |
 | **skills/1-object-schema-customization** | | |
 | `references/` (2 files) | S1 | Verbatim copies: Custom_Objects_and_Links_API.md, Stock_Object_Modification_and_Schemas_API.md |
 | `SKILL.md` | Authored new | Grounded in the 2 reference files; playbooks for custom objects, tenant fields, subtypes, custom link types; every endpoint/scope/field cited from references |

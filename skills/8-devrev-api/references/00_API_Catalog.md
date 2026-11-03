@@ -21,6 +21,9 @@ AirSync connectors — see skills 6, 7, 9 for those.
 
 Detailed payloads and examples live in the domain docs — see `CLAUDE.md` for the
 routing table. This file is the lookup index; go to the domain doc to build a call.
+For the vendor docs' full field-level request tables (public and beta), see
+`skills/11-developer-docs/api-reference/`; its `COVERAGE.md` lists the site endpoints this catalog does not
+name in a table row (all already documented in other skill references — a listing gap, not a knowledge gap).
 
 **Cross-domain grounding**: for how Parts (Trail), Articles (KB), and Directories
 (collections) wire together — including the retrieval priority ladder and the

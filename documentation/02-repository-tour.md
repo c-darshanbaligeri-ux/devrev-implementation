@@ -28,7 +28,9 @@ devrev-implementation/
 │   ├── 6-workflows/                     SKILL.md + operations/ + references/ + examples/ + scripts/
 │   ├── 7-agent-building/                SKILL.md + README.md + commands/ + knowledge/ + references/ + scripts/
 │   ├── 8-devrev-api/                    SKILL.md + references/ (full API catalog + domain docs)
-│   └── 9-snapin-development/            SKILL.md (external-plugin router into devrev-qk-agents)
+│   ├── 9-snapin-development/            SKILL.md (external-plugin router into devrev-qk-agents)
+│   ├── 10-api-conventions/              SKILL.md + references/ (auth, pagination, versioning, rate limits, errors)
+│   └── 11-developer-docs/               SKILL.md + INDEX.md + COVERAGE.md + generated mirror of developer.devrev.ai + scripts/
 ├── repos/                        # Cloned toolchains (gitignored; never hand-edited)
 ├── docs/                         # ARCHITECTURE.md, SUMMARY.md (provenance), LEARNINGS.md (journal), CLONE_RESULTS.md
 └── documentation/                # This user-facing docs folder

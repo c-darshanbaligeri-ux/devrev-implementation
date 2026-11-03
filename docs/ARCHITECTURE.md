@@ -28,7 +28,9 @@ devrev-implementation/
 │   ├── 6-workflows/{SKILL.md, operations/, references/, examples/, scripts/}
 │   ├── 7-agent-building/{SKILL.md, README.md, commands/, knowledge/, references/, scripts/}
 │   ├── 8-devrev-api/{SKILL.md, references/}
-│   └── 9-snapin-development/SKILL.md
+│   ├── 9-snapin-development/SKILL.md
+│   ├── 10-api-conventions/{SKILL.md, references/}
+│   └── 11-developer-docs/{SKILL.md, INDEX.md, COVERAGE.md, scripts/, + generated mirror of developer.devrev.ai}
 ├── repos/.gitkeep                  (Clone target, gitignored after population)
 ├── docs/{ARCHITECTURE.md, SUMMARY.md, CLONE_RESULTS.md, LEARNINGS.md}   # LEARNINGS.md is the append-only journal for capture-learnings
 └── documentation/                  (User-facing docs: getting-started, tour, using-the-skills, maintenance, troubleshooting)
@@ -60,7 +62,11 @@ The skills are numbered to reflect the natural dependency order of DevRev implem
 - **8-devrev-api**: Direct API knowledge base, used by all other skills when they need to make raw API calls
 
 **Extensibility Layer (9)**: The one gap not covered natively
-- **9-snapin-development**: Snap-in and AirSync connector development — the area `CLAUDE.md`'s Identity line used to name as explicitly out of scope, now covered by routing to a third-party plugin rather than building native tooling for it. Depends on nothing upstream (a snap-in can be planned/built independently of any other skill), but its Architect phase often produces connectors that feed data into the object model skills 1–3 manage.
+- **9-snapin-development**: Snap-in and AirSync connector development — the area `CLAUDE.md`'s Identity line used to name as explicitly out of scope, now covered by routing to a third-party plugin rather than building native tooling for it.
+
+**Cross-cutting layers (10, 11)**: no position in the build order — they sit underneath and alongside every other skill.
+- **10-api-conventions**: curated rules every REST call obeys (auth tokens, pagination, versioning header, rate limits, error shape), distilled from the six developer.devrev.ai "About" pages.
+- **11-developer-docs**: a *generated* offline mirror of developer.devrev.ai (public + beta API field tables, Guides, SDKs, snap-in framework, AirSync). It owns what the vendor docs *say*, not what is true live — live-verified Field notes in the other skills win. Rebuilt by `scripts/fetch_docs.py` + `scripts/build_docs.py`; never hand-edited, so learnings about it are recorded in the owning skill instead. Depends on nothing upstream (a snap-in can be planned/built independently of any other skill), but its Architect phase often produces connectors that feed data into the object model skills 1–3 manage.
 
 ### Four Skill Species
 

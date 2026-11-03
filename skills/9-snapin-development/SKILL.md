@@ -1,6 +1,6 @@
 ---
 name: snapin-development
-description: Use this skill when the user asks to build, plan, update, or test a DevRev snap-in, AirSync connector, or integration — e.g. "build a HubSpot connector", "I need to sync Asana into DevRev", "plan an AirSync integration for X", "add pagination to the Trello connector", "test this snap-in end-to-end", "generate the metadata JSON for Y". Routes to the `devrev` (devrev-qk-agents) plugin's snap-in vertical (PM → Architect → Tester) rather than duplicating its logic; the plugin requires a one-time manual install (never auto-enabled — third-party org). Does NOT cover this plugin's own "Implementation" (dashboard) vertical — that conflicts with `skills/4-dashboards-and-widgets`'s hard rule and is explicitly excluded; see below.
+description: Use this skill when the user asks to build, plan, update, or test a DevRev snap-in, AirSync connector, or integration — e.g. "build a HubSpot connector", "I need to sync Asana into DevRev", "plan an AirSync integration for X", "add pagination to the Trello connector", "test this snap-in end-to-end", "generate the metadata JSON for Y". Routes to the `devrev` (devrev-qk-agents) plugin's snap-in vertical (PM → Architect → Tester) rather than duplicating its logic; the plugin requires a one-time manual install (never auto-enabled — third-party org). DevRev's own snap-in framework and AirSync reference docs (manifest, functions, CLI, data model, object types) are mirrored locally in `skills/11-developer-docs/` — read those for facts. Does NOT cover this plugin's own "Implementation" (dashboard) vertical — that conflicts with `skills/4-dashboards-and-widgets`'s hard rule and is explicitly excluded; see below.
 ---
 
 # DevRev Snap-in Development
@@ -27,6 +27,24 @@ The repo also clones the source at `repos/devrev-qk-agents` (via `repos.txt`, sa
 | Quick pattern/decision lookup (auth, pagination, rate limiting) without a full build | `/devrev:search-guide` |
 | Report a mistake the plugin's agents made so it doesn't repeat | `/devrev:improve-skill` — see "Self-learning is plugin-scoped" below |
 | Update the plugin itself to the latest version | `/devrev:update` |
+
+## Official developer docs — local reference mirror
+
+DevRev's own snap-in framework and AirSync documentation (developer.devrev.ai, scraped 2026-11-03) is mirrored in `skills/11-developer-docs/`. **Read it for facts; the plugin pipeline below still owns the build workflow — this section does not relax the HARD RULE.** Where a mirror page and this file's live-verified Field notes disagree, the Field notes win.
+
+| Need | Read (under `skills/11-developer-docs/`) |
+| --- | --- |
+| Snap-in concepts and lifecycle | `snapin-development/concepts.md` |
+| Manifest (current and v1), functions, hooks, event sources, commands, inputs, operations | `snapin-development/references/` → `manifest.md`, `v1-manifest.md`, `functions.md`, `hooks.md`, `event-sources.md`, `commands.md`, `inputs.md`, `operations.md` |
+| Scopes, and scope changes on upgrade | `snapin-development/references/` → `scopes.md`, `scope-reference.md`, `scope-changes.md` |
+| Keyrings / OAuth connections | `snapin-development/references/keyrings/` |
+| `devrev` CLI | `snapin-development/references/` → `cli.md`, `cli-install.md` |
+| Best practices, local testing, debugging, retries, quotas, upgrades, marketplace listing | `snapin-development/` → `best-practices.md`, `locally-testing-snap-ins.md`, `debugging.md`, `handling-errors-and-retrying.md`, `quotas-limits.md`, `upgrade-snap-ins.md`, `marketplace-listings.md` |
+| Tutorials and code samples | `snapin-development/tutorials/`, `snapin-development/code-samples.md` |
+| AirSync overview, getting started, checklist | `airsync.md`; `airsync/` → `getting-started.md`, `connector-checklist.md` |
+| AirSync extraction and loading | `airsync/` → `extraction-phases.md`, `data-extraction.md`, `loading-phases.md`, `data-loading-example.md` |
+| AirSync metadata and mapping | `airsync/` → `external-domain-metadata.md`, `initial-domain-mapping.md`, `mapping-example.md`, `mcp.md` |
+| AirSync data model (permissions, teams, rich text) and DevRev object types | `airsync/data-model/`, `airsync/object-types/` |
 
 ## HARD RULE: Never bypass the PM → Architect → Tester pipeline
 
@@ -78,7 +96,7 @@ If any precondition is unmet, surface it to the user rather than proceeding — 
 
 ## Why this indirection
 
-The actual domain knowledge (PRD/TDD templates, discovery question banks, ADaaS SDK patterns, manifest structure, CLI/chef-cli workflow, Jest/UI-automation test patterns) lives in `repos/devrev-qk-agents/devrev-agents/skills/`. This file intentionally does not duplicate that content — it only routes, states the hard rules, and flags the two exclusions (dashboard vertical, unverified third MCP server) that a naive full-adoption would miss.
+The actual domain knowledge (PRD/TDD templates, discovery question banks, ADaaS SDK patterns, manifest structure, CLI/chef-cli workflow, Jest/UI-automation test patterns) lives in `repos/devrev-qk-agents/devrev-agents/skills/`. DevRev's own reference docs (manifest, functions, CLI, AirSync data model) are mirrored separately in `skills/11-developer-docs/` — see "Official developer docs" above. This file intentionally duplicates neither — it only routes, states the hard rules, and flags the two exclusions (dashboard vertical, unverified third MCP server) that a naive full-adoption would miss.
 
 ## Field notes (live-learned; see docs/LEARNINGS.md)
 
@@ -94,3 +112,4 @@ fix survives an `update-repos` refresh). Add entries via the `capture-learnings`
 - **2026-07-18 · Net effect for now**: the `devrev`/`devrev-qk-agents` plugin's PM → Architect → Tester pipeline described in this file's "HARD RULE" section remains **unverified live** in this repo. Two real upstream packaging bugs were found and worked around locally (not fixable in `repos/`), and the plugin loaded cleanly per `claude plugin list`/`details`, but no command, agent, or skill from it was actually invocable within the same session it was installed in. If a user hits "command not found" or "unknown skill" for any `/devrev:*` surface right after installing, the fix is almost certainly the same as the dashboard-sync CLI case: **start a new session**.
 - **2026-07-19 · Both upstream bugs re-confirmed still present, byte-for-byte, on a fresh pass — no upstream fix landed.** `repos/devrev-qk-agents` HEAD is still `e3c3031` (`git ls-remote origin` matches local, no drift); still no `.claude-plugin/marketplace.json` anywhere in its history; `plugin.json`'s `skills` array still points at `SKILL.md` files, not directories. The local shim (still at `/tmp/devrev-qk-marketplace`, outside `repos/`, with both fixes applied) remains the only way to load this plugin.
 - **2026-07-19 · UPGRADES the row above from "strongly suspected" to a confirmed root cause, with process-level evidence** — a fresh Agent-tool call does NOT resolve the mid-session load issue; only a genuinely new top-level `claude` process does. Evidence: the running process's own PID has been alive (per `ps -o lstart`) since hours before the shim/config files were even created, meaning the in-memory plugin registry was built once at process start from whatever `~/.claude/settings.json`/marketplace config existed then — nothing since, including spawning new agents mid-session, re-triggers a re-read. A fresh `Agent`/`Skill` tool call runs *inside* the same long-lived process, not as a new OS-level `claude` invocation, so it inherits the stale registry every time. **The only fix is to actually quit and relaunch Claude Code** (or open a new terminal running `claude` against this project) — not spawning another subagent, and not waiting.
+- **2026-11-03 · The official AirSync docs are now mirrored (`skills/11-developer-docs/airsync/`), and one claim above does not match them.** The mirrored page `airsync/mcp.md` ("Create mappings with an agent") describes an agent preparing `initial_domain_mapping.json` from the connector's external domain metadata and the public mapping contracts (`airsync/initial-domain-mapping.md`, `airsync/supported-object-types.md`); it never mentions `chef-cli` or a `chef-cli mcp` mode, and no mirrored AirSync or snap-in page mentions `chef-cli` at all (`grep -rl chef-cli skills/11-developer-docs` finds nothing). That does not prove the plugin's reference wrong (it may target an internal tool), so treat the `chef-cli mcp` mode in "Precondition: three MCP servers" as **unverified against the current public docs** and prefer the mirrored mapping contract when the two differ.

@@ -1,4 +1,4 @@
-# skills/ — the 12 DevRev implementation domains
+# skills/ — the entry skill and the 12 DevRev implementation domains
 
 Numbered in **implementation-flow order** — the order a fresh org is built in, and the order to
 reason in when a request spans domains (start at the lowest number involved; greenfield/cross-domain
@@ -6,6 +6,7 @@ requests start at 0):
 
 | # | Skill | Owns | Type |
 | --- | --- | --- | --- |
+| — | `devrev-start` | The entry skill for any DevRev task: preflight, `devrev-find`, brief, act, verify. Carries the global API rules, the destructive-call list, a goal map and troubleshooting (`references/`). Start here; it sends you to the numbered skills below. | Entry point |
 | 0 | `0-solution-architecture` | Turns a vague business problem into a 20-section DevRev solution blueprint (object/lifecycle mapping, workflow/agent capability selection, integrations, estimates, risk, A/B/C alternatives) | Design (references/ inline; never calls the live API) |
 | 1 | `1-object-schema-customization` | Custom objects, tenant/subtype fields, field overrides, aggregated schema, custom link types | Playbook (reference docs live in skill 8) |
 | 2 | `2-stage-lifecycle-customization` | States → stages → stage diagrams, lifecycle assignment, dependent fields | Playbook (reference docs live in skill 8) |

@@ -13982,6 +13982,11 @@
      "file": "skills/devrev-start/references/goal-map.md",
      "line": 30,
      "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 29,
+     "snippet": "| `workflow-versions.publish` | Publishes a new version of a workflow that is already live. |"
     }
    ],
    "purpose": "Publish a draft version live — **live-verified 2026-07-19: rejected while the workflow is in `Workflow_StatusEnumDraft`** (`HTTP 400 bad_request`, `debug_message` states the enum by name); 8 other plausible names (`workflows.deploy`/`.activate`/`.publish`/`.enable`/`.status.update`, `workflow-versions.deploy`/`.activate`/`.set-active`) all 404. **This route is only for a workflow that is already published** (a new version of a live workflow; body `{\"id\":\"<version id>\",\"notes\":\"…\"}`). A brand-new draft workflow is published with `workflows.update-status` (the 2026-07-19 probe never tried that name).",
@@ -14037,7 +14042,7 @@
    "purpose": "The Workflows app's **Validate** button. Body `{\"components\":[{\"type\":\"workflow\",\"workflow_version_id\":\"<version DON>\"}]}`. Returns `{\"valid\": true}`, or `errors` and `warnings` lists. Read-only.",
    "required": [],
    "resource": "workflows",
-   "risk": "write",
+   "risk": "read",
    "scopes": [],
    "scopes_text": "",
    "summary": "The Workflows app's Validate button.",
@@ -14287,6 +14292,11 @@
      "file": "skills/devrev-start/references/goal-map.md",
      "line": 30,
      "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 30,
+     "snippet": "| `workflows.templates.instantiate` with `override_draft: true` | Replaces the workflow's existing draft; look"
     }
    ],
    "purpose": "Create a workflow (or a new draft version of one) from a template. Body `{\"template_version\": \"2.0.0\", \"workflow_template_v2\": {…parsed inner template…}}`; add `\"workflow\": \"<workflow DON>\"` and `\"override_draft\": true` to import as a new version of an existing workflow. The result is a **draft**. See \"Process: importing a template via the API\". Scope `workflow:write`.",
@@ -14431,6 +14441,11 @@
      "snippet": "| Import a template and put it live | `skills/6-workflows` | `workflows.templates.instantiate` (creates a draf"
     },
     {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 28,
+     "snippet": "| `workflows.update-status` (`active` / `inactive`) | Publishes a new workflow and switches it on, or switches"
+    },
+    {
      "file": "skills/devrev-start/references/troubleshooting.md",
      "line": 15,
      "snippet": "| Workflow trigger returns 400 \"is not active\" | The workflow is still a draft | Publish it first: `workflows."
@@ -14447,7 +14462,7 @@
   }
  ],
  "meta": {
-  "core_hash": "b082c9fd64267fa0",
+  "core_hash": "5c6803e3bf70e8a4",
   "count": 321
  }
 }

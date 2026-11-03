@@ -5,6 +5,9 @@
     write        creates or updates something
     destructive  deletes, merges, or does something this repo's live notes found irreversible
 
+Some writes are also HIGH IMPACT (`impact_notes`): they change what a live automation does, for example publishing a
+workflow switches it on. They stay in the write class (the hook always asks) but say so in the prompt.
+
 The rules mirror the Safety list in the repo's notes (`skills/devrev-start/references/safety.md` once Phase C
 lands): `*.delete`, `*.merge`, `objects.bulk-upgrade`, `schemas.custom.set` (a versioned create that cannot be
 undone), standalone custom stages/states (permanent once created), `web-crawler-jobs.control`, and any update that
@@ -22,6 +25,11 @@ READ_NAMES = {
     "ping",
     "search.core", "search.hybrid",
     "tables.query.execute",  # the SQL query tool: a query engine, not a mutation endpoint
+    "workflows.components.validate",  # the Workflows app's Validate button: checks a draft, changes nothing
+}
+HIGH_IMPACT = {
+    "workflows.update-status": "switches a workflow on (status active) or off; a new workflow goes live",
+    "workflow-versions.publish": "publishes a new version of an already-live workflow",
 }
 DESTRUCTIVE_SUFFIXES = {"delete", "merge", "revoke", "purge"}
 DESTRUCTIVE_NAMES = {
@@ -59,6 +67,18 @@ def classify(name: str, body=None) -> str:
     if n in READ_NAMES or last in READ_SUFFIXES:
         return "read"
     return "write"
+
+
+def impact_notes(command: str):
+    """Why a command is HIGH IMPACT (empty list when it is not): publishing routes, and import that replaces a draft."""
+    notes = []
+    for name in endpoints_in_command(command):
+        if name in HIGH_IMPACT:
+            notes.append(f"{name} {HIGH_IMPACT[name]}")
+    if "workflows.templates.instantiate" in endpoints_in_command(command):
+        if any(b.get("override_draft") is True for b in json_bodies(command)):
+            notes.append("workflows.templates.instantiate with override_draft replaces the workflow's existing draft")
+    return notes
 
 
 def endpoints_in_command(command: str):

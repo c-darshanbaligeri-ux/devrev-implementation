@@ -58,7 +58,7 @@ class Components(unittest.TestCase):
 
     def test_every_bin_command_is_executable_and_has_a_shebang(self):
         commands = sorted(p for p in (ROOT / "bin").iterdir() if p.is_file())
-        self.assertIn("devrev-validate-workflow", [p.name for p in commands])
+        self.assertTrue({"devrev-validate-workflow", "devrev-import-workflow"} <= {p.name for p in commands})
         for p in commands:
             self.assertTrue(os.access(p, os.X_OK), f"{p.name} must be executable (the plugin puts bin/ on PATH)")
             self.assertTrue(p.read_text(encoding="utf-8").startswith("#!"), f"{p.name} needs a shebang")

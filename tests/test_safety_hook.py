@@ -89,6 +89,86 @@ class Ask(unittest.TestCase):
             self.assertIn("DESTRUCTIVE", d["permissionDecisionReason"], c)
 
 
+class WorkflowCurlCalls(unittest.TestCase):
+    def test_validate_is_read_only_so_it_is_allowed(self):
+        d, _ = run(f"curl -s -X POST {U}/internal/workflows.components.validate -H \"Authorization: $DEVREV_PAT\" -d '{{\"components\":[]}}'")
+        self.assertEqual(d["permissionDecision"], "allow")
+
+    def test_publishing_asks_with_a_high_impact_reason(self):
+        for name in ("workflows.update-status", "workflow-versions.publish"):
+            d, _ = run(f"curl -s -X POST {U}/internal/{name} -d '{{\"id\":\"x\",\"status\":\"active\"}}'")
+            self.assertEqual(d["permissionDecision"], "ask", name)
+            self.assertIn("HIGH IMPACT", d["permissionDecisionReason"], name)
+
+    def test_instantiate_asks_and_override_draft_is_high_impact(self):
+        d, _ = run(f"curl -s -X POST {U}/internal/workflows.templates.instantiate -d '{{\"workflow_template_v2\":{{}}}}'")
+        self.assertEqual(d["permissionDecision"], "ask")
+        self.assertNotIn("HIGH IMPACT", d["permissionDecisionReason"])
+        d, _ = run(f"curl -s -X POST {U}/internal/workflows.templates.instantiate -d '{{\"override_draft\":true}}'")
+        self.assertIn("HIGH IMPACT", d["permissionDecisionReason"])
+
+
+class WorkflowTools(unittest.TestCase):
+    """The import script calls the API from inside Python, so the hook has to recognise the script itself."""
+
+    ALLOW = [
+        "./bin/devrev-validate-workflow templates/a.json",
+        "devrev-validate-workflow templates/a.json --json",
+        "python3 skills/6-workflows/scripts/validate_template.py t.json",
+        "./bin/devrev-import-workflow templates/a.json --dry-run",
+        "./bin/devrev-import-workflow templates/a.json --dry-run --publish --override-draft --version-of workflow-3",
+        "set -a; source .env; set +a; ./bin/devrev-import-workflow t.json --dry-run --json",
+        "python3 skills/6-workflows/scripts/import_workflow.py t.json --dry-run",
+        "/abs/path/bin/devrev-import-workflow t.json --dry-run",
+    ]
+    DRAFT = [
+        "./bin/devrev-import-workflow templates/a.json",
+        "devrev-import-workflow templates/a.json --version-of workflow-3",
+        "python3 skills/6-workflows/scripts/import_workflow.py t.json",
+        "DEVREV_PAT=x ./bin/devrev-import-workflow t.json",
+        "./bin/devrev-validate-workflow t.json && ./bin/devrev-import-workflow t.json",
+    ]
+    HIGH = [
+        "./bin/devrev-import-workflow t.json --publish",
+        "./bin/devrev-import-workflow t.json --attach-connection 'My PAT'",
+        "./bin/devrev-import-workflow t.json --attach-connection='My PAT'",
+        "./bin/devrev-import-workflow t.json --version-of workflow-3 --override-draft",
+        "python3 skills/6-workflows/scripts/import_workflow.py t.json --publish",
+        "./bin/devrev-import-workflow t.json --publish -- --dry-run",
+    ]
+
+    def test_offline_validation_and_dry_runs_are_allowed(self):
+        for c in self.ALLOW:
+            d, _ = run(c)
+            self.assertIsNotNone(d, c)
+            self.assertEqual(d["permissionDecision"], "allow", c)
+
+    def test_a_plain_import_creates_a_draft_so_it_asks(self):
+        for c in self.DRAFT:
+            d, _ = run(c)
+            self.assertEqual(d["permissionDecision"], "ask", c)
+            self.assertIn("draft", d["permissionDecisionReason"], c)
+            self.assertNotIn("HIGH IMPACT", d["permissionDecisionReason"], c)
+
+    def test_publish_attach_and_override_ask_with_a_high_impact_reason(self):
+        for c in self.HIGH:
+            d, _ = run(c)
+            self.assertEqual(d["permissionDecision"], "ask", c)
+            self.assertIn("HIGH IMPACT", d["permissionDecisionReason"], c)
+
+    def test_dry_run_is_only_trusted_when_the_whole_command_is_harmless(self):
+        for c in ("./bin/devrev-import-workflow t.json --dry-run; rm -rf ~",
+                  "./bin/devrev-import-workflow t.json --dry-run > out.txt",
+                  "./bin/devrev-validate-workflow t.json | sh",
+                  "echo $(./bin/devrev-import-workflow t.json --dry-run)"):
+            d, _ = run(c)
+            self.assertIsNone(d, c)
+
+    def test_unrelated_commands_with_similar_names_get_no_opinion(self):
+        for c in ("ls bin/devrev-import-workflow", "cat skills/6-workflows/scripts/import_workflow.py", "grep -n publish README.md"):
+            self.assertIsNone(run(c)[0], c)
+
+
 class Robustness(unittest.TestCase):
     def test_other_tools_are_ignored(self):
         self.assertEqual(run(f"curl {U}/works.delete", tool="Edit"), (None, 0))

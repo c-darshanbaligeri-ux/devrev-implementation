@@ -83,6 +83,8 @@ Live-tested 2026-11-03 (user-reported run that created, validated and published 
 
 Publishing switches live automation on, so get the user's explicit yes in the session before step 5.
 
+**Scripted version of this process:** `devrev-import-workflow <template.json>` (`./bin/devrev-import-workflow` in a checkout; `--help` lists the flags). It runs `devrev-validate-workflow` first, prints the target org and user, imports the draft, validates it server-side and stops. `--publish` then picks the route from the workflow's live status (a draft gets `workflows.update-status`, an active workflow gets `workflow-versions.publish`) and polls until it is active; `--version-of <workflow>` imports a new version (and refuses to replace an existing draft without `--override-draft`); `--attach-connection "<name>"` does step 6; `--dry-run` prints every request and sends nothing. It was tested against a fake server only, so the first real run should use a throwaway template and stop at the validated draft.
+
 ## Process: creating a workflow via the API
 
 This is the "build it step by step through API calls" path — as opposed to authoring a full template JSON and importing it in one shot (see `template-json-format.md` and the main SKILL.md's "Author, don't hand-assemble" step, which is almost always the better choice for anything beyond a trivial 1-2 step workflow).

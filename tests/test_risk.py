@@ -26,12 +26,38 @@ class ClassifyName(unittest.TestCase):
         self.assertEqual(r.classify("link-types.custom.update", {"deprecated": True}), "destructive")
         self.assertEqual(r.classify("link-types.custom.update", {"deprecated": False}), "write")
 
+    def test_validate_is_read_but_publishing_is_not(self):
+        self.assertEqual(r.classify("workflows.components.validate"), "read")
+        for n in ("workflows.update-status", "workflow-versions.publish", "workflows.templates.instantiate"):
+            self.assertEqual(r.classify(n), "write", n)
+
     def test_unknown_is_never_read(self):
         self.assertEqual(r.classify("totally.unknown-op"), "write")
 
     def test_internal_and_beta_prefixes_are_ignored(self):
         self.assertEqual(r.classify("internal/works.delete"), "destructive")
         self.assertEqual(r.classify("/beta/works.list"), "read")
+
+
+class HighImpact(unittest.TestCase):
+    def notes(self, cmd):
+        return r.impact_notes(cmd)
+
+    def test_publishing_routes_are_high_impact(self):
+        for n in ("workflows.update-status", "workflow-versions.publish"):
+            cmd = f"curl -X POST https://api.devrev.ai/internal/{n} -d '{{\"id\":\"x\"}}'"
+            self.assertEqual(len(self.notes(cmd)), 1, n)
+            self.assertEqual(r.classify_command(cmd)[0], "write", "high impact stays a write: the hook asks")
+
+    def test_replacing_a_draft_on_import_is_high_impact(self):
+        cmd = "curl -X POST https://api.devrev.ai/internal/workflows.templates.instantiate -d '{\"override_draft\": true}'"
+        self.assertIn("override_draft", self.notes(cmd)[0])
+        plain = "curl -X POST https://api.devrev.ai/internal/workflows.templates.instantiate -d '{}'"
+        self.assertEqual(self.notes(plain), [])
+
+    def test_ordinary_calls_have_no_notes(self):
+        self.assertEqual(self.notes("curl https://api.devrev.ai/works.create -d '{}'"), [])
+        self.assertEqual(self.notes("curl https://api.devrev.ai/internal/workflows.components.validate -d '{}'"), [])
 
 
 class ClassifyCommand(unittest.TestCase):

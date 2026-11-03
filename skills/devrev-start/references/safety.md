@@ -19,6 +19,17 @@ Moved here from the repo's `CLAUDE.md`. The safety hook classifies every `curl` 
 | Dataset or PaaS/Ponos job deletion | Destructive via `/dataset-builder:delete` (skill 5). |
 | `devrev snap_in_version delete-one` | Needed before a new version (one non-published version per package) but destroys that version's state (skill 9). |
 
+## High impact: writes that change what a live automation does
+
+These are ordinary writes (the hook always asks), but the prompt says HIGH IMPACT because they act on live automation. State the target org and what will change, and get the user's yes in this session first. A plain `devrev-import-workflow` run only creates a **draft** and asks like any other write; `--dry-run` and `devrev-validate-workflow` change nothing and run without a prompt.
+
+| Operation | Why |
+| --- | --- |
+| `workflows.update-status` (`active` / `inactive`) | Publishes a new workflow and switches it on, or switches a live one off. |
+| `workflow-versions.publish` | Publishes a new version of a workflow that is already live. |
+| `workflows.templates.instantiate` with `override_draft: true` | Replaces the workflow's existing draft; look at the draft first. |
+| `devrev-import-workflow --publish`, `--attach-connection`, `--override-draft` | The same three actions, wrapped by the import script (which makes its API calls from inside Python, so the hook matches the script and its flags). It publishes only after server-side validation succeeds. |
+
 ## Always
 
 - **Verify after any change** with the matching read endpoint (`*.get`, `*.list`, or `schemas.aggregated.get`). If custom fields or fragments were involved, re-read an affected record and confirm the fields appear.

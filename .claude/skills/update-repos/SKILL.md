@@ -43,8 +43,8 @@ If `repos/aai-custom-computer-capabilities` changed, that repo is the original s
 `skills/7-agent-building/` (agent-building toolkit) and the Computer snap-ins routed via `skills/9`.
 Nothing auto-reloads — the destination is inline, not routed — but flag any meaningful upstream
 change to the user so they can decide whether to re-diff `skills/7-agent-building/`'s inlined copy
-against the fresh clone (see `docs/SUMMARY.md` § "Fixups Applied" for the original adaptations to
-preserve when re-inlining).
+against the fresh clone (the original adaptations to preserve when re-inlining are recorded in
+`docs/archive/SUMMARY.md` § "Fixups Applied"; that folder is outside your default read access, so ask the user to open it if you need it).
 
 If `repos/computer-skill` changed (community fork of DevRev Computer Skills — 10 sales-oriented
 skills), no plugin/marketplace refresh is needed. It's grounding material only; useful to skim if

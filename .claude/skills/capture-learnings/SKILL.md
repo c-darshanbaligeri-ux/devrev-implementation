@@ -95,8 +95,8 @@ If a commit isn't possible (mid-task with unrelated staged changes), stage only 
 **What happens next is automatic — you don't need to do anything else.** A `PostToolUse` hook on
 `Bash` (`.claude/hooks/push-learnings.sh`, registered in `.claude/settings.json`) fires right after
 this commit lands. It checks three guardrails against the commit's diff — no secret-shaped strings,
-every changed file inside the known knowledge-base surface (`skills/`, `docs/`, `.claude/`,
-`plans/`, `CLAUDE.md`, `README.md`, `documentation/`), and `origin/main` hasn't
+every changed file inside the known knowledge-base surface (`skills/`, `docs/`, `index/`,
+`.claude/skills/`, `CLAUDE.md`, `README.md`), and `origin/main` hasn't
 diverged — and pushes to `origin/main` only if all three pass. If any guardrail fails, the commit
 stays local (never lost, never force-pushed) and the hook reports why via stderr/`systemMessage`;
 fix the flagged issue and commit again. This fires deterministically off the commit itself, unlike
@@ -118,8 +118,8 @@ push something else (non-learning work), that's still a separate explicit action
 - **Never delete existing knowledge** to make room for new — correct it or append.
 - One learning = one journal row. If a task surfaced three lessons, that's three rows.
 - If the learning invalidates something in `docs/` user documentation claims, update that too.
-- **Keep `learn:` commits scoped to the knowledge-base surface** (`skills/`, `docs/`, `.claude/`,
-  `plans/`, `CLAUDE.md`, `README.md`, `documentation/`) — the auto-push hook
+- **Keep `learn:` commits scoped to the knowledge-base surface** (`skills/`, `docs/`, `index/`,
+  `.claude/skills/`, `CLAUDE.md`, `README.md`) — the auto-push hook
   blocks (doesn't push) any `learn:` commit that also touches a file outside that set, since such a
   commit might be bundling in unrelated or sensitive changes that shouldn't go out unreviewed. If a
   learning genuinely requires touching something outside that surface, split it into two commits:

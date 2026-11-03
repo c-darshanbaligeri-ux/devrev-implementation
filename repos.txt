@@ -32,7 +32,7 @@ https://github.com/devrev/aai-custom-computer-capabilities
 # sales-agent design work (skill 0 blueprints).
 https://github.com/shashankcube/computer-skill
 
-# Deliberately excluded (see docs/CLONE_RESULTS.md):
+# Deliberately excluded (rationale kept in docs/archive/CLONE_RESULTS.md):
 #   https://github.com/devrev/devrev-snap-ins  — snap-in SOURCE (not tooling) is out of scope for this repo
 #   https://github.com/devrev/mcp-server       — archived; superseded by the hosted MCP in .mcp.json
 # devrev/auto-annotations is auto-cloned on demand by skills/7-agent-building/scripts/check-annotations.sh

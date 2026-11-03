@@ -147,8 +147,8 @@ in a blueprint's risk section or testing strategy.
     `git status`/dry-run checks after config or `.gitignore` changes) into the testing strategy rather
     than trusting a successful-looking run.
 - **The real operation surface is larger than any curated catalog implies**: a curated "160+ workflow
-  node" narrative undercounts the platform's actual ~520 operations (triggers + actions + field-schema'd
-  ops), a meaningful share of which are per-org custom-object CRUD operations that don't exist until a
+  node" narrative undercounts the platform's actual 400 catalogued operations (145 triggers, 245 actions, 8 controls,
+  2 blockings; 130 with field-level schemas), a meaningful share of which are per-org custom-object CRUD operations that don't exist until a
   customer defines that object. **Sizing driver**: for automations/integrations touching many object
   types or many custom objects, size toward the top of a tier — the long tail of org-specific operations
   adds real effort that a generic node count hides.

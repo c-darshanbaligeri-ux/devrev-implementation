@@ -8,8 +8,8 @@ Everything in this directory except this file and `.gitkeep` is a **shallow clon
 | `dashboard-sync-cli/` | The Python CLI the dashboard plugin shells out to (installed with pipx by the bootstrap) |
 | `api-specs/` | DevRev OpenAPI contracts (`specs/next/openapi-internal.yaml`), used to ground skill 7's internal API calls |
 | `devrev-qk-agents/` | Third-party snap-in plugin that skill 9 routes into (read-only here; installing it is a manual step) |
-| `aai-custom-computer-capabilities/` | Source the agent-building skill (7) was derived from; kept so later updates can be diffed against it (private, needs devrev org read access) |
-| `computer-skill/` | Community Computer skill, kept as grounding for skill 6's template authoring and for skill 0 blueprints; no skill routes to it |
+| `aai-custom-computer-capabilities/` | Source the agent-building skill (7) was derived from; kept so later updates can be diffed against it (private, needs devrev org read access). Its `3-computer-capabilities-nxt/workflow-skill` (MIT) is the cross-check for skill 6's import, validate and publish API calls |
+| `computer-skill/` | Community Computer skill, kept as grounding for skill 0 blueprints; no skill routes to it. Its `create-workflow-template` is already inlined in skill 6 (identical or a subset, checked 2026-11-03), and it has no licence file: copy nothing from it |
 
 **Rules**
 - **Never edit these clones.** They are not the source of truth for this repo. Local edits block the updater (it skips dirty repos). Learnings about these tools go in this repo's own skill files (`.claude/skills/capture-learnings/SKILL.md`).

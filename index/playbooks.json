@@ -206,7 +206,7 @@
    "when_to_use": []
   },
   {
-   "description": "Authors and manages DevRev workflows and agent-callable skills through API calls (create, modify, delete, list, publish, trigger, and debug template imports). Use for \"if this happens, do that\" automations, \"notify someone when a ticket comes in\", \"let the agent look up order status\", \"add a step to a workflow\", \"why will this template not import\". Not for building or testing the AI agent itself (use 7-agent-building) or for stage lifecycles (use 2-stage-lifecycle-customization).",
+   "description": "Authors and manages DevRev workflows and agent-callable skills through API calls (author, validate, import, publish, trigger, list, delete, and debug template imports). Use for \"if this happens, do that\" automations, \"notify someone when a ticket comes in\", \"let the agent look up order status\", \"add a step to a workflow\", \"why will this template not import\". Not for building or testing the AI agent itself (use 7-agent-building) or for stage lifecycles (use 2-stage-lifecycle-customization).",
    "headings": [
     "When not to use",
     "Step 0: Check what's available in your session",
@@ -218,7 +218,7 @@
     "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "6-workflows",
-   "lines": 203,
+   "lines": 206,
    "name": "workflows",
    "path": "skills/6-workflows/SKILL.md",
    "when_to_use": []
@@ -298,7 +298,7 @@
     "Toolkit map"
    ],
    "id": "devrev-start",
-   "lines": 53,
+   "lines": 54,
    "name": "devrev-start",
    "path": "skills/devrev-start/SKILL.md",
    "when_to_use": []

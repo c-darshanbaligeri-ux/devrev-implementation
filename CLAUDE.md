@@ -12,7 +12,7 @@ Read `skills/devrev-start/SKILL.md` and follow it: preflight, `./bin/devrev-find
 | --- | --- |
 | `skills/devrev-start/` | Entry skill: procedure, global API rules, safety list, goal map, troubleshooting |
 | `skills/0-…` to `skills/11-…` | Domain playbooks. Skill 8 holds the API reference docs; skill 11 is a generated mirror of developer.devrev.ai |
-| `bin/devrev-find`, `index/`, `scripts/`, `evals/`, `tests/` | The finder, its generated index, and the quality gate |
+| `bin/`, `index/`, `scripts/`, `evals/`, `tests/` | The commands (`devrev-find`, `devrev-validate-workflow`, `devrev-import-workflow`), the generated index, and the quality gate |
 | `docs/LEARNINGS.md` | Append-only journal of live-verified corrections (the finder surfaces the relevant rows) |
 | `.claude/` | Maintainer-only: settings and hooks, plus the `capture-learnings` and `update-repos` skills |
 | `repos/` | Cloned upstream toolchains. Read-only: never edit anything under it |

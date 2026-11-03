@@ -1,6 +1,6 @@
 ---
 name: workflows
-description: Authors and manages DevRev workflows and agent-callable skills through API calls (create, modify, delete, list, publish, trigger, and debug template imports). Use for "if this happens, do that" automations, "notify someone when a ticket comes in", "let the agent look up order status", "add a step to a workflow", "why will this template not import". Not for building or testing the AI agent itself (use 7-agent-building) or for stage lifecycles (use 2-stage-lifecycle-customization).
+description: Authors and manages DevRev workflows and agent-callable skills through API calls (author, validate, import, publish, trigger, list, delete, and debug template imports). Use for "if this happens, do that" automations, "notify someone when a ticket comes in", "let the agent look up order status", "add a step to a workflow", "why will this template not import". Not for building or testing the AI agent itself (use 7-agent-building) or for stage lifecycles (use 2-stage-lifecycle-customization).
 ---
 
 # DevRev Workflow Admin
@@ -10,7 +10,7 @@ You cannot create, edit, or delete a DevRev workflow directly — there is no bu
 1. **Managing workflow objects** — the CRUD/lifecycle verbs: create a shell, add/edit/delete steps, publish, delete, list, trigger. → `references/manage-workflows-api.md`
 2. **Authoring the workflow's content** — the actual JSON graph of steps, triggers, branches, loops, and data mappings that make the workflow do something. → `references/template-json-format.md`
 
-For anything beyond a one-step workflow, **authoring a complete template JSON and importing it is far more reliable** than building the graph step-by-step through the API — DevRev's Workflow Builder UI has an **Import** option that takes a template JSON file directly. Reach for the raw step-by-step CRUD API (`references/manage-workflows-api.md`) mainly for: listing/inspecting existing workflows, triggering a published workflow, deleting one, or making a small targeted edit to one or two fields on an existing step. Reach for full template authoring whenever the user is describing a new workflow or a substantial change to an existing one.
+For anything beyond a one-step workflow, **authoring a complete template JSON and importing it is far more reliable** than building the graph step-by-step through the API — you can import it with `devrev-import-workflow` (API) or the Workflow Builder UI's **Import** option. Reach for the raw step-by-step CRUD API (`references/manage-workflows-api.md`) mainly for: listing/inspecting existing workflows, triggering a published workflow, deleting one, or making a small targeted edit to one or two fields on an existing step. Reach for full template authoring whenever the user is describing a new workflow or a substantial change to an existing one.
 
 ## When not to use
 
@@ -57,7 +57,7 @@ General steps (apply to both shapes, except that agent-skill authoring always be
 the default template rather than composing from operation lookups):
 
 1. **Parse intent** — identify the trigger event (or, for an agent skill, the input parameters), the sequence of actions, any conditions/branching, and any loops.
-2. **Look up operations** — find the correct `{namespace, slug}` and input/output schema for each operation you need:
+2. **Look up operations** — find the correct `{namespace, slug}` and input/output schema for each operation you need. Start with `devrev-find "<what should happen>"` (it lists matching triggers and steps) and `devrev-find --operation <slug>` (ports, allowed values, example templates). The raw lists:
    - Full lists: `operations/triggers.md` (145), `operations/actions.md` (245), `operations/controls.md` (8), `operations/blockings.md` (2)
    - Detailed field-level schemas for 130 operations: `operations/schemas/<slug>.md`, indexed at `operations/schema-index.md`
 3. **Study examples before writing anything** — for agent skills, read `default-ai-agent-skill-template.json` first, then a closer `working-ai-agent-skill-*.json` if one matches. For event workflows, prioritize `working-*.json` files — these are confirmed to import successfully; the numbered files (e.g. `5216-...`) are real production templates but haven't been re-validated against the current schema rules. To read one:
@@ -66,12 +66,13 @@ the default template rather than composing from operation lookups):
    ```
 4. **Build the full JSON** following `references/template-json-format.md` — this covers the wrapper envelope, step/port structure, all `input_values` value types, trigger filters, loops and variables, sleep/wait, Ask AI, HTTP, and the Code node, plus a full validation checklist. Read it now if you haven't already; don't try to reconstruct the format from memory or from the examples alone — several field-type rules (`uenum` needing `allowed_values`, `array` needing `base_type`, etc.) are import-breaking if missed and aren't obvious from looking at examples alone.
 5. **Write the output** to `templates/<workflow_name>.json` in the user's working directory, and show them a summary of what it does (trigger, steps, branches) — not the raw JSON, unless they ask for it.
-6. **Get it into the org**: either the user imports it via **Workflows → Import** in the DevRev app (`https://app.devrev.ai/?view=workflows`), or you do it through the API with "Process: importing a template via the API" in `references/manage-workflows-api.md` (instantiate → find the draft version → validate → publish). Run the validate call before publishing, and publish only after the user has said yes in this session: publishing a new workflow switches it on. Building the graph step by step through the CRUD calls is the fallback, not the default.
-7. **After the user confirms it imported/worked**, copy the template into `${CLAUDE_PLUGIN_ROOT}/skills/6-workflows/examples/working-<descriptive-name>.json` and add a row to the table in `references/template-json-format.md`'s example list. This is how the skill gets better over time — every confirmed-working template becomes a pattern the next request can study.
+6. **Validate offline**: `devrev-validate-workflow templates/<workflow_name>.json` (`./bin/devrev-validate-workflow` in a checkout). It checks the whole checklist and prints the fix for each failure. **Never hand over or import a template that has errors**; fix them and run it again. Warnings are worth reading but not blockers.
+7. **Get it into the org**: run `devrev-import-workflow templates/<workflow_name>.json`. It re-runs the validator, prints the target org and user, imports the template as a **draft**, runs the app's Validate server-side, and stops. Report the draft's ids and the validation result. For a new version of an existing workflow add `--version-of workflow-N` (an existing draft is only replaced with `--override-draft`: show it to the user first); for a Code step's connection add `--attach-connection "<name>"`. **Publish only after the user has said yes in this session**: re-run with `--publish` (publishing a new workflow switches it on). The safety hook asks the user to approve each non-dry-run invocation. Alternatives: the user imports via **Workflows → Import** in the DevRev app (`https://app.devrev.ai/?view=workflows`), or the raw calls in "Process: importing a template via the API" (`references/manage-workflows-api.md`). Building the graph step by step through the CRUD calls is the fallback, not the default.
+8. **After the user confirms it imported/worked**, copy the template into `${CLAUDE_PLUGIN_ROOT}/skills/6-workflows/examples/working-<descriptive-name>.json` and add a row to the table in `references/template-json-format.md`'s example list. This is how the skill gets better over time — every confirmed-working template becomes a pattern the next request can study.
 
 ## Debugging a failed import
 
-Import errors are almost always one of a handful of known causes — check `references/template-json-format.md`'s validation checklist first, especially:
+Run `devrev-validate-workflow <file>` first: it reports each cause below by name. If the file passes and the import still fails, import it as a draft with `devrev-import-workflow` and read the `errors` list from the server-side validate; that is the authority. Import errors are almost always one of a handful of known causes — check `references/template-json-format.md`'s validation checklist, especially:
 - `uenum` fields missing `allowed_values`
 - `array` fields missing `base_type`
 - `for_each` used where a dedicated `loop_over_*` operation exists (native-object loops need the dedicated op — `for_each`'s dynamic schema is unreliable)
@@ -89,6 +90,8 @@ If none of those match, compare the failing template's step structure line-by-li
 | `operations/*.md`, `operations/schemas/*.md` | Looking up an operation's slug or exact field names |
 | `examples/*.json` | Studying real patterns before writing a new template |
 | `scripts/trigger_manual_workflow.py` | Triggering any published workflow with a manual/API trigger step |
+| `scripts/validate_template.py` (`devrev-validate-workflow`) | Checking a template file offline before importing it |
+| `scripts/import_workflow.py` (`devrev-import-workflow`) | Importing a template as a draft, validating it server-side, and (with the user's yes) publishing it |
 
 ## Capturing new learnings
 

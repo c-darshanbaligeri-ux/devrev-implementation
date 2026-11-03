@@ -22,14 +22,17 @@ https://github.com/QK-SnapIn/devrev-qk-agents
 # and for the Computer snap-ins routed via skills/9. Content was copied and adapted at build time
 # (2026-07-18); keep a live clone here so future updates can be diffed against skills/7 before
 # re-inlining. Private repo — requires GitHub read access to the devrev org (same as api-specs).
+# Also holds 3-computer-capabilities-nxt/workflow-skill (MIT, DevRev), whose scripts/api.py uses the same import,
+# validate and publish routes as skills/6-workflows/scripts/import_workflow.py: diff it when those routes change.
 https://github.com/devrev/aai-custom-computer-capabilities
 
 # REFERENCE — Community fork of DevRev Computer Skills: 10 sales-oriented Claude Code skills
 # (create-workflow-template, deal-review-meddpicc, sales-call-plan-coach, account-evaluation/research,
 # customer-brief, sales-search-and-lookup, sales-context, next-step-for-opportunity, trace-diagnosis).
 # Public. Not routed to by any skill in this repo; kept as grounding material for skills/6-workflows
-# (its create-workflow-template overlaps with our WorkflowTemplateV2 authoring) and for future
-# sales-agent design work (skill 0 blueprints).
+# (its create-workflow-template is already inlined: on 2026-11-03 its files were identical to skills/6-workflows
+# or a subset of them, so there is nothing to borrow there) and for future sales-agent design work (skill 0
+# blueprints). It has no licence file: copy nothing from it.
 https://github.com/shashankcube/computer-skill
 
 # Deliberately excluded (rationale kept in docs/archive/CLONE_RESULTS.md):

@@ -15,7 +15,7 @@ You act on a live DevRev organization. Every endpoint, field, scope and id must 
 - On 401/403 read `references/troubleshooting.md`; do not retry blindly.
 
 **1. Find.** `devrev-find "<the goal in a few plain words>"`
-- A **playbook** hit (a numbered skill) → open that skill's `SKILL.md` and follow it; it holds the procedure and the live-verified Field notes.
+- A **playbook** hit (a numbered skill) → open that skill's `SKILL.md` and follow it; it holds the procedure and the live-verified Field notes. An automation goal ("when X happens, do Y") also lists matching workflow triggers and steps; `devrev-find --operation <slug>` briefs one.
 - **Endpoint** hits only → a plain API operation; go to step 2.
 - Nothing relevant → `grep -rIil '<keyword>'` over the toolkit's `skills/`. If still nothing, say what you could not find. Do not invent.
 - A goal that spans several skills (greenfield, "set up DevRev for X") → start at `${CLAUDE_PLUGIN_ROOT}/skills/0-solution-architecture`.
@@ -43,6 +43,7 @@ You act on a live DevRev organization. Every endpoint, field, scope and id must 
 5. Beta endpoints can change without notice. Use them only when the user asks or no public endpoint exists.
 6. Ask the user only when a required value cannot be found or the action is destructive; otherwise proceed.
 7. A custom-field write with the wrong prefix fails silently. See `references/global-api-rules.md`.
+8. Publishing a workflow (`devrev-import-workflow --publish`, `workflows.update-status`, `workflow-versions.publish`) switches live automation on: never without the user's explicit yes in this session. Importing as a draft is safe to propose.
 
 ## Toolkit map
 

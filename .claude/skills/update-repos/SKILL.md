@@ -46,10 +46,16 @@ change to the user so they can decide whether to re-diff `skills/7-agent-buildin
 against the fresh clone (the original adaptations to preserve when re-inlining are recorded in
 `docs/archive/SUMMARY.md` § "Fixups Applied"; that folder is outside your default read access, so ask the user to open it if you need it).
 
+If `repos/aai-custom-computer-capabilities` changed under `3-computer-capabilities-nxt/workflow-skill`,
+diff its `scripts/api.py` against `skills/6-workflows/scripts/import_workflow.py` and the endpoint table in
+`skills/6-workflows/references/manage-workflows-api.md`: a changed route, body or status value there is a learning to
+record (capture-learnings), not something to copy blindly.
+
 If `repos/computer-skill` changed (community fork of DevRev Computer Skills — 10 sales-oriented
-skills), no plugin/marketplace refresh is needed. It's grounding material only; useful to skim if
-`skills/6-workflows` or `skills/0-solution-architecture` might borrow a pattern from
-`create-workflow-template`, `deal-review-meddpicc`, or the sales-agent recipes.
+skills), no plugin/marketplace refresh is needed. It's grounding material only. Its
+`create-workflow-template` is already inlined in `skills/6-workflows` (identical or a subset, checked 2026-11-03)
+and the repo has no licence file, so copy nothing from it; skim `deal-review-meddpicc` or the sales-agent recipes
+only for `skills/0-solution-architecture` ideas.
 
 ## Non-git references (not touched by this skill)
 

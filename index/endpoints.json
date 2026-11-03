@@ -13665,12 +13665,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 113,
+     "line": 116,
      "snippet": "`default-ai-agent-skill-template.json`). `workflows.create`→`workflow-steps.create`(×N)→"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 118,
+     "line": 121,
      "snippet": "- **`workflow-steps.create`'s `operation` field is a DON string, NOT `{namespace, slug}`.**"
     },
     {
@@ -13745,7 +13745,7 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 153,
+     "line": 156,
      "snippet": "`workflow-steps.get`/`workflow-versions.get` response confirms the nesting rendered correctly"
     },
     {
@@ -13825,12 +13825,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 114,
+     "line": 117,
      "snippet": "`workflow-steps.update`(×N to wire `input_values`/`next_steps`)→`workflows.get`/"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 139,
+     "line": 142,
      "snippet": "the *upstream* step via `workflow-steps.update` — the key is `next_step` (a full step DON"
     },
     {
@@ -13875,12 +13875,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 115,
+     "line": 118,
      "snippet": "`workflow-versions.get` to verify→`workflows.delete`→`workflows.get` 404 to confirm gone. All"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 153,
+     "line": 156,
      "snippet": "`workflow-steps.get`/`workflow-versions.get` response confirms the nesting rendered correctly"
     },
     {
@@ -13960,12 +13960,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 172,
+     "line": 175,
      "snippet": "- **Publishing correction, more precise than the existing note**: `workflow-versions.publish`"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 180,
+     "line": 183,
      "snippet": "run, and the same call is in DevRev's own `workflow-skill`). `workflow-versions.publish` is for"
     },
     {
@@ -13977,6 +13977,11 @@
      "file": "skills/6-workflows/references/manage-workflows-api.md",
      "line": 43,
      "snippet": "| `workflow-versions.publish` | POST | `/internal/workflow-versions.publish` | Publish a draft version live — "
+    },
+    {
+     "file": "skills/devrev-start/SKILL.md",
+     "line": 46,
+     "snippet": "8. Publishing a workflow (`devrev-import-workflow --publish`, `workflows.update-status`, `workflow-versions.pu"
     },
     {
      "file": "skills/devrev-start/references/goal-map.md",
@@ -14090,12 +14095,12 @@
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 113,
+     "line": 116,
      "snippet": "`default-ai-agent-skill-template.json`). `workflows.create`→`workflow-steps.create`(×N)→"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 131,
+     "line": 134,
      "snippet": "(visible in any existing object's `id`, or in `workflows.create`'s own response) and substitute"
     },
     {
@@ -14135,12 +14140,12 @@
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 115,
+     "line": 118,
      "snippet": "`workflow-versions.get` to verify→`workflows.delete`→`workflows.get` 404 to confirm gone. All"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 195,
+     "line": 198,
      "snippet": "- **`workflows.delete` → `workflows.get` cycle is clean and immediate.** `workflows.delete`"
     },
     {
@@ -14190,12 +14195,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 114,
+     "line": 117,
      "snippet": "`workflow-steps.update`(×N to wire `input_values`/`next_steps`)→`workflows.get`/"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 115,
+     "line": 118,
      "snippet": "`workflow-versions.get` to verify→`workflows.delete`→`workflows.get` 404 to confirm gone. All"
     },
     {
@@ -14327,12 +14332,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 187,
+     "line": 190,
      "snippet": "precisely (then deleted it — see below): `workflows.trigger` on a draft workflow (either an"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 191,
+     "line": 194,
      "snippet": "not just confirming, the prior finding. (A 404 does occur for `workflows.trigger` against a"
     },
     {
@@ -14377,12 +14382,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 167,
+     "line": 170,
      "snippet": "- **`workflows.update` accepts `labels` (array) and `description` (string) at the top level** —"
     },
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 176,
+     "line": 179,
      "snippet": "exists (all 404 `route not found`), and `workflows.update` rejects both `status` and `state` as"
     },
     {
@@ -14422,7 +14427,7 @@
    "notes": [
     {
      "file": "skills/6-workflows/SKILL.md",
-     "line": 178,
+     "line": 181,
      "snippet": "`workflows.update-status`, which is the API route out of draft for a brand-new workflow"
     },
     {
@@ -14434,6 +14439,11 @@
      "file": "skills/6-workflows/references/manage-workflows-api.md",
      "line": 35,
      "snippet": "| `workflows.update-status` | POST | `/internal/workflows.update-status` | The app's **Deploy** for a brand-ne"
+    },
+    {
+     "file": "skills/devrev-start/SKILL.md",
+     "line": 46,
+     "snippet": "8. Publishing a workflow (`devrev-import-workflow --publish`, `workflows.update-status`, `workflow-versions.pu"
     },
     {
      "file": "skills/devrev-start/references/goal-map.md",
@@ -14462,7 +14472,7 @@
   }
  ],
  "meta": {
-  "core_hash": "5c6803e3bf70e8a4",
+  "core_hash": "b8663038059b4216",
   "count": 321
  }
 }

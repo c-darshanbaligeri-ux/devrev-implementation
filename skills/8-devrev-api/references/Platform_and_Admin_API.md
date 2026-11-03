@@ -1,5 +1,23 @@
 # Platform & admin — DevRev API
 
+## Contents
+<!-- toc -->
+- [1. Artifacts (files & attachments)](#1-artifacts-files--attachments)
+- [2. Webhooks](#2-webhooks)
+- [3. Jobs](#3-jobs)
+- [4. Keyrings](#4-keyrings)
+- [5. Schedules (business hours / on-call)](#5-schedules-business-hours--on-call)
+- [6. Vistas (saved views)](#6-vistas-saved-views)
+- [7. Observability (sessions)](#7-observability-sessions)
+- [8. Web crawler jobs](#8-web-crawler-jobs)
+- [9. Snap widgets & snap-kit](#9-snap-widgets--snap-kit)
+- [10. Commands](#10-commands)
+- [11. Code changes](#11-code-changes)
+- [12. Auth tokens & connections](#12-auth-tokens--connections)
+- [13. Health](#13-health)
+- [14. Pitfalls](#14-pitfalls)
+<!-- /toc -->
+
 Infrastructure and admin objects: artifacts (files), webhooks, jobs, keyrings,
 schedules, vistas (views), observability sessions, web-crawler jobs, snap
 widgets / snap-kit, commands, code changes, and auth tokens/connections.

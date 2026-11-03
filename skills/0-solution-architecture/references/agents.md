@@ -1,5 +1,22 @@
 # DevRev AI Agents & AI Capabilities
 
+## Contents
+<!-- toc -->
+- [Table of contents](#table-of-contents)
+- [1. What DevRev agents are](#1-what-devrev-agents-are)
+- [2. Agent types](#2-agent-types)
+- [3. How agents are built (Agent Studio)](#3-how-agents-are-built-agent-studio)
+- [4. Skills and tools](#4-skills-and-tools)
+- [5. Knowledge, grounding, and RAG](#5-knowledge-grounding-and-rag)
+- [6. Multi-agent pipelines & orchestration](#6-multi-agent-pipelines--orchestration)
+- [7. Agent triggers](#7-agent-triggers)
+- [8. Guardrails, instructions, personas, HITL](#8-guardrails-instructions-personas-hitl)
+- [9. Deployment contexts & channels](#9-deployment-contexts--channels)
+  - [Implementation guidance](#implementation-guidance)
+  - [One-line positioning](#one-line-positioning)
+- [10. Build detail (for real configs)](#10-build-detail-for-real-configs)
+<!-- /toc -->
+
 Use this reference when the solution needs conversational understanding, judgment, natural-language input, or an "answer + act" experience. If the task is deterministic, prefer a workflow (see `workflows-automation.md`).
 
 ## Table of contents

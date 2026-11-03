@@ -1,5 +1,17 @@
 # DevRev Workflow Lifecycle API
 
+## Contents
+<!-- toc -->
+- [Configuration](#configuration)
+- [Endpoints](#endpoints)
+- [DON ID formats](#don-id-formats)
+- [Process: creating a workflow via the API](#process-creating-a-workflow-via-the-api)
+- [Process: modifying an existing workflow](#process-modifying-an-existing-workflow)
+- [Process: deleting a workflow](#process-deleting-a-workflow)
+- [Triggering a workflow](#triggering-a-workflow)
+- [Error handling](#error-handling)
+<!-- /toc -->
+
 This is the raw API for **managing** workflows as objects — creating the shell, adding/editing/removing steps, publishing, deleting, listing, and triggering. It is a different concern from `template-json-format.md` (which is about the *content* you put inside a workflow) — think of this file as "the CRUD verbs" and that one as "the noun's schema."
 
 The agent cannot manipulate workflows directly through any built-in capability — every action in this reference happens by making an HTTP call to these endpoints. Use whatever HTTP-request capability is available in your session (a `curl` via the shell, an HTTP MCP tool, etc.) — the important part is the request shape below, not which tool sends it.

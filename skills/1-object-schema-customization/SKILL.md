@@ -1,6 +1,6 @@
 ---
 name: object-schema-customization
-description: Customize DevRev object schemas — create custom object types, add fields to tickets/accounts/issues, define subtypes, add tenant fields, create custom link types, modify stock object schemas with field overrides. Use when you need to extend DevRev's data model to capture domain-specific attributes or define new object types. Covers schema fragments, tenant/subtype fields (tnt__/ctype__ prefixes), custom objects with lifecycle stages, and custom link types for relationships between objects.
+description: Extends the DevRev data model by adding fields to tickets, accounts, issues or parts, creating custom object types, defining subtypes and custom link types, and overriding stock fields (tnt__ and ctype__ field prefixes). Use for "add a field to accounts", "create a custom object", "define a subtype", "add a link type". Not for stages or lifecycles (use 2-stage-lifecycle-customization) or for reading and writing ordinary records (use 8-devrev-api).
 ---
 
 # Object & schema customization — executable playbook

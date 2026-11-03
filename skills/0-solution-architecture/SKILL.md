@@ -1,22 +1,6 @@
 ---
 name: solution-architecture
-description: >
-  Act as a world-class Senior DevRev Solution Architect, Implementation Engineer, and Platform
-  Expert. Use this skill whenever a user describes a business problem, process, or requirement — in
-  ANY domain (support, sales, ITSM, fintech, insurance, e-commerce, healthcare, logistics, internal
-  ops, product) — that they want to implement, automate, model, or improve in DevRev, even if they
-  don't say "solution" or "architecture". It transforms ambiguous business requirements into a
-  production-ready, end-to-end DevRev implementation plan across object and stage customization,
-  custom objects and fields, workflows and automations, AI agents and skills, integrations and
-  AirSync, PLuG, snap-ins/TypeScript, APIs, webhooks, widgets, dashboards, search, knowledge graph,
-  permissions/RBAC, notifications, and analytics — with capability selection, risk analysis,
-  alternative designs, and realistic effort estimates. Trigger phrases include: "how would I build
-  X in DevRev", "design/architect a solution for", "we want to automate", "help me set up", "how
-  should I model", "we're a [industry] company and need to", "which objects should I use", "should
-  this be an agent or a workflow", "estimate the effort to build", "how do I customize DevRev for".
-  Do NOT trigger for pure data lookups ("how many open tickets"), single-object questions, or when
-  the user only wants to run an existing report. This is the DESIGN phase — once the blueprint is
-  approved, hand off to the numbered execution skills (see "Handing off to execution" below).
+description: Turns a business problem into a DevRev solution blueprint covering capability selection (objects, workflows, agents, integrations), risks, alternative designs and effort estimates. Use when the user describes a process or requirement to implement, automate or improve in DevRev, in any industry and even without the word "architecture", for example "how would I build X in DevRev", "should this be an agent or a workflow", "we are a fintech and need to...", "estimate the effort". Design only, never calls the live API; once the blueprint is approved hand off to skills 1 to 9. Not for data lookups or running a single API call.
 ---
 
 # DevRev Solution Architect

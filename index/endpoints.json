@@ -3,7 +3,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/accounts.md#create",
    "catalog": {
-    "line": 123,
+    "line": 162,
     "row": "`accounts.create` | POST | `account:write` / `account:all`"
    },
    "channels": [
@@ -48,12 +48,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 19,
+     "line": 32,
      "snippet": "curl -X POST 'https://api.devrev.ai/accounts.create' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 28,
+     "line": 41,
      "snippet": "| `accounts.create` / `.update` | `account:write` / `:all` | Create / edit |"
     },
     {
@@ -78,7 +78,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/accounts.md#delete",
    "catalog": {
-    "line": 125,
+    "line": 164,
     "row": "`accounts.delete` | POST | `account:all`"
    },
    "channels": [
@@ -97,7 +97,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 29,
+     "line": 42,
      "snippet": "| `accounts.delete` | `account:all` | Delete |"
     }
    ],
@@ -116,7 +116,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/accounts.md#export-post",
    "catalog": {
-    "line": 127,
+    "line": 166,
     "row": "`accounts.get` / `.list` / `.export` | GET/POST | `account:read` …"
    },
    "channels": [
@@ -163,7 +163,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/accounts.md#get-post",
    "catalog": {
-    "line": 127,
+    "line": 166,
     "row": "`accounts.get` / `.list` / `.export` | GET/POST | `account:read` …"
    },
    "channels": [
@@ -183,7 +183,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 31,
+     "line": 44,
      "snippet": "| `accounts.get` / `.list` / `.export` | `account:read` … | Read |"
     }
    ],
@@ -204,7 +204,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/accounts.md#list-post",
    "catalog": {
-    "line": 127,
+    "line": 166,
     "row": "`accounts.get` / `.list` / `.export` | GET/POST | `account:read` …"
    },
    "channels": [
@@ -264,7 +264,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/accounts.md#merge",
    "catalog": {
-    "line": 126,
+    "line": 165,
     "row": "`accounts.merge` | POST | `account:all`"
    },
    "channels": [
@@ -284,7 +284,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 30,
+     "line": 43,
      "snippet": "| `accounts.merge` | `account:all` | Merge duplicates |"
     },
     {
@@ -309,7 +309,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/accounts.md#update",
    "catalog": {
-    "line": 124,
+    "line": 163,
     "row": "`accounts.update` | POST | `account:write` / `account:all`"
    },
    "channels": [
@@ -379,12 +379,12 @@
    "notes": [
     {
      "file": "skills/0-solution-architecture/references/agents.md",
-     "line": 168,
+     "line": 185,
      "snippet": "3. **Programmatically via API** — `POST internal/ai-agents.events.execute-async` with `agent`, `event.input_me"
     },
     {
      "file": "skills/0-solution-architecture/references/agents.md",
-     "line": 236,
+     "line": 253,
      "snippet": "**Deploy to channel:** Publish (Draft→Live, prior Live→Archived; every save versions; restore creates a new Dr"
     },
     {
@@ -739,7 +739,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/articles.md#create-article",
    "catalog": {
-    "line": 198,
+    "line": 237,
     "row": "`articles.create` / `.update` | POST | `article:write` / `article:all`"
    },
    "channels": [
@@ -786,22 +786,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 6,
+     "line": 24,
      "snippet": "> at `articles.create` time and via `.update` (confirmed working). `directories.update`/`.delete`/"
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 159,
+     "line": 177,
      "snippet": "A collection groups articles, but you assign an article to it from the **article** side, not the directory sid"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 56,
+     "line": 70,
      "snippet": "curl -X POST 'https://api.devrev.ai/articles.create' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 71,
+     "line": 85,
      "snippet": "| `articles.create` / `.update` | `article:write` / `:all` |"
     },
     {
@@ -828,7 +828,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/articles.md#delete-article",
    "catalog": {
-    "line": 199,
+    "line": 238,
     "row": "`articles.delete` | POST | `article:all` (confirmed live 2026-07-21: genuinely works, `HTTP 200 {}`, `.get` 404s after)"
    },
    "channels": [
@@ -847,12 +847,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 72,
+     "line": 86,
      "snippet": "| `articles.delete` | `article:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 168,
+     "line": 182,
      "snippet": "- `articles.delete` **confirmed live and genuinely works** (`HTTP 200 {}`, follow-up `.get` 404s),"
     }
    ],
@@ -871,7 +871,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/articles.md#get-article-post",
    "catalog": {
-    "line": 200,
+    "line": 239,
     "row": "`articles.get` / `.list` | GET/POST | `article:read` …"
    },
    "channels": [
@@ -892,42 +892,42 @@
    "notes": [
     {
      "file": "skills/7-agent-building/references/toolkit-guide.md",
-     "line": 43,
+     "line": 64,
      "snippet": "- **Field note (2026-09-09, live, a customer's PEx org):** the native `FetchObjectContext` tool **truncates lo"
     },
     {
      "file": "skills/7-agent-building/references/toolkit-guide.md",
-     "line": 92,
+     "line": 113,
      "snippet": "- **Stock snapshot tables truncate long text at ingest**: `devrev.feature` / `devrev.article` (and siblings) c"
     },
     {
      "file": "skills/7-agent-building/references/troubleshooting.md",
-     "line": 82,
+     "line": 99,
      "snippet": "local article_json=$(curl -s -X POST 'https://api.devrev.ai/internal/articles.get' \\"
     },
     {
      "file": "skills/7-agent-building/references/troubleshooting.md",
-     "line": 547,
+     "line": 563,
      "snippet": "article=$(curl -s -X POST 'https://api.devrev.ai/internal/articles.get' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 63,
+     "line": 81,
      "snippet": "- Same locate → presigned-URL → GET chain is what `articles.get`'s `extracted_content[0]` uses"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 73,
+     "line": 87,
      "snippet": "| `articles.get` / `.list` | `article:read` … |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 106,
+     "line": 120,
      "snippet": "you don't have a Part id yet; take the returned id and call `articles.get` or read via"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 25,
+     "line": 51,
      "snippet": "| **Article** | `article` | `articles.list` / `articles.get` | Knowledge document. Body text lives in an artif"
     }
    ],
@@ -948,7 +948,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/articles.md#list-articles-post",
    "catalog": {
-    "line": 200,
+    "line": 239,
     "row": "`articles.get` / `.list` | GET/POST | `article:read` …"
    },
    "channels": [
@@ -983,37 +983,37 @@
    "notes": [
     {
      "file": "skills/7-agent-building/references/troubleshooting.md",
-     "line": 228,
+     "line": 245,
      "snippet": "curl -s -X POST 'https://api.devrev.ai/internal/articles.list' \\"
     },
     {
      "file": "skills/7-agent-building/references/troubleshooting.md",
-     "line": 537,
+     "line": 554,
      "snippet": "curl -s https://api.devrev.ai/articles.list"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 75,
+     "line": 89,
      "snippet": "`articles.list` response — confirmed live 2026-07-18: wrapper is `{\"articles\": [...], \"total\": <int>}`."
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 82,
+     "line": 96,
      "snippet": "**`articles.list` server-side filters (doc-cited 2026-07-31 from"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 25,
-     "snippet": "| **Article** | `article` | `articles.list` / `articles.get` | Knowledge document. Body text lives in an artif"
+     "line": 14,
+     "snippet": "- [`articles.list` server-side filters (doc-cited 2026-07-31)](#articleslist-server-side-filters-doc-cited-202"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 98,
-     "snippet": "Every `article` returned by `articles.list` includes:"
+     "line": 51,
+     "snippet": "| **Article** | `article` | `articles.list` / `articles.get` | Knowledge document. Body text lives in an artif"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 253,
+     "line": 269,
      "snippet": "- `*.list` endpoints (`custom-objects.list`, `articles.list`, `works.list`) clamp `limit` to 100"
     }
    ],
@@ -1032,7 +1032,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/articles.md#update-article",
    "catalog": {
-    "line": 198,
+    "line": 237,
     "row": "`articles.create` / `.update` | POST | `article:write` / `article:all`"
    },
    "channels": [
@@ -1083,17 +1083,17 @@
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 159,
+     "line": 177,
      "snippet": "A collection groups articles, but you assign an article to it from the **article** side, not the directory sid"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 159,
+     "line": 173,
      "snippet": "(live 2026-10-22): `scope` is NOT immutable** — `articles.update {\"id\":\"<ARTICLE_DON>\",\"scope\":2}`"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 200,
+     "line": 214,
      "snippet": "curl -X POST 'https://api.devrev.ai/articles.update' -H 'Authorization: Bearer <TOKEN>' \\"
     },
     {
@@ -1118,7 +1118,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/artifacts.md#download-post",
    "catalog": {
-    "line": 252,
+    "line": 291,
     "row": "`artifacts.download` | GET/POST | `artifact:read`"
    },
    "channels": [
@@ -1150,12 +1150,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 27,
+     "line": 45,
      "snippet": "curl -X POST 'https://api.devrev.ai/artifacts.download' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 35,
+     "line": 53,
      "snippet": "| `artifacts.download` | `artifact:read` |"
     }
    ],
@@ -1174,7 +1174,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/artifacts.md#get-post",
    "catalog": {
-    "line": 253,
+    "line": 292,
     "row": "`artifacts.get` / `.list` / `.locate` | GET/POST | `artifact:read` (+ parent read)"
    },
    "channels": [
@@ -1205,7 +1205,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 36,
+     "line": 54,
      "snippet": "| `artifacts.get` / `.list` / `.locate` | `artifact:read` (+ parent read) |"
     }
    ],
@@ -1224,7 +1224,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/artifacts.md#list-post",
    "catalog": {
-    "line": 253,
+    "line": 292,
     "row": "`artifacts.get` / `.list` / `.locate` | GET/POST | `artifact:read` (+ parent read)"
    },
    "channels": [
@@ -1261,7 +1261,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/artifacts.md#locate-post",
    "catalog": {
-    "line": 253,
+    "line": 292,
     "row": "`artifacts.get` / `.list` / `.locate` | GET/POST | `artifact:read` (+ parent read)"
    },
    "channels": [
@@ -1282,22 +1282,22 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 46,
+     "line": 64,
      "snippet": "**`artifacts.locate` — download URL retrieval (doc-cited 2026-07-31 from"
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 52,
+     "line": 70,
      "snippet": "curl -X GET \"https://api.devrev.ai/artifacts.locate?id=<ARTIFACT_DON>\" \\"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 119,
+     "line": 145,
      "snippet": "└── artifacts.locate {\"id\": <don>}    → { \"url\": \"<presigned>\", \"expires_at\": \"<ISO-8601>\" }"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 127,
+     "line": 153,
      "snippet": "- `artifacts.locate` returns `{ url, expires_at }`. `expires_at` is the TTL —"
     }
    ],
@@ -1316,7 +1316,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/artifacts.md#prepare",
    "catalog": {
-    "line": 250,
+    "line": 289,
     "row": "`artifacts.prepare` | POST | `artifact:create`"
    },
    "channels": [
@@ -1338,13 +1338,13 @@
    "notes": [
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
-     "line": 3,
-     "snippet": "description: Upload files and artifacts to DevRev, attach files to objects, migrate data via bulk record creat"
+     "line": 31,
+     "snippet": "- `artifact:create` for `artifacts.prepare`"
     },
     {
      "file": "skills/3-data-upload-and-org-build/SKILL.md",
-     "line": 31,
-     "snippet": "- `artifact:create` for `artifacts.prepare`"
+     "line": 48,
+     "snippet": "1. **Prepare an upload** — `artifacts.prepare` (scope: `artifact:create`) returns a URL + form fields."
     },
     {
      "file": "skills/8-devrev-api/SKILL.md",
@@ -1358,22 +1358,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 20,
+     "line": 38,
      "snippet": "curl -X POST 'https://api.devrev.ai/artifacts.prepare' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 33,
+     "line": 51,
      "snippet": "| `artifacts.prepare` | `artifact:create` |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 113,
+     "line": 127,
      "snippet": "array of artifact DONs (same `artifacts.prepare` → upload → reference pattern used for"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 118,
+     "line": 132,
      "snippet": "curl -X POST 'https://api.devrev.ai/artifacts.prepare' -H 'Authorization: Bearer <TOKEN>' \\"
     }
    ],
@@ -1392,7 +1392,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/artifacts.md#hard-delete-version",
    "catalog": {
-    "line": 251,
+    "line": 290,
     "row": "`artifacts.versions.prepare` / `.delete` | POST | `artifact:create`"
    },
    "channels": [
@@ -1425,7 +1425,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/artifacts.md#versions-prepare",
    "catalog": {
-    "line": 251,
+    "line": 290,
     "row": "`artifacts.versions.prepare` / `.delete` | POST | `artifact:create`"
    },
    "channels": [
@@ -1444,7 +1444,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 34,
+     "line": 52,
      "snippet": "| `artifacts.versions.prepare` / `.delete` | `artifact:create` |"
     }
    ],
@@ -1463,7 +1463,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/atoms.md#get-post",
    "catalog": {
-    "line": 100,
+    "line": 139,
     "row": "`atoms.get` | GET/POST | `<object_type>:read` (derived from the id)"
    },
    "channels": [
@@ -1483,12 +1483,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 221,
+     "line": 237,
      "snippet": "`atoms.get` fetches any object by id when you don't want a type-specific call."
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 225,
+     "line": 241,
      "snippet": "curl -X POST 'https://api.devrev.ai/atoms.get' \\"
     }
    ],
@@ -1539,7 +1539,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/auth-tokens.md#create",
    "catalog": {
-    "line": 324,
+    "line": 363,
     "row": "`auth-tokens.create` / `.update` / `.delete` / `.self.delete` | POST | None"
    },
    "channels": [
@@ -1569,7 +1569,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 204,
+     "line": 222,
      "snippet": "- `auth-tokens.create/update/delete/self.delete` — manage tokens (no scope)."
     }
    ],
@@ -1584,7 +1584,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/auth-tokens.md#delete",
    "catalog": {
-    "line": 324,
+    "line": 363,
     "row": "`auth-tokens.create` / `.update` / `.delete` / `.self.delete` | POST | None"
    },
    "channels": [
@@ -1612,7 +1612,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/auth-tokens.md#get-post",
    "catalog": {
-    "line": 325,
+    "line": 364,
     "row": "`auth-tokens.get` / `.list` / `.info` | GET/POST | None"
    },
    "channels": [
@@ -1632,7 +1632,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 205,
+     "line": 223,
      "snippet": "- `auth-tokens.get/list/info` — inspect tokens."
     }
    ],
@@ -1649,7 +1649,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/auth-tokens.md#info-post",
    "catalog": {
-    "line": 325,
+    "line": 364,
     "row": "`auth-tokens.get` / `.list` / `.info` | GET/POST | None"
    },
    "channels": [
@@ -1678,7 +1678,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/auth-tokens.md#list-post",
    "catalog": {
-    "line": 325,
+    "line": 364,
     "row": "`auth-tokens.get` / `.list` / `.info` | GET/POST | None"
    },
    "channels": [
@@ -1709,7 +1709,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/auth-tokens.md#self-delete",
    "catalog": {
-    "line": 324,
+    "line": 363,
     "row": "`auth-tokens.create` / `.update` / `.delete` / `.self.delete` | POST | None"
    },
    "channels": [
@@ -1737,7 +1737,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/auth-tokens.md#update",
    "catalog": {
-    "line": 324,
+    "line": 363,
     "row": "`auth-tokens.create` / `.update` / `.delete` / `.self.delete` | POST | None"
    },
    "channels": [
@@ -1902,7 +1902,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/chats.md#create",
    "catalog": {
-    "line": 193,
+    "line": 232,
     "row": "`chats.create` / `.get` / `.update` | POST/GET | None (chat membership governs access)"
    },
    "channels": [
@@ -1929,7 +1929,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 40,
+     "line": 54,
      "snippet": "- `chats.create` — start a chat."
     }
    ],
@@ -1946,7 +1946,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/chats.md#get-post",
    "catalog": {
-    "line": 193,
+    "line": 232,
     "row": "`chats.create` / `.get` / `.update` | POST/GET | None (chat membership governs access)"
    },
    "channels": [
@@ -1968,7 +1968,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 41,
+     "line": 55,
      "snippet": "- `chats.get` — fetch."
     }
    ],
@@ -1985,7 +1985,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/chats.md#update",
    "catalog": {
-    "line": 193,
+    "line": 232,
     "row": "`chats.create` / `.get` / `.update` | POST/GET | None (chat membership governs access)"
    },
    "channels": [
@@ -2011,7 +2011,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 42,
+     "line": 56,
      "snippet": "- `chats.update` — modify."
     }
    ],
@@ -2028,7 +2028,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/code-changes.md#create",
    "catalog": {
-    "line": 317,
+    "line": 356,
     "row": "`code-changes.create` / `.update` | POST | `code_change:write` / `:all`"
    },
    "channels": [
@@ -2048,7 +2048,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 196,
+     "line": 214,
      "snippet": "- `code-changes.create` / `.update` — `code_change:write`/`:all`."
     }
    ],
@@ -2066,7 +2066,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/code-changes.md#delete",
    "catalog": {
-    "line": 318,
+    "line": 357,
     "row": "`code-changes.delete` | POST | `code_change:all`"
    },
    "channels": [
@@ -2085,7 +2085,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 197,
+     "line": 215,
      "snippet": "- `code-changes.delete` — `code_change:all`."
     }
    ],
@@ -2104,7 +2104,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/code-changes.md#get-post",
    "catalog": {
-    "line": 319,
+    "line": 358,
     "row": "`code-changes.get` / `.list` | GET/POST | `code_change:read` …"
    },
    "channels": [
@@ -2124,7 +2124,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 198,
+     "line": 216,
      "snippet": "- `code-changes.get` / `.list` — `code_change:read` …"
     }
    ],
@@ -2145,7 +2145,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/code-changes.md#list-post",
    "catalog": {
-    "line": 319,
+    "line": 358,
     "row": "`code-changes.get` / `.list` | GET/POST | `code_change:read` …"
    },
    "channels": [
@@ -2182,7 +2182,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/code-changes.md#update",
    "catalog": {
-    "line": 317,
+    "line": 356,
     "row": "`code-changes.create` / `.update` | POST | `code_change:write` / `:all`"
    },
    "channels": [
@@ -2217,7 +2217,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/commands.md#create",
    "catalog": {
-    "line": 311,
+    "line": 350,
     "row": "`commands.create` / `.update` | POST | `command:write` / `command:all`"
    },
    "channels": [
@@ -2245,7 +2245,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 187,
+     "line": 205,
      "snippet": "- `commands.create` / `.update` — `command:write`/`:all`."
     }
    ],
@@ -2266,7 +2266,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/commands.md#get-post",
    "catalog": {
-    "line": 312,
+    "line": 351,
     "row": "`commands.get` / `.list` | GET/POST | `command:read` …"
    },
    "channels": [
@@ -2286,7 +2286,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 188,
+     "line": 206,
      "snippet": "- `commands.get` / `.list` — `command:read` …"
     }
    ],
@@ -2307,7 +2307,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/commands.md#list-post",
    "catalog": {
-    "line": 312,
+    "line": 351,
     "row": "`commands.get` / `.list` | GET/POST | `command:read` …"
    },
    "channels": [
@@ -2347,7 +2347,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/commands.md#update",
    "catalog": {
-    "line": 311,
+    "line": 350,
     "row": "`commands.create` / `.update` | POST | `command:write` / `command:all`"
    },
    "channels": [
@@ -2506,7 +2506,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/conversations.md#create",
    "catalog": {
-    "line": 186,
+    "line": 225,
     "row": "`conversations.create` / `.update` | POST | `conversation:write` / `conversation:all`"
    },
    "channels": [
@@ -2544,12 +2544,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 18,
+     "line": 32,
      "snippet": "curl -X POST 'https://api.devrev.ai/conversations.create' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 26,
+     "line": 40,
      "snippet": "| `conversations.create` / `.update` | `conversation:write` / `:all` |"
     }
    ],
@@ -2569,7 +2569,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/conversations.md#delete",
    "catalog": {
-    "line": 187,
+    "line": 226,
     "row": "`conversations.delete` | POST | `conversation:all`"
    },
    "channels": [
@@ -2588,7 +2588,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 27,
+     "line": 41,
      "snippet": "| `conversations.delete` | `conversation:all` |"
     }
    ],
@@ -2659,7 +2659,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/conversations.md#get-post",
    "catalog": {
-    "line": 188,
+    "line": 227,
     "row": "`conversations.get` / `.list` | GET/POST | `conversation:read` …"
    },
    "channels": [
@@ -2679,7 +2679,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 28,
+     "line": 42,
      "snippet": "| `conversations.get` / `.list` | `conversation:read` … |"
     }
    ],
@@ -2700,7 +2700,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/conversations.md#list-post",
    "catalog": {
-    "line": 188,
+    "line": 227,
     "row": "`conversations.get` / `.list` | GET/POST | `conversation:read` …"
    },
    "channels": [
@@ -2769,7 +2769,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/conversations.md#update",
    "catalog": {
-    "line": 186,
+    "line": 225,
     "row": "`conversations.create` / `.update` | POST | `conversation:write` / `conversation:all`"
    },
    "channels": [
@@ -2843,7 +2843,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 75,
+     "line": 94,
      "snippet": "| `custom-objects.count` | none | Count records — same required `leaf_type` filter as `.list` |"
     }
    ],
@@ -2888,7 +2888,7 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 88,
+     "line": 120,
      "snippet": "Create the schema first via `schemas.custom.set` with `type: \"tenant_fragment\"` and `is_custom_leaf_type: true"
     },
     {
@@ -2918,8 +2918,8 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 46,
-     "snippet": "### Step 2 — create a record (`custom-objects.create`, scope `custom_type_fragment:write`)"
+     "line": 7,
+     "snippet": "- [Step 2 — create a record (`custom-objects.create`, scope `custom_type_fragment:write`)](#step-2--create-a-r"
     }
    ],
    "required": [
@@ -2963,12 +2963,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 72,
+     "line": 91,
      "snippet": "| `custom-objects.delete` | `custom_type_fragment:write` | Delete a record — **confirmed live 2026-07-19**: ge"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 169,
+     "line": 183,
      "snippet": "same tier as `works.delete`/`custom-objects.delete`/`workflows.delete` — safe to clean up"
     },
     {
@@ -3009,12 +3009,12 @@
    "notes": [
     {
      "file": "skills/7-agent-building/references/toolkit-guide.md",
-     "line": 43,
+     "line": 64,
      "snippet": "- **Field note (2026-09-09, live, a customer's PEx org):** the native `FetchObjectContext` tool **truncates lo"
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 73,
+     "line": 92,
      "snippet": "| `custom-objects.get` | none | Fetch one record |"
     }
    ],
@@ -3067,17 +3067,17 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 74,
+     "line": 93,
      "snippet": "| `custom-objects.list` | none | List records — **live-verified 2026-07-19: `leaf_type` is a required filter**"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 307,
+     "line": 311,
      "snippet": "- schemas.custom.list / custom-objects.list - confirm your fragments and custom objects."
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 253,
+     "line": 269,
      "snippet": "- `*.list` endpoints (`custom-objects.list`, `articles.list`, `works.list`) clamp `limit` to 100"
     }
    ],
@@ -3121,7 +3121,7 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 171,
+     "line": 203,
      "snippet": "→ Exact `stage-diagrams.create` payload (`stage_id`/`is_start`/`transitions[]`/`target_stage_id`), the custom-"
     },
     {
@@ -3146,12 +3146,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 71,
+     "line": 90,
      "snippet": "| `custom-objects.update` | `custom_type_fragment:write` | Update fields/stage/description |"
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 151,
+     "line": 170,
      "snippet": "**Enforcement note**: this was confirmed to gate `custom-objects.update` correctly (non-adjacent"
     }
    ],
@@ -3344,7 +3344,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-orgs.md#get-post",
    "catalog": {
-    "line": 161,
+    "line": 200,
     "row": "`dev-orgs.get` | GET/POST | `dev_org:read` / `dev_org:write`"
    },
    "channels": [
@@ -3364,12 +3364,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 95,
+     "line": 108,
      "snippet": "curl -X POST 'https://api.devrev.ai/dev-orgs.get' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 99,
+     "line": 112,
      "snippet": "`dev-orgs.get` — scope `dev_org:read`/`dev_org:write`. (Provisioning a brand-new"
     }
    ],
@@ -3387,7 +3387,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#activate",
    "catalog": {
-    "line": 151,
+    "line": 190,
     "row": "`dev-users.activate` | POST | `dev_user:write` / `dev_user:all`"
    },
    "channels": [
@@ -3407,7 +3407,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 83,
+     "line": 96,
      "snippet": "| `dev-users.activate` | `dev_user:write` / `:all` | Reactivate |"
     }
    ],
@@ -3427,7 +3427,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#create",
    "catalog": {
-    "line": 149,
+    "line": 188,
     "row": "`dev-users.create` | POST | `dev_user:write` / `dev_user:all`"
    },
    "channels": [
@@ -3451,7 +3451,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 82,
+     "line": 95,
      "snippet": "| `dev-users.create` / `.update` | `dev_user:write` / `:all` | Manage users |"
     }
    ],
@@ -3472,7 +3472,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#deactivate",
    "catalog": {
-    "line": 152,
+    "line": 191,
     "row": "`dev-users.deactivate` | POST | `dev_user:all`"
    },
    "channels": [
@@ -3491,12 +3491,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 84,
+     "line": 97,
      "snippet": "| `dev-users.deactivate` | `dev_user:all` | Deactivate |"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 152,
+     "line": 165,
      "snippet": "- Deactivate (not delete) internal users who leave — `dev-users.deactivate`."
     }
    ],
@@ -3515,7 +3515,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#get-post",
    "catalog": {
-    "line": 155,
+    "line": 194,
     "row": "`dev-users.get` / `.list` | GET/POST | `dev_user:read` …"
    },
    "channels": [
@@ -3535,7 +3535,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 87,
+     "line": 100,
      "snippet": "| `dev-users.get` / `.list` | `dev_user:read` … | Read |"
     }
    ],
@@ -3556,7 +3556,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#identities-link",
    "catalog": {
-    "line": 154,
+    "line": 193,
     "row": "`dev-users.identities.link` / `.unlink` | POST | `dev_user:write` / `dev_user:all`"
    },
    "channels": [
@@ -3578,7 +3578,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 86,
+     "line": 99,
      "snippet": "| `dev-users.identities.link` / `.unlink` | `dev_user:write` / `:all` | External identity mapping |"
     }
    ],
@@ -3600,7 +3600,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#identities-unlink",
    "catalog": {
-    "line": 154,
+    "line": 193,
     "row": "`dev-users.identities.link` / `.unlink` | POST | `dev_user:write` / `dev_user:all`"
    },
    "channels": [
@@ -3635,7 +3635,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#list-post",
    "catalog": {
-    "line": 155,
+    "line": 194,
     "row": "`dev-users.get` / `.list` | GET/POST | `dev_user:read` …"
    },
    "channels": [
@@ -3680,7 +3680,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#merge",
    "catalog": {
-    "line": 153,
+    "line": 192,
     "row": "`dev-users.merge` | POST | `dev_user:all`"
    },
    "channels": [
@@ -3700,7 +3700,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 85,
+     "line": 98,
      "snippet": "| `dev-users.merge` | `dev_user:all` | Merge |"
     }
    ],
@@ -3720,7 +3720,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#self-post",
    "catalog": {
-    "line": 156,
+    "line": 195,
     "row": "`dev-users.self` / `.self.update` | GET/POST | None"
    },
    "channels": [
@@ -3740,12 +3740,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 76,
+     "line": 89,
      "snippet": "curl -X POST 'https://api.devrev.ai/dev-users.self' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 88,
+     "line": 101,
      "snippet": "| `dev-users.self` / `.self.update` | None | Current user |"
     },
     {
@@ -3765,7 +3765,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#self-update",
    "catalog": {
-    "line": 156,
+    "line": 195,
     "row": "`dev-users.self` / `.self.update` | GET/POST | None"
    },
    "channels": [
@@ -3802,7 +3802,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/dev-users.md#update",
    "catalog": {
-    "line": 150,
+    "line": 189,
     "row": "`dev-users.update` | POST | `dev_user:write` / `dev_user:all`"
    },
    "channels": [
@@ -3846,7 +3846,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/directory.md#directories-count-post",
    "catalog": {
-    "line": 212,
+    "line": 251,
     "row": "`directories.get` / `.list` / `.count` | GET/POST | `directory:read`, `:write`, or `:all`"
    },
    "channels": [
@@ -3867,17 +3867,17 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 29,
+     "line": 47,
      "snippet": "| Count | GET/POST | `/directories.count` | `directory:read`, `directory:write`, or `directory:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 98,
+     "line": 116,
      "snippet": "**`GET` or `POST /directories.count`** — returns the count of directories matching a filter."
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 183,
+     "line": 197,
      "snippet": "| `directories.count` | GET/POST | `directory:read`, `:write`, or `:all` |"
     }
    ],
@@ -3896,7 +3896,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/directory.md#directories-create",
    "catalog": {
-    "line": 210,
+    "line": 249,
     "row": "`directories.create` / `.update` | POST | `directory:write` / `directory:all`"
    },
    "channels": [
@@ -3926,22 +3926,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 4,
+     "line": 22,
      "snippet": "> repo's own live testing pass. **Verified live 2026-07-21** by this repo: `directories.create`"
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 26,
+     "line": 44,
      "snippet": "| Create | POST | `/directories.create` | `directory:write` or `directory:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 180,
+     "line": 194,
      "snippet": "| `directories.create` | POST | `directory:write` / `:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 188,
+     "line": 202,
      "snippet": "curl -X POST 'https://api.devrev.ai/directories.create' -H 'Authorization: Bearer <TOKEN>' \\"
     }
    ],
@@ -3961,7 +3961,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/directory.md#directories-delete",
    "catalog": {
-    "line": 211,
+    "line": 250,
     "row": "`directories.delete` | POST | `directory:all`"
    },
    "channels": [
@@ -3980,22 +3980,22 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 31,
+     "line": 49,
      "snippet": "| Delete | POST | `/directories.delete` | `directory:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 144,
+     "line": 162,
      "snippet": "**`POST /directories.delete`** — deletes the specified directory. Requires the `directory:all` scope. The only"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 185,
+     "line": 199,
      "snippet": "| `directories.delete` | POST | `directory:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 209,
+     "line": 223,
      "snippet": "`directories.delete` is blocked if the directory still contains nested items (sub-collections or"
     }
    ],
@@ -4014,7 +4014,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/directory.md#directories-get-post",
    "catalog": {
-    "line": 212,
+    "line": 251,
     "row": "`directories.get` / `.list` / `.count` | GET/POST | `directory:read`, `:write`, or `:all`"
    },
    "channels": [
@@ -4034,22 +4034,22 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 27,
+     "line": 45,
      "snippet": "| Get | GET/POST | `/directories.get` | `directory:read`, `directory:write`, or `directory:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 72,
+     "line": 90,
      "snippet": "**`GET` or `POST /directories.get`** — fetches a single directory by its ID."
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 181,
+     "line": 195,
      "snippet": "| `directories.get` | GET/POST | `directory:read`, `:write`, or `:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 26,
+     "line": 52,
      "snippet": "| **Collection** | `directory` | `directories.list` / `directories.get` | Editorial grouping — \"shelves\" for a"
     }
    ],
@@ -4068,7 +4068,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/directory.md#directories-list-post",
    "catalog": {
-    "line": 212,
+    "line": 251,
     "row": "`directories.get` / `.list` / `.count` | GET/POST | `directory:read`, `:write`, or `:all`"
    },
    "channels": [
@@ -4092,28 +4092,28 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 28,
+     "line": 46,
      "snippet": "| List | GET/POST | `/directories.list` | `directory:read`, `directory:write`, or `directory:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 85,
+     "line": 103,
      "snippet": "**`GET` or `POST /directories.list`** — lists directories matching the request; supports pagination."
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 182,
+     "line": 196,
      "snippet": "| `directories.list` | GET/POST | `directory:read`, `:write`, or `:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 26,
-     "snippet": "| **Collection** | `directory` | `directories.list` / `directories.get` | Editorial grouping — \"shelves\" for a"
+     "line": 17,
+     "snippet": "- [`directories.list` filters (doc-cited 2026-07-31)](#directorieslist-filters-doc-cited-2026-07-31)"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 166,
-     "snippet": "### `directories.list` filters (doc-cited 2026-07-31)"
+     "line": 52,
+     "snippet": "| **Collection** | `directory` | `directories.list` / `directories.get` | Editorial grouping — \"shelves\" for a"
     }
    ],
    "required": [],
@@ -4131,7 +4131,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/directory.md#directories-update",
    "catalog": {
-    "line": 210,
+    "line": 249,
     "row": "`directories.create` / `.update` | POST | `directory:write` / `directory:all`"
    },
    "channels": [
@@ -4158,17 +4158,17 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 6,
+     "line": 24,
      "snippet": "> at `articles.create` time and via `.update` (confirmed working). `directories.update`/`.delete`/"
     },
     {
      "file": "skills/8-devrev-api/references/Directories_Collections_API.md",
-     "line": 30,
+     "line": 48,
      "snippet": "| Update | POST | `/directories.update` | `directory:write` or `directory:all` |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 184,
+     "line": 198,
      "snippet": "| `directories.update` | POST | `directory:write` / `:all` |"
     }
    ],
@@ -4462,7 +4462,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/groups.md#create",
    "catalog": {
-    "line": 166,
+    "line": 205,
     "row": "`groups.create` / `.update` | POST | `group:write` / `group:all`"
    },
    "channels": [
@@ -4486,12 +4486,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 110,
+     "line": 123,
      "snippet": "curl -X POST 'https://api.devrev.ai/groups.create' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 121,
+     "line": 134,
      "snippet": "| `groups.create` / `.update` | `group:write` / `:all` |"
     }
    ],
@@ -4512,7 +4512,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/groups.md#get-post",
    "catalog": {
-    "line": 167,
+    "line": 206,
     "row": "`groups.get` / `.list` | GET/POST | `group:read` …"
    },
    "channels": [
@@ -4532,7 +4532,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 122,
+     "line": 135,
      "snippet": "| `groups.get` / `.list` | `group:read` … |"
     }
    ],
@@ -4553,7 +4553,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/groups.md#list-post",
    "catalog": {
-    "line": 167,
+    "line": 206,
     "row": "`groups.get` / `.list` | GET/POST | `group:read` …"
    },
    "channels": [
@@ -4585,7 +4585,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 231,
+     "line": 245,
      "snippet": "- Group ids come from `groups.list` (default groups, by name): `All Users` (every dev user,"
     }
    ],
@@ -4604,7 +4604,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/groups.md#group-members-add",
    "catalog": {
-    "line": 168,
+    "line": 207,
     "row": "`groups.members.add` / `.remove` | POST | `group_membership:all`"
    },
    "channels": [
@@ -4625,12 +4625,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 114,
+     "line": 127,
      "snippet": "curl -X POST 'https://api.devrev.ai/groups.members.add' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 123,
+     "line": 136,
      "snippet": "| `groups.members.add` / `.remove` | `group_membership:all` |"
     }
    ],
@@ -4677,7 +4677,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/groups.md#group-members-list-post",
    "catalog": {
-    "line": 169,
+    "line": 208,
     "row": "`groups.members.list` | GET/POST | `group_membership:read` / `:all`"
    },
    "channels": [
@@ -4701,7 +4701,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 124,
+     "line": 137,
      "snippet": "| `groups.members.list` | `group_membership:read` / `:all` |"
     }
    ],
@@ -4721,7 +4721,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/groups.md#group-members-remove",
    "catalog": {
-    "line": 168,
+    "line": 207,
     "row": "`groups.members.add` / `.remove` | POST | `group_membership:all`"
    },
    "channels": [
@@ -4756,7 +4756,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/groups.md#update",
    "catalog": {
-    "line": 166,
+    "line": 205,
     "row": "`groups.create` / `.update` | POST | `group:write` / `group:all`"
    },
    "channels": [
@@ -5053,7 +5053,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/jobs.md#get-job-post",
    "catalog": {
-    "line": 266,
+    "line": 305,
     "row": "`jobs.get` / `.list` | GET/POST | `job:read`"
    },
    "channels": [
@@ -5093,12 +5093,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 331,
+     "line": 335,
      "snippet": "| Customization | objects.bulk-upgrade | Upgrade records to the latest fragment version. **Confirmed live 2026"
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 111,
+     "line": 129,
      "snippet": "- `jobs.get` — status of one job (`job:read`)."
     },
     {
@@ -5122,7 +5122,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/jobs.md#list-jobs-post",
    "catalog": {
-    "line": 266,
+    "line": 305,
     "row": "`jobs.get` / `.list` | GET/POST | `job:read`"
    },
    "channels": [
@@ -5150,7 +5150,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 112,
+     "line": 130,
      "snippet": "- `jobs.list` — list jobs (`job:read`)."
     }
    ],
@@ -5167,7 +5167,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/keyrings.md#create-callback-post",
    "catalog": {
-    "line": 271,
+    "line": 310,
     "row": "`keyrings.authorize` | GET/POST | `keyring:read`"
    },
    "channels": [
@@ -5193,7 +5193,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 120,
+     "line": 138,
      "snippet": "- `keyrings.authorize` — begin an authorization flow (`keyring:read`)."
     }
    ],
@@ -5213,7 +5213,7 @@
   {
    "beta_doc": null,
    "catalog": {
-    "line": 90,
+    "line": 129,
     "row": "`link-types.custom.create` | POST | `custom_link_type:write`"
    },
    "channels": [
@@ -5243,7 +5243,7 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 225,
+     "line": 257,
      "snippet": "Create via `link-types.custom.create` with `name`, `source_types[]`, `target_types[]`, `forward_name`, `backwa"
     },
     {
@@ -5258,22 +5258,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 417,
-     "snippet": "### Step 1 — define the type (`link-types.custom.create`)"
+     "line": 15,
+     "snippet": "- [Step 1 — define the type (`link-types.custom.create`)](#step-1--define-the-type-link-typescustomcreate)"
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 420,
-     "snippet": "curl -X POST 'https://api.devrev.ai/link-types.custom.create' \\"
+     "line": 436,
+     "snippet": "### Step 1 — define the type (`link-types.custom.create`)"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 78,
+     "line": 87,
      "snippet": "| 4 | Custom links | link-types.custom.create, links.create | Custom relationships between objects |"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 264,
+     "line": 268,
      "snippet": "curl -X POST 'https://api.devrev.ai/link-types.custom.create' \\"
     }
    ],
@@ -5294,7 +5294,7 @@
   {
    "beta_doc": null,
    "catalog": {
-    "line": 92,
+    "line": 131,
     "row": "`link-types.custom.get` / `.list` | GET/POST | none"
    },
    "channels": [
@@ -5318,12 +5318,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 453,
+     "line": 472,
      "snippet": "| `link-types.custom.get` / `.list` | Read custom link types |"
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 466,
+     "line": 485,
      "snippet": "> `link-types.custom.get` by id (works on active and deprecated alike, echoing"
     }
    ],
@@ -5340,7 +5340,7 @@
   {
    "beta_doc": null,
    "catalog": {
-    "line": 92,
+    "line": 131,
     "row": "`link-types.custom.get` / `.list` | GET/POST | none"
    },
    "channels": [
@@ -5382,12 +5382,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 464,
+     "line": 483,
      "snippet": "> `link-types.custom.list` (`{}`) — the endpoint filters deprecated types out by"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 172,
+     "line": 188,
      "snippet": "integrations should look up the link-type id via `link-types.custom.list` (or its `.get`) and pass"
     }
    ],
@@ -5402,7 +5402,7 @@
   {
    "beta_doc": null,
    "catalog": {
-    "line": 91,
+    "line": 130,
     "row": "`link-types.custom.update` | POST | `custom_link_type:write` (also used to deprecate)"
    },
    "channels": [
@@ -5443,12 +5443,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 452,
+     "line": 471,
      "snippet": "| `link-types.custom.update` | Update a custom link type (also used to deprecate) |"
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 460,
+     "line": 479,
      "snippet": "> `link-types.custom.update`. This preserves referential integrity so existing"
     },
     {
@@ -5475,7 +5475,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/links.md#create",
    "catalog": {
-    "line": 82,
+    "line": 121,
     "row": "`links.create` | POST | `link:write` / `link:all` (+ read on both objects)"
    },
    "channels": [
@@ -5502,7 +5502,7 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 225,
+     "line": 257,
      "snippet": "Create via `link-types.custom.create` with `name`, `source_types[]`, `target_types[]`, `forward_name`, `backwa"
     },
     {
@@ -5553,7 +5553,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/links.md#delete",
    "catalog": {
-    "line": 84,
+    "line": 123,
     "row": "`links.delete` | POST | `link:all` (+ read on both)"
    },
    "channels": [
@@ -5577,17 +5577,17 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 404,
+     "line": 423,
      "snippet": "- `links.delete` — remove a link instance."
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 200,
+     "line": 216,
      "snippet": "- `links.delete` — remove a link (`link:all`). **Confirmed working live 2026-07-18**:"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 201,
+     "line": 217,
      "snippet": "`POST links.delete {\"id\": \"<LINK_ID>\"}` returns `200 {}`; a follow-up `links.get`"
     },
     {
@@ -5611,7 +5611,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/links.md#get-post",
    "catalog": {
-    "line": 85,
+    "line": 124,
     "row": "`links.get` / `links.list` | GET/POST | `link:read` …"
    },
    "channels": [
@@ -5631,7 +5631,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 201,
+     "line": 217,
      "snippet": "`POST links.delete {\"id\": \"<LINK_ID>\"}` returns `200 {}`; a follow-up `links.get`"
     }
    ],
@@ -5652,7 +5652,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/links.md#list-post",
    "catalog": {
-    "line": 85,
+    "line": 124,
     "row": "`links.get` / `links.list` | GET/POST | `link:read` …"
    },
    "channels": [
@@ -5695,27 +5695,27 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 398,
+     "line": 417,
      "snippet": "- `links.list` — list an object's links."
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 79,
+     "line": 88,
      "snippet": "| 5 | Work & verify | works.create, parts.list, links.list | Tickets/issues on parts; verification |"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 304,
+     "line": 308,
      "snippet": "- parts.list - confirm the product hierarchy exists. To filter by parent, `parent_part` is an OBJECT, not a ba"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 48,
+     "line": 74,
      "snippet": "- The real edge is an `is_part_of` link, retrieved via `links.list`:"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 51,
+     "line": 77,
      "snippet": "curl \"https://api.devrev.ai/links.list?object=<PART_DON>\" -H \"Authorization: Bearer <TOKEN>\""
     }
    ],
@@ -5736,7 +5736,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/links.md#replace",
    "catalog": {
-    "line": 83,
+    "line": 122,
     "row": "`links.replace` | POST | `link:write` / `link:all` (+ read on both). Atomic only for part-to-part default link types"
    },
    "channels": [
@@ -5774,22 +5774,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 399,
+     "line": 418,
      "snippet": "- `links.replace` — swap a link. Atomic only for **part-to-part default (non-custom)"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 255,
+     "line": 259,
      "snippet": "> **Note:** To move a part within the Trail later, use links.replace rather than delete-then-create, so you ne"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 335,
+     "line": 339,
      "snippet": "| Trails / Links | links.replace | Re-parent a part atomically |"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 197,
+     "line": 213,
      "snippet": "- `links.replace` — swap a link (atomic only for part-to-part default link types;"
     },
     {
@@ -5875,7 +5875,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/meetings.md#count-post",
    "catalog": {
-    "line": 231,
+    "line": 270,
     "row": "`meetings.get` / `.list` / `.count` | GET/POST | `meeting:read` …"
    },
    "channels": [
@@ -5924,7 +5924,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/meetings.md#create",
    "catalog": {
-    "line": 229,
+    "line": 268,
     "row": "`meetings.create` / `.update` | POST | `meeting:write` / `meeting:all`"
    },
    "channels": [
@@ -5961,7 +5961,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 276,
+     "line": 290,
      "snippet": "curl -X POST 'https://api.devrev.ai/meetings.create' \\"
     }
    ],
@@ -5983,7 +5983,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/meetings.md#delete",
    "catalog": {
-    "line": 230,
+    "line": 269,
     "row": "`meetings.delete` | POST | `meeting:all`"
    },
    "channels": [
@@ -6059,7 +6059,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/meetings.md#get-post",
    "catalog": {
-    "line": 231,
+    "line": 270,
     "row": "`meetings.get` / `.list` / `.count` | GET/POST | `meeting:read` …"
    },
    "channels": [
@@ -6079,7 +6079,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 283,
+     "line": 297,
      "snippet": "`meetings.get/list/count/update/delete` — scopes `meeting:read/write/all`."
     }
    ],
@@ -6100,7 +6100,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/meetings.md#list-post",
    "catalog": {
-    "line": 231,
+    "line": 270,
     "row": "`meetings.get` / `.list` / `.count` | GET/POST | `meeting:read` …"
    },
    "channels": [
@@ -6153,7 +6153,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/meetings.md#update",
    "catalog": {
-    "line": 229,
+    "line": 268,
     "row": "`meetings.create` / `.update` | POST | `meeting:write` / `meeting:all`"
    },
    "channels": [
@@ -6204,7 +6204,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#metric-action-execute",
    "catalog": {
-    "line": 241,
+    "line": 280,
     "row": "`metric-action.execute` | POST | None"
    },
    "channels": [
@@ -6226,7 +6226,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 311,
+     "line": 325,
      "snippet": "| `metric-action.execute` | None |"
     }
    ],
@@ -6246,7 +6246,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#metric-definitions-create",
    "catalog": {
-    "line": 238,
+    "line": 277,
     "row": "`metric-definitions.create` / `.update` | POST | `metric_definition:write` / `:all`"
    },
    "channels": [
@@ -6272,7 +6272,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 308,
+     "line": 322,
      "snippet": "| `metric-definitions.create` / `.update` | `metric_definition:write` / `:all` |"
     },
     {
@@ -6298,7 +6298,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#metric-definitions-delete",
    "catalog": {
-    "line": 239,
+    "line": 278,
     "row": "`metric-definitions.delete` | POST | `metric_definition:all`"
    },
    "channels": [
@@ -6317,7 +6317,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 309,
+     "line": 323,
      "snippet": "| `metric-definitions.delete` | `metric_definition:all` |"
     }
    ],
@@ -6336,7 +6336,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#metric-definitions-get-post",
    "catalog": {
-    "line": 240,
+    "line": 279,
     "row": "`metric-definitions.get` / `.list` | GET/POST | `metric_definition:read` …"
    },
    "channels": [
@@ -6357,7 +6357,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 310,
+     "line": 324,
      "snippet": "| `metric-definitions.get` / `.list` | `metric_definition:read` … |"
     }
    ],
@@ -6376,7 +6376,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#metric-definitions-list-post",
    "catalog": {
-    "line": 240,
+    "line": 279,
     "row": "`metric-definitions.get` / `.list` | GET/POST | `metric_definition:read` …"
    },
    "channels": [
@@ -6416,7 +6416,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#metric-definitions-update",
    "catalog": {
-    "line": 238,
+    "line": 277,
     "row": "`metric-definitions.create` / `.update` | POST | `metric_definition:write` / `:all`"
    },
    "channels": [
@@ -6452,7 +6452,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#metric-trackers-get-post",
    "catalog": {
-    "line": 242,
+    "line": 281,
     "row": "`metric-trackers.get` | GET/POST | None"
    },
    "channels": [
@@ -6473,7 +6473,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 312,
+     "line": 326,
      "snippet": "| `metric-trackers.get` | None |"
     }
    ],
@@ -6568,7 +6568,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/observability.md#sessions-aggregate",
    "catalog": {
-    "line": 292,
+    "line": 331,
     "row": "`observability.sessions.get` / `.list` / `.aggregate` | GET/POST | None"
    },
    "channels": [
@@ -6624,7 +6624,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/observability.md#sessions-data-get-post",
    "catalog": {
-    "line": 293,
+    "line": 332,
     "row": "`observability.sessions.data.get` | GET/POST | None"
    },
    "channels": [
@@ -6648,7 +6648,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 160,
+     "line": 178,
      "snippet": "- `observability.sessions.data.get`"
     }
    ],
@@ -6666,7 +6666,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/observability.md#sessions-developer-info-get-post",
    "catalog": {
-    "line": 294,
+    "line": 333,
     "row": "`observability.sessions.developer-info.get` | GET/POST | None"
    },
    "channels": [
@@ -6690,7 +6690,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 161,
+     "line": 179,
      "snippet": "- `observability.sessions.developer-info.get`"
     }
    ],
@@ -6709,7 +6709,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/observability.md#sessions-get-post",
    "catalog": {
-    "line": 292,
+    "line": 331,
     "row": "`observability.sessions.get` / `.list` / `.aggregate` | GET/POST | None"
    },
    "channels": [
@@ -6731,7 +6731,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 159,
+     "line": 177,
      "snippet": "- `observability.sessions.get` / `.list` / `.aggregate`"
     }
    ],
@@ -6750,7 +6750,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/observability.md#sessions-list-post",
    "catalog": {
-    "line": 292,
+    "line": 331,
     "row": "`observability.sessions.get` / `.list` / `.aggregate` | GET/POST | None"
    },
    "channels": [
@@ -6807,7 +6807,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedule-fragments-create",
    "catalog": {
-    "line": 278,
+    "line": 317,
     "row": "`org-schedule-fragments.create` / `.transition` | POST | `org_schedule_fragment:write` / `:all`"
    },
    "channels": [
@@ -6830,7 +6830,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 132,
+     "line": 150,
      "snippet": "| `org-schedule-fragments.create` / `.transition` | `org_schedule_fragment:write` / `:all` |"
     }
    ],
@@ -6853,7 +6853,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedule-fragments-get-post",
    "catalog": {
-    "line": 279,
+    "line": 318,
     "row": "`org-schedule-fragments.get` | GET/POST | `org_schedule_fragment:read` …"
    },
    "channels": [
@@ -6873,7 +6873,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 133,
+     "line": 151,
      "snippet": "| `org-schedule-fragments.get` | `org_schedule_fragment:read` … |"
     }
    ],
@@ -6894,7 +6894,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedule-fragments-transition",
    "catalog": {
-    "line": 278,
+    "line": 317,
     "row": "`org-schedule-fragments.create` / `.transition` | POST | `org_schedule_fragment:write` / `:all`"
    },
    "channels": [
@@ -6929,7 +6929,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedules-create",
    "catalog": {
-    "line": 276,
+    "line": 315,
     "row": "`org-schedules.create` / `.update` / `.transition` / `.set-future` | POST | `org_schedule:write` / `:all`"
    },
    "channels": [
@@ -6953,7 +6953,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 130,
+     "line": 148,
      "snippet": "| `org-schedules.create` / `.update` / `.transition` / `.set-future` | `org_schedule:write` / `:all` |"
     }
    ],
@@ -6974,7 +6974,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedules-evaluate-post",
    "catalog": {
-    "line": 277,
+    "line": 316,
     "row": "`org-schedules.get` / `.list` / `.evaluate` | GET/POST | `org_schedule:read` …"
    },
    "channels": [
@@ -6995,12 +6995,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 135,
+     "line": 153,
      "snippet": "`org-schedules.evaluate` answers \"is it working hours now?\" for SLA math."
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 223,
+     "line": 241,
      "snippet": "- Schedules: SLA calculations depend on `org-schedules.evaluate` — an unset or"
     }
    ],
@@ -7022,7 +7022,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedules-get-post",
    "catalog": {
-    "line": 277,
+    "line": 316,
     "row": "`org-schedules.get` / `.list` / `.evaluate` | GET/POST | `org_schedule:read` …"
    },
    "channels": [
@@ -7043,7 +7043,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 131,
+     "line": 149,
      "snippet": "| `org-schedules.get` / `.list` / `.evaluate` | `org_schedule:read` … |"
     }
    ],
@@ -7064,7 +7064,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedules-list-post",
    "catalog": {
-    "line": 277,
+    "line": 316,
     "row": "`org-schedules.get` / `.list` / `.evaluate` | GET/POST | `org_schedule:read` …"
    },
    "channels": [
@@ -7102,7 +7102,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedules-set-future",
    "catalog": {
-    "line": 276,
+    "line": 315,
     "row": "`org-schedules.create` / `.update` / `.transition` / `.set-future` | POST | `org_schedule:write` / `:all`"
    },
    "channels": [
@@ -7137,7 +7137,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedules-transition",
    "catalog": {
-    "line": 276,
+    "line": 315,
     "row": "`org-schedules.create` / `.update` / `.transition` / `.set-future` | POST | `org_schedule:write` / `:all`"
    },
    "channels": [
@@ -7172,7 +7172,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/schedules.md#org-schedules-update",
    "catalog": {
-    "line": 276,
+    "line": 315,
     "row": "`org-schedules.create` / `.update` / `.transition` / `.set-future` | POST | `org_schedule:write` / `:all`"
    },
    "channels": [
@@ -7211,7 +7211,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/parts.md#create",
    "catalog": {
-    "line": 108,
+    "line": 147,
     "row": "`parts.create` | POST | `product:write,product:all` (product) / `capability:write,capability:all` (capability) / `feature:write,feature:all` (feature)"
    },
    "channels": [
@@ -7261,17 +7261,17 @@
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 76,
+     "line": 85,
      "snippet": "| 2 | Parts | parts.create | product / capability / feature / runnable IDs |"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 77,
+     "line": 86,
      "snippet": "| 3 | Trail | parts.create + parent_part, links.create | A connected part hierarchy (the Trail) |"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 289,
+     "line": 315,
      "snippet": "| `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` | Building the Trail (parts.create with"
     },
     {
@@ -7302,7 +7302,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/parts.md#delete",
    "catalog": {
-    "line": 110,
+    "line": 149,
     "row": "`parts.delete` | POST | corresponding `<part_type>:all` (confirmed live 2026-07-20: works, `HTTP 200 {}`, `.get` 404s after; but a part with an existing `is_part_of` child link pointing to it 400s — delete children first)"
    },
    "channels": [
@@ -7326,7 +7326,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 306,
+     "line": 310,
      "snippet": "- `parts.delete` requires children deleted first: deleting a part while an `is_part_of` child link still point"
     }
    ],
@@ -7375,32 +7375,32 @@
     },
     {
      "file": "skills/7-agent-building/references/api-contracts.md",
-     "line": 259,
+     "line": 291,
      "snippet": "(article snippets run ~3.8 KB). Search finds candidates; read their text with `parts.get` /"
     },
     {
      "file": "skills/7-agent-building/references/toolkit-guide.md",
-     "line": 43,
+     "line": 64,
      "snippet": "- **Field note (2026-09-09, live, a customer's PEx org):** the native `FetchObjectContext` tool **truncates lo"
     },
     {
      "file": "skills/7-agent-building/references/toolkit-guide.md",
-     "line": 92,
+     "line": 113,
      "snippet": "- **Stock snapshot tables truncate long text at ingest**: `devrev.feature` / `devrev.article` (and siblings) c"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 304,
+     "line": 308,
      "snippet": "- parts.list - confirm the product hierarchy exists. To filter by parent, `parent_part` is an OBJECT, not a ba"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 24,
+     "line": 50,
      "snippet": "| **Trail** | `part` | `parts.list` / `parts.get` | Product → Capability → Feature hierarchy. Scope owner for "
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 233,
+     "line": 259,
      "snippet": "# 1. FetchObjectContext (agent) OR parts.get (REST) on the Part id."
     }
    ],
@@ -7430,7 +7430,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/parts.md#list-post",
    "catalog": {
-    "line": 109,
+    "line": 148,
     "row": "`parts.list` | GET/POST | corresponding `<part_type>:read,...`"
    },
    "channels": [
@@ -7480,27 +7480,27 @@
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 79,
+     "line": 88,
      "snippet": "| 5 | Work & verify | works.create, parts.list, links.list | Tickets/issues on parts; verification |"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 304,
+     "line": 308,
      "snippet": "- parts.list - confirm the product hierarchy exists. To filter by parent, `parent_part` is an OBJECT, not a ba"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 24,
-     "snippet": "| **Trail** | `part` | `parts.list` / `parts.get` | Product → Capability → Feature hierarchy. Scope owner for "
+     "line": 9,
+     "snippet": "- [`parts.list` `parent_part` filter — depth semantics](#partslist-parentpart-filter--depth-semantics)"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 57,
-     "snippet": "### `parts.list` `parent_part` filter — depth semantics"
+     "line": 50,
+     "snippet": "| **Trail** | `part` | `parts.list` / `parts.get` | Product → Capability → Feature hierarchy. Scope owner for "
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 254,
+     "line": 270,
      "snippet": "silently — a `limit` of 1,000 returns 100 rows plus `next_cursor`. `parts.list` returned 118 rows"
     }
    ],
@@ -7528,7 +7528,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/parts.md#update",
    "catalog": {
-    "line": 111,
+    "line": 150,
     "row": "`parts.update` | POST | corresponding `<part_type>:write,...` (confirmed live 2026-07-21: requires `type` in the payload alongside `id` and the changed fields — `{\"id\":...,\"description\":...}` alone 400s `bad_request` with no field name; `{\""
    },
    "channels": [
@@ -7589,7 +7589,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/other.md#ping-post",
    "catalog": {
-    "line": 347,
+    "line": 386,
     "row": "`ping` | GET/POST | None"
    },
    "channels": [
@@ -7846,7 +7846,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/timeline-entries.md#reactions-list-post",
    "catalog": {
-    "line": 68,
+    "line": 107,
     "row": "`reactions.list` | GET/POST"
    },
    "channels": [
@@ -7869,7 +7869,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 137,
+     "line": 11,
+     "snippet": "- [Reactions — `reactions.list` / `reactions.update`](#reactions--reactionslist--reactionsupdate)"
+    },
+    {
+     "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
+     "line": 153,
      "snippet": "### Reactions — `reactions.list` / `reactions.update`"
     }
    ],
@@ -7886,7 +7891,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/timeline-entries.md#reactions-update",
    "catalog": {
-    "line": 69,
+    "line": 108,
     "row": "`reactions.update` | POST"
    },
    "channels": [
@@ -7907,13 +7912,13 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 137,
-     "snippet": "### Reactions — `reactions.list` / `reactions.update`"
+     "line": 11,
+     "snippet": "- [Reactions — `reactions.list` / `reactions.update`](#reactions--reactionslist--reactionsupdate)"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 138,
-     "snippet": "React to a timeline entry (emoji-style). `reactions.update` adds/removes; scope"
+     "line": 153,
+     "snippet": "### Reactions — `reactions.list` / `reactions.update`"
     }
    ],
    "required": [
@@ -8016,7 +8021,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-orgs.md#create",
    "catalog": {
-    "line": 132,
+    "line": 171,
     "row": "`rev-orgs.create` | POST | `rev_org:write` / `rev_org:all`"
    },
    "channels": [
@@ -8061,7 +8066,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 40,
+     "line": 53,
      "snippet": "curl -X POST 'https://api.devrev.ai/rev-orgs.create' \\"
     },
     {
@@ -8087,7 +8092,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-orgs.md#delete",
    "catalog": {
-    "line": 134,
+    "line": 173,
     "row": "`rev-orgs.delete` | POST | `rev_org:all`"
    },
    "channels": [
@@ -8119,7 +8124,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-orgs.md#get-post",
    "catalog": {
-    "line": 135,
+    "line": 174,
     "row": "`rev-orgs.get` / `.list` | GET/POST | `rev_org:read` …"
    },
    "channels": [
@@ -8140,7 +8145,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 46,
+     "line": 59,
      "snippet": "`rev-orgs.get/list/update/delete` — scopes `rev_org:read/write/all`."
     }
    ],
@@ -8159,7 +8164,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-orgs.md#list-post",
    "catalog": {
-    "line": 135,
+    "line": 174,
     "row": "`rev-orgs.get` / `.list` | GET/POST | `rev_org:read` …"
    },
    "channels": [
@@ -8210,7 +8215,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-orgs.md#update",
    "catalog": {
-    "line": 133,
+    "line": 172,
     "row": "`rev-orgs.update` | POST | `rev_org:write` / `rev_org:all`"
    },
    "channels": [
@@ -8340,7 +8345,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-users.md#create",
    "catalog": {
-    "line": 140,
+    "line": 179,
     "row": "`rev-users.create` | POST | `rev_user:write` / `rev_user:all`"
    },
    "channels": [
@@ -8387,12 +8392,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 55,
+     "line": 68,
      "snippet": "curl -X POST 'https://api.devrev.ai/rev-users.create' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 64,
+     "line": 77,
      "snippet": "| `rev-users.create` / `.update` | `rev_user:write` / `:all` |"
     },
     {
@@ -8415,7 +8420,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-users.md#delete",
    "catalog": {
-    "line": 142,
+    "line": 181,
     "row": "`rev-users.delete` | POST | `rev_user:all`"
    },
    "channels": [
@@ -8434,7 +8439,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 65,
+     "line": 78,
      "snippet": "| `rev-users.delete` / `.merge` | `rev_user:all` |"
     }
    ],
@@ -8479,7 +8484,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-users.md#get-post",
    "catalog": {
-    "line": 144,
+    "line": 183,
     "row": "`rev-users.get` / `.list` / `.scan` | GET/POST | `rev_user:read` …"
    },
    "channels": [
@@ -8499,12 +8504,12 @@
    "notes": [
     {
      "file": "skills/6-workflows/references/template-json-format.md",
-     "line": 634,
+     "line": 685,
      "snippet": "{ \"name\": \"url\", \"value\": { \"type\": \"text_template\", \"value\": \"https://api.devrev.ai/rev-users.get\" } },"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 66,
+     "line": 79,
      "snippet": "| `rev-users.get` / `.list` / `.scan` | `rev_user:read` … |"
     }
    ],
@@ -8552,7 +8557,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-users.md#list-post",
    "catalog": {
-    "line": 144,
+    "line": 183,
     "row": "`rev-users.get` / `.list` / `.scan` | GET/POST | `rev_user:read` …"
    },
    "channels": [
@@ -8606,7 +8611,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-users.md#merge",
    "catalog": {
-    "line": 143,
+    "line": 182,
     "row": "`rev-users.merge` | POST | `rev_user:all`"
    },
    "channels": [
@@ -8626,7 +8631,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 68,
+     "line": 81,
      "snippet": "`rev-users.scan` streams large sets; `rev-users.merge` de-dupes contacts."
     }
    ],
@@ -8672,7 +8677,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-users.md#scan-post",
    "catalog": {
-    "line": 144,
+    "line": 183,
     "row": "`rev-users.get` / `.list` / `.scan` | GET/POST | `rev_user:read` …"
    },
    "channels": [
@@ -8704,7 +8709,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 68,
+     "line": 81,
      "snippet": "`rev-users.scan` streams large sets; `rev-users.merge` de-dupes contacts."
     }
    ],
@@ -8750,7 +8755,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/rev-users.md#update",
    "catalog": {
-    "line": 141,
+    "line": 180,
     "row": "`rev-users.update` | POST | `rev_user:write` / `rev_user:all`"
    },
    "channels": [
@@ -8911,7 +8916,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 147,
+     "line": 166,
      "snippet": "The read-side key (`schemas.aggregated.get`) is still named `stage_diagram_id` — only the"
     }
    ],
@@ -8959,17 +8964,17 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 358,
+     "line": 377,
      "snippet": "a follow-up `schemas.custom.get` echoes the field back as `is_deprecated: true`"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 201,
+     "line": 222,
      "snippet": "Verified: `schemas.custom.get` on the resulting fragment shows `\"stage_diagram\":{\"id\":\"...stage_diagram/12\",\"n"
     },
     {
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
-     "line": 177,
+     "line": 194,
      "snippet": "| `schemas.custom.get` | none | Get a custom fragment |"
     },
     {
@@ -9041,22 +9046,22 @@
     },
     {
      "file": "skills/7-agent-building/references/troubleshooting.md",
-     "line": 278,
+     "line": 295,
      "snippet": "curl -s -X POST 'https://api.devrev.ai/internal/schemas.custom.list' \\"
     },
     {
      "file": "skills/7-agent-building/references/troubleshooting.md",
-     "line": 285,
+     "line": 302,
      "snippet": "curl -s -X POST 'https://api.devrev.ai/internal/schemas.custom.list' \\"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 307,
+     "line": 311,
      "snippet": "- schemas.custom.list / custom-objects.list - confirm your fragments and custom objects."
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 327,
+     "line": 331,
      "snippet": "| Customization | schemas.custom.list | List custom schema fragments |"
     }
    ],
@@ -9108,12 +9113,12 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 88,
+     "line": 120,
      "snippet": "Create the schema first via `schemas.custom.set` with `type: \"tenant_fragment\"` and `is_custom_leaf_type: true"
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 171,
+     "line": 203,
      "snippet": "→ Exact `stage-diagrams.create` payload (`stage_id`/`is_start`/`transitions[]`/`target_stage_id`), the custom-"
     },
     {
@@ -9190,22 +9195,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
-     "line": 40,
+     "line": 57,
      "snippet": "curl -X POST 'https://api.devrev.ai/schemas.stock.get' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
-     "line": 179,
+     "line": 196,
      "snippet": "| `schemas.stock.get` / `.list` | none | Inspect stock fields |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 136,
+     "line": 150,
      "snippet": "`schemas.stock.get {\"leaf_type\":\"article\"}`'s `resource` composite schema). **Do not send"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 158,
+     "line": 172,
      "snippet": "(default if omitted), per `schemas.stock.get`'s `scope` `uenum` definition. **Correction"
     }
    ],
@@ -9243,7 +9248,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
-     "line": 46,
+     "line": 63,
      "snippet": "curl -X POST 'https://api.devrev.ai/schemas.stock.list' \\"
     }
    ],
@@ -9285,22 +9290,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 331,
+     "line": 350,
      "snippet": "`schemas.subtypes.list` requiring a `leaf_type` filter to show anything."
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 359,
+     "line": 378,
      "snippet": "(output name differs from input name). Effect verified: `schemas.subtypes.list"
     },
     {
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
-     "line": 168,
+     "line": 185,
      "snippet": "- List subtypes: `schemas.subtypes.list`."
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 86,
+     "line": 102,
      "snippet": "`schemas.subtypes.list` (e.g. `\"pdp\"`, not the `display_name` \"PDP\")."
     }
    ],
@@ -9354,22 +9359,22 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 345,
+     "line": 364,
      "snippet": "**Changing which subtype a record uses**: `schemas.subtypes.prepare-update`"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 235,
+     "line": 256,
      "snippet": "- `schemas.subtypes.prepare-update` with `subtype`/`stage_diagram_id` → `invalid_field`; it only"
     },
     {
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
-     "line": 165,
+     "line": 182,
      "snippet": "- Prepare a subtype update: `schemas.subtypes.prepare-update` (scope:"
     },
     {
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
-     "line": 181,
+     "line": 198,
      "snippet": "| `schemas.subtypes.prepare-update` | `custom_type_fragment:write` | Stage a subtype change |"
     }
    ],
@@ -9410,12 +9415,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 218,
+     "line": 244,
      "snippet": "3. **REST `search.core`** — REST-callable alternative for mixed-type hits (parts, articles, works, custom-obje"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 223,
+     "line": 249,
      "snippet": "`hybrid-search.query` returns `HTTP 404 route not found`. `search.core` is the"
     },
     {
@@ -9460,22 +9465,22 @@
     },
     {
      "file": "skills/0-solution-architecture/references/integrations-channels.md",
-     "line": 96,
+     "line": 111,
      "snippet": "- **Semantic search** (vector embeddings; permission-aware) powers RAG. **Hybrid search** = keyword + vector ("
     },
     {
      "file": "skills/7-agent-building/references/api-contracts.md",
-     "line": 236,
+     "line": 268,
      "snippet": "Per `developer.devrev.ai/beta/api-reference/search/hybrid`, `search.hybrid`'s `namespace` query"
     },
     {
      "file": "skills/7-agent-building/references/api-contracts.md",
-     "line": 256,
+     "line": 288,
      "snippet": "(`search.hybrid`, a customer's PEx org): `limit` 51 → `400 value_not_permitted \"'51' must be <= '50'\"`;"
     },
     {
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
-     "line": 278,
+     "line": 304,
      "snippet": "- **Never guess a `namespace` value on `search.hybrid`.** It's required and the 37-value enum is documented — "
     },
     {
@@ -9497,7 +9502,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/service-accounts.md#create",
    "catalog": {
-    "line": 177,
+    "line": 216,
     "row": "`service-accounts.create` | POST | None (user auth only)"
    },
    "channels": [
@@ -9517,7 +9522,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 134,
+     "line": 147,
      "snippet": "| `service-accounts.create` | None | User auth only; not callable via a service-account token |"
     }
    ],
@@ -9534,7 +9539,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/service-accounts.md#get-post",
    "catalog": {
-    "line": 178,
+    "line": 217,
     "row": "`service-accounts.get` | GET/POST | `svcacc:read`"
    },
    "channels": [
@@ -9554,7 +9559,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 135,
+     "line": 148,
      "snippet": "| `service-accounts.get` | `svcacc:read` | |"
     }
    ],
@@ -9600,7 +9605,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#sla-trackers-get-post",
    "catalog": {
-    "line": 243,
+    "line": 282,
     "row": "`sla-trackers.get` / `.list` | GET/POST | None"
    },
    "channels": [
@@ -9625,12 +9630,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 313,
+     "line": 327,
      "snippet": "| `sla-trackers.get` / `.list` | None |"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 325,
+     "line": 339,
      "snippet": "object (or account), then check `sla-trackers.get`."
     },
     {
@@ -9652,7 +9657,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#sla-trackers-list-post",
    "catalog": {
-    "line": 243,
+    "line": 282,
     "row": "`sla-trackers.get` / `.list` | GET/POST | None"
    },
    "channels": [
@@ -9716,7 +9721,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#assign",
    "catalog": {
-    "line": 236,
+    "line": 275,
     "row": "`slas.create` / `.update` / `.assign` / `.transition` | POST | `sla:write`"
    },
    "channels": [
@@ -9741,12 +9746,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 299,
+     "line": 313,
      "snippet": "curl -X POST 'https://api.devrev.ai/slas.assign' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 324,
+     "line": 338,
      "snippet": "- SLA not taking effect — creating an SLA isn't enough; `slas.assign` it to the"
     },
     {
@@ -9770,7 +9775,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#create",
    "catalog": {
-    "line": 236,
+    "line": 275,
     "row": "`slas.create` / `.update` / `.assign` / `.transition` | POST | `sla:write`"
    },
    "channels": [
@@ -9800,12 +9805,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 295,
+     "line": 309,
      "snippet": "curl -X POST 'https://api.devrev.ai/slas.create' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 306,
+     "line": 320,
      "snippet": "| `slas.create` / `.update` / `.assign` / `.transition` | `sla:write` |"
     },
     {
@@ -9829,7 +9834,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#get-post",
    "catalog": {
-    "line": 237,
+    "line": 276,
     "row": "`slas.get` / `.list` | GET/POST | `sla:read` / `sla:write`"
    },
    "channels": [
@@ -9849,7 +9854,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 307,
+     "line": 321,
      "snippet": "| `slas.get` / `.list` | `sla:read` / `sla:write` |"
     }
    ],
@@ -9869,7 +9874,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#list-post",
    "catalog": {
-    "line": 237,
+    "line": 276,
     "row": "`slas.get` / `.list` | GET/POST | `sla:read` / `sla:write`"
    },
    "channels": [
@@ -9908,7 +9913,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#transition",
    "catalog": {
-    "line": 236,
+    "line": 275,
     "row": "`slas.create` / `.update` / `.assign` / `.transition` | POST | `sla:write`"
    },
    "channels": [
@@ -9942,7 +9947,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/slas.md#update",
    "catalog": {
-    "line": 236,
+    "line": 275,
     "row": "`slas.create` / `.update` / `.assign` / `.transition` | POST | `sla:write`"
    },
    "channels": [
@@ -10066,7 +10071,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/snap-kit-execution.md#snap-kit-action-execute-deferred",
    "catalog": {
-    "line": 306,
+    "line": 345,
     "row": "`snap-kit-action.execute.deferred` | POST | `snap_widget:write` / `:all`"
    },
    "channels": [
@@ -10086,7 +10091,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 178,
+     "line": 196,
      "snippet": "- `snap-kit-action.execute.deferred` — execute a deferred snap-kit action"
     }
    ],
@@ -10107,7 +10112,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/snap-widgets.md#create",
    "catalog": {
-    "line": 305,
+    "line": 344,
     "row": "`snap-widgets.create` | POST | `snap_widget:write` / `:all`"
    },
    "channels": [
@@ -10156,7 +10161,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 177,
+     "line": 195,
      "snippet": "- `snap-widgets.create` — create a snap widget (`snap_widget:write`/`:all`)."
     }
    ],
@@ -10207,7 +10212,7 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 171,
+     "line": 203,
      "snippet": "→ Exact `stage-diagrams.create` payload (`stage_id`/`is_start`/`transitions[]`/`target_stage_id`), the custom-"
     },
     {
@@ -10232,7 +10237,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 108,
+     "line": 127,
      "snippet": "`stage-diagrams.create`, set `is_custom_leaf_type: true` and `leaf_type` to"
     }
    ],
@@ -10282,12 +10287,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 164,
+     "line": 185,
      "snippet": "- `stage-diagrams.get` — fetch one diagram."
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 286,
+     "line": 307,
      "snippet": "| `stage-diagrams.get` / `.list` | none | Read diagrams |"
     }
    ],
@@ -10334,7 +10339,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 165,
+     "line": 186,
      "snippet": "- `stage-diagrams.list` — list diagrams; filter by `leaf_type`, `name`, or"
     }
    ],
@@ -10377,13 +10382,13 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 156,
-     "snippet": "### Update — `stage-diagrams.update`"
+     "line": 16,
+     "snippet": "- [Update — `stage-diagrams.update`](#update--stage-diagramsupdate)"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 285,
-     "snippet": "| `stage-diagrams.update` | `stage_diagram:write` | Update a diagram |"
+     "line": 177,
+     "snippet": "### Update — `stage-diagrams.update`"
     }
    ],
    "required": [
@@ -10425,7 +10430,7 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 154,
+     "line": 186,
      "snippet": "A **stage** is a named lifecycle step with `name`, `ordinal` (order at org level), and `state`. Within an org "
     },
     {
@@ -10440,23 +10445,23 @@
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 164,
+     "line": 170,
      "snippet": "Model the object lifecycle: create a stage with stages.custom.create, wire allowed transitions with stage-diag"
     },
     {
      "file": "skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md",
-     "line": 329,
+     "line": 333,
      "snippet": "| Customization | stages.custom.create | Create a custom stage |"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 67,
-     "snippet": "### Create — `stages.custom.create` (scope: `custom_stage:write`)"
+     "line": 11,
+     "snippet": "- [Create — `stages.custom.create` (scope: `custom_stage:write`)](#create--stagescustomcreate-scope-customstag"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 70,
-     "snippet": "curl -X POST 'https://api.devrev.ai/stages.custom.create' \\"
+     "line": 88,
+     "snippet": "### Create — `stages.custom.create` (scope: `custom_stage:write`)"
     }
    ],
    "required": [
@@ -10493,12 +10498,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 99,
+     "line": 120,
      "snippet": "- `stages.custom.get` — fetch one stage."
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 283,
+     "line": 304,
      "snippet": "| `stages.custom.get` / `.list` | none | Read stages |"
     }
    ],
@@ -10541,7 +10546,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 100,
+     "line": 121,
      "snippet": "- `stages.custom.list` — list stages (no scope required)."
     }
    ],
@@ -10585,13 +10590,13 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 85,
-     "snippet": "### Update — `stages.custom.update`"
+     "line": 12,
+     "snippet": "- [Update — `stages.custom.update`](#update--stagescustomupdate)"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 88,
-     "snippet": "curl -X POST 'https://api.devrev.ai/stages.custom.update' \\"
+     "line": 106,
+     "snippet": "### Update — `stages.custom.update`"
     }
    ],
    "required": [
@@ -10632,7 +10637,7 @@
     },
     {
      "file": "skills/0-solution-architecture/references/data-model.md",
-     "line": 151,
+     "line": 183,
      "snippet": "A **state** is a high-level category and the basis for metrics, SLAs, and reporting. Three built-in states shi"
     },
     {
@@ -10647,13 +10652,13 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 32,
-     "snippet": "### Create — `states.custom.create` (scope: `custom_state:write`)"
+     "line": 7,
+     "snippet": "- [Create — `states.custom.create` (scope: `custom_state:write`)](#create--statescustomcreate-scope-customstat"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 35,
-     "snippet": "curl -X POST 'https://api.devrev.ai/states.custom.create' \\"
+     "line": 53,
+     "snippet": "### Create — `states.custom.create` (scope: `custom_state:write`)"
     },
     {
      "file": "skills/devrev-start/references/goal-map.md",
@@ -10699,12 +10704,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 60,
+     "line": 81,
      "snippet": "- `states.custom.get` — fetch one state."
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 280,
+     "line": 301,
      "snippet": "| `states.custom.get` / `.list` | none | Read states |"
     }
    ],
@@ -10748,7 +10753,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 61,
+     "line": 82,
      "snippet": "- `states.custom.list` — list states (no scope required)."
     }
    ],
@@ -10787,13 +10792,13 @@
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 47,
-     "snippet": "### Update — `states.custom.update`"
+     "line": 8,
+     "snippet": "- [Update — `states.custom.update`](#update--statescustomupdate)"
     },
     {
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
-     "line": 50,
-     "snippet": "curl -X POST 'https://api.devrev.ai/states.custom.update' \\"
+     "line": 68,
+     "snippet": "### Update — `states.custom.update`"
     }
    ],
    "required": [
@@ -10894,7 +10899,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#create",
    "catalog": {
-    "line": 219,
+    "line": 258,
     "row": "`surveys.create` / `.update` / `.send` | POST | `survey:write` / `survey:all`"
    },
    "channels": [
@@ -10922,7 +10927,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 261,
+     "line": 275,
      "snippet": "| `surveys.create` / `.update` | `survey:write` / `:all` | Define a survey |"
     }
    ],
@@ -10942,7 +10947,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#delete",
    "catalog": {
-    "line": 220,
+    "line": 259,
     "row": "`surveys.delete` | POST | `survey:all`"
    },
    "channels": [
@@ -10961,7 +10966,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 263,
+     "line": 277,
      "snippet": "| `surveys.delete` | `survey:all` | Delete |"
     }
    ],
@@ -10980,7 +10985,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#get-post",
    "catalog": {
-    "line": 221,
+    "line": 260,
     "row": "`surveys.get` / `.list` | GET/POST | `survey:read` …"
    },
    "channels": [
@@ -11000,7 +11005,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 264,
+     "line": 278,
      "snippet": "| `surveys.get` / `.list` | `survey:read` … | Read |"
     }
    ],
@@ -11021,7 +11026,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#list-post",
    "catalog": {
-    "line": 221,
+    "line": 260,
     "row": "`surveys.get` / `.list` | GET/POST | `survey:read` …"
    },
    "channels": [
@@ -11061,7 +11066,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#responses-list-post",
    "catalog": {
-    "line": 223,
+    "line": 262,
     "row": "`surveys.responses.list` | GET/POST | `survey_response:read` …"
    },
    "channels": [
@@ -11092,7 +11097,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 266,
+     "line": 280,
      "snippet": "| `surveys.responses.list` | `survey_response:read` … | Read responses |"
     }
    ],
@@ -11111,7 +11116,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#responses-update",
    "catalog": {
-    "line": 224,
+    "line": 263,
     "row": "`surveys.responses.update` | POST | `survey_response:write` / `:all`"
    },
    "channels": [
@@ -11134,7 +11139,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 267,
+     "line": 281,
      "snippet": "| `surveys.responses.update` | `survey_response:write` / `:all` | Edit a response |"
     }
    ],
@@ -11154,7 +11159,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#send",
    "catalog": {
-    "line": 219,
+    "line": 258,
     "row": "`surveys.create` / `.update` / `.send` | POST | `survey:write` / `survey:all`"
    },
    "channels": [
@@ -11173,12 +11178,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 254,
+     "line": 268,
      "snippet": "curl -X POST 'https://api.devrev.ai/surveys.send' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 262,
+     "line": 276,
      "snippet": "| `surveys.send` | `survey:write` / `:all` | Send to a target |"
     }
    ],
@@ -11198,7 +11203,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#submit",
    "catalog": {
-    "line": 222,
+    "line": 261,
     "row": "`surveys.submit` | POST | `survey_response:write` / `:all`"
    },
    "channels": [
@@ -11225,7 +11230,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 265,
+     "line": 279,
      "snippet": "| `surveys.submit` | `survey_response:write` / `:all` | Submit a response |"
     }
    ],
@@ -11246,7 +11251,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/surveys.md#update",
    "catalog": {
-    "line": 219,
+    "line": 258,
     "row": "`surveys.create` / `.update` / `.send` | POST | `survey:write` / `survey:all`"
    },
    "channels": [
@@ -11289,7 +11294,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/sys-users.md#list-post",
    "catalog": {
-    "line": 179,
+    "line": 218,
     "row": "`sys-users.list` / `.update` | GET/POST | None"
    },
    "channels": [
@@ -11312,7 +11317,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
-     "line": 136,
+     "line": 149,
      "snippet": "| `sys-users.list` / `.update` | None | System (bot) users |"
     }
    ],
@@ -11327,7 +11332,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/sys-users.md#update",
    "catalog": {
-    "line": 179,
+    "line": 218,
     "row": "`sys-users.list` / `.update` | GET/POST | None"
    },
    "channels": [
@@ -11360,7 +11365,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/tags.md#create",
    "catalog": {
-    "line": 74,
+    "line": 113,
     "row": "`tags.create` | POST | `tag:write` / `tag:all`"
    },
    "channels": [
@@ -11387,12 +11392,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 209,
+     "line": 228,
      "snippet": "Create the tags first with `tags.create`, then set them on a record:"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 147,
+     "line": 163,
      "snippet": "curl -X POST 'https://api.devrev.ai/tags.create' \\"
     }
    ],
@@ -11412,7 +11417,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/tags.md#delete",
    "catalog": {
-    "line": 76,
+    "line": 115,
     "row": "`tags.delete` | POST | `tag:all`"
    },
    "channels": [
@@ -11436,12 +11441,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 154,
+     "line": 170,
      "snippet": "- `tags.delete` — `tag:all`. **Confirmed working live 2026-07-18** (unlike most other `.delete`"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 155,
+     "line": 171,
      "snippet": "endpoints in this API, which are missing or deprecate-only): `POST tags.delete {\"id\": \"<TAG_ID>\"}`"
     },
     {
@@ -11465,7 +11470,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/tags.md#get-post",
    "catalog": {
-    "line": 77,
+    "line": 116,
     "row": "`tags.get` / `tags.list` | GET/POST | `tag:read` …"
    },
    "channels": [
@@ -11485,12 +11490,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 152,
+     "line": 168,
      "snippet": "- `tags.get` / `.list` — read tags."
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 156,
+     "line": 172,
      "snippet": "returns `200 {}`, and a follow-up `tags.get` on the same id returns `404 {\"type\":\"not_found\"}`."
     }
    ],
@@ -11511,7 +11516,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/tags.md#list-post",
    "catalog": {
-    "line": 77,
+    "line": 116,
     "row": "`tags.get` / `tags.list` | GET/POST | `tag:read` …"
    },
    "channels": [
@@ -11548,7 +11553,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/tags.md#update",
    "catalog": {
-    "line": 75,
+    "line": 114,
     "row": "`tags.update` | POST | `tag:write` / `tag:all`"
    },
    "channels": [
@@ -11571,7 +11576,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 153,
+     "line": 169,
      "snippet": "- `tags.update` — rename / re-describe (`tag:write`)."
     }
    ],
@@ -11591,7 +11596,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/timeline-entries.md#create",
    "catalog": {
-    "line": 63,
+    "line": 102,
     "row": "`timeline-entries.create` | POST"
    },
    "channels": [
@@ -11639,28 +11644,28 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 39,
+     "line": 57,
      "snippet": "`\"artifacts\": [\"<ARTIFACT_DON>\"]` on `works.create` (or `timeline-entries.create` for a"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 30,
+     "line": 44,
      "snippet": "Post messages to a conversation via `timeline-entries.create` with the"
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 319,
+     "line": 333,
      "snippet": "- Posting a message: there is no `messages.create` — use `timeline-entries.create`"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 113,
-     "snippet": "### Add a comment — `timeline-entries.create`"
+     "line": 10,
+     "snippet": "- [Add a comment — `timeline-entries.create`](#add-a-comment--timeline-entriescreate)"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 116,
-     "snippet": "curl -X POST 'https://api.devrev.ai/timeline-entries.create' \\"
+     "line": 129,
+     "snippet": "### Add a comment — `timeline-entries.create`"
     }
    ],
    "required": [
@@ -11677,7 +11682,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/timeline-entries.md#delete",
    "catalog": {
-    "line": 65,
+    "line": 104,
     "row": "`timeline-entries.delete` | POST"
    },
    "channels": [
@@ -11707,7 +11712,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/timeline-entries.md#get-post",
    "catalog": {
-    "line": 66,
+    "line": 105,
     "row": "`timeline-entries.get` | GET/POST"
    },
    "channels": [
@@ -11728,7 +11733,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 128,
+     "line": 144,
      "snippet": "- `timeline-entries.get` / `.list` — read the timeline; `list` filters by object."
     }
    ],
@@ -11745,7 +11750,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/timeline-entries.md#list-post",
    "catalog": {
-    "line": 67,
+    "line": 106,
     "row": "`timeline-entries.list` | GET/POST"
    },
    "channels": [
@@ -11775,12 +11780,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 130,
+     "line": 146,
      "snippet": "- **`timeline-entries.list` response shape and content — confirmed live 2026-07-18**: wrapper key is"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 243,
+     "line": 259,
      "snippet": "- **`timeline-entries.list` returns internal `timeline_comment` entries — after every"
     }
    ],
@@ -11797,7 +11802,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/timeline-entries.md#update",
    "catalog": {
-    "line": 64,
+    "line": 103,
     "row": "`timeline-entries.update` | POST"
    },
    "channels": [
@@ -11823,7 +11828,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 129,
+     "line": 145,
      "snippet": "- `timeline-entries.update` / `.delete` — edit or remove an entry."
     }
    ],
@@ -12088,7 +12093,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/vistas.md#delete",
    "catalog": {
-    "line": 285,
+    "line": 324,
     "row": "`vistas.delete` | POST | `vista:all`"
    },
    "channels": [
@@ -12107,7 +12112,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 149,
+     "line": 167,
      "snippet": "| `vistas.delete` | `vista:all` |"
     }
    ],
@@ -12126,7 +12131,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/vistas.md#get-post",
    "catalog": {
-    "line": 284,
+    "line": 323,
     "row": "`vistas.get` / `.list` | GET/POST | `vista:read` …"
    },
    "channels": [
@@ -12146,7 +12151,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 148,
+     "line": 166,
      "snippet": "| `vistas.get` / `.list` | `vista:read` … |"
     }
    ],
@@ -12167,7 +12172,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/vistas.md#groups-delete",
    "catalog": {
-    "line": 287,
+    "line": 326,
     "row": "`vistas.groups.delete` | POST | `vista:all`"
    },
    "channels": [
@@ -12186,7 +12191,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 151,
+     "line": 169,
      "snippet": "| `vistas.groups.delete` | `vista:all` |"
     }
    ],
@@ -12205,7 +12210,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/vistas.md#groups-get-post",
    "catalog": {
-    "line": 286,
+    "line": 325,
     "row": "`vistas.groups.get` / `.list` | GET/POST | `vista:read` … (none for default vistas)"
    },
    "channels": [
@@ -12225,7 +12230,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 150,
+     "line": 168,
      "snippet": "| `vistas.groups.get` / `.list` | `vista:read` … (none for default vistas) |"
     }
    ],
@@ -12246,7 +12251,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/vistas.md#groups-list-post",
    "catalog": {
-    "line": 286,
+    "line": 325,
     "row": "`vistas.groups.get` / `.list` | GET/POST | `vista:read` … (none for default vistas)"
    },
    "channels": [
@@ -12293,7 +12298,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/vistas.md#list-post",
    "catalog": {
-    "line": 284,
+    "line": 323,
     "row": "`vistas.get` / `.list` | GET/POST | `vista:read` …"
    },
    "channels": [
@@ -12325,7 +12330,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 142,
+     "line": 160,
      "snippet": "curl -X POST 'https://api.devrev.ai/vistas.list' \\"
     }
    ],
@@ -12344,7 +12349,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/web-crawler-job.md#web-crawler-jobs-control",
    "catalog": {
-    "line": 299,
+    "line": 338,
     "row": "`web-crawler-jobs.create` / `.control` | POST | `web_crawler_job:all`"
    },
    "channels": [
@@ -12374,7 +12379,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 170,
+     "line": 188,
      "snippet": "- `web-crawler-jobs.control` — pause/resume/stop."
     },
     {
@@ -12404,7 +12409,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/web-crawler-job.md#create-web-crawler-job",
    "catalog": {
-    "line": 299,
+    "line": 338,
     "row": "`web-crawler-jobs.create` / `.control` | POST | `web_crawler_job:all`"
    },
    "channels": [
@@ -12437,7 +12442,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 169,
+     "line": 187,
      "snippet": "- `web-crawler-jobs.create` — start a crawl (`web_crawler_job:all`)."
     }
    ],
@@ -12456,7 +12461,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/web-crawler-job.md#get-web-crawler-job-post",
    "catalog": {
-    "line": 300,
+    "line": 339,
     "row": "`web-crawler-jobs.get` / `.list` | GET/POST | `web_crawler_job:all`"
    },
    "channels": [
@@ -12476,7 +12481,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 171,
+     "line": 189,
      "snippet": "- `web-crawler-jobs.get` / `.list` — status."
     }
    ],
@@ -12495,7 +12500,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/web-crawler-job.md#list-web-crawler-jobs-post",
    "catalog": {
-    "line": 300,
+    "line": 339,
     "row": "`web-crawler-jobs.get` / `.list` | GET/POST | `web_crawler_job:all`"
    },
    "channels": [
@@ -12531,7 +12536,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/webhooks.md#create",
    "catalog": {
-    "line": 258,
+    "line": 297,
     "row": "`webhooks.create` / `.update` / `.delete` / `.event` | POST | None (default scopes N/A)"
    },
    "channels": [
@@ -12553,12 +12558,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 71,
+     "line": 89,
      "snippet": "curl -X POST 'https://api.devrev.ai/webhooks.create' \\"
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 82,
+     "line": 100,
      "snippet": "- **Registration handshake.** `webhooks.create` returns the webhook with a `secret` and"
     },
     {
@@ -12580,7 +12585,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/webhooks.md#delete",
    "catalog": {
-    "line": 258,
+    "line": 297,
     "row": "`webhooks.create` / `.update` / `.delete` / `.event` | POST | None (default scopes N/A)"
    },
    "channels": [
@@ -12610,7 +12615,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/webhooks.md#event",
    "catalog": {
-    "line": 258,
+    "line": 297,
     "row": "`webhooks.create` / `.update` / `.delete` / `.event` | POST | None (default scopes N/A)"
    },
    "channels": [
@@ -12708,7 +12713,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 221,
+     "line": 239,
      "snippet": "- Webhooks: verify the signature on inbound events; `webhooks.event` is the"
     }
    ],
@@ -12754,7 +12759,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/webhooks.md#get-post",
    "catalog": {
-    "line": 259,
+    "line": 298,
     "row": "`webhooks.get` / `.list` | GET/POST | None"
    },
    "channels": [
@@ -12774,7 +12779,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 77,
+     "line": 95,
      "snippet": "`webhooks.get/list/update/delete/event` — no explicit scope (default scopes N/A)."
     }
    ],
@@ -12791,7 +12796,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/webhooks.md#list-post",
    "catalog": {
-    "line": 259,
+    "line": 298,
     "row": "`webhooks.get` / `.list` | GET/POST | None"
    },
    "channels": [
@@ -12816,7 +12821,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
-     "line": 100,
+     "line": 118,
      "snippet": "`webhooks.list` (verified live 2026-07-18): call it with an empty body `{}` (or a bare GET with no"
     }
    ],
@@ -12831,7 +12836,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/webhooks.md#update",
    "catalog": {
-    "line": 258,
+    "line": 297,
     "row": "`webhooks.create` / `.update` / `.delete` / `.event` | POST | None (default scopes N/A)"
    },
    "channels": [
@@ -12963,7 +12968,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/works.md#count-post",
    "catalog": {
-    "line": 45,
+    "line": 84,
     "row": "`works.count` | GET/POST | `<type>:read` …"
    },
    "channels": [
@@ -13003,12 +13008,12 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 72,
+     "line": 88,
      "snippet": "- `works.count` — count matching a filter."
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 84,
+     "line": 100,
      "snippet": "— that field is create/update-only). Works identically with `works.count` for a"
     },
     {
@@ -13044,7 +13049,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/works.md#create",
    "catalog": {
-    "line": 40,
+    "line": 79,
     "row": "`works.create` | POST | `<type>:write` / `<type>:all`"
    },
    "channels": [
@@ -13118,7 +13123,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 363,
+     "line": 382,
      "snippet": "/`works.create` using the deprecated subtype's `custom_schema_spec` is actually"
     }
    ],
@@ -13149,7 +13154,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/works.md#delete",
    "catalog": {
-    "line": 42,
+    "line": 81,
     "row": "`works.delete` | POST | `<type>:all`"
    },
    "channels": [
@@ -13178,12 +13183,12 @@
     },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 169,
+     "line": 183,
      "snippet": "same tier as `works.delete`/`custom-objects.delete`/`workflows.delete` — safe to clean up"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 103,
+     "line": 119,
      "snippet": "`works.delete` needs the `<type>:all` scope."
     },
     {
@@ -13211,7 +13216,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/works.md#export-post",
    "catalog": {
-    "line": 46,
+    "line": 85,
     "row": "`works.export` | GET/POST | `<type>:read` …"
    },
    "channels": [
@@ -13253,7 +13258,7 @@
    "notes": [
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 73,
+     "line": 89,
      "snippet": "- `works.export` — bulk export."
     }
    ],
@@ -13284,7 +13289,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/works.md#get-post",
    "catalog": {
-    "line": 43,
+    "line": 82,
     "row": "`works.get` | GET/POST | `<type>:read` …"
    },
    "channels": [
@@ -13314,12 +13319,12 @@
     },
     {
      "file": "skills/7-agent-building/references/toolkit-guide.md",
-     "line": 43,
+     "line": 64,
      "snippet": "- **Field note (2026-09-09, live, a customer's PEx org):** the native `FetchObjectContext` tool **truncates lo"
     },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 70,
+     "line": 86,
      "snippet": "- `works.get` — one item by id."
     }
    ],
@@ -13352,7 +13357,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/works.md#list-post",
    "catalog": {
-    "line": 44,
+    "line": 83,
     "row": "`works.list` | GET/POST | `<type>:read` …"
    },
    "channels": [
@@ -13431,8 +13436,8 @@
     },
     {
      "file": "skills/8-devrev-api/SKILL.md",
-     "line": 130,
-     "snippet": "landed on an exact 60s boundary from request time) on ordinary `works.list`"
+     "line": 3,
+     "snippet": "description: Reads and modifies DevRev data through the public REST API, covering work items (tickets, issues,"
     }
    ],
    "required": [],
@@ -13462,7 +13467,7 @@
   {
    "beta_doc": "skills/11-developer-docs/beta/api-reference/works.md#update",
    "catalog": {
-    "line": 41,
+    "line": 80,
     "row": "`works.update` | POST | `<type>:write` / `<type>:all`"
    },
    "channels": [
@@ -13533,7 +13538,7 @@
     },
     {
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
-     "line": 153,
+     "line": 172,
      "snippet": "*not* gate `works.update` in testing — see the stage-lifecycle skill's Field notes."
     }
    ],
@@ -13560,7 +13565,7 @@
   }
  ],
  "meta": {
-  "core_hash": "0f51dd1fd9b35eb0",
+  "core_hash": "2ea8bd3552e80072",
   "count": 302
  }
 }

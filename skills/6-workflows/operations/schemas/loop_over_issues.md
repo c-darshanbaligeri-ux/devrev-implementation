@@ -1,5 +1,12 @@
 # `loop_over_issues` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Input Port: `block_callback`](#input-port-blockcallback)
+- [Output Port: `block_start`](#output-port-blockstart)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`actual_close_date`** (`composite`) — Provides ways to specify date ranges on objects.

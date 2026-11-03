@@ -1,5 +1,18 @@
 # Customers, users & orgs — DevRev API
 
+## Contents
+<!-- toc -->
+- [1. Accounts](#1-accounts)
+- [2. Rev orgs (workspaces / customer orgs)](#2-rev-orgs-workspaces--customer-orgs)
+- [3. Rev users (customers / contacts)](#3-rev-users-customers--contacts)
+- [4. Dev users (internal team members)](#4-dev-users-internal-team-members)
+- [5. Dev orgs](#5-dev-orgs)
+- [6. Groups](#6-groups)
+- [7. Service accounts & system users](#7-service-accounts--system-users)
+- [8. Object relationships (build order)](#8-object-relationships-build-order)
+- [9. Pitfalls](#9-pitfalls)
+<!-- /toc -->
+
 Identity and customer-data objects: accounts, rev orgs (workspaces), rev users
 (customers/contacts), dev users (internal users), dev orgs, groups, directory,
 service accounts, and system users.

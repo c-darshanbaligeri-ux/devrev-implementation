@@ -1,5 +1,12 @@
 # `watch_ticket_for_updates` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Input Port: `callback`](#input-port-callback)
+- [Output Port: `output`](#output-port-output)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`fields_to_watch`** (`[]enum`) **REQUIRED** — Fields to watch for changes. The trigger will only be fired if any of these fields are updated.

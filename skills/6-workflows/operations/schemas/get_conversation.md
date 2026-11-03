@@ -1,5 +1,11 @@
 # `get_conversation` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Output Port: `output`](#output-port-output)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`id`** (`id`) **REQUIRED** — The id of the conversation.

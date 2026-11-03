@@ -1,6 +1,6 @@
 ---
 name: workflows
-description: Manage DevRev workflows end-to-end — create, author, modify, delete, list, inspect, publish, and trigger workflows and AI-agent-callable skills, all through DevRev API calls (the agent has no built-in workflow tool, so every action here is an HTTP request). Use this skill whenever a user wants to create a new workflow or automation, describes an "if this happens, do that" rule in natural language, wants to add/remove/reconnect steps in an existing workflow, wants to build an agent-callable "skill" that wraps an API, needs to debug why a workflow template failed to import, wants to trigger/test a workflow, or asks to list/show/inspect workflows — even if they don't say the word "workflow" explicitly (e.g. "notify someone when a ticket comes in", "let the agent look up order status", "add a step that...", "why won't this template import").
+description: Authors and manages DevRev workflows and agent-callable skills through API calls (create, modify, delete, list, publish, trigger, and debug template imports). Use for "if this happens, do that" automations, "notify someone when a ticket comes in", "let the agent look up order status", "add a step to a workflow", "why will this template not import". Not for building or testing the AI agent itself (use 7-agent-building) or for stage lifecycles (use 2-stage-lifecycle-customization).
 ---
 
 # DevRev Workflow Admin

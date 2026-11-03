@@ -1,5 +1,26 @@
 # Stages, states, and stage diagrams — DevRev API
 
+## Contents
+<!-- toc -->
+- [1. Concepts](#1-concepts)
+- [2. Custom states](#2-custom-states)
+  - [Create — `states.custom.create` (scope: `custom_state:write`)](#create--statescustomcreate-scope-customstatewrite)
+  - [Update — `states.custom.update`](#update--statescustomupdate)
+  - [Read](#read)
+- [3. Custom stages](#3-custom-stages)
+  - [Create — `stages.custom.create` (scope: `custom_stage:write`)](#create--stagescustomcreate-scope-customstagewrite)
+  - [Update — `stages.custom.update`](#update--stagescustomupdate)
+  - [Read](#read-1)
+- [4. Stage diagrams](#4-stage-diagrams)
+  - [Create — `stage-diagrams.create` (scope: `stage_diagram:write`)](#create--stage-diagramscreate-scope-stagediagramwrite)
+  - [Update — `stage-diagrams.update`](#update--stage-diagramsupdate)
+  - [Read](#read-2)
+- [5. Assigning a stage diagram to a subtype](#5-assigning-a-stage-diagram-to-a-subtype)
+- [6. Dependent-field conditions on stages](#6-dependent-field-conditions-on-stages)
+- [7. Quick reference](#7-quick-reference)
+- [8. Common pitfalls](#8-common-pitfalls)
+<!-- /toc -->
+
 How to customize an object's lifecycle programmatically: states (broad
 categories), stages (steps within a state), and stage diagrams (allowed
 transitions). Applies to issue, ticket, custom objects, and any leaf type.

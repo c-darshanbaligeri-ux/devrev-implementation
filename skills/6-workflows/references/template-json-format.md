@@ -1,5 +1,56 @@
 # Workflow Template JSON Format
 
+## Contents
+<!-- toc -->
+- [Template Wrapper Format](#template-wrapper-format)
+- [Inner Workflow Structure](#inner-workflow-structure)
+- [Step Structure](#step-structure)
+  - [Port Schema Rules (`input_ports` / `output_ports`)](#port-schema-rules-inputports--outputports)
+- [How Operations Are Referenced](#how-operations-are-referenced)
+- [Connecting Steps (next_steps)](#connecting-steps-nextsteps)
+- [Input Values (Data Mapping)](#input-values-data-mapping)
+  - [Value Types](#value-types)
+  - [Literal Values](#literal-values)
+  - [JSONata Expressions](#jsonata-expressions)
+  - [Text Templates](#text-templates)
+  - [List Values](#list-values)
+  - [Composite Values](#composite-values)
+- [Trigger Configuration](#trigger-configuration)
+  - [`fields_to_watch` — Filter which field changes fire the trigger](#fieldstowatch--filter-which-field-changes-fire-the-trigger)
+  - [`_filter` — Conditional filter for when the trigger fires](#filter--conditional-filter-for-when-the-trigger-fires)
+- [Timer Trigger](#timer-trigger)
+- [Critical Field Type Requirements](#critical-field-type-requirements)
+  - [`uenum` Fields MUST Have `allowed_values`](#uenum-fields-must-have-allowedvalues)
+  - [`array` Fields MUST Have `base_type`](#array-fields-must-have-basetype)
+- [If/Else Conditions](#ifelse-conditions)
+- [Loops and Iteration](#loops-and-iteration)
+  - [`loop_over_*` Operations (Preferred for Native Objects)](#loopover-operations-preferred-for-native-objects)
+  - [`for_each` (Only When No Native Loop Exists)](#foreach-only-when-no-native-loop-exists)
+  - [Variable Management (init_variable + set_variable + $get_variable)](#variable-management-initvariable--setvariable--getvariable)
+- [Sleep/Wait Operations](#sleepwait-operations)
+- [Ask AI Operation](#ask-ai-operation)
+- [HTTP Operation](#http-operation)
+- [Code Node (`invoke_code`)](#code-node-invokecode)
+  - [How It Works](#how-it-works)
+  - [Template Structure](#template-structure)
+  - [Input Fields](#input-fields)
+  - [Output Port Schema](#output-port-schema)
+  - [Output Schema Field Types](#output-schema-field-types)
+  - [Accessing Code Outputs](#accessing-code-outputs)
+  - [Python Environment](#python-environment)
+  - [Code Patterns](#code-patterns)
+  - [Best Practices](#best-practices)
+- [UI Metadata](#ui-metadata)
+- [Reference Key Naming Convention](#reference-key-naming-convention)
+- [Available Operations](#available-operations)
+- [Operation Schemas (Input/Output Ports)](#operation-schemas-inputoutput-ports)
+- [Example Templates](#example-templates)
+  - [Validated Working Examples (`working-*.json`)](#validated-working-examples-working-json)
+  - [Reference Examples (from production)](#reference-examples-from-production)
+- [Complete Example: Opportunity Updated -> Check Account -> Notify](#complete-example-opportunity-updated---check-account---notify)
+- [Validation Checklist](#validation-checklist)
+<!-- /toc -->
+
 This reference is the detailed spec for the inner workflow JSON referenced from `SKILL.md`'s "Author the template JSON" step. Read this in full whenever you're actually assembling `steps`, ports, or `input_values` — the summary in `SKILL.md` intentionally omits these details so the top-level skill stays short.
 
 ## Template Wrapper Format
@@ -896,13 +947,13 @@ These templates have been confirmed to import successfully. **Always study these
 
 | File | Steps | Pattern Demonstrated |
 |------|-------|---------------------|
-| `4392-Async opportunity review agent-template.json` | 2 | Simple trigger -> action, agent interaction |
-| `4505-Auto-update issue tcd as end of sprint date-template.json` | 3 | Trigger with `fields_to_watch` + `_filter`, chained updates |
-| `5216-Account segment missing notification-template.json` | 4 | Trigger -> get -> if_else -> comment, `_filter` with stage check |
-| `4441-Ticket escalator from customer message-template.json` | 11 | Complex: trigger -> ask_ai -> if_else -> get -> nested if_else -> update + notify |
-| `3592-Generate rca from pia-template.json` | 8 | Incident trigger -> ask_ai -> create_article, if_else branching |
-| `5040-Devrevu - enablement journey - poc emails-template.json` | 8 | Custom object trigger, HTTP calls, sleep_for, third-party operations |
-| `5158-Devrevu - enablement journey - mailing for non enablement journey users-template.json` | 43 | Complex sequential flow with many sleep_for + if_else + third-party email |
+| `4392-async-opportunity-review-agent-template.json` | 2 | Simple trigger -> action, agent interaction |
+| `4505-auto-update-issue-tcd-as-end-of-sprint-date-template.json` | 3 | Trigger with `fields_to_watch` + `_filter`, chained updates |
+| `5216-account-segment-missing-notification-template.json` | 4 | Trigger -> get -> if_else -> comment, `_filter` with stage check |
+| `4441-ticket-escalator-from-customer-message-template.json` | 11 | Complex: trigger -> ask_ai -> if_else -> get -> nested if_else -> update + notify |
+| `3592-generate-rca-from-pia-template.json` | 8 | Incident trigger -> ask_ai -> create_article, if_else branching |
+| `5040-devrevu-enablement-journey-poc-emails-template.json` | 8 | Custom object trigger, HTTP calls, sleep_for, third-party operations |
+| `5158-devrevu-enablement-journey-mailing-for-non-enablement-journey-users-template.json` | 43 | Complex sequential flow with many sleep_for + if_else + third-party email |
 
 To read an example: `python3 -c "import json; d=json.load(open('skills/6-workflows/examples/FILENAME.json')); inner=json.loads(d['data']); print(json.dumps(inner, indent=2))"`
 

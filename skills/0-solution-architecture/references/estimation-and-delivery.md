@@ -1,5 +1,17 @@
 # Estimation, Risk & Delivery
 
+## Contents
+<!-- toc -->
+- [Table of contents](#table-of-contents)
+- [1. Complexity sizing](#1-complexity-sizing)
+- [2. Effort estimation model](#2-effort-estimation-model)
+- [3. Task breakdown format](#3-task-breakdown-format)
+- [4. Risk analysis](#4-risk-analysis)
+- [5. Alternative designs (A/B/C)](#5-alternative-designs-abc)
+- [6. Deployment, testing, rollout, monitoring, maintenance](#6-deployment-testing-rollout-monitoring-maintenance)
+- [7. Calibration from a real build (devrev-implementation)](#7-calibration-from-a-real-build-devrev-implementation)
+<!-- /toc -->
+
 Use this reference when the solution needs an implementation plan: effort estimates, complexity sizing, risk analysis, alternative designs, and a rollout/monitoring/maintenance plan. Base numbers on realistic enterprise implementation experience, not optimistic assumptions.
 
 ## Table of contents

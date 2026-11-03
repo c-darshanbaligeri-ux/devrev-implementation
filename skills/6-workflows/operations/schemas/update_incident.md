@@ -1,5 +1,11 @@
 # `update_incident` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Output Port: `output`](#output-port-output)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`acknowledged_date`** (`timestamp`) — Timestamp when the incident was acknowledged.

@@ -1,5 +1,29 @@
 # /guardrails-api — Configuring Agent Guardrails via API
 
+## Contents
+<!-- toc -->
+- [Overview](#overview)
+- [Schemas](#schemas)
+  - [`agent-guardrail` (read response)](#agent-guardrail-read-response)
+  - [`topic-boundary-guardrail`](#topic-boundary-guardrail)
+  - [`set-ai-agent-guardrail` (write/create/update)](#set-ai-agent-guardrail-writecreateupdate)
+- [API Endpoints](#api-endpoints)
+  - [Create AI Agent](#create-ai-agent)
+  - [Update AI Agent](#update-ai-agent)
+  - [Get AI Agent](#get-ai-agent)
+  - [Create AI Agent Version](#create-ai-agent-version)
+  - [Update AI Agent Version](#update-ai-agent-version)
+  - [Get AI Agent Version](#get-ai-agent-version)
+- [Where Guardrails Appear in Payloads](#where-guardrails-appear-in-payloads)
+- [Examples](#examples)
+  - [Create an Agent with a Topic Boundary Guardrail](#create-an-agent-with-a-topic-boundary-guardrail)
+  - [Update Guardrails on an Existing Agent](#update-guardrails-on-an-existing-agent)
+  - [Remove a Guardrail (set type to "none")](#remove-a-guardrail-set-type-to-none)
+- [Feature Flag Control (archon-policy)](#feature-flag-control-archon-policy)
+- [Key Takeaways](#key-takeaways)
+- [Related Commands](#related-commands)
+<!-- /toc -->
+
 > **Note:** Agent Studio is currently in beta for Dev0. Until the UI exposes guardrail configuration, use the internal API endpoints described below.
 
 > **Source:** Schemas extracted from `devrev/api-specs` → `specs/next/openapi-internal-general.yaml`

@@ -1,5 +1,11 @@
 # `conversation_created` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Output Port: `output`](#output-port-output)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 _No input fields (trigger or system-provided)._

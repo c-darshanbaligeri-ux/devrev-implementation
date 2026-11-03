@@ -1,5 +1,31 @@
 # Trail, Articles, and Directories — the DevRev knowledge model
 
+## Contents
+<!-- toc -->
+- [1. The three objects at a glance](#1-the-three-objects-at-a-glance)
+- [2. Trail (Parts) — hierarchy and gotchas](#2-trail-parts--hierarchy-and-gotchas)
+  - [Structure](#structure)
+  - [Where the hierarchy actually lives](#where-the-hierarchy-actually-lives)
+  - [`parts.list` `parent_part` filter — depth semantics](#partslist-parentpart-filter--depth-semantics)
+  - [Fields on a Part record](#fields-on-a-part-record)
+- [3. Articles — Knowledge Base](#3-articles--knowledge-base)
+  - [Structure](#structure-1)
+  - [Body content — the artifact chain](#body-content--the-artifact-chain)
+  - [`articles.list` server-side filters (doc-cited 2026-07-31)](#articleslist-server-side-filters-doc-cited-2026-07-31)
+- [4. Directories (the "collections")](#4-directories-the-collections)
+  - [Structure](#structure-2)
+  - [`directories.list` filters (doc-cited 2026-07-31)](#directorieslist-filters-doc-cited-2026-07-31)
+  - [Why directories aren't the retrieval axis](#why-directories-arent-the-retrieval-axis)
+- [5. How the three connect](#5-how-the-three-connect)
+- [6. Retrieval priority ladder (per ART-30502)](#6-retrieval-priority-ladder-per-art-30502)
+- [7. End-to-end grounding recipes](#7-end-to-end-grounding-recipes)
+  - ["Give me the KB for this Trail Part"](#give-me-the-kb-for-this-trail-part)
+  - ["Given a fuzzy module name, find the Trail Part and its KB"](#given-a-fuzzy-module-name-find-the-trail-part-and-its-kb)
+  - ["Which articles cover this term, across the whole KB?"](#which-articles-cover-this-term-across-the-whole-kb)
+- [8. Common pitfalls](#8-common-pitfalls)
+- [9. Related files](#9-related-files)
+<!-- /toc -->
+
 A single reference tying together the three DevRev objects that carry product
 context and grounding knowledge: **Parts (the Trail hierarchy)**, **Articles
 (the Knowledge Base)**, and **Directories (editorial "collections")**. This

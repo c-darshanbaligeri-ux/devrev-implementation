@@ -1,6 +1,6 @@
 ---
 name: api-conventions
-description: Base cross-cutting conventions that every DevRev REST endpoint follows — authentication tokens (PAT/AAT/SUT/session), cursor-based pagination, API versioning header, rate-limit headers and 429 handling, standard error response shape and HTTP status codes. Use when writing or debugging any DevRev API client, when a call returns a status code or header you need to interpret, or when picking up an API version / beta scope. Applies before/underneath every domain skill (1–9); does not itself define any endpoint payloads.
+description: Cross-cutting rules every DevRev REST call follows, namely token types (PAT, AAT, SUT, session), cursor pagination, the API version and beta headers, rate-limit headers and 429 handling, and the standard error shape. Use when a call returns a status or header you must interpret ("why did I get a 429", "how do I paginate", "how do I opt into beta"). Not for endpoint payloads (use 8-devrev-api).
 ---
 
 # API conventions — the base rules every DevRev REST call follows

@@ -1,5 +1,15 @@
 # Operation Schema Index
 
+## Contents
+<!-- toc -->
+- [Field Types Reference](#field-types-reference)
+- [Triggers (40)](#triggers-40)
+- [Actions (64)](#actions-64)
+- [Controls (7)](#controls-7)
+- [Blockings (2)](#blockings-2)
+- [Other (17)](#other-17)
+<!-- /toc -->
+
 > 130 operations with resolved schemas.
 
 ## Field Types Reference

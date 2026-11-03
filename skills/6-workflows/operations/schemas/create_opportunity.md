@@ -1,5 +1,11 @@
 # `create_opportunity` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Output Port: `output`](#output-port-output)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`account`** (`id`) **REQUIRED** — The ID of the account that the opportunity is associated with.

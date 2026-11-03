@@ -1,7 +1,21 @@
 # Control Operations (8)
 
-> Flow-control operations that route or branch workflow execution.
+## Contents
+<!-- toc -->
+- [1. AI Agent Skill](#1-ai-agent-skill)
+  - [Input (`input`)](#input-input)
+- [2. For Each](#2-for-each)
+- [3. Go Back](#3-go-back)
+- [4. If Else](#4-if-else)
+  - [Input (`input`)](#input-input-1)
+- [5. Initialize Variable](#5-initialize-variable)
+- [6. Router](#6-router)
+- [7. Set Variable](#7-set-variable)
+- [8. While](#8-while)
+  - [Output (`block_start`)](#output-blockstart)
+<!-- /toc -->
 
+> Flow-control operations that route or branch workflow execution.
 
 ## 1. AI Agent Skill
 

@@ -1,5 +1,44 @@
 # DevRev public API — master catalog
 
+## Contents
+<!-- toc -->
+- [Works (issue, ticket, task, incident, opportunity)](#works-issue-ticket-task-incident-opportunity)
+- [Timeline entries & reactions](#timeline-entries--reactions)
+- [Tags](#tags)
+- [Links](#links)
+- [Custom link types](#custom-link-types)
+- [Atoms (generic object fetch)](#atoms-generic-object-fetch)
+- [Parts (product / capability / feature)](#parts-product--capability--feature)
+- [Accounts](#accounts)
+- [Rev orgs (workspaces / customer orgs)](#rev-orgs-workspaces--customer-orgs)
+- [Rev users (customers / contacts)](#rev-users-customers--contacts)
+- [Dev users (internal users)](#dev-users-internal-users)
+- [Dev orgs](#dev-orgs)
+- [Groups & directory](#groups--directory)
+- [Service accounts & system users](#service-accounts--system-users)
+- [Conversations](#conversations)
+- [Chats](#chats)
+- [Articles (knowledge base)](#articles-knowledge-base)
+- [Directories (Help Center collections) — confirmed live 2026-07-21](#directories-help-center-collections--confirmed-live-2026-07-21)
+- [Surveys](#surveys)
+- [Meetings](#meetings)
+- [SLAs, metrics & trackers](#slas-metrics--trackers)
+- [Artifacts (files)](#artifacts-files)
+- [Webhooks](#webhooks)
+- [Jobs](#jobs)
+- [Keyrings](#keyrings)
+- [Schedules (org schedules & fragments)](#schedules-org-schedules--fragments)
+- [Vistas (views)](#vistas-views)
+- [Observability (sessions)](#observability-sessions)
+- [Web crawler jobs](#web-crawler-jobs)
+- [Snap widgets & snap-kit](#snap-widgets--snap-kit)
+- [Commands](#commands)
+- [Code changes](#code-changes)
+- [Auth tokens & connections](#auth-tokens--connections)
+- [Customization (schemas, custom objects, stages, states, diagrams)](#customization-schemas-custom-objects-stages-states-diagrams)
+- [Health](#health)
+<!-- /toc -->
+
 Every public DevRev REST endpoint, grouped by domain, with the HTTP method and
 the OAuth scope(s) required. This is the authoritative index for the whole
 folder. Source: DevRev auto-generated API-to-scope reference.

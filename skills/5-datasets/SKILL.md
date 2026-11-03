@@ -1,6 +1,6 @@
 ---
 name: datasets
-description: Use this skill when the user asks to "create a custom dataset", "Oasis dataset", "Ponos job", "PaaS job", "BigQuery dataset", "dataset schema", or otherwise wants to create, update, or manage custom datasets in DevRev for analytics dashboards. Routes to the correct dataset-builder plugin commands rather than duplicating their logic.
+description: Creates and manages custom datasets for analytics dashboards by routing to the dataset-builder plugin (PaaS versus Ponos, Oasis datasets, dataset schemas). Use for "create a custom dataset", "Oasis dataset", "Ponos job", "PaaS job", "BigQuery dataset". Not for building the dashboard itself (use 4-dashboards-and-widgets).
 ---
 
 # DevRev Custom Datasets

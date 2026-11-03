@@ -1,5 +1,21 @@
 # Work items, timeline, tags & links — DevRev API
 
+## Contents
+<!-- toc -->
+- [1. Works (issue / ticket / task / incident / opportunity)](#1-works-issue--ticket--task--incident--opportunity)
+  - [Create — `works.create`](#create--workscreate)
+  - [Read / list / count / export](#read--list--count--export)
+  - [Update / delete](#update--delete)
+- [2. Timeline entries & reactions](#2-timeline-entries--reactions)
+  - [Add a comment — `timeline-entries.create`](#add-a-comment--timeline-entriescreate)
+  - [Reactions — `reactions.list` / `reactions.update`](#reactions--reactionslist--reactionsupdate)
+- [3. Tags](#3-tags)
+- [4. Links](#4-links)
+- [5. Atoms — generic fetch](#5-atoms--generic-fetch)
+- [6. Pitfalls](#6-pitfalls)
+- [Field notes — timeline pagination (confirmed live 2026-09-09)](#field-notes--timeline-pagination-confirmed-live-2026-09-09)
+<!-- /toc -->
+
 Create and manage the core work objects (issue, ticket, task, incident,
 opportunity), post to their timelines, react, tag, and link them.
 

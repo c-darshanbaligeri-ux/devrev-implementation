@@ -1,5 +1,25 @@
 # Worked Example — Digital Lending: Loan Application & Support Solution
 
+## Contents
+<!-- toc -->
+- [1. Business problem](#1-business-problem)
+- [2. Solution overview](#2-solution-overview)
+- [3. Domain model (objects & customization)](#3-domain-model-objects--customization)
+- [4. Lifecycle (states & stages)](#4-lifecycle-states--stages)
+- [5. Relationships](#5-relationships)
+- [6. Data ingestion & integrations](#6-data-ingestion--integrations)
+- [7. Channels](#7-channels)
+- [8. Automation (workflows & automations)](#8-automation-workflows--automations)
+- [9. Intelligence (agents & skills)](#9-intelligence-agents--skills)
+- [10. Knowledge & self-service](#10-knowledge--self-service)
+- [11. Notifications](#11-notifications)
+- [12. Analytics & reporting](#12-analytics--reporting)
+- [13. Identity & permissions](#13-identity--permissions)
+- [14. Governance & rollout](#14-governance--rollout)
+- [15. Build sequence](#15-build-sequence)
+- [16. Assumptions, risks & open questions](#16-assumptions-risks--open-questions)
+<!-- /toc -->
+
 > Illustrates the full methodology for a non-support domain. The business problem was stated as:
 > *"We're a digital consumer-lending fintech. Customers apply for personal loans through our app and website. Today applications live in spreadsheets, our ops team chases documents over email, and support requests come in through a generic inbox with no link to the application. We want one system that runs the application lifecycle, automates document chasing and risk flagging, gives applicants a self-service assistant, and lets leadership see funnel and SLA metrics. Our legacy CRM data is in Salesforce."*
 

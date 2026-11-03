@@ -1,5 +1,18 @@
 # Patterns & Recipes: Reusable Designs
 
+## Contents
+<!-- toc -->
+- [Table of contents](#table-of-contents)
+- [1. Per-node config quick reference](#1-per-node-config-quick-reference)
+- [2. Workflow recipes (full node sequences)](#2-workflow-recipes-full-node-sequences)
+- [3. Expression language snippets](#3-expression-language-snippets)
+- [4. Merge, loop & variable mechanics](#4-merge-loop--variable-mechanics)
+- [5. Snap-in implementation patterns](#5-snap-in-implementation-patterns)
+- [6. Agent design patterns](#6-agent-design-patterns)
+- [7. Workflow-as-agent-skill wiring](#7-workflow-as-agent-skill-wiring)
+- [8. Documented limits & gotchas](#8-documented-limits--gotchas)
+<!-- /toc -->
+
 Battle-tested building blocks to compose into solutions. Reach here after the decision frameworks tell you *which* primitive — this tells you *how* to shape it. Covers workflow node config, workflow recipes, expression snippets, snap-in patterns, agent patterns, and merge/loop mechanics.
 
 ## Table of contents

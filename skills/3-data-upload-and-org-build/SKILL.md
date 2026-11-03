@@ -1,6 +1,6 @@
 ---
 name: data-upload-and-org-build
-description: Upload files and artifacts to DevRev, attach files to objects, migrate data via bulk record creation, and build a complete DevRev org from scratch (end-to-end org setup with customization → parts → Trails → links → work). Use when you need to upload files, attach artifacts, load CSV data, create many records, or stand up a full customer org programmatically. Covers artifacts.prepare/upload, ordered org build phases, bulk data loading patterns, and idempotent record creation.
+description: Uploads files and artifacts, attaches them to objects, migrates data by bulk record creation, and builds a complete org from scratch in dependency order (schemas, parts, links, work). Use for "load these CSVs", "import data", "attach a file", "set up a full customer org". Not for one-off record edits (use 8-devrev-api) or schema design (use 1-object-schema-customization).
 ---
 
 # Data upload & org build — executable playbook

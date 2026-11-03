@@ -1,5 +1,22 @@
 # Stock object modification & schema management — DevRev API
 
+## Contents
+<!-- toc -->
+- [1. The additive model](#1-the-additive-model)
+- [2. Inspect stock schemas (read-only)](#2-inspect-stock-schemas-read-only)
+- [3. See the merged (aggregated) schema](#3-see-the-merged-aggregated-schema)
+- [4. Modify a stock object — add fields & overrides](#4-modify-a-stock-object--add-fields--overrides)
+  - [4a. Add a tenant field to every record of a stock type](#4a-add-a-tenant-field-to-every-record-of-a-stock-type)
+  - [4b. Override a stock field (e.g. rename priority/severity, restrict values)](#4b-override-a-stock-field-eg-rename-priorityseverity-restrict-values)
+  - [Supported field types](#supported-field-types)
+  - [Removing fields](#removing-fields)
+  - [UI hints per field (`ui` object)](#ui-hints-per-field-ui-object)
+- [5. Manage subtypes](#5-manage-subtypes)
+- [6. Read & manage custom fragments](#6-read--manage-custom-fragments)
+- [7. Upgrade existing records after a schema change](#7-upgrade-existing-records-after-a-schema-change)
+- [8. Common pitfalls](#8-common-pitfalls)
+<!-- /toc -->
+
 How to inspect and safely modify DevRev's built-in ("stock") objects — issue,
 ticket, account, contact, opportunity, part — and manage schema fragments,
 subtypes, field overrides, and record upgrades.

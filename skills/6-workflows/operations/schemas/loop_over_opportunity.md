@@ -1,5 +1,12 @@
 # `loop_over_opportunity` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Input Port: `block_callback`](#input-port-blockcallback)
+- [Output Port: `block_start`](#output-port-blockstart)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`actual_close_date`** (`composite`) — Filter for timestamp when the opportunity was actually closed.

@@ -1,5 +1,19 @@
 # Support, knowledge & SLAs — DevRev API
 
+## Contents
+<!-- toc -->
+- [1. Conversations](#1-conversations)
+- [2. Chats](#2-chats)
+- [3. Articles (knowledge base)](#3-articles-knowledge-base)
+  - [3a. Article body content — confirmed live 2026-07-21 (closes the prior open gap)](#3a-article-body-content--confirmed-live-2026-07-21-closes-the-prior-open-gap)
+  - [3b. Collections (directories) — confirmed live 2026-07-21](#3b-collections-directories--confirmed-live-2026-07-21)
+  - [3c. Article visibility ("Visible to", public) — confirmed live 2026-10-22](#3c-article-visibility-visible-to-public--confirmed-live-2026-10-22)
+- [4. Surveys](#4-surveys)
+- [5. Meetings](#5-meetings)
+- [6. SLAs, metric definitions & trackers](#6-slas-metric-definitions--trackers)
+- [7. Pitfalls](#7-pitfalls)
+<!-- /toc -->
+
 Customer-facing and support-ops objects: conversations, chats, knowledge-base
 articles, surveys, meetings, and SLAs / metric definitions / trackers.
 

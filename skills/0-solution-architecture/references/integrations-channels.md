@@ -1,5 +1,20 @@
 # DevRev Integrations, Channels, Analytics, Users & Notifications
 
+## Contents
+<!-- toc -->
+- [Table of contents](#table-of-contents)
+- [1. Integrations & AirSync](#1-integrations--airsync)
+  - [Connector-specific detail (for the build)](#connector-specific-detail-for-the-build)
+  - [Generic AirSync limits (all connectors)](#generic-airsync-limits-all-connectors)
+  - [Snap-in framework quick facts (for integration design)](#snap-in-framework-quick-facts-for-integration-design)
+- [2. Channels](#2-channels)
+- [3. Analytics & reporting](#3-analytics--reporting)
+- [4. Search & knowledge](#4-search--knowledge)
+- [5. Users & permissions](#5-users--permissions)
+- [6. Notifications & messaging](#6-notifications--messaging)
+- [Solution-architecture cheat sheet (supporting layers)](#solution-architecture-cheat-sheet-supporting-layers)
+<!-- /toc -->
+
 Use this reference for the **supporting layers** of a solution: how data gets in (integrations/sync), how customers reach the org (channels), how it's measured (analytics), who can see what (users/permissions), and how people get told (notifications).
 
 ## Table of contents

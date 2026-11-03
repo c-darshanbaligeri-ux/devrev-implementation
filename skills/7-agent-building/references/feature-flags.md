@@ -1,5 +1,25 @@
 # Guide for Updating Feature Flags in archon-policy
 
+## Contents
+<!-- toc -->
+- [Overview](#overview)
+- [Key Policy Files](#key-policy-files)
+- [Common Feature Flag Patterns](#common-feature-flag-patterns)
+  - [1. Boolean flag (true/false)](#1-boolean-flag-truefalse)
+  - [2. Config value (not boolean)](#2-config-value-not-boolean)
+  - [3. Model override per agent (neuron.rego)](#3-model-override-per-agent-neuronrego)
+  - [4. Disable specific agent workers (synapse.rego)](#4-disable-specific-agent-workers-synapserego)
+  - [5. Thinking tokens per agent (neuron.rego)](#5-thinking-tokens-per-agent-neuronrego)
+  - [6. Snap-in enablement (experience.rego)](#6-snap-in-enablement-experiencerego)
+  - [7. Guardrails per agent (neuron.rego)](#7-guardrails-per-agent-neuronrego)
+- [Available Input Fields](#available-input-fields)
+- [Helper Variables](#helper-variables)
+- [Registering a Flag in the Export Map](#registering-a-flag-in-the-export-map)
+- [Workflow](#workflow)
+- [Key Sections in experience.rego for Agents & Snap-ins](#key-sections-in-experiencerego-for-agents--snap-ins)
+- [Key Sections in neuron.rego for Agent Config](#key-sections-in-neuronrego-for-agent-config)
+<!-- /toc -->
+
 ## Overview
 
 Feature flags in DevRev are managed via **Rego policies** in the `archon-policy` repository (clone locally; policy files live under `policies/`). They control product behavior per environment (`dev`, `qa`, `prod`), per org, per user, and per agent.

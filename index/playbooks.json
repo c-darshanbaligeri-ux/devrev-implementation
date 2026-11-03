@@ -4,7 +4,7 @@
  },
  "playbooks": [
   {
-   "description": "Act as a world-class Senior DevRev Solution Architect, Implementation Engineer, and Platform Expert. Use this skill whenever a user describes a business problem, process, or requirement — in ANY domain (support, sales, ITSM, fintech, insurance, e-commerce, healthcare, logistics, internal ops, product) — that they want to implement, automate, model, or improve in DevRev, even if they don't say \"solution\" or \"architecture\". It transforms ambiguous business requirements into a production-ready, end-to-end DevRev implementation plan across object and stage customization, custom objects and fields, workflows and automations, AI agents and skills, integrations and AirSync, PLuG, snap-ins/TypeScript, APIs, webhooks, widgets, dashboards, search, knowledge graph, permissions/RBAC, notifications, and analytics — with capability selection, risk analysis, alternative designs, and realistic effort estimates. Trigger phrases include: \"how would I build X in DevRev\", \"design/architect a solution for\", \"we want to automate\", \"help me set up\", \"how should I model\", \"we're a [industry] company and need to\", \"which objects should I use\", \"should this be an agent or a workflow\", \"estimate the effort to build\", \"how do I customize DevRev for\". Do NOT trigger for pure data lookups (\"how many open tickets\"), single-object questions, or when the user only wants to run an existing report. This is the DESIGN phase — once the blueprint is approved, hand off to the numbered execution skills (see \"Handing off to execution\" below).",
+   "description": "Turns a business problem into a DevRev solution blueprint covering capability selection (objects, workflows, agents, integrations), risks, alternative designs and effort estimates. Use when the user describes a process or requirement to implement, automate or improve in DevRev, in any industry and even without the word \"architecture\", for example \"how would I build X in DevRev\", \"should this be an agent or a workflow\", \"we are a fintech and need to...\", \"estimate the effort\". Design only, never calls the live API; once the blueprint is approved hand off to skills 1 to 9. Not for data lookups or running a single API call.",
    "headings": [
     "Why this skill exists",
     "The knowledge base (read on demand)",
@@ -29,7 +29,7 @@
    "when_to_use": []
   },
   {
-   "description": "Customize DevRev object schemas — create custom object types, add fields to tickets/accounts/issues, define subtypes, add tenant fields, create custom link types, modify stock object schemas with field overrides. Use when you need to extend DevRev's data model to capture domain-specific attributes or define new object types. Covers schema fragments, tenant/subtype fields (tnt__/ctype__ prefixes), custom objects with lifecycle stages, and custom link types for relationships between objects.",
+   "description": "Extends the DevRev data model by adding fields to tickets, accounts, issues or parts, creating custom object types, defining subtypes and custom link types, and overriding stock fields (tnt__ and ctype__ field prefixes). Use for \"add a field to accounts\", \"create a custom object\", \"define a subtype\", \"add a link type\". Not for stages or lifecycles (use 2-stage-lifecycle-customization) or for reading and writing ordinary records (use 8-devrev-api).",
    "headings": [
     "When to use",
     "When not to use",
@@ -60,7 +60,7 @@
    ]
   },
   {
-   "description": "Base cross-cutting conventions that every DevRev REST endpoint follows — authentication tokens (PAT/AAT/SUT/session), cursor-based pagination, API versioning header, rate-limit headers and 429 handling, standard error response shape and HTTP status codes. Use when writing or debugging any DevRev API client, when a call returns a status code or header you need to interpret, or when picking up an API version / beta scope. Applies before/underneath every domain skill (1–9); does not itself define any endpoint payloads.",
+   "description": "Cross-cutting rules every DevRev REST call follows, namely token types (PAT, AAT, SUT, session), cursor pagination, the API version and beta headers, rate-limit headers and 429 handling, and the standard error shape. Use when a call returns a status or header you must interpret (\"why did I get a 429\", \"how do I paginate\", \"how do I opt into beta\"). Not for endpoint payloads (use 8-devrev-api).",
    "headings": [
     "When to use",
     "When not to use",
@@ -90,7 +90,7 @@
    ]
   },
   {
-   "description": "Offline mirror of the official DevRev developer docs (developer.devrev.ai, scraped 2026-11-03) — the public AND beta API reference with a field-level request table, required scopes, response codes and cURL example for every endpoint; the Guides (webhooks, object customization, custom objects, restricted timeline messages); the PLuG Web SDK and Android/iOS/React Native/Cordova/Flutter SDKs; snap-in development (concepts, manifest, CLI, functions, keyrings, testing, debugging, quotas); AirSync (data model, object types, extraction/loading); and the changelogs. Use when the user asks what the official docs say about something, needs a request field list or a beta endpoint that skills/8-devrev-api does not carry, SDK install/quickstart steps, snap-in or AirSync reference material, or webhook event/signature details. Reference-only — never calls the live API, and never overrides facts that were live-verified in another skill.",
+   "description": "Offline mirror of the official DevRev developer docs (developer.devrev.ai) covering every public and beta endpoint with fields, scopes and response codes, the Guides (webhooks, object customization, custom objects), the PLuG Web and mobile SDKs, snap-in framework and AirSync reference, and changelogs. Use for \"what does the official doc say about X\", a request-field list or beta endpoint, SDK install steps, webhook payload or signature details. Records what the docs say; live-verified notes in other skills win. Never calls the live API.",
    "headings": [
     "Precedence — read this first",
     "When to use / when not to use",
@@ -109,7 +109,7 @@
    "when_to_use": []
   },
   {
-   "description": "Customize object lifecycles in DevRev — create custom states (broad categories like open/in_progress/closed), define custom stages (specific steps like \\\"In Review\\\" or \\\"Needs RCA\\\"), build stage diagrams (allowed transitions), and assign lifecycles to object types or subtypes. Use when you need to model a custom workflow: ticket stages, issue states, custom object lifecycles, or any object's stage-based flow. Covers states.custom.*, stages.custom.*, and stage-diagrams.* endpoints.",
+   "description": "Customizes object lifecycles with custom states and stages, stage diagrams (allowed transitions) and assigning a lifecycle to an object type or subtype (states.custom.*, stages.custom.*, stage-diagrams.*). Use for \"customize ticket stages\", \"add a state\", \"define transitions\", a custom object lifecycle. Not for automations that react to stage changes (use 6-workflows) or for adding fields (use 1-object-schema-customization). Custom stages and states cannot be deleted once created.",
    "headings": [
     "When to use",
     "When not to use",
@@ -141,7 +141,7 @@
    ]
   },
   {
-   "description": "Upload files and artifacts to DevRev, attach files to objects, migrate data via bulk record creation, and build a complete DevRev org from scratch (end-to-end org setup with customization → parts → Trails → links → work). Use when you need to upload files, attach artifacts, load CSV data, create many records, or stand up a full customer org programmatically. Covers artifacts.prepare/upload, ordered org build phases, bulk data loading patterns, and idempotent record creation.",
+   "description": "Uploads files and artifacts, attaches them to objects, migrates data by bulk record creation, and builds a complete org from scratch in dependency order (schemas, parts, links, work). Use for \"load these CSVs\", \"import data\", \"attach a file\", \"set up a full customer org\". Not for one-off record edits (use 8-devrev-api) or schema design (use 1-object-schema-customization).",
    "headings": [
     "When to use",
     "When not to use",
@@ -171,7 +171,7 @@
    ]
   },
   {
-   "description": "Use this skill when the user asks to \"create a DevRev dashboard\", \"build a widget\", \"add a chart\", \"modify my dashboard\", \"dashboard layout\", \"verify the dashboard\", or otherwise wants to build or work with analytics dashboards and widgets inside a DevRev org. Routes to the correct dashboard-dev plugin commands rather than duplicating their logic.",
+   "description": "Builds and modifies DevRev dashboards and widgets by routing to the dashboard-dev plugin and its validated pipeline (/dashboard-dev:dashboard-create, /dashboard-dev:modify-dashboard); widget JSON is never hand-written. Use for \"build me a support dashboard\", \"add a chart\", \"modify my dashboard\", \"verify the dashboard\". Not for datasets (use 5-datasets) or raw API reads (use 8-devrev-api).",
    "headings": [
     "Routing table",
     "HARD RULE: Never bypass the pipeline for new dashboards",
@@ -187,7 +187,7 @@
    "when_to_use": []
   },
   {
-   "description": "Use this skill when the user asks to \"create a custom dataset\", \"Oasis dataset\", \"Ponos job\", \"PaaS job\", \"BigQuery dataset\", \"dataset schema\", or otherwise wants to create, update, or manage custom datasets in DevRev for analytics dashboards. Routes to the correct dataset-builder plugin commands rather than duplicating their logic.",
+   "description": "Creates and manages custom datasets for analytics dashboards by routing to the dataset-builder plugin (PaaS versus Ponos, Oasis datasets, dataset schemas). Use for \"create a custom dataset\", \"Oasis dataset\", \"Ponos job\", \"PaaS job\", \"BigQuery dataset\". Not for building the dashboard itself (use 4-dashboards-and-widgets).",
    "headings": [
     "Routing",
     "PaaS vs Ponos decision table",
@@ -206,7 +206,7 @@
    "when_to_use": []
   },
   {
-   "description": "Manage DevRev workflows end-to-end — create, author, modify, delete, list, inspect, publish, and trigger workflows and AI-agent-callable skills, all through DevRev API calls (the agent has no built-in workflow tool, so every action here is an HTTP request). Use this skill whenever a user wants to create a new workflow or automation, describes an \"if this happens, do that\" rule in natural language, wants to add/remove/reconnect steps in an existing workflow, wants to build an agent-callable \"skill\" that wraps an API, needs to debug why a workflow template failed to import, wants to trigger/test a workflow, or asks to list/show/inspect workflows — even if they don't say the word \"workflow\" explicitly (e.g. \"notify someone when a ticket comes in\", \"let the agent look up order status\", \"add a step that...\", \"why won't this template import\").",
+   "description": "Authors and manages DevRev workflows and agent-callable skills through API calls (create, modify, delete, list, publish, trigger, and debug template imports). Use for \"if this happens, do that\" automations, \"notify someone when a ticket comes in\", \"let the agent look up order status\", \"add a step to a workflow\", \"why will this template not import\". Not for building or testing the AI agent itself (use 7-agent-building) or for stage lifecycles (use 2-stage-lifecycle-customization).",
    "headings": [
     "When not to use",
     "Step 0: Check what's available in your session",
@@ -224,32 +224,16 @@
    "when_to_use": []
   },
   {
-   "description": "Build, debug, improve, and test DevRev AI agents using Agent Studio. Syncs AI Agent Guide knowledge base, provides expert guidance on agent prompting, retrieval strategies (FetchObjectContext, HybridSearch, NL2SQL), skills configuration, guardrails, and testing. Use when working with DevRev agents, Agent Studio, or when asked about agent debugging, creation, improvement, or testing.",
+   "description": "Builds, debugs, improves and tests DevRev AI agents in Agent Studio, covering prompting, retrieval strategy (FetchObjectContext, HybridSearch, NL2SQL), skills configuration, guardrails and knowledge sync. Use for \"configure the agent\", \"add a skill to the agent\", \"test the agent guardrails\", \"why is the agent answering wrong\". Not for authoring the workflow that an agent-callable skill wraps (use 6-workflows).",
    "headings": [
     "Overview",
     "API Tokens Setup",
     "Core Principles",
-    "Available Workflows",
-    "1. Sync Knowledge Base",
-    "2. Create a New Agent",
-    "3. Debug an Agent",
-    "4. Improve an Agent",
-    "5. Create Test Set",
-    "6. Answer Questions About Agents",
-    "NL2SQL Annotation Workflow",
-    "Step 1: Check Annotations",
-    "Step 2: Fix Annotations (6-Phase Workflow)",
+    "Workflows",
     "Guardrails Configuration",
     "Feature Flags",
-    "API Contract Compliance",
-    "Critical Schema Differences: Create vs Update",
-    "Guardrail Fields Must Be Flat (Not Nested)",
-    "Skill Trigger IDs Must Be Strings",
-    "Pre-Flight Checklist (use before every API call)",
-    "Using the create-agent.sh Script",
-    "Common Error → Fix Reference",
     "API Safety",
-    "Key Case Study: PeopleStrong SupportGPT",
+    "Key Case Study: a customer support agent",
     "Retrieval Naming Convention",
     "Scripts Reference",
     "Verified API Facts (Live-Tested 2026-06-01)",
@@ -259,13 +243,13 @@
     "Capturing new learnings"
    ],
    "id": "7-agent-building",
-   "lines": 545,
-   "name": "devrev-agent-toolkit",
+   "lines": 193,
+   "name": "agent-building",
    "path": "skills/7-agent-building/SKILL.md",
    "when_to_use": []
   },
   {
-   "description": "Read and modify DevRev data through the public REST API — work items (tickets/issues/tasks/incidents/opportunities), timelines, tags, links, accounts and users, conversations, articles, surveys, meetings, SLAs, artifacts, webhooks, schedules, vistas, custom objects, schema/stage customization, and full org builds. Use whenever the user wants to call a DevRev API endpoint or automate a DevRev operation. Does NOT cover AI agents, workflows, or AirSync connectors.",
+   "description": "Reads and modifies DevRev data through the public REST API, covering work items (tickets, issues, tasks, incidents, opportunities), timelines, tags, links, accounts and users, conversations, articles, surveys, meetings, SLAs, artifacts, webhooks, schedules and views. Holds the endpoint catalog and the per-domain reference docs. Use for \"call works.list\", \"get account details\", \"create a ticket via the API\". Not for schema or stage customization (skills 1 and 2), workflows or agents (6 and 7) or AirSync connectors (9).",
    "headings": [
     "When to use",
     "When not to use",
@@ -282,12 +266,12 @@
    ],
    "id": "8-devrev-api",
    "lines": 186,
-   "name": "devrev-rest-api",
+   "name": "devrev-api",
    "path": "skills/8-devrev-api/SKILL.md",
    "when_to_use": []
   },
   {
-   "description": "Use this skill when the user asks to build, plan, update, or test a DevRev snap-in, AirSync connector, or integration — e.g. \"build a HubSpot connector\", \"I need to sync Asana into DevRev\", \"plan an AirSync integration for X\", \"add pagination to the Trello connector\", \"test this snap-in end-to-end\", \"generate the metadata JSON for Y\". Routes to the `devrev` (devrev-qk-agents) plugin's snap-in vertical (PM → Architect → Tester) rather than duplicating its logic; the plugin requires a one-time manual install (never auto-enabled — third-party org). DevRev's own snap-in framework and AirSync reference docs (manifest, functions, CLI, data model, object types) are mirrored locally in `skills/11-developer-docs/` — read those for facts. Does NOT cover this plugin's own \"Implementation\" (dashboard) vertical — that conflicts with `skills/4-dashboards-and-widgets`'s hard rule and is explicitly excluded; see below.",
+   "description": "Plans, builds, updates and tests DevRev snap-ins and AirSync connectors by routing to the third-party devrev-qk-agents plugin (PM, Architect and Tester pipeline; manual install, never auto-enabled). Use for \"build a HubSpot connector\", \"sync Asana into DevRev\", \"add pagination to the Trello connector\", \"generate the metadata JSON\". DevRev own framework and AirSync docs are in skills/11-developer-docs. Not for dashboards (that plugin dashboard vertical is excluded; use 4-dashboards-and-widgets) or no-code AirSync setup in Settings.",
    "headings": [
     "Routing table",
     "Official developer docs — local reference mirror",

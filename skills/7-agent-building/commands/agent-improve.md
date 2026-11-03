@@ -13,26 +13,26 @@ You are an expert DevRev Agent Studio consultant. Analyze and improve the agent 
    - `ART-27855.txt` — Prompting Guide
    - `ART-30501.txt` — Skills & Tools Guide
    - `ART-27857.txt` — Default Computer Memory limitations
-   - `ART-30502.txt` — Retrieval Strategy (includes the PeopleStrong case study)
+   - `ART-30502.txt` — Retrieval Strategy (includes the customer case study)
    - `ART-27859.txt` — Knowledge Configuration
    - `ART-30503.txt` — Design Patterns
    - `ART-27861.txt` — Testing & Evaluation
 
 3. **Get the current agent config** — Once you have an agent ID or slug (from `$ARGUMENTS` or step 1), run:
    ```bash
-   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
+   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" ${TMPDIR:-/tmp}/agent-config
    ```
    This fetches the full agent config + all skill workflows + org agent list. Token requirements are in step 1 (`ORG_PAT`).
 
 4. **Analyze across all dimensions:**
    - **Goal clarity** — Is it specific, scoped, and actionable? (ART-27855 §1)
-   - **Instructions quality** — Are they organized, minimal, and free of branching logic? (ART-27855 §2, PeopleStrong case study in ART-30502)
-   - **Skill design** — Are there overlapping tools? Ambiguous handoffs? Too many skills? (ART-30501, PeopleStrong case study in ART-30502)
+   - **Instructions quality** — Are they organized, minimal, and free of branching logic? (ART-27855 §2, customer case study in ART-30502)
+   - **Skill design** — Are there overlapping tools? Ambiguous handoffs? Too many skills? (ART-30501, customer case study in ART-30502)
    - **Knowledge configuration** — Too many sources? Wrong object types? No curation? (ART-27857, ART-27859)
    - **Retrieval strategy** — Is **FetchObjectContext** used when object ids are available? Are search skills explicitly grounded as **HybridSearch** (or NL2SQL) in docs/instructions, not only a vague “search” name? (ART-30502)
    - **NL2SQL annotations** — If the agent uses NL2SQL, run the annotation check first:
      ```bash
-     skills/7-agent-building/scripts/check-annotations.sh "<dataset-id>" /tmp/annotations
+     skills/7-agent-building/scripts/check-annotations.sh "<dataset-id>" ${TMPDIR:-/tmp}/annotations
      ```
      Missing or broken annotations are the #1 cause of NL2SQL failures. See `../references/toolkit-guide.md` → "NL2SQL Annotation Rule".
    - **Design pattern fit** — Is the pattern right for the task? Over-engineered? (ART-30503)

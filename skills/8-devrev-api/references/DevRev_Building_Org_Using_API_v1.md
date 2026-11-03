@@ -1,4 +1,16 @@
 # Building a Customer Org Using the DevRev API
+
+## Contents
+<!-- toc -->
+- [Prerequisites](#prerequisites)
+- [1.1 Concepts](#11-concepts)
+- [1.2 Add a subtype with custom fields](#12-add-a-subtype-with-custom-fields)
+- [1.3 Tenant custom fields & field types](#13-tenant-custom-fields--field-types)
+- [1.4 Custom stages & dependent fields](#14-custom-stages--dependent-fields)
+- [1.5 Custom objects (new object types)](#15-custom-objects-new-object-types)
+  - [What the resulting Trail looks like](#what-the-resulting-trail-looks-like)
+<!-- /toc -->
+
 **Implementation Playbook**
 
 *Object customization, parts creation, Trails, and custom links - end to end.*
@@ -15,9 +27,7 @@
 | Base URL | https://api.devrev.ai |
 | Authentication | Bearer <TOKEN> (PAT or Service Account Token) |
 
-
 ---
-
 
 # 1. Purpose & summary
 
@@ -64,7 +74,6 @@ A handful of terms recur throughout every phase below. Skim these once before yo
 | Trail | Not a separate object - it's the rendered graph view of your part hierarchy plus the links between parts. Open Product > Trails in the app to see it. |
 | Custom link type | A relationship you define once (e.g. "ticket relates to campaign") and then create many link instances from. |
 
-
 # 4. Setup at a glance (recommended order)
 
 The order matters: shape the data model first, then the product structure, then the connections, then the work that hangs off them.
@@ -77,7 +86,6 @@ The order matters: shape the data model first, then the product structure, then 
 | 3 | Trail | parts.create + parent_part, links.create | A connected part hierarchy (the Trail) |
 | 4 | Custom links | link-types.custom.create, links.create | Custom relationships between objects |
 | 5 | Work & verify | works.create, parts.list, links.list | Tickets/issues on parts; verification |
-
 
 # Phase 0 - Prerequisites & authentication
 
@@ -95,7 +103,6 @@ Accept: application/json
 # Phase 1 - Customize objects
 
 Object customization tailors DevRev's built-in objects (issue, ticket, opportunity, account, contact, part) to the customer's workflow, or defines entirely new object types. The model is additive - you layer your definitions on top of stock fields; built-in fields are never modified.
-
 
 ## 1.1 Concepts
 
@@ -157,7 +164,6 @@ curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
 }'
 ```
 Supported field types: int, double, bool, tokens, text, rich_text, enum, uenum (advanced enum with stable numeric IDs), timestamp, date, and id - plus array/list variants of each. Fragments are immutable and versioned automatically; to remove a field, list it in deleted_fields.
-
 
 ## 1.4 Custom stages & dependent fields
 
@@ -223,11 +229,9 @@ Add features under the capability (parent_part = CAP_ID), and builder parts (typ
 | feature | capability (or feature) | feature:write OR feature:all |
 | runnable / linkable | none; linked in Phase 3 | (builder part scope) |
 
-
 # Phase 3 - Build the Trail
 
 A Trail is not a separate object and there is no trails.create endpoint. The Trail is the rendered view of the part hierarchy you just built plus the links between parts. So building the Trail means two things: (1) the parent_part relationships from Phase 2, and (2) connecting builder parts to the customer parts they power.
-
 
 ### What the resulting Trail looks like
 
@@ -336,7 +340,6 @@ Verify the setup:
 | Custom links | link-types.custom.create / .update | Define custom relationship types |
 | Work | works.create | Create tickets/issues attached to parts |
 
-
 # Troubleshooting & common errors
 
 | Symptom | Likely cause | Fix |
@@ -348,7 +351,6 @@ Verify the setup:
 | Old field values still showing after a schema change | Existing records still reference the old fragment | Re-save the record via its `*.update` with the current custom_schema_spec, or run `objects.bulk-upgrade` (confirmed live at `/internal/objects.bulk-upgrade`, not public root — see Phase-5-adjacent quick reference row above) for all records of a type at once. |
 | Link creation fails with "object not found" | Referencing a display ID instead of a DON | Always pass the full DON id (don:core:...), not a short display ID like PROD-12345, in parent_part and link calls. |
 | Can't delete a custom link type | By design | Custom link types can only be deprecated, not deleted, to preserve referential integrity. Create a new one if you need a rename. |
-
 
 # Best practices & pitfalls
 

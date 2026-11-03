@@ -1,5 +1,12 @@
 # `loop_over_tickets` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Input Port: `block_callback`](#input-port-blockcallback)
+- [Output Port: `block_start`](#output-port-blockstart)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`applies_to_part`** (`[]id`) — Filters for tickets belonging to any of the provided parts.

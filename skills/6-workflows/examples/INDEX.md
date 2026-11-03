@@ -46,10 +46,10 @@ and pick from the `working-*.json` tables below — that's the generic-workflow 
 
 | File (exact) | Steps | Pattern |
 | --- | --- | --- |
-| `3592-Generate rca from pia-template.json` | 8 | Incident trigger → ask_ai → create_article, branching |
-| `4392-Async opportunity review agent-template.json` | 2 | Simple trigger → action, labels `["agent_interaction"]` |
-| `4441-Ticket escalator from customer message-template.json` | 11 | ask_ai → nested if_else → update + notify |
-| `4505-Auto-update issue tcd as end of sprint date-template.json` | 3 | `fields_to_watch` + `_filter`, chained updates |
-| `5040-Devrevu - enablement journey - poc emails-template.json` | 8 | Custom-object trigger, HTTP, sleep_for, third-party ops |
-| `5158-Devrevu - enablement journey - mailing for non enablement journey users-template.json` | 43 | Long sequential flow: sleep_for + if_else + third-party email |
-| `5216-Account segment missing notification-template.json` | 4 | Trigger → get → if_else → comment, `_filter` with stage check |
+| `3592-generate-rca-from-pia-template.json` | 8 | Incident trigger → ask_ai → create_article, branching |
+| `4392-async-opportunity-review-agent-template.json` | 2 | Simple trigger → action, labels `["agent_interaction"]` |
+| `4441-ticket-escalator-from-customer-message-template.json` | 11 | ask_ai → nested if_else → update + notify |
+| `4505-auto-update-issue-tcd-as-end-of-sprint-date-template.json` | 3 | `fields_to_watch` + `_filter`, chained updates |
+| `5040-devrevu-enablement-journey-poc-emails-template.json` | 8 | Custom-object trigger, HTTP, sleep_for, third-party ops |
+| `5158-devrevu-enablement-journey-mailing-for-non-enablement-journey-users-template.json` | 43 | Long sequential flow: sleep_for + if_else + third-party email |
+| `5216-account-segment-missing-notification-template.json` | 4 | Trigger → get → if_else → comment, `_filter` with stage check |

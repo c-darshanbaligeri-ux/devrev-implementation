@@ -1,6 +1,6 @@
 ---
 name: snapin-development
-description: Use this skill when the user asks to build, plan, update, or test a DevRev snap-in, AirSync connector, or integration — e.g. "build a HubSpot connector", "I need to sync Asana into DevRev", "plan an AirSync integration for X", "add pagination to the Trello connector", "test this snap-in end-to-end", "generate the metadata JSON for Y". Routes to the `devrev` (devrev-qk-agents) plugin's snap-in vertical (PM → Architect → Tester) rather than duplicating its logic; the plugin requires a one-time manual install (never auto-enabled — third-party org). DevRev's own snap-in framework and AirSync reference docs (manifest, functions, CLI, data model, object types) are mirrored locally in `skills/11-developer-docs/` — read those for facts. Does NOT cover this plugin's own "Implementation" (dashboard) vertical — that conflicts with `skills/4-dashboards-and-widgets`'s hard rule and is explicitly excluded; see below.
+description: Plans, builds, updates and tests DevRev snap-ins and AirSync connectors by routing to the third-party devrev-qk-agents plugin (PM, Architect and Tester pipeline; manual install, never auto-enabled). Use for "build a HubSpot connector", "sync Asana into DevRev", "add pagination to the Trello connector", "generate the metadata JSON". DevRev own framework and AirSync docs are in skills/11-developer-docs. Not for dashboards (that plugin dashboard vertical is excluded; use 4-dashboards-and-widgets) or no-code AirSync setup in Settings.
 ---
 
 # DevRev Snap-in Development

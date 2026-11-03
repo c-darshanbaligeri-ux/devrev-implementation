@@ -1,11 +1,32 @@
 # DevRev AI Agent Building Tools
 
+## Contents
+<!-- toc -->
+- [Knowledge Base](#knowledge-base)
+- [Core Principles (from the guides)](#core-principles-from-the-guides)
+  - [Naming retrieval in agent designs (`/agent-create`, `/agent-improve`)](#naming-retrieval-in-agent-designs-agent-create-agent-improve)
+- [NL2SQL Annotation Rule](#nl2sql-annotation-rule)
+  - [Step 1 — Run the Annotation Check](#step-1--run-the-annotation-check)
+  - [Step 2 — Fix with the auto-annotations Agent Workflow](#step-2--fix-with-the-auto-annotations-agent-workflow)
+  - [What Good Annotations Look Like](#what-good-annotations-look-like)
+  - [When to Run the Annotation Check](#when-to-run-the-annotation-check)
+- [Key Case Study: a customer support agent](#key-case-study-a-customer-support-agent)
+- [Guardrails](#guardrails)
+  - [How to Configure](#how-to-configure)
+  - [Schema Summary](#schema-summary)
+- [API Access](#api-access)
+  - [Scripts](#scripts)
+- [API Safety, Contracts, and Persistence](#api-safety-contracts-and-persistence)
+  - [API Contract Compliance](#api-contract-compliance)
+  - [Additional References](#additional-references)
+- [Command playbooks](#command-playbooks)
+<!-- /toc -->
+
 You have access to a comprehensive knowledge base of DevRev AI Agent guides, synced from the DevRev knowledge base. Use these guides as the authoritative reference for any question about building, debugging, improving, or testing DevRev agents.
 
 ## Knowledge Base
 
 > **Agent Studio is currently in beta for Dev0.** Some features (guardrails, advanced config) may only be configurable via API. See [Guardrails API](../commands/guardrails-api.md) and [Feature Flags](../commands/feature-flags.md) for details on configuring features not yet exposed in the UI.
-
 
 The `../knowledge/` directory contains all articles from the **AI Agent Guides** directory (directory-257). Key articles:
 
@@ -53,7 +74,7 @@ NL2SQL performance depends entirely on schema annotations. Without them, the mod
 
 ```bash
 # Check annotation quality for a specific table
-skills/7-agent-building/scripts/check-annotations.sh "<table-id>" /tmp/annotations
+skills/7-agent-building/scripts/check-annotations.sh "<table-id>" ${TMPDIR:-/tmp}/annotations
 
 # List all available tables first (if you don't know the ID)
 skills/7-agent-building/scripts/check-annotations.sh list
@@ -150,14 +171,13 @@ automatic escalation. Set by the routing agent at ticket creation.
 - A new dataset or schema change is added to an existing NL2SQL agent
 - Agent improvement analysis flags retrieval quality as a concern
 
-## Key Case Study: PeopleStrong SupportGPT
+## Key Case Study: a customer support agent
 
 The fix wasn't a better search algorithm — it was better search architecture:
 - ❌ Flat search across entire KB + 2 tools with ambiguous handoff + 1,500-word prompt
 - ✅ Two-stage scoped search (directory → articles) + 1 tool used in sequence + 250-word prompt
 
 See ART-30502 for the full case study.
-
 
 ## Guardrails
 
@@ -195,7 +215,7 @@ Configure two tokens in the environment, in `~/.openclaw-autoclaw/.env` if you u
 | `DEVREV_PAT` | Knowledge base articles (public API) + NL2SQL annotation tool (`devrev.py`) | `api.devrev.ai` |
 | `ORG_PAT` | Agent configs, workflows, sessions (internal API) | `api.devrev.ai/internal` |
 
-**Network Permissions Note**: All API calls to DevRev require `full_network` permissions. If you encounter "exit code 56" errors, ensure Shell commands include `required_permissions: ["full_network"]`.
+**Network access**: calls to DevRev need to reach `api.devrev.ai`. If a call fails with curl exit code 56 or a connection error, a sandbox or network policy is probably blocking the domain. Tell the user to allow `api.devrev.ai` in Claude Code's sandbox network settings (or approve running the command outside the sandbox) instead of retrying.
 
 ### Scripts
 - `sync-knowledge.sh` — Syncs all KB articles (uses `DEVREV_PAT`)

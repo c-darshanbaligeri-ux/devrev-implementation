@@ -1,5 +1,17 @@
 # Overview — dashboard & widget creation tooling in DevRev
 
+## Contents
+<!-- toc -->
+- [1. dashboard-dev (the primary tool)](#1-dashboard-dev-the-primary-tool)
+  - [Plugin structure (standard across the marketplace)](#plugin-structure-standard-across-the-marketplace)
+  - [How it creates a dashboard (end-to-end flow)](#how-it-creates-a-dashboard-end-to-end-flow)
+  - [Widget Validator (the reliability engine)](#widget-validator-the-reliability-engine)
+  - [Architecture note (federation)](#architecture-note-federation)
+- [2. trigger-dashboard-agent (in-org snap-in)](#2-trigger-dashboard-agent-in-org-snap-in)
+- [3. Manual builder surfaces (no agent)](#3-manual-builder-surfaces-no-agent)
+- [Source articles (DevRev knowledge base, for provenance)](#source-articles-devrev-knowledge-base-for-provenance)
+<!-- /toc -->
+
 Background for the task in `START_HERE.md`. Sourced from DevRev's internal docs
 (Agent Skills Marketplace, Building Dashboards Tech Talk, Widget Validator, the
 architecture critique, and the Trigger Dashboard Agent guide). Use this to

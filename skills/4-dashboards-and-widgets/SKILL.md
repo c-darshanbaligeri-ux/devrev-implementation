@@ -1,6 +1,6 @@
 ---
 name: dashboards-and-widgets
-description: Use this skill when the user asks to "create a DevRev dashboard", "build a widget", "add a chart", "modify my dashboard", "dashboard layout", "verify the dashboard", or otherwise wants to build or work with analytics dashboards and widgets inside a DevRev org. Routes to the correct dashboard-dev plugin commands rather than duplicating their logic.
+description: Builds and modifies DevRev dashboards and widgets by routing to the dashboard-dev plugin and its validated pipeline (/dashboard-dev:dashboard-create, /dashboard-dev:modify-dashboard); widget JSON is never hand-written. Use for "build me a support dashboard", "add a chart", "modify my dashboard", "verify the dashboard". Not for datasets (use 5-datasets) or raw API reads (use 8-devrev-api).
 ---
 
 # DevRev Dashboards & Widgets

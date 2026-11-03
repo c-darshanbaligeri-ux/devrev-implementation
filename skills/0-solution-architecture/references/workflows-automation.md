@@ -1,5 +1,18 @@
 # DevRev Workflows, Automation & Snap-ins
 
+## Contents
+<!-- toc -->
+- [Table of contents](#table-of-contents)
+- [1. What workflows are](#1-what-workflows-are)
+- [2. Node types (the four operation types)](#2-node-types-the-four-operation-types)
+- [3. Trigger types](#3-trigger-types)
+- [4. Data flow, variables, expressions](#4-data-flow-variables-expressions)
+- [5. Automations / rules vs full workflows](#5-automations--rules-vs-full-workflows)
+- [6. Snap-ins & the snap-in framework](#6-snap-ins--the-snap-in-framework)
+- [7. Integration boundaries](#7-integration-boundaries)
+- [8. Decision guide + common patterns](#8-decision-guide--common-patterns)
+<!-- /toc -->
+
 Use this reference for the **automation layer** of a solution — anything that reacts to events, runs on a schedule, orchestrates multi-step logic, or extends the platform with custom code. Mental model: **workflows are the recipe (deterministic); agents are the chef (probabilistic).** Master workflows before reaching for agents.
 
 ## Table of contents

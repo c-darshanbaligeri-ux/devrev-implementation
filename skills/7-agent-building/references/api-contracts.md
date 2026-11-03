@@ -1,5 +1,37 @@
 # DevRev AI Agent API Contracts
 
+## Contents
+<!-- toc -->
+- [Quick Cheat Sheet](#quick-cheat-sheet)
+- [Issue #1 — `slug` is not a valid field on create or update](#issue-1--slug-is-not-a-valid-field-on-create-or-update)
+- [Issue #2 — `skills` must be an object `{"set": [...]}` on update, not a plain array](#issue-2--skills-must-be-an-object-set--on-update-not-a-plain-array)
+- [Issue #3 — `guardrails` must be `{"set": [...]}` on update, not a plain array](#issue-3--guardrails-must-be-set--on-update-not-a-plain-array)
+- [Issue #4 — `topic_boundary` fields must be flat, not nested](#issue-4--topicboundary-fields-must-be-flat-not-nested)
+- [Issue #5 — Skill trigger `operation` / `plan` must be a string ID on update](#issue-5--skill-trigger-operation--plan-must-be-a-string-id-on-update)
+- [Issue #6 — Skill trigger `workflow` must be a string ID, not an object](#issue-6--skill-trigger-workflow-must-be-a-string-id-not-an-object)
+- [Verified Skill Trigger IDs (devo: dvrv-in-1)](#verified-skill-trigger-ids-devo-dvrv-in-1)
+  - [HybridSearch namespace enum (doc-cited 2026-07-31)](#hybridsearch-namespace-enum-doc-cited-2026-07-31)
+- [Full Correct Payload Templates](#full-correct-payload-templates)
+  - [`ai-agents.create` — Complete example](#ai-agentscreate--complete-example)
+  - [`ai-agents.update` — Complete example](#ai-agentsupdate--complete-example)
+- [Systematic Pre-Flight Checklist](#systematic-pre-flight-checklist)
+- [Error → Fix Reference](#error--fix-reference)
+- [Schema Summary: Create vs Update](#schema-summary-create-vs-update)
+- [Guidance Quality: Common Corruption Patterns](#guidance-quality-common-corruption-patterns)
+- [Endpoint Reference (Empirically Verified)](#endpoint-reference-empirically-verified)
+- [Behavioral Rules Discovered by Testing](#behavioral-rules-discovered-by-testing)
+  - [`ai-agents.list` constraints](#ai-agentslist-constraints)
+  - [`ai-agents.get` / `ai-agents.update` — ID formats accepted](#ai-agentsget--ai-agentsupdate--id-formats-accepted)
+  - [`ai-agents.create` — required fields](#ai-agentscreate--required-fields)
+  - [`ai-agents.update` — partial update behavior](#ai-agentsupdate--partial-update-behavior)
+  - [GET response — absent vs. empty fields](#get-response--absent-vs-empty-fields)
+  - [`guidance` field constraints](#guidance-field-constraints)
+  - [`memory_config` constraints](#memoryconfig-constraints)
+  - [`ai-agents.versions.list` — correct field names](#ai-agentsversionslist--correct-field-names)
+  - [`ai-agents.delete`](#ai-agentsdelete)
+- [Related References](#related-references)
+<!-- /toc -->
+
 > **Purpose:** Authoritative reference for every confirmed API schema difference, pitfall, and breaking behaviour discovered through live API testing. Read this before writing any create/update payload.
 
 > **Source:** Empirically verified against `api.devrev.ai/internal` (devo: `dvrv-in-1`) on 2026-06-01.

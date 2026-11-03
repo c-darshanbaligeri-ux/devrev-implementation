@@ -1,6 +1,6 @@
 ---
-name: devrev-rest-api
-description: Read and modify DevRev data through the public REST API — work items (tickets/issues/tasks/incidents/opportunities), timelines, tags, links, accounts and users, conversations, articles, surveys, meetings, SLAs, artifacts, webhooks, schedules, vistas, custom objects, schema/stage customization, and full org builds. Use whenever the user wants to call a DevRev API endpoint or automate a DevRev operation. Does NOT cover AI agents, workflows, or AirSync connectors.
+name: devrev-api
+description: Reads and modifies DevRev data through the public REST API, covering work items (tickets, issues, tasks, incidents, opportunities), timelines, tags, links, accounts and users, conversations, articles, surveys, meetings, SLAs, artifacts, webhooks, schedules and views. Holds the endpoint catalog and the per-domain reference docs. Use for "call works.list", "get account details", "create a ticket via the API". Not for schema or stage customization (skills 1 and 2), workflows or agents (6 and 7) or AirSync connectors (9).
 ---
 
 # DevRev REST API — executable playbook

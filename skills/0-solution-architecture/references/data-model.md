@@ -1,5 +1,37 @@
 # DevRev Data Model & Object Customization
 
+## Contents
+<!-- toc -->
+- [Table of contents](#table-of-contents)
+- [1. The overarching model](#1-the-overarching-model)
+- [2. Core built-in object types](#2-core-built-in-object-types)
+  - [Identity pillar](#identity-pillar)
+  - [Work pillar](#work-pillar)
+  - [Content & other](#content--other)
+- [3. Custom object types (custom leaf types)](#3-custom-object-types-custom-leaf-types)
+  - [When to use a custom object vs. extending a built-in type](#when-to-use-a-custom-object-vs-extending-a-built-in-type)
+  - [Creating a custom object (API lifecycle)](#creating-a-custom-object-api-lifecycle)
+- [4. Custom fields & schema fragments](#4-custom-fields--schema-fragments)
+  - [Supported custom field types](#supported-custom-field-types)
+  - [Field descriptor structure](#field-descriptor-structure)
+  - [Dependent / conditional fields](#dependent--conditional-fields)
+  - [UI access](#ui-access)
+- [5. Custom stages, states & stage diagrams](#5-custom-stages-states--stage-diagrams)
+  - [States (coarse-grained)](#states-coarse-grained)
+  - [Stages (fine-grained)](#stages-fine-grained)
+  - [Stage diagrams (finite-state machine)](#stage-diagrams-finite-state-machine)
+- [6. Parts hierarchy and how work maps to parts](#6-parts-hierarchy-and-how-work-maps-to-parts)
+  - [Customer parts (how the product is consumed)](#customer-parts-how-the-product-is-consumed)
+  - [Builder parts (what the developer builds)](#builder-parts-what-the-developer-builds)
+  - [How work maps to parts](#how-work-maps-to-parts)
+- [7. Relationships and links](#7-relationships-and-links)
+  - [Default (stock) link types](#default-stock-link-types)
+  - [Custom link types](#custom-link-types)
+  - [Other relationship mechanisms](#other-relationship-mechanisms)
+- [8. Quick reference: leaf-type strings](#8-quick-reference-leaf-type-strings)
+  - [Gaps to verify with the customer/product docs](#gaps-to-verify-with-the-customerproduct-docs)
+<!-- /toc -->
+
 Use this reference when the solution needs to decide **how to model the customer's domain** — which objects to reuse, when to create custom objects, what custom fields and stages to add, and how objects relate.
 
 ## Table of contents

@@ -1,5 +1,12 @@
 # `loop_over_accounts` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Input Port: `block_callback`](#input-port-blockcallback)
+- [Output Port: `block_start`](#output-port-blockstart)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`created_by`** (`[]id`) — Filters for accounts created by the specified user(s).

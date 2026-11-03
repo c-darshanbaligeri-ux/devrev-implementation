@@ -1,5 +1,23 @@
 # Collections for Articles — DevRev API
 
+## Contents
+<!-- toc -->
+- [Key concept](#key-concept)
+- [Full list of collection (directory) endpoints](#full-list-of-collection-directory-endpoints)
+- [1. Create a collection](#1-create-a-collection)
+  - [Request body](#request-body)
+  - [Example](#example)
+- [2. Get a collection](#2-get-a-collection)
+- [3. List collections](#3-list-collections)
+- [4. Count collections](#4-count-collections)
+- [5. Update a collection](#5-update-a-collection)
+  - [Request body](#request-body-1)
+  - [Example](#example-1)
+- [6. Delete a collection](#6-delete-a-collection)
+- [Assigning articles to a collection](#assigning-articles-to-a-collection)
+- [Notes](#notes)
+<!-- /toc -->
+
 > **Provenance**: sourced from user-supplied documentation (2026-07-21), not derived from this
 > repo's own live testing pass. **Verified live 2026-07-21** by this repo: `directories.create`
 > (create/list/get all confirmed working), setting an article's `parent` to a directory DON both

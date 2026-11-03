@@ -4,6 +4,25 @@
 
 # Setting up DevRev as an MCP server for Claude Code
 
+## Contents
+<!-- toc -->
+- [1. What this gives you](#1-what-this-gives-you)
+- [2. Prerequisites](#2-prerequisites)
+- [3. Get a DevRev Personal Access Token (PAT)](#3-get-a-devrev-personal-access-token-pat)
+- [4. Add the MCP server to Claude Code](#4-add-the-mcp-server-to-claude-code)
+  - [Option A — CLI (recommended)](#option-a--cli-recommended)
+  - [Option B — Manual config](#option-b--manual-config)
+  - [Scope tip](#scope-tip)
+- [5. Verify the connection](#5-verify-the-connection)
+- [6. What you can do once connected](#6-what-you-can-do-once-connected)
+  - [Read / search](#read--search)
+  - [Write / create](#write--create)
+  - [Example prompts to Claude Code](#example-prompts-to-claude-code)
+- [7. Limitations to be aware of](#7-limitations-to-be-aware-of)
+- [8. Troubleshooting](#8-troubleshooting)
+- [9. Next steps](#9-next-steps)
+<!-- /toc -->
+
 A step-by-step guide to connect your DevRev workspace to Claude Code using the
 Model Context Protocol (MCP), so Claude Code can search, read, create, and update
 DevRev work items directly from your terminal.

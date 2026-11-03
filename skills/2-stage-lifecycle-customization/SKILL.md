@@ -1,6 +1,6 @@
 ---
 name: stage-lifecycle-customization
-description: "Customize object lifecycles in DevRev — create custom states (broad categories like open/in_progress/closed), define custom stages (specific steps like \"In Review\" or \"Needs RCA\"), build stage diagrams (allowed transitions), and assign lifecycles to object types or subtypes. Use when you need to model a custom workflow: ticket stages, issue states, custom object lifecycles, or any object's stage-based flow. Covers states.custom.*, stages.custom.*, and stage-diagrams.* endpoints."
+description: Customizes object lifecycles with custom states and stages, stage diagrams (allowed transitions) and assigning a lifecycle to an object type or subtype (states.custom.*, stages.custom.*, stage-diagrams.*). Use for "customize ticket stages", "add a state", "define transitions", a custom object lifecycle. Not for automations that react to stage changes (use 6-workflows) or for adding fields (use 1-object-schema-customization). Custom stages and states cannot be deleted once created.
 ---
 
 # Stage & lifecycle customization — executable playbook

@@ -1,5 +1,11 @@
 # `list_issues` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Output Port: `output`](#output-port-output)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`actual_close_date`** (`composite`) — Provides ways to specify date ranges on objects.

@@ -1,5 +1,24 @@
 # Custom objects & links — DevRev API
 
+## Contents
+<!-- toc -->
+- [1. Custom objects — end to end](#1-custom-objects--end-to-end)
+  - [Step 1 — define the schema (`schemas.custom.set`, scope `custom_type_fragment:write`)](#step-1--define-the-schema-schemascustomset-scope-customtypefragmentwrite)
+  - [Step 2 — create a record (`custom-objects.create`, scope `custom_type_fragment:write`)](#step-2--create-a-record-custom-objectscreate-scope-customtypefragmentwrite)
+  - [Other custom-object operations](#other-custom-object-operations)
+  - [Step 3 — give the custom object a stage field (lifecycle)](#step-3--give-the-custom-object-a-stage-field-lifecycle)
+  - [Step 3b — give the custom object a tags field](#step-3b--give-the-custom-object-a-tags-field)
+  - [Step 4 — give the custom object a part field (reference a part)](#step-4--give-the-custom-object-a-part-field-reference-a-part)
+  - [Step 5 — give the custom object subtypes](#step-5--give-the-custom-object-subtypes)
+- [2. Built-in links](#2-built-in-links)
+- [3. Custom link types](#3-custom-link-types)
+  - [Step 1 — define the type (`link-types.custom.create`)](#step-1--define-the-type-link-typescustomcreate)
+  - [Step 2 — create a link instance (`links.create` with `custom_link`)](#step-2--create-a-link-instance-linkscreate-with-customlink)
+  - [Manage custom link types](#manage-custom-link-types)
+- [4. Linking work items, tickets, and issues](#4-linking-work-items-tickets-and-issues)
+- [5. Common pitfalls](#5-common-pitfalls)
+<!-- /toc -->
+
 Full lifecycle for net-new object types (e.g. Campaign, Asset) and for
 relationships: built-in links, custom link types, and the link instances that
 connect work items, parts, identity objects, and custom objects.

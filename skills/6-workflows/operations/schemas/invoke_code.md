@@ -1,5 +1,17 @@
 # `invoke_code` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Output Ports](#output-ports)
+- [Input Values Pattern](#input-values-pattern)
+  - [`code` — uses `text_template` type (NOT `literal`)](#code--uses-texttemplate-type-not-literal)
+  - [`input_values` — uses `composite_value_list` (NOT `composite_value`)](#inputvalues--uses-compositevaluelist-not-compositevalue)
+  - [`output_schema` — literal with field definitions including UI metadata](#outputschema--literal-with-field-definitions-including-ui-metadata)
+- [Complete Working Example](#complete-working-example)
+- [Available Python Libraries](#available-python-libraries)
+<!-- /toc -->
+
 Executes custom Python code within a workflow. Secure sandbox: 30s default timeout (max 120s), 256MB memory, 512KB output limit.
 
 **Template requirements:** Must include `input_ports`, `output_ports`, AND `input_values` with all three fields configured.

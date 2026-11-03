@@ -17,7 +17,7 @@ You are an expert DevRev Agent Studio consultant. Create a comprehensive test se
 
 3. **Understand the agent** — Once you have an agent ID or slug (from `$ARGUMENTS` or step 1), run:
    ```bash
-   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
+   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" ${TMPDIR:-/tmp}/agent-config
    ```
    This fetches the full agent config + all skill workflows. Token requirements are in step 1 (`ORG_PAT`).
    

@@ -1,5 +1,29 @@
 # Troubleshooting Guide - DevRev Agent Building Toolkit
 
+## Contents
+<!-- toc -->
+- [Issue #1 — Network Permission Errors (Exit Code 56)](#issue-1--network-permission-errors-exit-code-56)
+- [Issue #2 — Article Content Extraction: `published_version` is null](#issue-2--article-content-extraction-publishedversion-is-null)
+- [Issue #3 — Binary Article Attachments (devrev/rt, .xlsx, .docx)](#issue-3--binary-article-attachments-devrevrt-xlsx-docx)
+- [Issue #4 — Schema Location Discovery (@-reference confusion)](#issue-4--schema-location-discovery--reference-confusion)
+- [Issue #5 — Large Article Content and Context Management](#issue-5--large-article-content-and-context-management)
+- [Issue #6 — Custom Object Schema Validation](#issue-6--custom-object-schema-validation)
+- [Issue #7 — Skill Trigger Type Confusion](#issue-7--skill-trigger-type-confusion)
+- [Issue #8 — Agent Instruction Length and Clarity](#issue-8--agent-instruction-length-and-clarity)
+- [Issue #9 — Testing Strategy Gaps](#issue-9--testing-strategy-gaps)
+- [Best Practices Summary](#best-practices-summary)
+  - [Before Starting Agent Development](#before-starting-agent-development)
+  - [During Agent Creation](#during-agent-creation)
+  - [Before Publishing Agent](#before-publishing-agent)
+  - [After Deployment](#after-deployment)
+- [Quick Reference - Common Commands](#quick-reference---common-commands)
+  - [Check Network Permissions](#check-network-permissions)
+  - [Fetch Article with Fallback](#fetch-article-with-fallback)
+  - [Validate Custom Object Schema](#validate-custom-object-schema)
+  - [Test Agent with Bulk Inputs](#test-agent-with-bulk-inputs)
+- [Getting Help](#getting-help)
+<!-- /toc -->
+
 > **Purpose:** Common issues, root causes, and solutions discovered through real-world usage.
 
 ---
@@ -16,14 +40,7 @@ Empty response from API endpoints
 Sandbox restrictions limit network access to allowed domains only. DevRev API calls require unrestricted network access.
 
 **Solution:**
-Always add `required_permissions: ["full_network"]` to Shell commands that call DevRev APIs:
-
-```bash
-Shell(
-  command="curl -X POST 'https://api.devrev.ai/internal/ai-agents.get' ...",
-  required_permissions=["full_network"]
-)
-```
+Allow `api.devrev.ai` in Claude Code's sandbox network settings, or approve the command to run outside the sandbox. Do not retry the same call blindly.
 
 **Prevention:**
 - All scripts in `scripts/` directory should document network requirements
@@ -241,10 +258,10 @@ curl -s -X POST 'https://api.devrev.ai/internal/articles.list' \
 3. **Partial reading with head/tail**:
 ```bash
 # For very large articles, read first 500 lines to assess relevance
-Read(path="/tmp/article.txt", limit=500)
+Read(path="${TMPDIR:-/tmp}/article.txt", limit=500)
 
 # If relevant, read specific sections
-Read(path="/tmp/article.txt", offset=1000, limit=300)
+Read(path="${TMPDIR:-/tmp}/article.txt", offset=1000, limit=300)
 ```
 
 4. **Summarization before full read**:
@@ -536,9 +553,8 @@ test_cases/
 # This will fail in sandbox:
 curl -s https://api.devrev.ai/articles.list
 
-# This works:
-Shell(command="curl https://api.devrev.ai/articles.list", 
-      required_permissions=["full_network"])
+# This works once api.devrev.ai is allowed in the sandbox network settings:
+curl https://api.devrev.ai/articles.list
 ```
 
 ### Fetch Article with Fallback

@@ -29,7 +29,7 @@ You are an expert DevRev Agent Studio consultant. Help debug the agent issue des
 
    **If the agent uses NL2SQL** — check annotations immediately before anything else:
    ```bash
-   skills/7-agent-building/scripts/check-annotations.sh "<dataset-id>" /tmp/annotations
+   skills/7-agent-building/scripts/check-annotations.sh "<dataset-id>" ${TMPDIR:-/tmp}/annotations
    ```
    NL2SQL failures are almost always caused by missing or broken schema annotations.
    See the "NL2SQL Annotation Rule" section in `../references/toolkit-guide.md` for what counts as broken and how to fix it.
@@ -62,7 +62,7 @@ You are an expert DevRev Agent Studio consultant. Help debug the agent issue des
 
 6. **Fetch agent config when you have an ID or slug** — After step 1, when an agent identifier is available, run:
    ```bash
-   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" /tmp/agent-config
+   skills/7-agent-building/scripts/get-agent.sh "<agent-id-or-slug>" ${TMPDIR:-/tmp}/agent-config
    ```
    This fetches:
    - Full agent config (goal, instructions, skills, knowledge, guardrails)

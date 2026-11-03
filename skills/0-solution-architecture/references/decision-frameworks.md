@@ -1,5 +1,16 @@
 # Decision Frameworks: Choosing the Right DevRev Capability
 
+## Contents
+<!-- toc -->
+- [1. The master decision tree](#1-the-master-decision-tree)
+- [2. Deterministic vs AI (the single most important call)](#2-deterministic-vs-ai-the-single-most-important-call)
+- [3. New object vs subtype vs custom field](#3-new-object-vs-subtype-vs-custom-field)
+- [4. Agent vs workflow vs snap-in (capability selection)](#4-agent-vs-workflow-vs-snap-in-capability-selection)
+- [5. Solution completeness checklist](#5-solution-completeness-checklist)
+- [6. Common anti-patterns to steer away from](#6-common-anti-patterns-to-steer-away-from)
+- [7. Domain quick-starts (illustrative, not exhaustive)](#7-domain-quick-starts-illustrative-not-exhaustive)
+<!-- /toc -->
+
 This is the connective tissue of the skill. When you know the customer's need, use these frameworks to pick the right platform primitive — and to avoid over-engineering. The overriding principle across all of them: **model the domain natively first, automate deterministically where you can, and add AI only where judgment genuinely adds value.**
 
 ---

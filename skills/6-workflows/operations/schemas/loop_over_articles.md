@@ -1,5 +1,12 @@
 # `loop_over_articles` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Input Port: `block_callback`](#input-port-blockcallback)
+- [Output Port: `block_start`](#output-port-blockstart)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`article_type`** (`[]enum`) — Filter for the type of articles.

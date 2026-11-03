@@ -1,5 +1,12 @@
 # `loop_over_enhancements` — Schema Reference
 
+## Contents
+<!-- toc -->
+- [Input Port: `input`](#input-port-input)
+- [Input Port: `block_callback`](#input-port-blockcallback)
+- [Output Port: `block_start`](#output-port-blockstart)
+<!-- /toc -->
+
 ## Input Port: `input`
 
 - **`accounts`** (`[]id`) — Filters for enhancement by its accounts.

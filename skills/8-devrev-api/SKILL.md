@@ -25,7 +25,7 @@ an org.
 
 ## Preconditions
 
-1. A bearer token is available from repo-root `.env` (`DEVREV_PAT`). Alias for scripts: `export DEVREV_TOKEN="$DEVREV_PAT"`. If missing, ask.
+1. A bearer token is available from repo-root `.env` (`DEVREV_PAT`). Alias for scripts: `export DEVREV_TOKEN="$DEVREV_PAT"`. If missing, tell the user exactly what to set (see `.env.example`) and STOP — never fabricate a token.
 2. The token holds the scope for the target endpoint (see `references/00_API_Catalog.md`).
 3. For creates that reference parents (rev_user → rev_org → account, work →
    part), the parent objects exist and you have their DON ids.
@@ -71,7 +71,7 @@ an org.
 | Web crawler | `references/Platform_and_Admin_API.md` | web-crawler-jobs.* |
 | Snap widgets / commands / code changes / tokens | `references/Platform_and_Admin_API.md` | snap-widgets.create, commands.*, code-changes.*, auth-tokens.* |
 | Custom objects / links | `references/Custom_Objects_and_Links_API.md` | custom-objects.*, link-types.custom.* |
-| Stock objects / schemas | `references/Stock_Object_Modification_and_Schemas_API.md` | schemas.custom.set, schemas.stock.*, schemas.aggregated.get (bulk-upgrade unverified — see doc) |
+| Stock objects / schemas | `references/Stock_Object_Modification_and_Schemas_API.md` | schemas.custom.set, schemas.stock.*, schemas.aggregated.get (`objects.bulk-upgrade` is confirmed live but internal-only — see Field notes) |
 | Stages / states / lifecycle | `references/Stages_States_and_StageDiagrams_API.md` | states.custom.*, stages.custom.*, stage-diagrams.* |
 | Full org build | `references/DevRev_Building_Org_Using_API_v1.md` | ordered end-to-end |
 | **Trail × Articles × Directories (cross-cutting)** | `references/Trail_Articles_Directories_Model.md` | how `is_part_of`, `applies_to_parts`, and `article.parent` wire together; retrieval ladder; grounding recipes |

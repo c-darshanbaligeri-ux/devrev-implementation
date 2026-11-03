@@ -127,11 +127,11 @@ Once a blueprint section is approved, the numbered skills in this repo build it.
 | §8 Data Model & Object Design (objects, subtypes, custom objects, custom fields) | `skills/1-object-schema-customization` | |
 | §8 Data Model & Object Design (states, stages, stage diagrams, lifecycle) | `skills/2-stage-lifecycle-customization` | |
 | §8 relationships/links; org build, data migration, bulk load | `skills/3-data-upload-and-org-build` | Also the phase-ordering runbook for a fresh org build |
-| §9 Workflow & Automation Design | `skills/6-workflows` | Author the template JSON; snap-in *development* is out of scope for this repo (only snap-in *operations* referenced by namespace) |
+| §9 Workflow & Automation Design | `skills/6-workflows` | Author the template JSON; snap-in *development* is covered by `skills/9-snapin-development` (workflow templates only reference snap-in *operations* by namespace) |
 | §10 AI Components | `skills/7-agent-building` and `skills/6-workflows` (agent-callable skills) | |
 | §11 Dashboard & Analytics Design | `skills/4-dashboards-and-widgets` | Router to the `dashboard-dev` plugin |
 | §11 custom datasets | `skills/5-datasets` | Router to the `dataset-builder` plugin |
-| §12 Integration Strategy — AirSync connectors | **No execution skill in this repo.** | Gap, stated honestly — AirSync setup is a UI/Chef-driven flow this repo doesn't automate. Configure directly in DevRev Settings > Integrations. |
+| §12 Integration Strategy — AirSync connectors | `skills/9-snapin-development` (plugin-driven build pipeline), official reference in `skills/11-developer-docs/airsync/` | Connector *design* belongs in the blueprint; the build pipeline lives in skill 9. Native no-code AirSync configuration stays in DevRev Settings > Integrations. |
 | §12 Integration Strategy — HTTP node / MCP / webhooks | `skills/6-workflows` (HTTP node) or `skills/8-devrev-api` (raw API) | |
 | §13 Security & Permissions (groups/roles/field-ACL/SSO/SCIM) | **No execution skill in this repo.** | Gap, stated honestly — configure directly in DevRev Settings > User Management. |
 | Any raw REST call not covered above | `skills/8-devrev-api` | The whole-platform endpoint + scope catalog |

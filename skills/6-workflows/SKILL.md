@@ -14,7 +14,7 @@ For anything beyond a one-step workflow, **authoring a complete template JSON an
 
 ## When not to use
 
-- **Snap-in development** is out of scope for this repo. Snap-in *operations* (third-party namespaces) may still be referenced inside workflow templates by their namespace.
+- **Snap-in development** is not a workflow task — use `skills/9-snapin-development`. Snap-in *operations* (third-party namespaces) may still be referenced inside workflow templates by their namespace.
 - **AI agent configuration** (creating/modifying agent configs, guardrails, knowledge sync, testing agents) → `skills/7-agent-building`.
 
 ## Step 0: Check what's available in your session

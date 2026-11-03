@@ -13,6 +13,8 @@ This skill covers snap-in and AirSync connector development end-to-end. It route
 /plugin install devrev@devrev-qk-agents
 ```
 
+**Caveat: this command fails as written** — the upstream repo ships no `.claude-plugin/marketplace.json`; use the local-shim workaround recorded in the 2026-07-18 Field notes below.
+
 The repo also clones the source at `repos/devrev-qk-agents` (via `repos.txt`, same mechanism as `aai-skills`) purely for reading/grounding — never edit it in place; refresh only via the `update-repos` skill.
 
 ## Routing table

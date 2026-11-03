@@ -8,7 +8,7 @@
 #
 # User-confirmed behavior: auto-installs dashboard-sync-cli via pipx and
 # auto-clones repos.txt without asking each time, once .env is present
-# (see project CLAUDE.md, "Plug and play").
+# (see project CLAUDE.md, "Bootstrap").
 
 set +e
 

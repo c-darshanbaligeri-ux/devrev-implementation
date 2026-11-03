@@ -300,7 +300,9 @@ def cmd_search(query, n, kind, as_json):
     exact = next((e for e in eps if e["name"] == devrev_risk.normalize(query)), None)
     res = {"query": query}
     if kind in ("playbook", "all"):
-        res["playbooks"] = [(round(s, 2), p) for s, p in Corpus([(p, playbook_doc(p)) for p in pbs]).search(weights, 3)]
+        # devrev-start is the entry skill the agent is already reading; never recommend it back
+        res["playbooks"] = [(round(s, 2), p) for s, p in
+                            Corpus([(p, playbook_doc(p)) for p in pbs if p["id"] != "devrev-start"]).search(weights, 3)]
     ep_hits = []
     if kind in ("endpoint", "all", "learning"):
         ep_hits = Corpus([(e, endpoint_doc(e)) for e in eps]).search(weights, max(n, 5) * 6)

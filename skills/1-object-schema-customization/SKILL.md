@@ -5,7 +5,7 @@ description: Customize DevRev object schemas — create custom object types, add
 
 # Object & schema customization — executable playbook
 
-Customize DevRev's object model: add fields to stock objects (ticket, issue, account, part), create entirely new object types (custom objects), define subtypes, and wire custom relationships between objects. Read the repo root `CLAUDE.md` first for global API rules; use this skill for any schema/object customization request.
+Customize DevRev's object model: add fields to stock objects (ticket, issue, account, part), create entirely new object types (custom objects), define subtypes, and wire custom relationships between objects. Rules that apply to every call are in `skills/devrev-start/references/global-api-rules.md`; use this skill for any schema/object customization request.
 
 ## When to use
 

@@ -1,6 +1,6 @@
 {
  "meta": {
-  "count": 12
+  "count": 13
  },
  "playbooks": [
   {
@@ -71,7 +71,7 @@
     "Pagination",
     "Rate limits",
     "Error response shape",
-    "DON ids, headers, base URL — see repo-root `CLAUDE.md`",
+    "DON ids, headers, base URL — see `skills/devrev-start/references/global-api-rules.md`",
     "Verify",
     "Field notes (live-learned; see docs/LEARNINGS.md)"
    ],
@@ -304,6 +304,19 @@
    "lines": 114,
    "name": "snapin-development",
    "path": "skills/9-snapin-development/SKILL.md",
+   "when_to_use": []
+  },
+  {
+   "description": "Entry point for any task in a DevRev organization. Use first when the user asks to create, find, update, delete, analyze, configure, import, automate or integrate anything in DevRev — tickets, issues, accounts, customers, parts, articles, SLAs, custom fields and objects, stages, workflows, AI agents, dashboards, datasets, snap-ins or connectors — even if they name no API. Finds the right playbook and API endpoint with `devrev-find`, then reads only those files. Not for general coding unrelated to DevRev.",
+   "headings": [
+    "Procedure",
+    "Hard rules",
+    "Toolkit map"
+   ],
+   "id": "devrev-start",
+   "lines": 53,
+   "name": "devrev-start",
+   "path": "skills/devrev-start/SKILL.md",
    "when_to_use": []
   }
  ]

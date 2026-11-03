@@ -5,7 +5,7 @@ description: "Customize object lifecycles in DevRev — create custom states (br
 
 # Stage & lifecycle customization — executable playbook
 
-Customize the lifecycle of DevRev objects programmatically: define states (broad categories), stages (specific steps within a state), and stage diagrams (allowed transitions). Applies to issue, ticket, custom objects, and any leaf type. Read the repo root `CLAUDE.md` first for global API rules; use this skill for any stage/state/lifecycle customization request.
+Customize the lifecycle of DevRev objects programmatically: define states (broad categories), stages (specific steps within a state), and stage diagrams (allowed transitions). Applies to issue, ticket, custom objects, and any leaf type. Rules that apply to every call are in `skills/devrev-start/references/global-api-rules.md`; use this skill for any stage/state/lifecycle customization request.
 
 ## When to use
 

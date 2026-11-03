@@ -55,6 +55,11 @@
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
      "line": 28,
      "snippet": "| `accounts.create` / `.update` | `account:write` / `:all` | Create / edit |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 13,
+     "snippet": "| Onboard a customer | `skills/3-data-upload-and-org-build` | `accounts.create`, then `rev-orgs.create`, then "
     }
    ],
    "required": [
@@ -281,6 +286,11 @@
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
      "line": 30,
      "snippet": "| `accounts.merge` | `account:all` | Merge duplicates |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 14,
+     "snippet": "| Merge duplicate accounts | `skills/8-devrev-api` | `accounts.merge` (destructive) |"
     }
    ],
    "required": [
@@ -793,6 +803,11 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 71,
      "snippet": "| `articles.create` / `.update` | `article:write` / `:all` |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 16,
+     "snippet": "| Publish knowledge-base content | `skills/8-devrev-api` | `articles.create` (draft), review, `articles.update"
     }
    ],
    "required": [
@@ -1080,6 +1095,11 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 200,
      "snippet": "curl -X POST 'https://api.devrev.ai/articles.update' -H 'Authorization: Bearer <TOKEN>' \\"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 16,
+     "snippet": "| Publish knowledge-base content | `skills/8-devrev-api` | `articles.create` (draft), review, `articles.update"
     }
    ],
    "required": [
@@ -2727,7 +2747,13 @@
     "POST"
    ],
    "name": "conversations.list",
-   "notes": [],
+   "notes": [
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 20,
+     "snippet": "| List conversations | `skills/8-devrev-api` | `conversations.list` |"
+    }
+   ],
    "required": [],
    "resource": "conversations",
    "risk": "read",
@@ -2944,6 +2970,11 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 169,
      "snippet": "same tier as `works.delete`/`custom-objects.delete`/`workflows.delete` — safe to clean up"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 9,
+     "snippet": "| Any `*.delete` | `works.delete`, `custom-objects.delete`, `workflows.delete`, `tags.delete` and `links.delet"
     }
    ],
    "required": [
@@ -3716,6 +3747,11 @@
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
      "line": 88,
      "snippet": "| `dev-users.self` / `.self.update` | None | Current user |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 22,
+     "snippet": "| Check who the token belongs to | `skills/10-api-conventions` | `dev-users.self`, `ping` |"
     }
    ],
    "required": [],
@@ -5064,6 +5100,11 @@
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
      "line": 111,
      "snippet": "- `jobs.get` — status of one job (`job:read`)."
+    },
+    {
+     "file": "skills/devrev-start/references/global-api-rules.md",
+     "line": 13,
+     "snippet": "- **Fragment versioning:** schema fragments are versioned. After a schema change (new field, overrides, subtyp"
     }
    ],
    "required": [
@@ -5409,6 +5450,16 @@
      "file": "skills/8-devrev-api/references/Custom_Objects_and_Links_API.md",
      "line": 460,
      "snippet": "> `link-types.custom.update`. This preserves referential integrity so existing"
+    },
+    {
+     "file": "skills/devrev-start/references/global-api-rules.md",
+     "line": 15,
+     "snippet": "- **Custom link types** can only be deprecated, never deleted: `link-types.custom.update` with `deprecated: tr"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 17,
+     "snippet": "| Custom link types | Deprecate only, via `link-types.custom.update` with `deprecated: true`. |"
     }
    ],
    "required": [
@@ -5538,6 +5589,11 @@
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
      "line": 201,
      "snippet": "`POST links.delete {\"id\": \"<LINK_ID>\"}` returns `200 {}`; a follow-up `links.get`"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 9,
+     "snippet": "| Any `*.delete` | `works.delete`, `custom-objects.delete`, `workflows.delete`, `tags.delete` and `links.delet"
     }
    ],
    "required": [
@@ -5735,6 +5791,11 @@
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
      "line": 197,
      "snippet": "- `links.replace` — swap a link (atomic only for part-to-part default link types;"
+    },
+    {
+     "file": "skills/devrev-start/references/global-api-rules.md",
+     "line": 16,
+     "snippet": "- **`links.replace`** is atomic only for part-to-part default (non-custom) link types. For custom types or oth"
     }
    ],
    "required": [
@@ -6213,6 +6274,11 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 308,
      "snippet": "| `metric-definitions.create` / `.update` | `metric_definition:write` / `:all` |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 17,
+     "snippet": "| Set up support metrics | `skills/8-devrev-api` | `metric-definitions.create`, `slas.create`, `slas.assign`, "
     }
    ],
    "required": [
@@ -7207,6 +7273,11 @@
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
      "line": 289,
      "snippet": "| `skills/8-devrev-api/references/DevRev_Building_Org_Using_API_v1.md` | Building the Trail (parts.create with"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 21,
+     "snippet": "| Create a product part | `skills/8-devrev-api` | `parts.create` |"
     }
    ],
    "required": [
@@ -7992,6 +8063,11 @@
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
      "line": 40,
      "snippet": "curl -X POST 'https://api.devrev.ai/rev-orgs.create' \\"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 13,
+     "snippet": "| Onboard a customer | `skills/3-data-upload-and-org-build` | `accounts.create`, then `rev-orgs.create`, then "
     }
    ],
    "required": [
@@ -8318,6 +8394,11 @@
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
      "line": 64,
      "snippet": "| `rev-users.create` / `.update` | `rev_user:write` / `:all` |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 13,
+     "snippet": "| Onboard a customer | `skills/3-data-upload-and-org-build` | `accounts.create`, then `rev-orgs.create`, then "
     }
    ],
    "required": [],
@@ -8890,6 +8971,11 @@
      "file": "skills/8-devrev-api/references/Stock_Object_Modification_and_Schemas_API.md",
      "line": 177,
      "snippet": "| `schemas.custom.get` | none | Get a custom fragment |"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 14,
+     "snippet": "| `schemas.custom.set` | A **versioned create**: two calls with the same `leaf_type` make two fragments and no"
     }
    ],
    "required": [
@@ -9331,6 +9417,11 @@
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
      "line": 223,
      "snippet": "`hybrid-search.query` returns `HTTP 404 route not found`. `search.core` is the"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 18,
+     "snippet": "| Search across objects | `skills/8-devrev-api` | `search.hybrid`, `search.core` |"
     }
    ],
    "required": [
@@ -9386,6 +9477,11 @@
      "file": "skills/8-devrev-api/references/Trail_Articles_Directories_Model.md",
      "line": 278,
      "snippet": "- **Never guess a `namespace` value on `search.hybrid`.** It's required and the 37-value enum is documented — "
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 18,
+     "snippet": "| Search across objects | `skills/8-devrev-api` | `search.hybrid`, `search.core` |"
     }
    ],
    "required": [
@@ -9536,6 +9632,11 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 325,
      "snippet": "object (or account), then check `sla-trackers.get`."
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 17,
+     "snippet": "| Set up support metrics | `skills/8-devrev-api` | `metric-definitions.create`, `slas.create`, `slas.assign`, "
     }
    ],
    "required": [
@@ -9647,6 +9748,11 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 324,
      "snippet": "- SLA not taking effect — creating an SLA isn't enough; `slas.assign` it to the"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 17,
+     "snippet": "| Set up support metrics | `skills/8-devrev-api` | `metric-definitions.create`, `slas.create`, `slas.assign`, "
     }
    ],
    "required": [
@@ -9701,6 +9807,11 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 306,
      "snippet": "| `slas.create` / `.update` / `.assign` / `.transition` | `sla:write` |"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 17,
+     "snippet": "| Set up support metrics | `skills/8-devrev-api` | `metric-definitions.create`, `slas.create`, `slas.assign`, "
     }
    ],
    "required": [
@@ -10543,6 +10654,16 @@
      "file": "skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md",
      "line": 35,
      "snippet": "curl -X POST 'https://api.devrev.ai/states.custom.create' \\"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 30,
+     "snippet": "| Customize stages, states or lifecycles | `skills/2-stage-lifecycle-customization` (`states.custom.create`, `"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 12,
+     "snippet": "| `states.custom.create`, `stages.custom.create` | Permanent: `stages.custom.delete` / `states.custom.delete` "
     }
    ],
    "required": [
@@ -11322,6 +11443,11 @@
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
      "line": 155,
      "snippet": "endpoints in this API, which are missing or deprecate-only): `POST tags.delete {\"id\": \"<TAG_ID>\"}`"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 9,
+     "snippet": "| Any `*.delete` | `works.delete`, `custom-objects.delete`, `workflows.delete`, `tags.delete` and `links.delet"
     }
    ],
    "required": [
@@ -12250,6 +12376,16 @@
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
      "line": 170,
      "snippet": "- `web-crawler-jobs.control` — pause/resume/stop."
+    },
+    {
+     "file": "skills/devrev-start/SKILL.md",
+     "line": 41,
+     "snippet": "3. Destructive calls (`*.delete`, `*.merge`, `objects.bulk-upgrade`, `schemas.custom.set`, creating custom sta"
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 18,
+     "snippet": "| `web-crawler-jobs.control` (`stop` / `reset`) | Cannot be resumed. |"
     }
    ],
    "required": [
@@ -12424,6 +12560,11 @@
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
      "line": 82,
      "snippet": "- **Registration handshake.** `webhooks.create` returns the webhook with a `secret` and"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 19,
+     "snippet": "| Get notified of events | `skills/11-developer-docs` (guides/webhooks) | `webhooks.create`, answer the verify"
     }
    ],
    "required": [
@@ -12869,6 +13010,11 @@
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
      "line": 84,
      "snippet": "— that field is create/update-only). Works identically with `works.count` for a"
+    },
+    {
+     "file": "skills/devrev-start/references/goal-map.md",
+     "line": 10,
+     "snippet": "| Find or count work items | `skills/8-devrev-api` | `works.list`, `works.count` |"
     }
    ],
    "required": [],
@@ -13039,6 +13185,11 @@
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
      "line": 103,
      "snippet": "`works.delete` needs the `<type>:all` scope."
+    },
+    {
+     "file": "skills/devrev-start/references/safety.md",
+     "line": 9,
+     "snippet": "| Any `*.delete` | `works.delete`, `custom-objects.delete`, `workflows.delete`, `tags.delete` and `links.delet"
     }
    ],
    "required": [
@@ -13409,7 +13560,7 @@
   }
  ],
  "meta": {
-  "core_hash": "5f41ae233b7573f0",
+  "core_hash": "0f51dd1fd9b35eb0",
   "count": 302
  }
 }

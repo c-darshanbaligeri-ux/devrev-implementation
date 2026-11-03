@@ -7,7 +7,7 @@ description: Read and modify DevRev data through the public REST API — work it
 
 Use this to perform any DevRev operation via the REST API. It routes a request
 to the right endpoint and doc, and gives the order and safety checks. Read
-`CLAUDE.md` first for the global rules; use `references/00_API_Catalog.md` to look up any
+`skills/devrev-start/SKILL.md` and `skills/devrev-start/references/global-api-rules.md` first for the global rules; use `references/00_API_Catalog.md` to look up any
 endpoint + scope.
 
 ## When to use

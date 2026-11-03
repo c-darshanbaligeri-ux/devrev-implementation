@@ -7,8 +7,8 @@ description: Base cross-cutting conventions that every DevRev REST endpoint foll
 
 These are the cross-cutting rules the DevRev "About" section of developer.devrev.ai
 documents: tokens, pagination, versioning, rate limits, and error shape. Every
-domain skill in this repo (1–9) sits on top of these rules. Read the repo root
-`CLAUDE.md` first for global operating rules; use this skill when you're
+domain skill in this repo sits on top of these rules. Read
+`skills/devrev-start/SKILL.md` first for the operating procedure and global rules; use this skill when you're
 building or debugging the *plumbing* around any endpoint call.
 
 ## When to use
@@ -60,7 +60,7 @@ call in this repo obeys them.
 
 - Every request carries `Authorization: Bearer <token>` — the four token types
   (PAT, AAT, SUT, Session) are all bearer JWTs. For this repo the token is
-  always a **PAT** read from `.env` as `DEVREV_PAT` (see repo-root `CLAUDE.md`).
+  always a **PAT** read from `.env` as `DEVREV_PAT` (see `skills/devrev-start/references/global-api-rules.md`).
 - PATs **cannot be renewed** — generate a new one and update `.env` before the
   old one expires.
 - If you see `invalid token`, decode the payload **locally** to inspect its
@@ -132,11 +132,11 @@ call in this repo obeys them.
 - Per-endpoint extras: `301 Moved Permanently` (the resource ID changed; the
   new ID is in the `Location` header — treat as a hint to update stored IDs).
 
-### DON ids, headers, base URL — see repo-root `CLAUDE.md`
+### DON ids, headers, base URL — see `skills/devrev-start/references/global-api-rules.md`
 
 The base URL (`https://api.devrev.ai`), the `Content-Type` / `Accept:
 application/json` header pair, and the "always use DON ids, never display IDs"
-rule are stated in the repo-root `CLAUDE.md` "Global API rules" section, not on
+rule are stated in `skills/devrev-start/references/global-api-rules.md`, not on
 any developer.devrev.ai About page. This skill doesn't restate them — they're
 global.
 

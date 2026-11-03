@@ -5,7 +5,7 @@ description: Upload files and artifacts to DevRev, attach files to objects, migr
 
 # Data upload & org build — executable playbook
 
-Upload files and artifacts to DevRev, migrate data programmatically, and build a complete customer organization from scratch through the API. Read the repo root `CLAUDE.md` first for global API rules; use this skill for file uploads, bulk data loads, or end-to-end org setup requests.
+Upload files and artifacts to DevRev, migrate data programmatically, and build a complete customer organization from scratch through the API. Rules that apply to every call are in `skills/devrev-start/references/global-api-rules.md`; use this skill for file uploads, bulk data loads, or end-to-end org setup requests.
 
 ## When to use
 

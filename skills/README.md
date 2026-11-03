@@ -7,9 +7,9 @@ requests start at 0):
 | # | Skill | Owns | Type |
 | --- | --- | --- | --- |
 | 0 | `0-solution-architecture` | Turns a vague business problem into a 20-section DevRev solution blueprint (object/lifecycle mapping, workflow/agent capability selection, integrations, estimates, risk, A/B/C alternatives) | Design (references/ inline; never calls the live API) |
-| 1 | `1-object-schema-customization` | Custom objects, tenant/subtype fields, field overrides, aggregated schema, custom link types | Knowledge-owner (references/ inline) |
-| 2 | `2-stage-lifecycle-customization` | States → stages → stage diagrams, lifecycle assignment, dependent fields | Knowledge-owner |
-| 3 | `3-data-upload-and-org-build` | Artifacts/file upload, ordered org builds, idempotent bulk loading | Knowledge-owner |
+| 1 | `1-object-schema-customization` | Custom objects, tenant/subtype fields, field overrides, aggregated schema, custom link types | Playbook (reference docs live in skill 8) |
+| 2 | `2-stage-lifecycle-customization` | States → stages → stage diagrams, lifecycle assignment, dependent fields | Playbook (reference docs live in skill 8) |
+| 3 | `3-data-upload-and-org-build` | Artifacts/file upload, ordered org builds, idempotent bulk loading | Playbook (reference docs live in skill 8) |
 | 4 | `4-dashboards-and-widgets` | Routes into the `dashboard-dev` plugin (`/create-dashboard`, `/modify-dashboard`) | Router (knowledge lives in `repos/aai-skills`) |
 | 5 | `5-datasets` | Routes into the `dataset-builder` plugin; PaaS vs Ponos decision | Router |
 | 6 | `6-workflows` | WorkflowTemplateV2 authoring, import debugging, agent-callable skills (four-block pattern), workflow CRUD/trigger | Knowledge-owner (130 op schemas, working examples) |
@@ -22,8 +22,9 @@ requests start at 0):
 **Working rules**
 - Always open the domain's `SKILL.md` first; it names the reference files that carry the exact
   endpoints, scopes, and payloads. Never reconstruct API facts from memory.
-- Skills 1–3 duplicate their reference docs from skill 8 on purpose (self-containment). If a
-  learning corrects a reference doc, fix **both** copies (the capture-learnings protocol says how).
+- Skills 1–3 are playbooks only: the reference docs they cite live once, in `skills/8-devrev-api/references/`.
+  (The former per-skill copies drifted apart and were consolidated on 2026-11-03.) A learning that corrects
+  a reference doc is fixed in that one file.
 - Skill 0's references cross-reference skills 1, 2, 6, 7, 8 for exact API mechanics rather than
   duplicating them — a design-time index over the same knowledge-owner reference files, not a third copy.
 - Each SKILL.md ends with a **Field notes** (or domain-specific learning) section — dated facts

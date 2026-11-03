@@ -69,22 +69,34 @@ curl -X POST 'https://api.devrev.ai/custom-objects.create' \
 | --- | --- | --- |
 | `custom-objects.create` | `custom_type_fragment:write` | Create a record |
 | `custom-objects.update` | `custom_type_fragment:write` | Update fields/stage/description |
-| `custom-objects.delete` | `custom_type_fragment:write` | Delete a record |
+| `custom-objects.delete` | `custom_type_fragment:write` | Delete a record — **confirmed live 2026-07-19**: genuinely works (`HTTP 200 {}`, then `.get` 404s), not a stub |
 | `custom-objects.get` | none | Fetch one record |
-| `custom-objects.list` | none | List records |
-| `custom-objects.count` | none | Count records |
+| `custom-objects.list` | none | List records — **live-verified 2026-07-19: `leaf_type` is a required filter**, omitting it returns `HTTP 400 missing_required_field field_name:"leaf_type"` |
+| `custom-objects.count` | none | Count records — same required `leaf_type` filter as `.list` |
 
 > Access note: custom objects start with **zero access**, even for admins. Grant
 > object- and field-level roles in Settings > Object customization and
 > Settings > User Management > Roles before they appear or become editable.
 > If list view isn't supported for a custom object, enable search on it.
 
-`.list`/`.count` filter on a custom field with `[operator, path, value]`, path
-prefixed `$custom_fields.`, e.g.
-`{"leaf_type":"campaign","filter":["eq","$custom_fields.tnt__target_audience","Professionals"]}`.
-Search syntax needs its own `leaf_type:` term and, for subtype fields, a
-`subtype:` term alongside `ctype__` field terms. See the skill 1 copy of this
-file for the live-verification caveat on this filter syntax.
+**`.list`/`.count` filter syntax** — **not independently live-tested in this
+repo**, sourced from DevRev's docs (fills a gap the solution-architecture
+skill's `api-cookbook.md` §2 previously flagged as undocumented here — that
+pointer note is now stale and should be corrected once this is confirmed
+live). Filter on a custom field with a 3-element array
+`[operator, path, value]`, where the path is prefixed `$custom_fields.`:
+
+```json
+{
+  "leaf_type": "campaign",
+  "filter": [ "eq", "$custom_fields.tnt__target_audience", "Professionals" ]
+}
+```
+
+If the list view isn't supported for a custom object in the UI, the search
+syntax over custom objects requires its own `leaf_type` filter term, and
+subtype-specific field filters require a `subtype` term alongside it, e.g.
+`leaf_type:campaign subtype:social_media ctype__social_media_platform:Facebook`.
 
 ### Step 3 — give the custom object a stage field (lifecycle)
 
@@ -113,8 +125,11 @@ accept a `stage` value that must be a valid stage in that diagram.
    }'
    ```
 
-2. Reference that diagram from the custom type's schema fragment via
-   `stage_diagram_id` on `schemas.custom.set` (same field used for subtypes).
+2. Attach the diagram. **Live-verified 2026-07-19**: the write field is `stage_diagram` (a bare
+   DON-id **string**), not `stage_diagram_id` — that name is rejected (`invalid_field`); a nested
+   `{"stage_diagram":{"id":...}}` object is also rejected. Only a bare string succeeds. (For a
+   leaf type with no existing default diagram, `is_default: true` at `stage-diagrams.create` time
+   is an alternative, leaf-type-scoped path — see `skills/8-devrev-api/references/Stages_States_and_StageDiagrams_API.md` §5.)
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
@@ -123,10 +138,19 @@ accept a `stage` value that must be a valid stage in that diagram.
      "type": "tenant_fragment",
      "leaf_type": "campaign",
      "is_custom_leaf_type": true,
-     "stage_diagram_id": "<STAGE_DIAGRAM_ID>",
+     "description": "Attributes for Campaign",
+     "stage_diagram": "<STAGE_DIAGRAM_ID>",
      "fields": []
    }'
    ```
+
+   The read-side key (`schemas.aggregated.get`) is still named `stage_diagram_id` — only the
+   write-side field on `schemas.custom.set` is `stage_diagram`. If a `tenant_fragment` already
+   exists for this leaf type, replay its complete `fields` array (see §5 Common pitfalls) — a
+   partial replay 400s.
+   **Enforcement note**: this was confirmed to gate `custom-objects.update` correctly (non-adjacent
+   stage transitions rejected). The same attachment mechanism on a **stock-type subtype** did
+   *not* gate `works.update` in testing — see the stage-lifecycle skill's Field notes.
 
 3. Set the stage on a record:
 
@@ -250,11 +274,15 @@ curl -X POST 'https://api.devrev.ai/custom-objects.update' \
 
 ### Step 5 — give the custom object subtypes
 
-Custom leaf types support subtypes the same way stock leaf types do: a
-`custom_type_fragment` scoped to `leaf_type` + `subtype` works identically
-whether `leaf_type` is stock (`issue`) or custom (`is_custom_leaf_type: true`
-from Step 1). The subtype inherits every tenant field and adds its own,
-prefixed `ctype__` on records.
+**Yes — custom leaf types support subtypes exactly the same way stock leaf
+types do.** A subtype is a `custom_type_fragment` scoped to a `leaf_type` +
+`subtype` name; it works identically whether that `leaf_type` is a stock object
+(`issue`, `ticket`) or one you defined yourself with `is_custom_leaf_type: true`
+in Step 1. The subtype **inherits every field of the parent leaf type** (its
+tenant fragment) and adds its own fields on top, prefixed `ctype__` on records.
+
+Continuing the campaign example: define a `social_media` subtype and an
+`email_marketing` subtype, each with fields specific to that flavor of campaign.
 
 ```bash
 curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
@@ -271,12 +299,16 @@ curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
       "name": "social_media_platform",
       "field_type": "enum",
       "allowed_values": [ "Facebook", "Instagram", "LinkedIn", "X" ],
+      "is_filterable": true,
       "ui": { "display_name": "Platform" }
     },
     { "name": "post_id", "field_type": "text", "ui": { "display_name": "Post ID" } }
   ]
 }'
 ```
+
+Create a record of that subtype by naming it in `custom_schema_spec` and mixing
+`tnt__` (inherited) and `ctype__` (subtype-only) fields in one payload:
 
 ```bash
 curl -X POST 'https://api.devrev.ai/custom-objects.create' \
@@ -292,10 +324,59 @@ curl -X POST 'https://api.devrev.ai/custom-objects.create' \
 }'
 ```
 
-Repeat with a different `subtype` (e.g. `email_marketing`) to add another
-flavor of the same custom leaf type. See the skill 1 copy of this file for
-live-verified caveats (e.g. the stage-diagram write field is `stage_diagram`,
-not `stage_diagram_id`).
+Repeat the `schemas.custom.set` call with a different `subtype` (e.g.
+`email_marketing`) and its own `fields` to add another flavor of the same
+custom leaf type. Verify a subtype landed with `schemas.aggregated.get` and
+`custom_schema_spec: { "subtype": "<name>" }` — see the Field notes above on
+`schemas.subtypes.list` requiring a `leaf_type` filter to show anything.
+
+**Field namespace nuance**: the `ctype__`/`tnt__` prefixes only apply to field
+*values* on an instantiated record (`custom_fields` in create/update payloads
+and in `schemas.aggregated.get`'s merged view). Inside a schema *definition*
+(the `fields` array passed to `schemas.custom.set` itself), field `name`s are
+bare — never write `"name": "ctype__post_id"` there, just `"name": "post_id"`.
+
+**Subtype-scoped access roles**: object access is granted per Step 4's access
+note, but field-level roles (Settings > User Management > Roles) can further be
+scoped to one subtype via `target_subtype`, or applied uniformly with
+`include_all_subtypes: true` — useful when different campaign subtypes should
+be editable by different teams.
+
+**Changing which subtype a record uses**: `schemas.subtypes.prepare-update`
+(Playbook 3 step 5 in SKILL.md) previews the effect of a subtype schema change
+before you apply it, reporting field-compatibility conflicts as
+`ABSENT_IN_NEW` (a field the old subtype had that the new one drops) or
+`INCOMPATIBLE_TYPE` (a field kept but with a changed `field_type`).
+
+**Retiring an unwanted subtype (confirmed live 2026-07-26)**: there is no hard
+delete for a `custom_type_fragment`, but you can deprecate it — replay the
+fragment's complete existing payload (`type`, `leaf_type`, `subtype`,
+`subtype_display_name`, full `fields` array) through `schemas.custom.set` with
+**`deprecated: true`** added at the top level. **The field name is `deprecated`,
+not `is_deprecated`** — sending `is_deprecated: true` returns HTTP 400
+`bad_request` with no diagnostic. A successful call bumps `object_version` and
+a follow-up `schemas.custom.get` echoes the field back as `is_deprecated: true`
+(output name differs from input name). Effect verified: `schemas.subtypes.list
+{"leaf_type":"<leaf_type>"}` stops listing a deprecated subtype, while an
+active, non-deprecated subtype on the same call still appears — so this is a
+real suppression, not just cosmetic. Not confirmed: whether `custom-objects.create`
+/`works.create` using the deprecated subtype's `custom_schema_spec` is actually
+rejected, since `schemas.aggregated.get` still resolves its fields when the
+subtype is named explicitly.
+
+> Sourced from DevRev's object-customization and custom-objects guides
+> (developer.devrev.ai) — not independently live-tested in this repo yet.
+> Where it overlaps with facts already live-verified here, the live-verified
+> version wins: e.g. that source material's stage-diagram-attachment example
+> uses `stage_diagram_id` on the subtype fragment, but this repo confirmed live
+> (2026-07-19, Field notes above) that `stage_diagram_id` is **rejected** —
+> the working write-side field is `stage_diagram` (a bare DON-id string), as
+> already documented in Step 3 above. Likewise, that source claims custom link
+> types can restrict by `subtype` **and** `leaf_only` — only the `subtype`
+> restriction is confirmed to exist in this API; a live pass on 2026-07-19
+> (see `skills/0-solution-architecture/references/api-cookbook.md` §5) found
+> no `leaf_only` field anywhere in this domain. Treat `leaf_only` as unconfirmed
+> until someone hits a live response that actually contains it.
 
 ---
 
@@ -378,6 +459,13 @@ Scope: `link-types.custom.create` / `.update` require `custom_link_type:write`;
 > `link-types.custom.delete`. To retire one, set `deprecated: true` via
 > `link-types.custom.update`. This preserves referential integrity so existing
 > links and old objects don't become corrupt. Name them carefully.
+>
+> **Verified live 2026-08-04**: once deprecated, a type disappears from a bare
+> `link-types.custom.list` (`{}`) — the endpoint filters deprecated types out by
+> default. Pass `{"is_deprecated": true}` to list only the retired ones, or
+> `link-types.custom.get` by id (works on active and deprecated alike, echoing
+> `is_deprecated`). So a bare `.list` returns exactly the resolvable types, and
+> absence from it is NOT evidence a type was deleted.
 
 ---
 

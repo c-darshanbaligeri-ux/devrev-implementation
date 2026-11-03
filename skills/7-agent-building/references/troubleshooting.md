@@ -583,8 +583,9 @@ cat > test_inputs.json <<'EOF'
 ]
 EOF
 
-# Run bulk test (requires test harness)
-bash scripts/run-bulk-test.sh test_inputs.json
+# There is no bulk-test script in this repo. Run each input through the agent-test
+# command (skills/7-agent-building/commands/agent-test.md) one at a time and record
+# the result per input.
 ```
 
 ---
@@ -594,7 +595,7 @@ bash scripts/run-bulk-test.sh test_inputs.json
 1. **Check this troubleshooting guide first**
 2. **Review `api-contracts.md`** for API-specific issues
 3. **Read relevant knowledge base articles** in `knowledge/`
-4. **Run diagnostic script**: `bash scripts/diagnose.sh`
+4. **Inspect the live agent**: `skills/7-agent-building/scripts/get-agent.sh <agent-id-or-slug>` (full config) and `skills/7-agent-building/scripts/validate-schema.sh` (custom-object payloads); there is no `diagnose.sh`
 5. **Check recent chat history** for similar issues
 6. **Create detailed issue report** with:
    - Error message (full text)

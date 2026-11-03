@@ -3,6 +3,8 @@
 All files are importable template JSON (envelope `{"templateVersion": "2.0.0", "data": "<stringified inner JSON>"}`).
 `working-*` files are **confirmed to import successfully** — always study the closest one before authoring.
 Numbered files are real production templates, not re-validated against current schema rules.
+Check any template offline with `devrev-validate-workflow <file>` (a repo checkout: `./bin/devrev-validate-workflow`);
+the `default-*`, `working-*` and `ai-agent-skill-*` files are that validator's ground truth and must stay clean.
 When a new template is confirmed working, add it here AND to the example table in
 `../references/template-json-format.md` (the learning loop in SKILL.md).
 
@@ -43,6 +45,10 @@ and pick from the `working-*.json` tables below — that's the generic-workflow 
 | `ai-agent-skill-http-template.json` | Verbose agent-skill scaffold with full port_schemas restated inline — reference only; prefer the `default-*` template above for new work |
 
 ## Production references (not re-validated)
+
+Static check with `devrev-validate-workflow`, 2026-11-03: all seven report **0 errors**. The only warnings are
+third-party operations the catalog cannot check (`3592`: 1 step, `5040`: 3 steps, `5158`: 21 steps). That is an offline
+structure check, not proof of import; `workflows.components.validate` on the imported draft is the authority.
 
 | File (exact) | Steps | Pattern |
 | --- | --- | --- |

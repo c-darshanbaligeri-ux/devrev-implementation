@@ -14009,6 +14009,11 @@
    "name": "workflows.components.validate",
    "notes": [
     {
+     "file": "skills/6-workflows/examples/INDEX.md",
+     "line": 51,
+     "snippet": "structure check, not proof of import; `workflows.components.validate` on the imported draft is the authority."
+    },
+    {
      "file": "skills/6-workflows/references/manage-workflows-api.md",
      "line": 34,
      "snippet": "| `workflows.components.validate` | POST | `/internal/workflows.components.validate` | The Workflows app's **V"

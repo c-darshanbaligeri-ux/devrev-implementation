@@ -56,6 +56,13 @@ class Components(unittest.TestCase):
         self.assertTrue(os.access(ROOT / "bin" / "devrev-find", os.X_OK))
         self.assertTrue(os.access(ROOT / "hooks" / "devrev-safety.py", os.X_OK))
 
+    def test_every_bin_command_is_executable_and_has_a_shebang(self):
+        commands = sorted(p for p in (ROOT / "bin").iterdir() if p.is_file())
+        self.assertIn("devrev-validate-workflow", [p.name for p in commands])
+        for p in commands:
+            self.assertTrue(os.access(p, os.X_OK), f"{p.name} must be executable (the plugin puts bin/ on PATH)")
+            self.assertTrue(p.read_text(encoding="utf-8").startswith("#!"), f"{p.name} needs a shebang")
+
     def test_finder_reports_its_root(self):
         out = subprocess.run([sys.executable, str(ROOT / "bin" / "devrev-find"), "--root"], capture_output=True, text=True, cwd="/")
         self.assertEqual(Path(out.stdout.strip()).resolve(), ROOT.resolve())

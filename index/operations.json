@@ -43,6 +43,11 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/add_comment.md",
    "scopes": [],
+   "seen_fields": [
+    "body",
+    "object",
+    "visibility"
+   ],
    "slug": "add_comment",
    "tags": [
     "HIPAA",
@@ -77,6 +82,7 @@
    "scopes": [
     "ai_agent:execute"
    ],
+   "seen_fields": [],
    "slug": "agent_callback",
    "tags": [
     "HIPAA",
@@ -108,6 +114,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "ai_feedback",
    "tags": [
     "HIPAA",
@@ -133,6 +140,7 @@
    "scopes": [
     "ai_agent:read"
    ],
+   "seen_fields": [],
    "slug": "ask_agent",
    "tags": [
     "HIPAA",
@@ -169,6 +177,12 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/ask_ai.md",
    "scopes": [],
+   "seen_fields": [
+    "ai_input",
+    "model",
+    "output_format",
+    "structure"
+   ],
    "slug": "ask_ai",
    "tags": [
     "HIPAA",
@@ -192,6 +206,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "ask_options",
    "tags": [
     "HIPAA",
@@ -228,6 +243,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/classify_object.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "classify_object",
    "tags": [
     "HIPAA",
@@ -262,6 +278,7 @@
     "conversation:read",
     "link:read"
    ],
+   "seen_fields": [],
    "slug": "convert_conversation_to_ticket",
    "tags": [
     "HIPAA",
@@ -285,6 +302,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_aai_proj",
    "tags": [],
    "title": "Create AAI Project"
@@ -304,6 +322,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_abc",
    "tags": [
     "HIPAA",
@@ -349,6 +368,7 @@
    "scopes": [
     "account:write"
    ],
+   "seen_fields": [],
    "slug": "create_account",
    "tags": [
     "HIPAA",
@@ -372,6 +392,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_ai_agent_session_metrics",
    "tags": [],
    "title": "Create Ai Agent Session Metrics"
@@ -391,6 +412,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_alert",
    "tags": [],
    "title": "Create Alert"
@@ -440,6 +462,13 @@
    "scopes": [
     "article:write"
    ],
+   "seen_fields": [
+    "applies_to_parts",
+    "content",
+    "description",
+    "owned_by",
+    "title"
+   ],
    "slug": "create_article",
    "tags": [
     "HIPAA",
@@ -463,6 +492,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_as_pend",
    "tags": [],
    "title": "Create Pending Record"
@@ -482,6 +512,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_asagentlog",
    "tags": [],
    "title": "Create Asagentlog"
@@ -501,6 +532,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_asownerlog",
    "tags": [
     "HIPAA",
@@ -523,6 +555,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_asreport",
    "tags": [],
    "title": "Create Asreport"
@@ -542,6 +575,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_asset",
    "tags": [],
    "title": "Create Asset"
@@ -561,6 +595,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_campaigned",
    "tags": [],
    "title": "Create Campaigned"
@@ -580,6 +615,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_chameleon_survey",
    "tags": [],
    "title": "Create Chameleon Survey"
@@ -599,6 +635,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_change",
    "tags": [],
    "title": "Create Change"
@@ -618,6 +655,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_chat",
    "tags": [],
    "title": "Create Chat"
@@ -637,6 +675,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_code_change",
    "tags": [
     "HIPAA"
@@ -688,6 +727,7 @@
    "scopes": [
     "rev_user:read"
    ],
+   "seen_fields": [],
    "slug": "create_contact",
    "tags": [
     "HIPAA",
@@ -713,6 +753,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_cost",
    "tags": [],
    "title": "Create Cost"
@@ -732,6 +773,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_devrev__api",
    "tags": [],
    "title": "Create Devrev  Api"
@@ -770,6 +812,7 @@
    "scopes": [
     "dm:write"
    ],
+   "seen_fields": [],
    "slug": "create_dm",
    "tags": [
     "HIPAA",
@@ -793,6 +836,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_drad_cour",
    "tags": [],
    "title": "Create Articulate(reach360-o):Courses-fea0ea393c"
@@ -812,6 +856,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_drad_invi",
    "tags": [],
    "title": "Create Google_Cal(devrev.ai):Invitee-8fc70d7ea5"
@@ -831,6 +876,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_drad_lear",
    "tags": [],
    "title": "Create Articulate(reach360-o):Learners-63b4ae28b4"
@@ -850,6 +896,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_eastwest",
    "tags": [],
    "title": "Create EastWest"
@@ -896,6 +943,7 @@
    "scopes": [
     "enhancement:write"
    ],
+   "seen_fields": [],
    "slug": "create_enhancement",
    "tags": [
     "HIPAA",
@@ -921,6 +969,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_entity",
    "tags": [],
    "title": "Create Entity"
@@ -940,6 +989,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_event",
    "tags": [],
    "title": "Create Event"
@@ -959,6 +1009,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_expense",
    "tags": [],
    "title": "Create Expense"
@@ -978,6 +1029,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_form",
    "tags": [],
    "title": "Create Form"
@@ -997,6 +1049,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_implementation",
    "tags": [],
    "title": "Create Implementation"
@@ -1059,6 +1112,7 @@
    "scopes": [
     "incident:write"
    ],
+   "seen_fields": [],
    "slug": "create_incident",
    "tags": [
     "HIPAA",
@@ -1128,6 +1182,7 @@
    "scopes": [
     "issue:write"
    ],
+   "seen_fields": [],
    "slug": "create_issue",
    "tags": [
     "HIPAA",
@@ -1153,6 +1208,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_log_pattern",
    "tags": [],
    "title": "Create Log Pattern"
@@ -1211,6 +1267,7 @@
    "scopes": [
     "meeting:write"
    ],
+   "seen_fields": [],
    "slug": "create_meeting",
    "tags": [
     "HIPAA",
@@ -1234,6 +1291,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_mypod",
    "tags": [
     "HIPAA",
@@ -1256,6 +1314,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_on_call_group",
    "tags": [],
    "title": "Create On Call Group"
@@ -1275,6 +1334,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_on_call_schedule",
    "tags": [],
    "title": "Create On Call Schedule"
@@ -1294,6 +1354,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_oncall",
    "tags": [],
    "title": "Create Oncall"
@@ -1313,6 +1374,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_oncallsup",
    "tags": [],
    "title": "Create Oncallsup"
@@ -1373,6 +1435,7 @@
    "scopes": [
     "opportunity:write"
    ],
+   "seen_fields": [],
    "slug": "create_opportunity",
    "tags": [
     "HIPAA",
@@ -1396,6 +1459,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_part_recommendation",
    "tags": [],
    "title": "Create Part Recommendation"
@@ -1415,6 +1479,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_problem",
    "tags": [],
    "title": "Create Problem"
@@ -1434,6 +1499,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_project",
    "tags": [],
    "title": "Create Project"
@@ -1453,6 +1519,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_reco",
    "tags": [],
    "title": "Create Reco"
@@ -1472,6 +1539,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_relationsh",
    "tags": [],
    "title": "Create Relationsh"
@@ -1491,6 +1559,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_release",
    "tags": [],
    "title": "Create Release"
@@ -1510,6 +1579,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_reviews",
    "tags": [],
    "title": "Create Reviews"
@@ -1529,6 +1599,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_round_robin_state",
    "tags": [],
    "title": "Create Round Robin State"
@@ -1548,6 +1619,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_sales_pod",
    "tags": [
     "HIPAA",
@@ -1570,6 +1642,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_sdr_alias",
    "tags": [
     "HIPAA",
@@ -1592,6 +1665,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_sdr_pod",
    "tags": [
     "HIPAA",
@@ -1614,6 +1688,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_se",
    "tags": [
     "HIPAA",
@@ -1636,6 +1711,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_stream",
    "tags": [],
    "title": "Create Stream"
@@ -1655,6 +1731,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_syncerrors",
    "tags": [],
    "title": "Create Syncerrors"
@@ -1674,6 +1751,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_team",
    "tags": [],
    "title": "Create Team"
@@ -1693,6 +1771,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_testresult",
    "tags": [],
    "title": "Create Testresult"
@@ -1712,6 +1791,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_theme",
    "tags": [],
    "title": "Create Theme"
@@ -1789,6 +1869,7 @@
    "scopes": [
     "ticket:write"
    ],
+   "seen_fields": [],
    "slug": "create_ticket",
    "tags": [
     "HIPAA",
@@ -1814,6 +1895,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_todo",
    "tags": [],
    "title": "Create Todo"
@@ -1833,6 +1915,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_vendor",
    "tags": [],
    "title": "Create Vendor"
@@ -1852,6 +1935,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_webinar",
    "tags": [],
    "title": "Create Webinar"
@@ -1880,6 +1964,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/evaluate_sentiment.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "evaluate_sentiment",
    "tags": [
     "HIPAA",
@@ -1910,6 +1995,7 @@
    "scopes": [
     "serengeti_job:execute"
    ],
+   "seen_fields": [],
    "slug": "execute_analytics_job",
    "tags": [
     "HIPAA",
@@ -1940,6 +2026,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/execute_metric_action.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "execute_metric_action",
    "tags": [
     "HIPAA",
@@ -1975,6 +2062,7 @@
    "scopes": [
     "artifact:read"
    ],
+   "seen_fields": [],
    "slug": "extract_content",
    "tags": [
     "HIPAA",
@@ -2009,6 +2097,7 @@
     "link:read",
     "artifact:read"
    ],
+   "seen_fields": [],
    "slug": "fetch_object_context",
    "tags": [
     "HIPAA",
@@ -2033,6 +2122,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_aai_proj",
    "tags": [],
    "title": "Get AAI Project"
@@ -2052,6 +2142,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_abc",
    "tags": [
     "ALPHA"
@@ -2098,6 +2189,9 @@
    "scopes": [
     "account:read"
    ],
+   "seen_fields": [
+    "id"
+   ],
    "slug": "get_account",
    "tags": [
     "HIPAA",
@@ -2121,6 +2215,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_ai_agent_session_metrics",
    "tags": [],
    "title": "Get Ai Agent Session Metrics"
@@ -2160,6 +2255,7 @@
    "scopes": [
     "sync_unit:read"
    ],
+   "seen_fields": [],
    "slug": "get_airdrop_sync_unit",
    "tags": [
     "HIPAA",
@@ -2183,6 +2279,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_alert",
    "tags": [],
    "title": "Get Alert"
@@ -2202,6 +2299,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_as_pend",
    "tags": [],
    "title": "Get Pending Record"
@@ -2221,6 +2319,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_asagentlog",
    "tags": [],
    "title": "Get Asagentlog"
@@ -2240,6 +2339,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_asownerlog",
    "tags": [
     "ALPHA"
@@ -2261,6 +2361,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_asreport",
    "tags": [],
    "title": "Get Asreport"
@@ -2280,6 +2381,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_asset",
    "tags": [],
    "title": "Get Asset"
@@ -2299,6 +2401,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_campaigned",
    "tags": [],
    "title": "Get Campaigned"
@@ -2318,6 +2421,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_chameleon_survey",
    "tags": [],
    "title": "Get Chameleon Survey"
@@ -2337,6 +2441,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_change",
    "tags": [],
    "title": "Get Change"
@@ -2356,6 +2461,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_chat",
    "tags": [],
    "title": "Get Chat"
@@ -2375,6 +2481,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_code_change",
    "tags": [],
    "title": "Get Code Change"
@@ -2425,6 +2532,7 @@
    "scopes": [
     "conversation:read"
    ],
+   "seen_fields": [],
    "slug": "get_conversation",
    "tags": [
     "HIPAA",
@@ -2448,6 +2556,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_cost",
    "tags": [],
    "title": "Get Cost"
@@ -2493,6 +2602,7 @@
    "scopes": [
     "rev_user:read"
    ],
+   "seen_fields": [],
    "slug": "get_customer",
    "tags": [
     "HIPAA",
@@ -2516,6 +2626,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_devrev__api",
    "tags": [],
    "title": "Get Devrev  Api"
@@ -2535,6 +2646,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_drad_cour",
    "tags": [],
    "title": "Get Articulate(reach360-o):Courses-fea0ea393c"
@@ -2554,6 +2666,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_drad_invi",
    "tags": [],
    "title": "Get Google_Cal(devrev.ai):Invitee-8fc70d7ea5"
@@ -2573,6 +2686,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_drad_lear",
    "tags": [],
    "title": "Get Articulate(reach360-o):Learners-63b4ae28b4"
@@ -2592,6 +2706,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_eastwest",
    "tags": [],
    "title": "Get EastWest"
@@ -2635,6 +2750,7 @@
    "scopes": [
     "enhancement:read"
    ],
+   "seen_fields": [],
    "slug": "get_enhancement",
    "tags": [
     "HIPAA",
@@ -2659,6 +2775,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_entity",
    "tags": [],
    "title": "Get Entity"
@@ -2678,6 +2795,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_event",
    "tags": [],
    "title": "Get Event"
@@ -2697,6 +2815,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_expense",
    "tags": [],
    "title": "Get Expense"
@@ -2735,6 +2854,7 @@
    "scopes": [
     "feature:read"
    ],
+   "seen_fields": [],
    "slug": "get_feature",
    "tags": [
     "HIPAA",
@@ -2758,6 +2878,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_form",
    "tags": [],
    "title": "Get Form"
@@ -2777,6 +2898,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_implementation",
    "tags": [],
    "title": "Get Implementation"
@@ -2824,6 +2946,7 @@
    "scopes": [
     "incident:read"
    ],
+   "seen_fields": [],
    "slug": "get_incident",
    "tags": [
     "HIPAA",
@@ -2880,6 +3003,7 @@
    "scopes": [
     "issue:read"
    ],
+   "seen_fields": [],
    "slug": "get_issue",
    "tags": [
     "HIPAA",
@@ -2904,6 +3028,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_log_pattern",
    "tags": [],
    "title": "Get Log Pattern"
@@ -2951,6 +3076,7 @@
    "scopes": [
     "meeting:read"
    ],
+   "seen_fields": [],
    "slug": "get_meeting",
    "tags": [
     "HIPAA",
@@ -2988,6 +3114,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_metric_trackers.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_metric_trackers",
    "tags": [
     "HIPAA",
@@ -3011,6 +3138,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_mypod",
    "tags": [
     "ALPHA"
@@ -3032,6 +3160,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_on_call_group",
    "tags": [],
    "title": "Get On Call Group"
@@ -3051,6 +3180,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_on_call_schedule",
    "tags": [],
    "title": "Get On Call Schedule"
@@ -3070,6 +3200,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_oncall",
    "tags": [],
    "title": "Get Oncall"
@@ -3089,6 +3220,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_oncallsup",
    "tags": [],
    "title": "Get Oncallsup"
@@ -3136,6 +3268,7 @@
    "scopes": [
     "opportunity:read"
    ],
+   "seen_fields": [],
    "slug": "get_opportunity",
    "tags": [
     "HIPAA",
@@ -3183,6 +3316,7 @@
    "scopes": [
     "dev_user:read"
    ],
+   "seen_fields": [],
    "slug": "get_org_user",
    "tags": [
     "HIPAA",
@@ -3222,6 +3356,7 @@
    "scopes": [
     "preference:read"
    ],
+   "seen_fields": [],
    "slug": "get_org_user_preference",
    "tags": [
     "HIPAA",
@@ -3262,6 +3397,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_part.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_part",
    "tags": [
     "HIPAA",
@@ -3286,6 +3422,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_part_recommendation",
    "tags": [],
    "title": "Get Part Recommendation"
@@ -3305,6 +3442,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_problem",
    "tags": [],
    "title": "Get Problem"
@@ -3324,6 +3462,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_project",
    "tags": [],
    "title": "Get Project"
@@ -3343,6 +3482,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_reco",
    "tags": [],
    "title": "Get Reco"
@@ -3362,6 +3502,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_relationsh",
    "tags": [],
    "title": "Get Relationsh"
@@ -3381,6 +3522,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_release",
    "tags": [],
    "title": "Get Release"
@@ -3400,6 +3542,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_reviews",
    "tags": [],
    "title": "Get Reviews"
@@ -3419,6 +3562,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_round_robin_state",
    "tags": [],
    "title": "Get Round Robin State"
@@ -3438,6 +3582,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_sales_pod",
    "tags": [
     "ALPHA"
@@ -3459,6 +3604,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_sdr_alias",
    "tags": [
     "ALPHA"
@@ -3480,6 +3626,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_sdr_pod",
    "tags": [
     "ALPHA"
@@ -3501,6 +3648,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_se",
    "tags": [
     "ALPHA"
@@ -3522,6 +3670,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_stream",
    "tags": [],
    "title": "Get Stream"
@@ -3541,6 +3690,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_syncerrors",
    "tags": [],
    "title": "Get Syncerrors"
@@ -3560,6 +3710,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_team",
    "tags": [],
    "title": "Get Team"
@@ -3579,6 +3730,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_testresult",
    "tags": [],
    "title": "Get Testresult"
@@ -3598,6 +3750,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_theme",
    "tags": [],
    "title": "Get Theme"
@@ -3656,6 +3809,9 @@
    "scopes": [
     "ticket:read"
    ],
+   "seen_fields": [
+    "id"
+   ],
    "slug": "get_ticket",
    "tags": [
     "HIPAA",
@@ -3696,6 +3852,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_time",
    "tags": [
     "HIPAA",
@@ -3719,6 +3876,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_todo",
    "tags": [],
    "title": "Get Todo"
@@ -3738,6 +3896,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_vendor",
    "tags": [],
    "title": "Get Vendor"
@@ -3757,6 +3916,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_webinar",
    "tags": [],
    "title": "Get Webinar"
@@ -3792,6 +3952,7 @@
    "scopes": [
     "rev_org:read"
    ],
+   "seen_fields": [],
    "slug": "get_workspace",
    "tags": [
     "HIPAA",
@@ -3838,6 +3999,15 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/http.md",
    "scopes": [],
+   "seen_fields": [
+    "auth_type",
+    "body",
+    "headers",
+    "method",
+    "sample_response",
+    "transform",
+    "url"
+   ],
    "slug": "http",
    "tags": [
     "Agent Skill",
@@ -3886,6 +4056,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/hybrid_search.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "hybrid_search",
    "tags": [
     "HIPAA",
@@ -3915,6 +4086,11 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/invoke_code.md",
    "scopes": [],
+   "seen_fields": [
+    "code",
+    "input_values",
+    "output_schema"
+   ],
    "slug": "invoke_code",
    "tags": [
     "HIPAA",
@@ -3946,6 +4122,7 @@
    "scopes": [
     "knowledge_node:write"
    ],
+   "seen_fields": [],
    "slug": "knowledge_store_deindex",
    "tags": [
     "HIPAA",
@@ -3971,6 +4148,7 @@
    "scopes": [
     "knowledge_node:write"
    ],
+   "seen_fields": [],
    "slug": "knowledge_store_index",
    "tags": [
     "HIPAA",
@@ -4003,6 +4181,7 @@
     "conversation:read",
     "link:write"
    ],
+   "seen_fields": [],
    "slug": "link_conversation_with_ticket",
    "tags": [
     "HIPAA",
@@ -4038,6 +4217,7 @@
     "issue:read",
     "link:write"
    ],
+   "seen_fields": [],
    "slug": "link_incident_with_issue",
    "tags": [
     "HIPAA",
@@ -4071,6 +4251,7 @@
     "ticket:read",
     "link:write"
    ],
+   "seen_fields": [],
    "slug": "link_incident_with_ticket",
    "tags": [
     "HIPAA",
@@ -4104,6 +4285,7 @@
     "issue:read",
     "link:write"
    ],
+   "seen_fields": [],
    "slug": "link_issue_with_issue",
    "tags": [
     "HIPAA",
@@ -4137,6 +4319,7 @@
     "ticket:read",
     "link:write"
    ],
+   "seen_fields": [],
    "slug": "link_meeting_with_ticket",
    "tags": [
     "HIPAA",
@@ -4172,6 +4355,7 @@
     "issue:read",
     "link:write"
    ],
+   "seen_fields": [],
    "slug": "link_ticket_with_issue",
    "tags": [
     "HIPAA",
@@ -4218,6 +4402,7 @@
    "scopes": [
     "enhancement:read"
    ],
+   "seen_fields": [],
    "slug": "list_enhancements",
    "tags": [
     "HIPAA",
@@ -4272,6 +4457,7 @@
    "scopes": [
     "issue:read"
    ],
+   "seen_fields": [],
    "slug": "list_issues",
    "tags": [
     "HIPAA",
@@ -4296,6 +4482,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "list_objects_linked_to_account",
    "tags": [
     "HIPAA",
@@ -4322,6 +4509,7 @@
     "issue:read",
     "link:read"
    ],
+   "seen_fields": [],
    "slug": "list_objects_linked_to_issue",
    "tags": [
     "HIPAA",
@@ -4345,6 +4533,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "list_objects_linked_to_meeting",
    "tags": [
     "HIPAA",
@@ -4368,6 +4557,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "list_objects_linked_to_opportunity",
    "tags": [
     "HIPAA",
@@ -4394,6 +4584,7 @@
     "ticket:read",
     "link:read"
    ],
+   "seen_fields": [],
    "slug": "list_objects_linked_to_ticket",
    "tags": [
     "HIPAA",
@@ -4452,6 +4643,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/loop_over_articles.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_articles",
    "tags": [
     "HIPAA",
@@ -4511,6 +4703,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/loop_over_customers.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_customers",
    "tags": [
     "HIPAA",
@@ -4562,6 +4755,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/loop_over_dev_users.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_dev_users",
    "tags": [
     "HIPAA",
@@ -4622,6 +4816,7 @@
    "scopes": [
     "enhancement:read"
    ],
+   "seen_fields": [],
    "slug": "loop_over_enhancements",
    "tags": [
     "HIPAA",
@@ -4682,6 +4877,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/loop_over_incidents.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_incidents",
    "tags": [
     "HIPAA",
@@ -4760,6 +4956,7 @@
    "scopes": [
     "issue:read"
    ],
+   "seen_fields": [],
    "slug": "loop_over_issues",
    "tags": [
     "HIPAA",
@@ -4821,6 +5018,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/loop_over_meetings.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_meetings",
    "tags": [
     "HIPAA",
@@ -4844,6 +5042,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_objects_linked_to_account",
    "tags": [
     "HIPAA",
@@ -4867,6 +5066,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_objects_linked_to_enhancement",
    "tags": [
     "HIPAA",
@@ -4890,6 +5090,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_objects_linked_to_issue",
    "tags": [
     "HIPAA",
@@ -4913,6 +5114,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_objects_linked_to_opportunity",
    "tags": [
     "HIPAA",
@@ -4982,6 +5184,7 @@
    "scopes": [
     "opportunity:read"
    ],
+   "seen_fields": [],
    "slug": "loop_over_opportunity",
    "tags": [
     "HIPAA",
@@ -5029,6 +5232,7 @@
    "scopes": [
     "sprint:read"
    ],
+   "seen_fields": [],
    "slug": "loop_over_sprints",
    "tags": [
     "HIPAA",
@@ -5108,6 +5312,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/loop_over_tickets.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_tickets",
    "tags": [
     "HIPAA",
@@ -5141,6 +5346,7 @@
    "scopes": [
     "oasis_data:read"
    ],
+   "seen_fields": [],
    "slug": "oasis_sql_execute",
    "tags": [
     "Agent Skill",
@@ -5171,6 +5377,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "object_spam_checker",
    "tags": [
     "HIPAA",
@@ -5200,6 +5407,7 @@
    "scopes": [
     "object_member:read"
    ],
+   "seen_fields": [],
    "slug": "pick_user",
    "tags": [
     "HIPAA",
@@ -5235,6 +5443,7 @@
    "scopes": [
     "artifact:read"
    ],
+   "seen_fields": [],
    "slug": "query_artifact_content",
    "tags": [
     "HIPAA",
@@ -5274,6 +5483,13 @@
     "notification_content_template:all",
     "notification:write"
    ],
+   "seen_fields": [
+    "body",
+    "content_template_id",
+    "linked_object",
+    "receivers",
+    "title"
+   ],
    "slug": "send_notification",
    "tags": [
     "HIPAA",
@@ -5305,6 +5521,9 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [
+    "outputs"
+   ],
    "slug": "set_ai_agent_skill_output",
    "tags": [
     "HIPAA",
@@ -5337,6 +5556,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/suggest_part.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "suggest_part",
    "tags": [
     "HIPAA",
@@ -5364,6 +5584,13 @@
    "scopes": [
     "ai_agent:read"
    ],
+   "seen_fields": [
+    "agent",
+    "object",
+    "panel",
+    "respond_to_user_types",
+    "visibility"
+   ],
    "slug": "talk_to_agent",
    "tags": [
     "HIPAA",
@@ -5387,6 +5614,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_aai_proj",
    "tags": [],
    "title": "Update AAI Project"
@@ -5406,6 +5634,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_abc",
    "tags": [
     "ALPHA"
@@ -5455,6 +5684,7 @@
    "scopes": [
     "account:write"
    ],
+   "seen_fields": [],
    "slug": "update_account",
    "tags": [
     "HIPAA",
@@ -5480,6 +5710,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_ai_agent_session_metrics",
    "tags": [],
    "title": "Update Ai Agent Session Metrics"
@@ -5499,6 +5730,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_alert",
    "tags": [],
    "title": "Update Alert"
@@ -5547,6 +5779,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/update_article.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_article",
    "tags": [
     "HIPAA",
@@ -5570,6 +5803,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_as_pend",
    "tags": [],
    "title": "Update Pending Record"
@@ -5589,6 +5823,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_asagentlog",
    "tags": [],
    "title": "Update Asagentlog"
@@ -5608,6 +5843,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_asownerlog",
    "tags": [
     "ALPHA"
@@ -5629,6 +5865,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_asreport",
    "tags": [],
    "title": "Update Asreport"
@@ -5648,6 +5885,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_asset",
    "tags": [],
    "title": "Update Asset"
@@ -5667,6 +5905,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_campaigned",
    "tags": [],
    "title": "Update Campaigned"
@@ -5686,6 +5925,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_chameleon_survey",
    "tags": [],
    "title": "Update Chameleon Survey"
@@ -5705,6 +5945,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_change",
    "tags": [],
    "title": "Update Change"
@@ -5724,6 +5965,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_chat",
    "tags": [],
    "title": "Update Chat"
@@ -5743,6 +5985,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_code_change",
    "tags": [],
    "title": "Update Code Change"
@@ -5790,6 +6033,7 @@
    "scopes": [
     "rev_user:write"
    ],
+   "seen_fields": [],
    "slug": "update_contact",
    "tags": [
     "HIPAA",
@@ -5859,6 +6103,7 @@
    "scopes": [
     "conversation:write"
    ],
+   "seen_fields": [],
    "slug": "update_conversation",
    "tags": [
     "HIPAA",
@@ -5884,6 +6129,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_cost",
    "tags": [],
    "title": "Update Cost"
@@ -5903,6 +6149,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_devrev__api",
    "tags": [],
    "title": "Update Devrev  Api"
@@ -5922,6 +6169,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_drad_cour",
    "tags": [],
    "title": "Update Articulate(reach360-o):Courses-fea0ea393c"
@@ -5941,6 +6189,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_drad_invi",
    "tags": [],
    "title": "Update Google_Cal(devrev.ai):Invitee-8fc70d7ea5"
@@ -5960,6 +6209,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_drad_lear",
    "tags": [],
    "title": "Update Articulate(reach360-o):Learners-63b4ae28b4"
@@ -5979,6 +6229,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_eastwest",
    "tags": [],
    "title": "Update EastWest"
@@ -6032,6 +6283,10 @@
    "scopes": [
     "enhancement:write"
    ],
+   "seen_fields": [
+    "description",
+    "id"
+   ],
    "slug": "update_enhancement",
    "tags": [
     "HIPAA",
@@ -6057,6 +6312,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_entity",
    "tags": [],
    "title": "Update Entity"
@@ -6076,6 +6332,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_event",
    "tags": [],
    "title": "Update Event"
@@ -6095,6 +6352,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_expense",
    "tags": [],
    "title": "Update Expense"
@@ -6114,6 +6372,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_form",
    "tags": [],
    "title": "Update Form"
@@ -6133,6 +6392,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_implementation",
    "tags": [],
    "title": "Update Implementation"
@@ -6198,6 +6458,11 @@
    "schema": "skills/6-workflows/operations/schemas/update_incident.md",
    "scopes": [
     "incident:write"
+   ],
+   "seen_fields": [
+    "id",
+    "severity",
+    "tnt__rca"
    ],
    "slug": "update_incident",
    "tags": [
@@ -6271,6 +6536,11 @@
    "scopes": [
     "issue:write"
    ],
+   "seen_fields": [
+    "id",
+    "stage",
+    "target_close_date"
+   ],
    "slug": "update_issue",
    "tags": [
     "HIPAA",
@@ -6296,6 +6566,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_log_pattern",
    "tags": [],
    "title": "Update Log Pattern"
@@ -6355,6 +6626,7 @@
    "scopes": [
     "meeting:write"
    ],
+   "seen_fields": [],
    "slug": "update_meeting",
    "tags": [
     "HIPAA",
@@ -6378,6 +6650,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_mypod",
    "tags": [
     "ALPHA"
@@ -6399,6 +6672,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_on_call_group",
    "tags": [],
    "title": "Update On Call Group"
@@ -6418,6 +6692,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_on_call_schedule",
    "tags": [],
    "title": "Update On Call Schedule"
@@ -6437,6 +6712,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_oncall",
    "tags": [],
    "title": "Update Oncall"
@@ -6456,6 +6732,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_oncallsup",
    "tags": [],
    "title": "Update Oncallsup"
@@ -6518,6 +6795,7 @@
    "scopes": [
     "opportunity:write"
    ],
+   "seen_fields": [],
    "slug": "update_opportunity",
    "tags": [
     "HIPAA",
@@ -6543,6 +6821,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_part_recommendation",
    "tags": [],
    "title": "Update Part Recommendation"
@@ -6562,6 +6841,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_problem",
    "tags": [],
    "title": "Update Problem"
@@ -6581,6 +6861,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_project",
    "tags": [],
    "title": "Update Project"
@@ -6625,6 +6906,7 @@
    "scopes": [
     "question_answer:write"
    ],
+   "seen_fields": [],
    "slug": "update_question_answer",
    "tags": [
     "HIPAA",
@@ -6648,6 +6930,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_reco",
    "tags": [],
    "title": "Update Reco"
@@ -6667,6 +6950,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_relationsh",
    "tags": [],
    "title": "Update Relationsh"
@@ -6686,6 +6970,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_release",
    "tags": [],
    "title": "Update Release"
@@ -6705,6 +6990,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_reviews",
    "tags": [],
    "title": "Update Reviews"
@@ -6724,6 +7010,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_round_robin_state",
    "tags": [],
    "title": "Update Round Robin State"
@@ -6743,6 +7030,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_sales_pod",
    "tags": [
     "ALPHA"
@@ -6764,6 +7052,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_sdr_alias",
    "tags": [
     "ALPHA"
@@ -6785,6 +7074,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_sdr_pod",
    "tags": [
     "ALPHA"
@@ -6806,6 +7096,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_se",
    "tags": [
     "ALPHA"
@@ -6827,6 +7118,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_stream",
    "tags": [],
    "title": "Update Stream"
@@ -6846,6 +7138,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_syncerrors",
    "tags": [],
    "title": "Update Syncerrors"
@@ -6865,6 +7158,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_team",
    "tags": [],
    "title": "Update Team"
@@ -6884,6 +7178,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_testresult",
    "tags": [],
    "title": "Update Testresult"
@@ -6903,6 +7198,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_theme",
    "tags": [],
    "title": "Update Theme"
@@ -6983,6 +7279,11 @@
    "scopes": [
     "ticket:write"
    ],
+   "seen_fields": [
+    "id",
+    "stage",
+    "tnt__escalated"
+   ],
    "slug": "update_ticket",
    "tags": [
     "HIPAA",
@@ -7008,6 +7309,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_todo",
    "tags": [],
    "title": "Update Todo"
@@ -7027,6 +7329,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_vendor",
    "tags": [],
    "title": "Update Vendor"
@@ -7046,6 +7349,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_webinar",
    "tags": [],
    "title": "Update Webinar"
@@ -7074,6 +7378,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/web_search.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "web_search",
    "tags": [
     "Agent Skill",
@@ -7105,6 +7410,9 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/sleep_for.md",
    "scopes": [],
+   "seen_fields": [
+    "duration"
+   ],
    "slug": "sleep_for",
    "tags": [
     "HIPAA"
@@ -7133,6 +7441,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/sleep_until.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "sleep_until",
    "tags": [
     "HIPAA"
@@ -7166,6 +7475,11 @@
    "scopes": [
     "ai_agent:execute"
    ],
+   "seen_fields": [
+    "agent_session_id",
+    "skill_call_id",
+    "skill_name"
+   ],
    "slug": "ai_agent_skill",
    "tags": [
     "HIPAA"
@@ -7193,6 +7507,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/for_each.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "for_each",
    "tags": [
     "HIPAA"
@@ -7216,6 +7531,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/go_back.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "go_back",
    "tags": [
     "HIPAA"
@@ -7252,6 +7568,9 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/if_else.md",
    "scopes": [],
+   "seen_fields": [
+    "condition"
+   ],
    "slug": "if_else",
    "tags": [
     "HIPAA"
@@ -7279,6 +7598,9 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/init_variable.md",
    "scopes": [],
+   "seen_fields": [
+    "variables"
+   ],
    "slug": "init_variable",
    "tags": [
     "HIPAA"
@@ -7304,6 +7626,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/router.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "router",
    "tags": [
     "HIPAA",
@@ -7332,6 +7655,11 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/set_variable.md",
    "scopes": [],
+   "seen_fields": [
+    "operation",
+    "value",
+    "variable"
+   ],
    "slug": "set_variable",
    "tags": [
     "HIPAA"
@@ -7362,6 +7690,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/while.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "while",
    "tags": [
     "HIPAA"
@@ -7399,6 +7728,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/create_brand.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "create_brand",
    "tags": [],
    "title": "Create Brand"
@@ -7433,6 +7763,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_brand.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_brand",
    "tags": [],
    "title": "Get Brand"
@@ -7461,6 +7792,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_complete_enhancement_details.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_complete_enhancement_details",
    "tags": [],
    "title": "Get Complete Enhancement Details"
@@ -7490,6 +7822,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_kg_schema.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_kg_schema",
    "tags": [],
    "title": "Get Kg Schema"
@@ -7524,6 +7857,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_node_schema.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_node_schema",
    "tags": [],
    "title": "Get Node Schema"
@@ -7562,6 +7896,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_self.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_self",
    "tags": [],
    "title": "Get Self"
@@ -7591,6 +7926,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_session_details.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_session_details",
    "tags": [],
    "title": "Get Session Details"
@@ -7629,6 +7965,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/get_sprint_board.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "get_sprint_board",
    "tags": [],
    "title": "Get Sprint Board"
@@ -7660,6 +7997,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/invoice_created.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "invoice_created",
    "tags": [],
    "title": "Invoice Created"
@@ -7695,6 +8033,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/invoice_updated.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "invoice_updated",
    "tags": [],
    "title": "Invoice Updated"
@@ -7742,6 +8081,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/list_sessions.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "list_sessions",
    "tags": [],
    "title": "List Sessions"
@@ -7775,6 +8115,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/list_sprint.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "list_sprint",
    "tags": [],
    "title": "List Sprint"
@@ -7823,6 +8164,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/list_web_sessions.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "list_web_sessions",
    "tags": [],
    "title": "List Web Sessions"
@@ -7878,6 +8220,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/loop_over_accounts.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "loop_over_accounts",
    "tags": [],
    "title": "Loop Over Accounts"
@@ -7909,6 +8252,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/recall_chats.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "recall_chats",
    "tags": [],
    "title": "Recall Chats"
@@ -7943,6 +8287,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/sprint_updated.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "sprint_updated",
    "tags": [],
    "title": "Sprint Updated"
@@ -7981,6 +8326,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/task_updated.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "task_updated",
    "tags": [],
    "title": "Task Updated"
@@ -8013,6 +8359,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/test_example.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "test_example",
    "tags": [],
    "title": "Test Example"
@@ -8049,6 +8396,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/update_brand.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "update_brand",
    "tags": [],
    "title": "Update Brand"
@@ -8117,6 +8465,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/watch_ticket_for_updates.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "watch_ticket_for_updates",
    "tags": [],
    "title": "Watch Ticket For Updates"
@@ -8136,6 +8485,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "aai_proj_created",
    "tags": [],
    "title": "AAI Project Created"
@@ -8155,6 +8505,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "aai_proj_updated",
    "tags": [],
    "title": "AAI Project Updated"
@@ -8174,6 +8525,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "abc_created",
    "tags": [
     "HIPAA",
@@ -8196,6 +8548,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "abc_updated",
    "tags": [
     "ALPHA"
@@ -8236,6 +8589,7 @@
    "scopes": [
     "account:read"
    ],
+   "seen_fields": [],
    "slug": "account_created",
    "tags": [
     "HIPAA"
@@ -8280,6 +8634,7 @@
    "scopes": [
     "account:read"
    ],
+   "seen_fields": [],
    "slug": "account_updated",
    "tags": [
     "HIPAA"
@@ -8301,6 +8656,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "ai_agent_session_metrics_created",
    "tags": [],
    "title": "Ai Agent Session Metrics Created"
@@ -8320,6 +8676,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "ai_agent_session_metrics_updated",
    "tags": [],
    "title": "Ai Agent Session Metrics Updated"
@@ -8343,6 +8700,9 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [
+    "schema"
+   ],
    "slug": "ai_agent_skill_trigger",
    "tags": [
     "HIPAA"
@@ -8375,6 +8735,7 @@
    "scopes": [
     "sync_unit:read"
    ],
+   "seen_fields": [],
    "slug": "airdrop_sync_run_started",
    "tags": [
     "HIPAA"
@@ -8409,6 +8770,7 @@
    "scopes": [
     "sync_unit:read"
    ],
+   "seen_fields": [],
    "slug": "airdrop_sync_run_status_updated",
    "tags": [
     "HIPAA"
@@ -8430,6 +8792,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "alert_created",
    "tags": [],
    "title": "Alert Created"
@@ -8449,6 +8812,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "alert_updated",
    "tags": [],
    "title": "Alert Updated"
@@ -8492,6 +8856,7 @@
    "scopes": [
     "article:read"
    ],
+   "seen_fields": [],
    "slug": "article_created",
    "tags": [
     "HIPAA"
@@ -8538,6 +8903,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/article_updated.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "article_updated",
    "tags": [
     "HIPAA"
@@ -8559,6 +8925,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "as_pend_created",
    "tags": [],
    "title": "Pending Record Created"
@@ -8578,6 +8945,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "as_pend_updated",
    "tags": [],
    "title": "Pending Record Updated"
@@ -8597,6 +8965,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asagentlog_created",
    "tags": [],
    "title": "Asagentlog Created"
@@ -8616,6 +8985,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asagentlog_updated",
    "tags": [],
    "title": "Asagentlog Updated"
@@ -8635,6 +9005,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asownerlog_created",
    "tags": [
     "HIPAA",
@@ -8657,6 +9028,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asownerlog_updated",
    "tags": [
     "ALPHA"
@@ -8678,6 +9050,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asreport_created",
    "tags": [],
    "title": "Asreport Created"
@@ -8697,6 +9070,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asreport_updated",
    "tags": [],
    "title": "Asreport Updated"
@@ -8716,6 +9090,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asset_created",
    "tags": [],
    "title": "Asset Created"
@@ -8735,6 +9110,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "asset_updated",
    "tags": [],
    "title": "Asset Updated"
@@ -8754,6 +9130,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "campaigned_created",
    "tags": [],
    "title": "Campaigned Created"
@@ -8773,6 +9150,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "campaigned_updated",
    "tags": [],
    "title": "Campaigned Updated"
@@ -8792,6 +9170,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "chameleon_survey_created",
    "tags": [],
    "title": "Chameleon Survey Created"
@@ -8811,6 +9190,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "chameleon_survey_updated",
    "tags": [],
    "title": "Chameleon Survey Updated"
@@ -8830,6 +9210,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "change_created",
    "tags": [],
    "title": "Change Created"
@@ -8849,6 +9230,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "change_updated",
    "tags": [],
    "title": "Change Updated"
@@ -8868,6 +9250,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "chat_created",
    "tags": [],
    "title": "Chat Created"
@@ -8887,6 +9270,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "chat_updated",
    "tags": [],
    "title": "Chat Updated"
@@ -8906,6 +9290,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "code_change_created",
    "tags": [
     "HIPAA"
@@ -8927,6 +9312,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "code_change_updated",
    "tags": [],
    "title": "Code Change Updated"
@@ -8966,6 +9352,7 @@
    "scopes": [
     "rev_user:read"
    ],
+   "seen_fields": [],
    "slug": "contact_created",
    "tags": [
     "HIPAA"
@@ -9012,6 +9399,10 @@
    "schema": "skills/6-workflows/operations/schemas/contact_updated.md",
    "scopes": [
     "rev_user:read"
+   ],
+   "seen_fields": [
+    "_filter",
+    "fields_to_watch"
    ],
    "slug": "contact_updated",
    "tags": [
@@ -9063,6 +9454,7 @@
    "scopes": [
     "conversation:read"
    ],
+   "seen_fields": [],
    "slug": "conversation_created",
    "tags": [
     "HIPAA"
@@ -9101,6 +9493,7 @@
     "conversation:read",
     "sla_tracker:read"
    ],
+   "seen_fields": [],
    "slug": "conversation_sla_tracker_updated",
    "tags": [
     "HIPAA"
@@ -9151,6 +9544,7 @@
    "scopes": [
     "conversation:read"
    ],
+   "seen_fields": [],
    "slug": "conversation_updated",
    "tags": [
     "HIPAA"
@@ -9172,6 +9566,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "cost_created",
    "tags": [],
    "title": "Cost Created"
@@ -9191,6 +9586,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "cost_updated",
    "tags": [],
    "title": "Cost Updated"
@@ -9229,6 +9625,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/csat_response_received.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "csat_response_received",
    "tags": [
     "HIPAA"
@@ -9271,6 +9668,7 @@
    "scopes": [
     "dev_user:read"
    ],
+   "seen_fields": [],
    "slug": "dev_user_created",
    "tags": [
     "HIPAA"
@@ -9319,6 +9717,7 @@
    "scopes": [
     "dev_user:read"
    ],
+   "seen_fields": [],
    "slug": "dev_user_updated",
    "tags": [
     "HIPAA"
@@ -9340,6 +9739,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "devrev__api_created",
    "tags": [],
    "title": "Devrev  Api Created"
@@ -9359,6 +9759,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "devrev__api_updated",
    "tags": [],
    "title": "Devrev  Api Updated"
@@ -9393,6 +9794,9 @@
    "scopes": [
     "dm:read"
    ],
+   "seen_fields": [
+    "fields_to_watch"
+   ],
    "slug": "dm_created_or_updated",
    "tags": [
     "HIPAA"
@@ -9414,6 +9818,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "drad_cour_created",
    "tags": [],
    "title": "Articulate(reach360-o):Courses-fea0ea393c Created"
@@ -9433,6 +9838,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "drad_cour_updated",
    "tags": [],
    "title": "Articulate(reach360-o):Courses-fea0ea393c Updated"
@@ -9452,6 +9858,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "drad_invi_created",
    "tags": [],
    "title": "Google_Cal(devrev.ai):Invitee-8fc70d7ea5 Created"
@@ -9471,6 +9878,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "drad_invi_updated",
    "tags": [],
    "title": "Google_Cal(devrev.ai):Invitee-8fc70d7ea5 Updated"
@@ -9490,6 +9898,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "drad_lear_created",
    "tags": [],
    "title": "Articulate(reach360-o):Learners-63b4ae28b4 Created"
@@ -9509,6 +9918,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "drad_lear_updated",
    "tags": [],
    "title": "Articulate(reach360-o):Learners-63b4ae28b4 Updated"
@@ -9528,6 +9938,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "eastwest_created",
    "tags": [],
    "title": "EastWest Created"
@@ -9547,6 +9958,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "eastwest_updated",
    "tags": [],
    "title": "EastWest Updated"
@@ -9585,6 +9997,7 @@
    "scopes": [
     "enhancement:read"
    ],
+   "seen_fields": [],
    "slug": "enhancement_created",
    "tags": [
     "HIPAA"
@@ -9634,6 +10047,9 @@
    "scopes": [
     "enhancement:read"
    ],
+   "seen_fields": [
+    "fields_to_watch"
+   ],
    "slug": "enhancement_updated",
    "tags": [
     "HIPAA"
@@ -9655,6 +10071,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "entity_created",
    "tags": [],
    "title": "Entity Created"
@@ -9674,6 +10091,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "entity_updated",
    "tags": [],
    "title": "Entity Updated"
@@ -9693,6 +10111,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "event_created",
    "tags": [],
    "title": "Event Created"
@@ -9712,6 +10131,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "event_updated",
    "tags": [],
    "title": "Event Updated"
@@ -9731,6 +10151,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "expense_created",
    "tags": [],
    "title": "Expense Created"
@@ -9750,6 +10171,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "expense_updated",
    "tags": [],
    "title": "Expense Updated"
@@ -9784,6 +10206,7 @@
    "scopes": [
     "feature:read"
    ],
+   "seen_fields": [],
    "slug": "feature_created",
    "tags": [
     "HIPAA"
@@ -9805,6 +10228,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "form_created",
    "tags": [],
    "title": "Form Created"
@@ -9824,6 +10248,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "form_updated",
    "tags": [],
    "title": "Form Updated"
@@ -9843,6 +10268,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "implementation_created",
    "tags": [],
    "title": "Implementation Created"
@@ -9864,6 +10290,10 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [
+    "_filter",
+    "fields_to_watch"
+   ],
    "slug": "implementation_updated",
    "tags": [],
    "title": "Implementation Updated"
@@ -9912,6 +10342,7 @@
    "scopes": [
     "incident:read"
    ],
+   "seen_fields": [],
    "slug": "incident_created",
    "tags": [
     "HIPAA"
@@ -9967,6 +10398,9 @@
    "scopes": [
     "incident:read"
    ],
+   "seen_fields": [
+    "fields_to_watch"
+   ],
    "slug": "incident_updated",
    "tags": [
     "HIPAA"
@@ -10017,6 +10451,7 @@
    "scopes": [
     "issue:read"
    ],
+   "seen_fields": [],
    "slug": "issue_created",
    "tags": [
     "HIPAA"
@@ -10040,6 +10475,7 @@
    "scopes": [
     "issue:read"
    ],
+   "seen_fields": [],
    "slug": "issue_linked_with_object",
    "tags": [
     "HIPAA"
@@ -10078,6 +10514,7 @@
     "sla_tracker:read",
     "issue:read"
    ],
+   "seen_fields": [],
    "slug": "issue_sla_tracker_updated",
    "tags": [
     "HIPAA"
@@ -10134,6 +10571,10 @@
    "scopes": [
     "issue:read"
    ],
+   "seen_fields": [
+    "_filter",
+    "fields_to_watch"
+   ],
    "slug": "issue_updated",
    "tags": [
     "HIPAA"
@@ -10155,6 +10596,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "link_deleted",
    "tags": [
     "HIPAA"
@@ -10176,6 +10618,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "log_pattern_created",
    "tags": [],
    "title": "Log Pattern Created"
@@ -10195,6 +10638,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "log_pattern_updated",
    "tags": [],
    "title": "Log Pattern Updated"
@@ -10216,6 +10660,7 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/manual_trigger.md",
    "scopes": [],
+   "seen_fields": [],
    "slug": "manual_trigger",
    "tags": [
     "HIPAA"
@@ -10267,6 +10712,7 @@
    "scopes": [
     "meeting:read"
    ],
+   "seen_fields": [],
    "slug": "meeting_created",
    "tags": [
     "HIPAA"
@@ -10321,6 +10767,7 @@
    "scopes": [
     "meeting:read"
    ],
+   "seen_fields": [],
    "slug": "meeting_updated",
    "tags": [
     "HIPAA"
@@ -10342,6 +10789,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "mypod_created",
    "tags": [
     "HIPAA",
@@ -10364,6 +10812,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "mypod_updated",
    "tags": [
     "ALPHA"
@@ -10385,6 +10834,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "nudge_buttons_clicked",
    "tags": [
     "HIPAA"
@@ -10406,6 +10856,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "on_call_group_created",
    "tags": [],
    "title": "On Call Group Created"
@@ -10425,6 +10876,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "on_call_group_updated",
    "tags": [],
    "title": "On Call Group Updated"
@@ -10444,6 +10896,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "on_call_schedule_created",
    "tags": [],
    "title": "On Call Schedule Created"
@@ -10463,6 +10916,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "on_call_schedule_updated",
    "tags": [],
    "title": "On Call Schedule Updated"
@@ -10482,6 +10936,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "oncall_created",
    "tags": [],
    "title": "Oncall Created"
@@ -10501,6 +10956,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "oncall_updated",
    "tags": [],
    "title": "Oncall Updated"
@@ -10520,6 +10976,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "oncallsup_created",
    "tags": [],
    "title": "Oncallsup Created"
@@ -10539,6 +10996,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "oncallsup_updated",
    "tags": [],
    "title": "Oncallsup Updated"
@@ -10584,6 +11042,7 @@
    "scopes": [
     "opportunity:read"
    ],
+   "seen_fields": [],
    "slug": "opportunity_created",
    "tags": [
     "HIPAA"
@@ -10636,6 +11095,10 @@
    "scopes": [
     "opportunity:read"
    ],
+   "seen_fields": [
+    "_filter",
+    "fields_to_watch"
+   ],
    "slug": "opportunity_updated",
    "tags": [
     "HIPAA"
@@ -10657,6 +11120,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "part_recommendation_created",
    "tags": [],
    "title": "Part Recommendation Created"
@@ -10676,6 +11140,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "part_recommendation_updated",
    "tags": [],
    "title": "Part Recommendation Updated"
@@ -10695,6 +11160,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "problem_created",
    "tags": [],
    "title": "Problem Created"
@@ -10714,6 +11180,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "problem_updated",
    "tags": [],
    "title": "Problem Updated"
@@ -10733,6 +11200,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "project_created",
    "tags": [],
    "title": "Project Created"
@@ -10752,6 +11220,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "project_updated",
    "tags": [],
    "title": "Project Updated"
@@ -10790,6 +11259,7 @@
    "scopes": [
     "question_answer:read"
    ],
+   "seen_fields": [],
    "slug": "question_answer_created",
    "tags": [
     "HIPAA"
@@ -10834,6 +11304,7 @@
    "scopes": [
     "question_answer:read"
    ],
+   "seen_fields": [],
    "slug": "question_answer_updated",
    "tags": [
     "HIPAA"
@@ -10855,6 +11326,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "reco_created",
    "tags": [],
    "title": "Reco Created"
@@ -10874,6 +11346,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "reco_updated",
    "tags": [],
    "title": "Reco Updated"
@@ -10893,6 +11366,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "relationsh_created",
    "tags": [],
    "title": "Relationsh Created"
@@ -10912,6 +11386,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "relationsh_updated",
    "tags": [],
    "title": "Relationsh Updated"
@@ -10931,6 +11406,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "release_created",
    "tags": [],
    "title": "Release Created"
@@ -10950,6 +11426,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "release_updated",
    "tags": [],
    "title": "Release Updated"
@@ -10969,6 +11446,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "reviews_created",
    "tags": [],
    "title": "Reviews Created"
@@ -10988,6 +11466,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "reviews_updated",
    "tags": [],
    "title": "Reviews Updated"
@@ -11007,6 +11486,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "round_robin_state_created",
    "tags": [],
    "title": "Round Robin State Created"
@@ -11026,6 +11506,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "round_robin_state_updated",
    "tags": [],
    "title": "Round Robin State Updated"
@@ -11045,6 +11526,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "sales_pod_created",
    "tags": [
     "HIPAA",
@@ -11067,6 +11549,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "sales_pod_updated",
    "tags": [
     "ALPHA"
@@ -11088,6 +11571,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "sdr_alias_created",
    "tags": [
     "HIPAA",
@@ -11110,6 +11594,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "sdr_alias_updated",
    "tags": [
     "ALPHA"
@@ -11131,6 +11616,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "sdr_pod_created",
    "tags": [
     "HIPAA",
@@ -11153,6 +11639,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "sdr_pod_updated",
    "tags": [
     "ALPHA"
@@ -11174,6 +11661,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "se_created",
    "tags": [
     "HIPAA",
@@ -11196,6 +11684,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "se_updated",
    "tags": [
     "ALPHA"
@@ -11217,6 +11706,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "stream_created",
    "tags": [],
    "title": "Stream Created"
@@ -11236,6 +11726,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "stream_updated",
    "tags": [],
    "title": "Stream Updated"
@@ -11255,6 +11746,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "syncerrors_created",
    "tags": [],
    "title": "Syncerrors Created"
@@ -11274,6 +11766,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "syncerrors_updated",
    "tags": [],
    "title": "Syncerrors Updated"
@@ -11293,6 +11786,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "team_created",
    "tags": [],
    "title": "Team Created"
@@ -11312,6 +11806,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "team_updated",
    "tags": [],
    "title": "Team Updated"
@@ -11331,6 +11826,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "testresult_created",
    "tags": [],
    "title": "Testresult Created"
@@ -11350,6 +11846,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "testresult_updated",
    "tags": [],
    "title": "Testresult Updated"
@@ -11369,6 +11866,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "theme_created",
    "tags": [],
    "title": "Theme Created"
@@ -11388,6 +11886,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "theme_updated",
    "tags": [],
    "title": "Theme Updated"
@@ -11444,6 +11943,7 @@
    "scopes": [
     "ticket:read"
    ],
+   "seen_fields": [],
    "slug": "ticket_created",
    "tags": [
     "HIPAA"
@@ -11467,6 +11967,7 @@
    "scopes": [
     "ticket:read"
    ],
+   "seen_fields": [],
    "slug": "ticket_linked_with_object",
    "tags": [
     "HIPAA"
@@ -11505,6 +12006,7 @@
     "sla_tracker:read",
     "ticket:read"
    ],
+   "seen_fields": [],
    "slug": "ticket_sla_tracker_updated",
    "tags": [
     "HIPAA"
@@ -11568,6 +12070,9 @@
    "scopes": [
     "ticket:read"
    ],
+   "seen_fields": [
+    "fields_to_watch"
+   ],
    "slug": "ticket_updated",
    "tags": [
     "HIPAA"
@@ -11615,6 +12120,12 @@
    "ports_source": "schema",
    "schema": "skills/6-workflows/operations/schemas/timeline_comment_created.md",
    "scopes": [],
+   "seen_fields": [
+    "object_type",
+    "panels",
+    "user_type",
+    "visibility"
+   ],
    "slug": "timeline_comment_created",
    "tags": [
     "HIPAA"
@@ -11648,6 +12159,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "timer_trigger",
    "tags": [
     "HIPAA"
@@ -11669,6 +12181,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "todo_created",
    "tags": [],
    "title": "Todo Created"
@@ -11688,6 +12201,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "todo_updated",
    "tags": [],
    "title": "Todo Updated"
@@ -11707,6 +12221,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "vendor_created",
    "tags": [],
    "title": "Vendor Created"
@@ -11726,6 +12241,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "vendor_updated",
    "tags": [],
    "title": "Vendor Updated"
@@ -11745,6 +12261,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "webinar_created",
    "tags": [],
    "title": "Webinar Created"
@@ -11764,6 +12281,7 @@
    "ports_source": "catalog",
    "schema": null,
    "scopes": [],
+   "seen_fields": [],
    "slug": "webinar_updated",
    "tags": [],
    "title": "Webinar Updated"
@@ -11805,6 +12323,7 @@
    "scopes": [
     "widget:read"
    ],
+   "seen_fields": [],
    "slug": "widget_created",
    "tags": [
     "HIPAA"
@@ -11851,6 +12370,7 @@
    "scopes": [
     "widget:read"
    ],
+   "seen_fields": [],
    "slug": "widget_updated",
    "tags": [
     "HIPAA"
@@ -11886,6 +12406,7 @@
    "scopes": [
     "workspace:read"
    ],
+   "seen_fields": [],
    "slug": "workspace_created",
    "tags": [
     "HIPAA"

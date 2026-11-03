@@ -1099,7 +1099,8 @@ Based on the real `5216-Account segment missing notification` template pattern:
 
 ## Validation Checklist
 
-Before outputting the template, verify:
+Before outputting the template, verify (`devrev-validate-workflow <file>` checks items 1-13 and 15-22 automatically
+and prints the fix for each failure; item 14, the `_filter` structure, is manual):
 
 1. `serialization_version` is `{"major": 2, "minor": 0, "patch": 0}`
 2. `title` is present and 1-256 chars

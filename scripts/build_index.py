@@ -325,8 +325,13 @@ def parse_schema(path: Path):
 
 
 def example_usage():
-    """slug -> example template files (basename) whose steps run that operation."""
-    use = {}
+    """slug -> (example template files (basename) whose steps run that operation, input field names they set).
+
+    The field names matter: the port schemas in operations/schemas/ lag the product (ask_ai's `model` and
+    `output_format` are absent there but appear in templates that imported fine), so the template validator accepts
+    any field an example template already uses.
+    """
+    use, seen = {}, {}
     for p in sorted((ROOT / EXAMPLES_DIR).glob("*.json")):
         try:
             d = json.loads(read(p))
@@ -335,13 +340,19 @@ def example_usage():
             continue
         for st in inner.get("steps", []) if isinstance(inner, dict) else []:
             op = st.get("operation") if isinstance(st, dict) else None
-            if isinstance(op, dict) and op.get("slug") and p.name not in use.setdefault(op["slug"], []):
-                use[op["slug"]].append(p.name)
-    return use
+            if isinstance(op, dict) and op.get("slug"):
+                if p.name not in use.setdefault(op["slug"], []):
+                    use[op["slug"]].append(p.name)
+                names = seen.setdefault(op["slug"], set())
+                for iv in st.get("input_values") or []:
+                    for f in (iv.get("fields") or []) if isinstance(iv, dict) else []:
+                        if isinstance(f, dict) and isinstance(f.get("name"), str):
+                            names.add(f["name"])
+    return use, {k: sorted(v) for k, v in seen.items()}
 
 
 def build_operations():
-    used = example_usage()
+    used, seen_fields = example_usage()
     schemas = {p.stem: p for p in sorted((ROOT / OPS_DIR / "schemas").glob("*.md"))}
     out, seen = [], set()
     for o in parse_operation_lists():
@@ -358,7 +369,8 @@ def build_operations():
                 ports, src = sports, "schema"
             o["desc"] = o["desc"] or sdesc
         o.update({"ports": ports, "ports_source": src,
-                  "schema": sp.relative_to(ROOT).as_posix() if sp else None, "examples": used.get(slug, [])})
+                  "schema": sp.relative_to(ROOT).as_posix() if sp else None, "examples": used.get(slug, []),
+                  "seen_fields": seen_fields.get(slug, [])})
         out.append(o)
     # schemas for operations the four lists do not carry (workflow-node / agent-skill extras) are still real slugs
     for slug, sp in schemas.items():
@@ -368,7 +380,7 @@ def build_operations():
         out.append({"kind": "other", "title": slug.replace("_", " ").title(), "line": 1,
                     "doc": f"{OPS_DIR}/schema-index.md", "slug": slug, "namespace": "", "id": "", "tags": [], "scopes": [],
                     "desc": desc, "ports": ports, "ports_source": "schema", "schema": sp.relative_to(ROOT).as_posix(),
-                    "examples": used.get(slug, [])})
+                    "examples": used.get(slug, []), "seen_fields": seen_fields.get(slug, [])})
     return sorted(out, key=lambda o: (o["kind"], o["slug"]))
 
 

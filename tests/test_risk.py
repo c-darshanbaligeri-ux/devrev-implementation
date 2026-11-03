@@ -58,6 +58,13 @@ class ClassifyCommand(unittest.TestCase):
         for c in ("ls -la", "git push origin main", "curl https://example.com/works.delete", "echo works.delete"):
             self.assertIsNone(self.verdict(c), c)
 
+    def test_lookalike_hosts_are_not_devrev(self):
+        for c in ("curl https://evildevrev.ai/works.delete", "curl https://api.devrev.ai.evil.com/works.delete",
+                  "curl https://devrev.ai.example.org/works.delete"):
+            self.assertIsNone(self.verdict(c), c)
+        self.assertEqual(self.verdict("curl https://devrev.ai/works.delete"), "destructive")
+        self.assertEqual(self.verdict("curl https://api.devrev.ai/works.delete"), "destructive")
+
 
 if __name__ == "__main__":
     unittest.main()

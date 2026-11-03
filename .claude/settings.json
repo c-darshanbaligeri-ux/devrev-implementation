@@ -1,4 +1,13 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(./bin/devrev-find *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./docs/archive/**)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -19,6 +28,18 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/push-learnings.sh\"",
             "timeout": 20
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/hooks/devrev-safety.py\"",
+            "timeout": 10
           }
         ]
       }

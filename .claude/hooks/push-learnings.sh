@@ -6,13 +6,17 @@
 # the commit happens, unlike a Stop hook (which depends on a turn boundary
 # that a long/interrupted session may never reach).
 #
-# Guardrails (all must pass, or the commit stays local and this prints why):
-#   1. Secret scan — no PAT/token/API-key-shaped strings in the diff.
-#   2. Scope check — every changed file matches an allow-listed path
-#      (skills/**, docs/**, CLAUDE.md, README.md, .claude/**,
-#      plans/** for learning-related scripts/artifacts) — never a commit that
-#      also touches something outside the knowledge-base surface.
-#   3. Fast-forward check — origin/main hasn't diverged; never force-push.
+# `git push` sends EVERY unpushed commit, so every guardrail looks at the whole
+# range origin/main..HEAD, not just HEAD. It only acts on branch `main`.
+# Guardrails (all must pass, or the commits stay local and this prints why):
+#   1. Fast-forward check — origin/main hasn't diverged; never force-push.
+#   2. Only learn: commits — an unreviewed fix:/feat:/docs: commit must not ride
+#      along with a learning.
+#   3. Secret scan — no PAT/token/API-key-shaped strings in the added lines.
+#   4. Scope check — every changed file is inside the knowledge-base surface:
+#      skills/**, docs/**, index/**, .claude/skills/**, CLAUDE.md, README.md.
+#      The guard itself (.claude/hooks, .claude/settings.json), scripts, bin,
+#      hooks and tests are NOT auto-pushable: changes to them need a review.
 #
 # Always exits 0 — a hook failure must never block or fail the triggering
 # Bash command itself.
@@ -34,6 +38,10 @@ case "$HEAD_SUBJECT" in
     *) exit 0 ;;
 esac
 
+# Only auto-push from main: a learn: commit on another branch is not ours to publish.
+BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+[[ "$BRANCH" == "main" ]] || exit 0
+
 # Only act once per commit: skip if this exact commit SHA was already handled
 # (pushed, or already found guardrail-failing) in a prior hook firing.
 STATE_DIR="$WORKSPACE_ROOT/.claude/.auto-setup"
@@ -50,45 +58,46 @@ if [[ "$HEAD_SHA" == "$UPSTREAM_SHA" ]]; then
     exit 0
 fi
 
-# --- Guardrail 1: secret scan -------------------------------------------------
-DIFF="$(git show --unified=0 "$HEAD_SHA" 2>/dev/null)"
-SECRET_PATTERN='eyJ[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----|DEVREV_PAT[[:space:]]*=[[:space:]]*[^<[:space:]]|[Aa]pi[_-]?[Kk]ey[[:space:]]*[:=][[:space:]]*[A-Za-z0-9]{16,}'
-if echo "$DIFF" | grep -Eq "$SECRET_PATTERN"; then
-    echo "push-learnings: BLOCKED — commit $HEAD_SHA's diff matches a secret-shaped pattern. Not pushing. Fix the leak (redact to <REDACTED_PAT>, or drop the file) and commit a correction before this will push." >&2
+RANGE="$UPSTREAM_SHA..$HEAD_SHA"
+
+# block "<stderr text>" "<short message for the session>" — record, report, stop.
+block() {
+    echo "push-learnings: BLOCKED — $1" >&2
     touch "$MARKER_FILE" 2>/dev/null
-    jq -n '{systemMessage: "push-learnings: blocked a learn: commit from auto-push — its diff matched a secret-shaped pattern. Commit is local only; see stderr for detail."}' 2>/dev/null
+    jq -n --arg m "push-learnings: blocked an auto-push — $2 The commits stay local; see stderr." '{systemMessage: $m}' 2>/dev/null
     exit 0
+}
+
+# --- Guardrail 1: fast-forward check -----------------------------------------
+MERGE_BASE="$(git merge-base HEAD origin/main 2>/dev/null)"
+if [[ "$MERGE_BASE" != "$UPSTREAM_SHA" ]]; then
+    block "origin/main has diverged (merge-base != origin/main). Not force-pushing. Resolve manually (pull/rebase) then push yourself." "origin/main has diverged."
 fi
 
-# --- Guardrail 2: file-scope check -------------------------------------------
-CHANGED_FILES="$(git show --name-only --format='' "$HEAD_SHA" 2>/dev/null)"
+# --- Guardrail 2: only learn: commits ----------------------------------------
+NON_LEARN="$(git log --format='%h %s' "$RANGE" 2>/dev/null | grep -v ' learn:')"
+if [[ -n "$NON_LEARN" ]]; then
+    block "these unpushed commits are not learn: commits and would be pushed with this one (review and push them yourself):
+$NON_LEARN" "unpushed commits that are not learn: commits are waiting."
+fi
+
+# --- Guardrail 3: secret scan (added lines of the whole range) ----------------
+SECRET_PATTERN='eyJ[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{35}|DEVREV_PAT[[:space:]]*=[[:space:]]*[^<[:space:]]|[Aa]pi[_-]?[Kk]ey[[:space:]]*[:=][[:space:]]*[A-Za-z0-9]{16,}'
+if git diff --unified=0 "$UPSTREAM_SHA" "$HEAD_SHA" 2>/dev/null | grep -E '^\+' | grep -vE '^\+\+\+' | grep -Eq "$SECRET_PATTERN"; then
+    block "the added lines in $RANGE match a secret-shaped pattern. Fix the leak (redact to <REDACTED_PAT>, or drop the file) and commit a correction before this will push." "the diff matched a secret-shaped pattern."
+fi
+
+# --- Guardrail 4: file-scope check --------------------------------------------
 OUT_OF_SCOPE=""
 while IFS= read -r f; do
     [[ -z "$f" ]] && continue
     case "$f" in
-        skills/*|docs/*|.claude/*|plans/*|CLAUDE.md|README.md|documentation/*)
-            ;;
-        *)
-            OUT_OF_SCOPE="${OUT_OF_SCOPE}${f}\n"
-            ;;
+        skills/*|docs/*|index/*|.claude/skills/*|CLAUDE.md|README.md) ;;
+        *) OUT_OF_SCOPE="${OUT_OF_SCOPE}  ${f}\n" ;;
     esac
-done <<< "$CHANGED_FILES"
-
+done <<< "$(git diff --name-only "$UPSTREAM_SHA" "$HEAD_SHA" 2>/dev/null)"
 if [[ -n "$OUT_OF_SCOPE" ]]; then
-    echo "push-learnings: BLOCKED — commit $HEAD_SHA touches file(s) outside the known knowledge-base surface, not pushing:" >&2
-    echo -e "$OUT_OF_SCOPE" >&2
-    touch "$MARKER_FILE" 2>/dev/null
-    jq -n '{systemMessage: "push-learnings: blocked a learn: commit from auto-push — it touches file(s) outside skills/docs/.claude/plans/CLAUDE.md/README.md. Commit is local only."}' 2>/dev/null
-    exit 0
-fi
-
-# --- Guardrail 3: fast-forward check -----------------------------------------
-MERGE_BASE="$(git merge-base HEAD origin/main 2>/dev/null)"
-if [[ "$MERGE_BASE" != "$UPSTREAM_SHA" ]]; then
-    echo "push-learnings: BLOCKED — origin/main has diverged (merge-base != origin/main). Not force-pushing. Resolve manually (pull/rebase) then push yourself." >&2
-    touch "$MARKER_FILE" 2>/dev/null
-    jq -n '{systemMessage: "push-learnings: blocked a learn: commit from auto-push — origin/main has diverged. Resolve manually."}' 2>/dev/null
-    exit 0
+    block "$(printf '%s touches file(s) outside the knowledge-base surface (skills/, docs/, index/, .claude/skills/, CLAUDE.md, README.md):\n%b' "$RANGE" "$OUT_OF_SCOPE")" "files outside the knowledge-base surface changed."
 fi
 
 # --- All guardrails passed: push ---------------------------------------------

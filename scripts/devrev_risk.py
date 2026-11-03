@@ -34,7 +34,9 @@ DESTRUCTIVE_NAMES = {
 NAME = r"[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)+|ping"
 # A DevRev API URL: a real host, or the $DEVREV_ENDPOINT variable the skills use, then an optional /internal/.
 URL_RE = re.compile(
-    r"(?:https?://[A-Za-z0-9.\-]*devrev\.ai|\$\{?DEVREV_ENDPOINT\}?)/(?:internal/)?(?:beta/)?(%s)(?=[\s'\"?#\\]|$)" % NAME
+    # host must be devrev.ai or a subdomain of it (api.devrev.ai); lookalikes such as evildevrev.ai or
+    # api.devrev.ai.evil.com do not match
+    r"(?:https?://(?:[A-Za-z0-9\-]+\.)*devrev\.ai|\$\{?DEVREV_ENDPOINT\}?)/(?:internal/)?(?:beta/)?(%s)(?=[\s'\"?#\\]|$)" % NAME
 )
 
 

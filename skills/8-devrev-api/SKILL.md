@@ -33,7 +33,7 @@ an org.
 ## Standard headers
 
 ```bash
--H "Authorization: Bearer $DEVREV_TOKEN" \
+-H "Authorization: Bearer $DEVREV_PAT" \
 -H "Content-Type: application/json" \
 -H "Accept: application/json"
 ```
@@ -149,8 +149,8 @@ CUSTOM_OBJECT_ID= CUSTOM_LINK_TYPE_ID= STAGE_DIAGRAM_ID=
 ## Verify
 
 ```bash
-curl -X POST 'https://api.devrev.ai/ping' -H "Authorization: Bearer $DEVREV_TOKEN" -d '{}'
-curl -X POST 'https://api.devrev.ai/works.list' -H "Authorization: Bearer $DEVREV_TOKEN" -d '{ "type": ["ticket"], "limit": 5 }'
+curl -X POST 'https://api.devrev.ai/ping' -H "Authorization: Bearer $DEVREV_PAT" -d '{}'
+curl -X POST 'https://api.devrev.ai/works.list' -H "Authorization: Bearer $DEVREV_PAT" -d '{ "type": ["ticket"], "limit": 5 }'
 ```
 
 ## Field notes (live-learned; see docs/LEARNINGS.md)

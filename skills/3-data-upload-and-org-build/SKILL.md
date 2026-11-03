@@ -49,7 +49,8 @@ Every playbook step cites the exact reference file and section. Follow the order
 
    ```bash
    curl -X POST 'https://api.devrev.ai/artifacts.prepare' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{ "file_name": "screenshot.png", "file_type": "image/png" }'
    ```
 
@@ -70,7 +71,8 @@ Every playbook step cites the exact reference file and section. Follow the order
 
 ```bash
 curl -X POST 'https://api.devrev.ai/artifacts.download' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
+-H "Content-Type: application/json" \
 -d '{ "id": "<ARTIFACT_ID>" }'
 ```
 
@@ -95,7 +97,7 @@ This is the standard, repeatable procedure to build out a customer organization 
 
 #### Phase 0 — Prerequisites & authentication
 
-Every request needs standard headers (`Authorization: Bearer $DEVREV_TOKEN`, `Content-Type: application/json`, `Accept: application/json`). Objects are referenced by their DON id (e.g. `don:core:dvrv-us-1:devo/0:product/1`). Save every id a call returns — later phases depend on them. Keep a scratchpad of IDs: `PRODUCT_ID`, `CAP_ID`, `FEAT_ID`, `RUN_ID`, and any custom link type IDs.
+Every request needs standard headers (`Authorization: Bearer $DEVREV_PAT`, `Content-Type: application/json`, `Accept: application/json`). Objects are referenced by their DON id (e.g. `don:core:dvrv-us-1:devo/0:product/1`). Save every id a call returns — later phases depend on them. Keep a scratchpad of IDs: `PRODUCT_ID`, `CAP_ID`, `FEAT_ID`, `RUN_ID`, and any custom link type IDs.
 
 #### Phase 1 — Customize objects
 
@@ -124,7 +126,8 @@ Parts are the backbone of the customer's product model. Customer parts (product 
 
    ```bash
    curl -X POST 'https://api.devrev.ai/parts.create' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{ "type": "product", "name": "Acme Platform",
      "owned_by": [ "<DEVU_OWNER_ID>" ] }'
    ```
@@ -135,7 +138,8 @@ Parts are the backbone of the customer's product model. Customer parts (product 
 
    ```bash
    curl -X POST 'https://api.devrev.ai/parts.create' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{ "type": "capability", "name": "Authentication",
      "parent_part": [ "<PRODUCT_ID>" ], "owned_by": [ "<DEVU_OWNER_ID>" ] }'
    ```
@@ -165,7 +169,8 @@ Link a runnable to the feature it serves with `links.create` using the built-in 
 
 ```bash
 curl -X POST 'https://api.devrev.ai/links.create' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
+-H "Content-Type: application/json" \
 -d '{ "link_type": "serves",
   "source": "<RUNNABLE_ID>",
   "target": "<FEATURE_ID>" }'
@@ -191,7 +196,8 @@ Attach work items to the right part so they surface on the Trail. Set `applies_t
 
 ```bash
 curl -X POST 'https://api.devrev.ai/works.create' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
+-H "Content-Type: application/json" \
 -d '{ "type": "ticket", "title": "Login fails for Acme",
   "applies_to_part": "<FEATURE_ID>",
   "owned_by": [ "<DEVU_OWNER_ID>" ] }'
@@ -239,12 +245,12 @@ RUN_LOG="run-$(date +%s).log"
 while IFS=, read -r name email; do
   # Check if account exists
   ACCT_ID=$(curl -s -X POST 'https://api.devrev.ai/accounts.list' \
-    -H "Authorization: Bearer $DEVREV_TOKEN" \
+    -H "Authorization: Bearer $DEVREV_PAT" \
     -d "{\"filters\": {\"name\": [\"$name\"]}}" | jq -r '.accounts[0].id // empty')
   
   if [ -z "$ACCT_ID" ]; then
     ACCT_ID=$(curl -s -X POST 'https://api.devrev.ai/accounts.create' \
-      -H "Authorization: Bearer $DEVREV_TOKEN" \
+      -H "Authorization: Bearer $DEVREV_PAT" \
       -d "{\"name\": \"$name\", \"owned_by\": [\"<OWNER_ID>\"]}" | jq -r '.account.id')
     echo "CREATED account $name -> $ACCT_ID" >> "$RUN_LOG"
   else

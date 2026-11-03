@@ -48,7 +48,7 @@ A state is a broad category that groups stages (e.g. `open`, `in_progress`, `clo
 
 ```bash
 curl -X POST 'https://api.devrev.ai/states.custom.create' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
 -H 'Content-Type: application/json' \
 -d '{
   "name": "New State",
@@ -68,7 +68,7 @@ A stage is a specific step in the lifecycle (e.g. "Needs RCA", "In Review"). Eve
 
 ```bash
 curl -X POST 'https://api.devrev.ai/stages.custom.create' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
 -H 'Content-Type: application/json' \
 -d '{
   "name": "Needs RCA",
@@ -92,7 +92,7 @@ A stage diagram wires stages together into a workflow: a start stage, allowed tr
 
 ```bash
 curl -X POST 'https://api.devrev.ai/stage-diagrams.create' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
 -H 'Content-Type: application/json' \
 -d '{
   "leaf_type": "issue",
@@ -145,7 +145,8 @@ remains immutable after creation (cannot be added later via `.update`):
 
 ```bash
 curl -X POST 'https://api.devrev.ai/stage-diagrams.create' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
+-H "Content-Type: application/json" \
 -d '{
   "leaf_type": "regression_test_asset",
   "is_custom_leaf_type": true,
@@ -160,7 +161,8 @@ not `stage_diagram_id` and not a nested object) on `schemas.custom.set`:
 
 ```bash
 curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
--H 'Authorization: Bearer $DEVREV_TOKEN' \
+-H "Authorization: Bearer $DEVREV_PAT" \
+-H "Content-Type: application/json" \
 -d '{
   "type": "custom_type_fragment",
   "leaf_type": "issue",

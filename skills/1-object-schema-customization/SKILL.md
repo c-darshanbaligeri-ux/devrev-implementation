@@ -47,7 +47,7 @@ Every playbook step cites the exact reference file and section. Follow the order
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
    -H 'Content-Type: application/json' \
    -d '{
      "type": "tenant_fragment",
@@ -70,7 +70,8 @@ Every playbook step cites the exact reference file and section. Follow the order
 
    ```bash
    curl -X POST 'https://api.devrev.ai/custom-objects.create' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "leaf_type": "campaign",
      "custom_schema_spec": { "tenant_fragment": true },
@@ -99,7 +100,8 @@ Every playbook step cites the exact reference file and section. Follow the order
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.stock.get' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{ "leaf_type": "ticket" }'
    ```
 
@@ -107,7 +109,8 @@ Every playbook step cites the exact reference file and section. Follow the order
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "type": "tenant_fragment",
      "leaf_type": "ticket",
@@ -122,7 +125,8 @@ Every playbook step cites the exact reference file and section. Follow the order
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "type": "tenant_fragment",
      "leaf_type": "issue",
@@ -139,7 +143,8 @@ Every playbook step cites the exact reference file and section. Follow the order
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.aggregated.get' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "leaf_type": "ticket"
    }'
@@ -163,7 +168,8 @@ This playbook applies equally to stock leaf types (`issue`, `ticket`, ...) and t
 
    ```bash
    curl -X POST 'https://api.devrev.ai/schemas.custom.set' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "type": "custom_type_fragment",
      "leaf_type": "issue",
@@ -184,7 +190,8 @@ This playbook applies equally to stock leaf types (`issue`, `ticket`, ...) and t
 
    ```bash
    curl -X POST 'https://api.devrev.ai/works.create' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "type": "issue",
      "title": "API failure in Prod",
@@ -199,7 +206,8 @@ This playbook applies equally to stock leaf types (`issue`, `ticket`, ...) and t
 
    ```bash
    curl -X POST 'https://api.devrev.ai/custom-objects.create' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "leaf_type": "campaign",
      "custom_schema_spec": { "subtype": "social_media", "tenant_fragment": true },
@@ -232,7 +240,8 @@ Custom link types define relationships not covered by built-in types (`serves`, 
 
    ```bash
    curl -X POST 'https://api.devrev.ai/link-types.custom.create' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "name": "Link between ticket and campaign",
      "source_types": [ { "leaf_type": "ticket" } ],
@@ -248,7 +257,8 @@ Custom link types define relationships not covered by built-in types (`serves`, 
 
    ```bash
    curl -X POST 'https://api.devrev.ai/links.create' \
-   -H 'Authorization: Bearer $DEVREV_TOKEN' \
+   -H "Authorization: Bearer $DEVREV_PAT" \
+   -H "Content-Type: application/json" \
    -d '{
      "link_type": "custom_link",
      "custom_link_type": "<CUSTOM_LINK_TYPE_ID>",

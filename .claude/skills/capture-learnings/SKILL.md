@@ -96,7 +96,7 @@ If a commit isn't possible (mid-task with unrelated staged changes), stage only 
 `Bash` (`.claude/hooks/push-learnings.sh`, registered in `.claude/settings.json`) fires right after
 this commit lands. It checks three guardrails against the commit's diff — no secret-shaped strings,
 every changed file inside the known knowledge-base surface (`skills/`, `docs/`, `.claude/`,
-`plans/`, `CLAUDE.md`, `README.md`, `rate limits.md`, `documentation/`), and `origin/main` hasn't
+`plans/`, `CLAUDE.md`, `README.md`, `documentation/`), and `origin/main` hasn't
 diverged — and pushes to `origin/main` only if all three pass. If any guardrail fails, the commit
 stays local (never lost, never force-pushed) and the hook reports why via stderr/`systemMessage`;
 fix the flagged issue and commit again. This fires deterministically off the commit itself, unlike
@@ -119,7 +119,7 @@ push something else (non-learning work), that's still a separate explicit action
 - One learning = one journal row. If a task surfaced three lessons, that's three rows.
 - If the learning invalidates something in `docs/` user documentation claims, update that too.
 - **Keep `learn:` commits scoped to the knowledge-base surface** (`skills/`, `docs/`, `.claude/`,
-  `plans/`, `CLAUDE.md`, `README.md`, `rate limits.md`, `documentation/`) — the auto-push hook
+  `plans/`, `CLAUDE.md`, `README.md`, `documentation/`) — the auto-push hook
   blocks (doesn't push) any `learn:` commit that also touches a file outside that set, since such a
   commit might be bundling in unrelated or sensitive changes that shouldn't go out unreviewed. If a
   learning genuinely requires touching something outside that surface, split it into two commits:

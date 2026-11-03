@@ -9,7 +9,7 @@
 # Guardrails (all must pass, or the commit stays local and this prints why):
 #   1. Secret scan — no PAT/token/API-key-shaped strings in the diff.
 #   2. Scope check — every changed file matches an allow-listed path
-#      (skills/**, docs/**, CLAUDE.md, rate limits.md, README.md, .claude/**,
+#      (skills/**, docs/**, CLAUDE.md, README.md, .claude/**,
 #      plans/** for learning-related scripts/artifacts) — never a commit that
 #      also touches something outside the knowledge-base surface.
 #   3. Fast-forward check — origin/main hasn't diverged; never force-push.
@@ -66,7 +66,7 @@ OUT_OF_SCOPE=""
 while IFS= read -r f; do
     [[ -z "$f" ]] && continue
     case "$f" in
-        skills/*|docs/*|.claude/*|plans/*|CLAUDE.md|README.md|"rate limits.md"|documentation/*)
+        skills/*|docs/*|.claude/*|plans/*|CLAUDE.md|README.md|documentation/*)
             ;;
         *)
             OUT_OF_SCOPE="${OUT_OF_SCOPE}${f}\n"

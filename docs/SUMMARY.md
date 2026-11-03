@@ -4,12 +4,12 @@ This document tracks the source lineage and adaptations for all artifacts in the
 
 ## Source Repositories
 
-- **S1** = `/Users/q15137/Documents/The one/API's` — DevRev REST API knowledge base
-- **S2** = `/Users/q15137/Documents/The one/devrev-workflow-admin` — workflow authoring/admin skill
-- **S3** = `/Users/q15137/Documents/The one/Dashboard and Widget Creation` — working plug-and-play workspace
-- **S4** = `/Users/q15137/Documents/The one/aai-custom-computer-capabilities/3-computer-capabilities-nxt/agent-building-toolkit` — agent-building toolkit
-- **S5** = `/Users/q15137/Documents/The one/plan-skill-workspace/devrev-solution-architect` — standalone design-phase skill (2026-07-18 merge; built independently of S1–S4, with zero prior shared authorship)
-- **S6** = `/Users/q15137/Documents/The one/devrev-snapins-main` (repo `QK-SnapIn/devrev-qk-agents`) — standalone Claude Code plugin for snap-in/AirSync connector development (2026-07-18 merge; third-party org, not `devrev/aai-skills`)
+- **S1** = `<workspace>/API's` — DevRev REST API knowledge base
+- **S2** = `<workspace>/devrev-workflow-admin` — workflow authoring/admin skill
+- **S3** = `<workspace>/Dashboard and Widget Creation` — working plug-and-play workspace
+- **S4** = `<workspace>/aai-custom-computer-capabilities/3-computer-capabilities-nxt/agent-building-toolkit` — agent-building toolkit
+- **S5** = `<workspace>/plan-skill-workspace/devrev-solution-architect` — standalone design-phase skill (2026-07-18 merge; built independently of S1–S4, with zero prior shared authorship)
+- **S6** = `<workspace>/devrev-snapins-main` (repo `QK-SnapIn/devrev-qk-agents`) — standalone Claude Code plugin for snap-in/AirSync connector development (2026-07-18 merge; third-party org, not `devrev/aai-skills`)
 - **S7** = `https://developer.devrev.ai` (sitemap of 980 URLs) — the official DevRev developer docs, fetched 2026-11-03 by `skills/11-developer-docs/scripts/` and mirrored as `skills/11-developer-docs/`. Unlike S1–S6 this is not a local workspace: it is regenerated, not copied.
 
 ## Provenance Table

@@ -134,7 +134,7 @@ endpoint/field/enum/limit**, a **new workflow-import failure cause**, a **plugin
 hook on `Bash` (`.claude/hooks/push-learnings.sh`) fires right after any commit whose subject starts
 with `learn:`, runs three guardrails against its diff (no secret-shaped strings; every changed file
 inside the known knowledge-base surface — `skills/`, `docs/`, `.claude/`, `plans/`, `CLAUDE.md`,
-`README.md`, `rate limits.md`, `documentation/`; `origin/main` hasn't diverged), and pushes only if
+`README.md`, `documentation/`; `origin/main` hasn't diverged), and pushes only if
 all three pass. If a guardrail fails, the commit stays local and the hook says why — fix and commit
 again rather than pushing around it. See `.claude/skills/capture-learnings/SKILL.md` for the full
 guardrail detail and the (brief, since-reverted) staging/reconciliation model this replaced.

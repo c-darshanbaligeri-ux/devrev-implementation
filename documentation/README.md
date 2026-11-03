@@ -4,7 +4,7 @@ Documentation for the **`devrev-implementation`** repository — the unified, pl
 operating environment for all DevRev implementation work, spanning solution design (skill 0) through
 build (skills 1–9, incl. snap-in/AirSync development via a routed third-party plugin at skill 9).
 
-- **Repo (local)**: `/Users/q15137/Documents/The one/devrev-implementation`
+- **Repo (local)**: `<workspace>/devrev-implementation`
 - **Repo (GitHub, private)**: https://github.com/c-darshanbaligeri-ux/devrev-implementation
 
 ## Reading map

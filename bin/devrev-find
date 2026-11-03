@@ -1,0 +1,377 @@
+#!/usr/bin/env python3
+"""devrev-find — find the right DevRev playbook and API endpoint for a goal. Standard library only.
+
+    devrev-find "create a support ticket for a customer"     ranked playbooks, endpoints, learnings
+    devrev-find --endpoint works.create                      full brief for one endpoint (what to read, fields, notes)
+    devrev-find --risk works.delete                          read | write | destructive
+    devrev-find --list-playbooks                             every skill with its one-line purpose
+    options: -n N (endpoints shown, default 5)   --kind endpoint|playbook|learning|all   --json
+
+It searches the generated index in <repo>/index/ (rebuild with `python3 -I scripts/build_index.py`) and prints
+ABSOLUTE paths, so it works the same from the repo checkout and from an installed plugin. Read only the files it
+lists; the repo's live-verified notes and learnings win over the mirrored vendor docs.
+"""
+import argparse
+import json
+import math
+import re
+import sys
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+import devrev_risk  # noqa: E402
+
+STOP = {"a", "an", "the", "to", "for", "of", "in", "on", "and", "or", "i", "me", "my", "we", "our", "with", "from", "by",
+        "is", "are", "be", "do", "does", "how", "what", "can", "could", "should", "would", "please", "need", "want", "like",
+        "that", "this", "it", "so", "up", "into", "using", "use", "devrev", "via", "some", "any", "then", "also"}
+K1, B = 1.5, 0.75
+
+
+def load(name):
+    p = ROOT / "index" / name
+    if not p.exists():
+        sys.exit(f"devrev-find: {p} is missing. Build it: python3 -I {ROOT}/scripts/build_index.py")
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+def stem(w):
+    """Light, consistent stemmer applied to BOTH documents and queries: created/creates/creating/create -> creat."""
+    if not w.isalpha() or len(w) <= 3:
+        return w
+    if w.endswith("ies") and len(w) > 4:
+        w = w[:-3] + "y"
+    elif w.endswith("ing") and len(w) > 5:
+        w = w[:-3]
+    elif w.endswith("ed") and len(w) > 4:
+        w = w[:-2]
+    elif w.endswith("es") and len(w) > 4 and not w.endswith("ses"):
+        w = w[:-2]
+    elif w.endswith("s") and not w.endswith("ss") and len(w) > 3:
+        w = w[:-1]
+    if w.endswith("e") and len(w) > 3:
+        w = w[:-1]
+    return w
+
+
+def tokenize(text):
+    """Stemmed words; a dotted/hyphenated name also yields its raw compound (works.create) and stemmed parts."""
+    out = []
+    for w in re.findall(r"[a-z0-9_][a-z0-9_.\-]*[a-z0-9_]|[a-z0-9_]", text.lower()):
+        parts = [p for p in re.split(r"[.\-]", w) if p]
+        if len(parts) > 1:
+            out.append(w)
+            out.extend(stem(p) for p in parts)
+        else:
+            out.append(stem(w))
+    return out
+
+
+PREPOSITIONS = {"for", "of", "to", "with", "about", "from", "in", "on", "by", "per", "under", "into", "at"}
+
+
+def expand(query, syn, resource_names):
+    """Understand a goal. Returns (weights, verbs, resources).
+
+    weights   token -> weight for BM25: the user's words 1.0; synonym targets 0.7 split across a word's targets (so
+              "customer" -> rev-orgs/accounts/rev-users cannot out-vote one clear object like "ticket" -> works);
+              the canonical verb a word implies 0.8. Words after a preposition ("... for a customer") are modifiers and
+              weigh 0.6x. A word that is only a verb synonym ("assign") counts 0.5 directly, since its canonical verb
+              already votes.
+    verbs     stemmed canonical verbs the goal implies (create, update, list, ...)
+    resources resource name -> weight (works, accounts, ...) the goal's nouns point at
+    """
+    raws, after_prep, items = [], False, []
+    for raw in re.findall(r"[a-z0-9_][a-z0-9_.\-]*[a-z0-9_]|[a-z0-9_]", query.lower()):
+        raws.append(raw)
+        if raw in PREPOSITIONS:
+            after_prep = True
+        elif raw not in STOP:
+            items.append((raw, 0.6 if after_prep else 1.0))
+    phrase = " ".join(raws)
+    w, verbs, resources = {}, {}, {}
+    res_by_stem = {stem(r): r for r in resource_names}
+    verb_words = {}
+    for canon, words in syn.get("verbs", {}).items():
+        for word in words:
+            verb_words.setdefault(stem(word), set()).add(canon)
+
+    def bump(d, k, v):
+        d[k] = max(d.get(k, 0), v)
+
+    for raw, mult in items:
+        st = stem(raw)
+        is_verb_only = st in verb_words and st not in res_by_stem and raw not in syn.get("terms", {})
+        for tok in tokenize(raw):
+            bump(w, tok, (0.5 if is_verb_only else 1.0) * mult)
+        if st in res_by_stem:
+            bump(resources, res_by_stem[st], 1.0 * mult)
+        for canon in verb_words.get(st, ()):
+            bump(verbs, stem(canon), 0.8)
+            bump(w, stem(canon), 0.8)
+        targets = syn.get("terms", {}).get(raw, [])
+        for target in targets:
+            share = 0.7 * mult / math.sqrt(len(targets))
+            for tok in tokenize(target):
+                bump(w, tok, share)
+            if target in resource_names:
+                bump(resources, target, share)
+    for ph, targets in syn.get("phrases", {}).items():
+        if ph in phrase:
+            for target in targets:
+                if target in syn.get("verbs", {}):
+                    bump(verbs, stem(target), 0.9)
+                    bump(w, stem(target), 0.9)
+                    continue
+                for tok in tokenize(target):
+                    bump(w, tok, 1.0)
+                if target in resource_names:
+                    bump(resources, target, 1.0)
+    return w, verbs, resources
+
+
+def structured_bonus(e, verbs, resources):
+    """Reward endpoints whose <resource>.<verb> is exactly what the goal implies."""
+    if not verbs or not resources:
+        return 1.0
+    last = stem(e["name"].rsplit(".", 1)[-1])
+    top = max(resources.values())
+    rw = resources.get(e["resource"], 0)
+    if rw and last in verbs:
+        return 1.0 + 0.6 * (rw / top)
+    return 1.0
+
+
+class Corpus:
+    def __init__(self, docs):
+        self.docs = docs  # [(obj, Counter)]
+        self.n = len(docs)
+        self.avg = sum(sum(c.values()) for _, c in docs) / max(1, self.n)
+        self.df = Counter()
+        for _, c in docs:
+            self.df.update(c.keys())
+
+    def search(self, weights, limit):
+        scored = []
+        for obj, c in self.docs:
+            dl = sum(c.values())
+            s = 0.0
+            for t, qw in weights.items():
+                tf = c.get(t, 0)
+                if not tf:
+                    continue
+                idf = math.log(1 + (self.n - self.df[t] + 0.5) / (self.df[t] + 0.5))
+                s += qw * idf * tf * (K1 + 1) / (tf + K1 * (1 - B + B * dl / self.avg))
+            if s > 0:
+                scored.append((s, obj))
+        scored.sort(key=lambda x: -x[0])
+        return scored[:limit]
+
+
+def endpoint_doc(e):
+    c = Counter()
+    for t in tokenize(e["name"]):
+        c[t] += 4
+    for t in tokenize(e["resource"]):
+        c[t] += 2
+    for t in tokenize(e["title"]):
+        c[t] += 2
+    for t in tokenize(e["summary"]):
+        c[t] += 1
+    for f in e["fields"][:40]:
+        for t in tokenize(f):
+            c[t] += 0.5
+    return c
+
+
+def playbook_doc(p):
+    c = Counter()
+    for t in tokenize(p["id"] + " " + p["name"]):
+        c[t] += 3
+    for t in tokenize(p["description"]):
+        c[t] += 2
+    for t in tokenize(" ".join(p["headings"]) + " " + " ".join(p["when_to_use"])):
+        c[t] += 1
+    return c
+
+
+def learning_doc(r):
+    c = Counter()
+    for t in tokenize(r["text"]):
+        c[t] += 1
+    for n in r["endpoints"]:
+        for t in tokenize(n):
+            c[t] += 2
+    return c
+
+
+def ab(rel):
+    return str(ROOT / rel) if rel else ""
+
+
+def short(text, n):
+    text = re.sub(r"\s+", " ", text).strip()
+    return text if len(text) <= n else text[: n - 1] + "…"
+
+
+def fmt_endpoint(e, brief=False):
+    ch = "/".join(e["channels"]) or "catalog-only"
+    lines = [f"{e['name']}  [{e['risk']}]  {','.join(e['methods']) or '—'}  ({ch})"]
+    if e["summary"]:
+        lines.append("    " + short(e["summary"], 150))
+    scopes = " | ".join(e["scopes"][:8]) or e["scopes_text"] or "not documented on the public site"
+    cat = (e.get("catalog") or {}).get("row")
+    lines.append(f"    scopes: {scopes}" + (f"   (catalog: {short(cat, 90)})" if cat and not e["scopes"] else ""))
+    if e["required"]:
+        lines.append("    required: " + ", ".join(e["required"][:10]) + ("  (+ one-of variants)" if e["has_variants"] else ""))
+    if e["doc"]:
+        lines.append(f"    read: {ab(e['doc'].split('#')[0])}  → section {e['doc'].split('#')[1] if '#' in e['doc'] else ''}")
+    if e.get("beta_doc") and brief:
+        lines.append(f"    beta variant: {ab(e['beta_doc'].split('#')[0])}  → section {e['beta_doc'].split('#')[1]}")
+    for n in e["notes"][: (6 if brief else 2)]:
+        lines.append(f"    notes: {ab(n['file'])}:~{n['line']}  “{short(n['snippet'], 80)}”")
+    return "\n".join(lines)
+
+
+def section_excerpt(e, max_lines=70):
+    if not e["doc"] or "#" not in e["doc"]:
+        return ""
+    path, anchor = e["doc"].split("#", 1)
+    p = ROOT / path
+    if not p.exists():
+        return ""
+    lines = p.read_text(encoding="utf-8").split("\n")
+    try:
+        start = next(i for i, l in enumerate(lines) if l == f'<a id="{anchor}"></a>')
+    except StopIteration:
+        return ""
+    out = []
+    for l in lines[start + 1:]:
+        if l.startswith('<a id="'):
+            break
+        out.append(l)
+    return "\n".join(out[:max_lines]).rstrip()
+
+
+def risk_advice(risk):
+    return {
+        "read": "Read-only: safe to run; the safety hook lets it through without a prompt.",
+        "write": "Changes data: the safety hook asks for confirmation. State what will change before calling.",
+        "destructive": "DESTRUCTIVE / hard to reverse: get explicit user confirmation in this session, snapshot what will be affected first, and re-read afterwards to verify.",
+    }[risk]
+
+
+def cmd_endpoint(name, as_json):
+    eps = {e["name"]: e for e in load("endpoints.json")["endpoints"]}
+    key = devrev_risk.normalize(name)
+    e = eps.get(key)
+    if e is None:
+        close = [n for n in eps if key.split(".")[0] in n][:8]
+        print(f"devrev-find: no endpoint named {key!r}." + (f" Did you mean: {', '.join(close)}" if close else ""))
+        return 1
+    learn = [r for r in load("learnings.json")["learnings"] if key in r["endpoints"]]
+    if as_json:
+        print(json.dumps({"endpoint": e, "learnings": learn}, indent=1))
+        return 0
+    print(fmt_endpoint(e, brief=True))
+    print("\nRISK: " + risk_advice(e["risk"]))
+    if e.get("catalog"):
+        print(f"\nCATALOG ROW ({ab('skills/8-devrev-api/references/00_API_Catalog.md')}:~{e['catalog']['line']}):\n    {e['catalog']['row']}")
+    ex = section_excerpt(e)
+    if ex:
+        print("\nMIRROR SECTION (what the vendor docs say — live-verified repo notes below win):\n" + ex)
+    if learn:
+        print(f"\nLEARNINGS THAT MENTION {key} ({len(learn)}) — read before acting:")
+        for r in learn[:12]:
+            print(f"  - {r['date']} ({ab('docs/LEARNINGS.md')}:~{r['line']}) {short(r['text'], 320)}")
+    return 0
+
+
+def cmd_search(query, n, kind, as_json):
+    syn = json.loads((ROOT / "index" / "synonyms.json").read_text(encoding="utf-8"))
+    eps = load("endpoints.json")["endpoints"]
+    weights, verbs, resources = expand(query, syn, {e["resource"] for e in eps})
+    if not weights:
+        print("devrev-find: give a goal in a few words, e.g. devrev-find \"add a custom field to accounts\"")
+        return 1
+    pbs = load("playbooks.json")["playbooks"]
+    lrn = load("learnings.json")["learnings"]
+    exact = next((e for e in eps if e["name"] == devrev_risk.normalize(query)), None)
+    res = {"query": query}
+    if kind in ("playbook", "all"):
+        res["playbooks"] = [(round(s, 2), p) for s, p in Corpus([(p, playbook_doc(p)) for p in pbs]).search(weights, 3)]
+    ep_hits = []
+    if kind in ("endpoint", "all", "learning"):
+        ep_hits = Corpus([(e, endpoint_doc(e)) for e in eps]).search(weights, max(n, 5) * 6)
+        # public API first: a tiny boost keeps beta-only endpoints from outranking an equal public one
+        ep_hits = sorted(((s * (1.08 if "public" in e["channels"] else 1.0) * structured_bonus(e, verbs, resources), e)
+                          for s, e in ep_hits), key=lambda x: -x[0])
+        if exact:
+            ep_hits = [(99.0, exact)] + [x for x in ep_hits if x[1]["name"] != exact["name"]]
+        res["endpoints"] = [(round(s, 2), e) for s, e in ep_hits[:n]]
+        res["understood"] = {"verbs": sorted(verbs), "resources": sorted(resources)}
+    if res.get("playbooks") and res.get("endpoints"):
+        # An exact <resource>.<verb> match means this is a raw API operation: skill 8 owns that, so always offer it.
+        if structured_bonus(res["endpoints"][0][1], verbs, resources) > 1.0 and not any(p["id"] == "8-devrev-api" for _, p in res["playbooks"]):
+            api = next((p for p in pbs if p["id"] == "8-devrev-api"), None)
+            if api:
+                res["playbooks"] = res["playbooks"][:2] + [(res["playbooks"][-1][0], api)]
+    if kind in ("learning", "all"):
+        top = {e["name"] for _, e in ep_hits[:n]}
+        ranked = Corpus([(r, learning_doc(r)) for r in lrn]).search(weights, 12)
+        picked = [(s, r) for s, r in ranked if r["kind"] == "standing" or top & set(r["endpoints"])][:3]
+        res["learnings"] = [(round(s, 2), r) for s, r in picked]
+    if as_json:
+        print(json.dumps(res, indent=1, default=lambda o: o))
+        return 0
+    print(f'devrev-find: "{query}"\n')
+    if res.get("playbooks"):
+        print("PLAYBOOKS — open the best match first (skills carry the procedure and the live-verified notes)")
+        for i, (s, p) in enumerate(res["playbooks"], 1):
+            print(f" {i}. {p['id']}  — {short(p['description'], 130)}\n    read: {ab(p['path'])}")
+        print()
+    if res.get("endpoints"):
+        print("API ENDPOINTS — best matches (public docs first)")
+        for i, (s, e) in enumerate(res["endpoints"], 1):
+            print(f" {i}. " + fmt_endpoint(e).replace("\n", "\n    "))
+        print()
+    if res.get("learnings"):
+        print("LEARNINGS worth reading (docs/LEARNINGS.md — these correct the vendor docs)")
+        for s, r in res["learnings"]:
+            print(f"  - {r['date']} (~line {r['line']}) {short(r['text'], 230)}")
+        print()
+    if not (res.get("playbooks") or res.get("endpoints")):
+        print(f"No confident match. Fall back to a text search, e.g.:\n  grep -rIil '<keyword>' {ROOT}/skills --include='*.md' | head")
+        return 1
+    print("NEXT: `devrev-find --endpoint <name>` gives the full brief for one endpoint. Open only the files listed above.")
+    return 0
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("query", nargs="*", help="the goal, in plain words")
+    ap.add_argument("--endpoint", metavar="NAME", help="full brief for one endpoint, e.g. works.create")
+    ap.add_argument("--risk", metavar="NAME", help="classify an endpoint name as read | write | destructive")
+    ap.add_argument("--list-playbooks", action="store_true")
+    ap.add_argument("-n", type=int, default=5, help="number of endpoints to show (default 5)")
+    ap.add_argument("--kind", choices=["endpoint", "playbook", "learning", "all"], default="all")
+    ap.add_argument("--json", action="store_true", help="machine-readable output")
+    a = ap.parse_args()
+    if a.risk:
+        print(devrev_risk.classify(a.risk))
+        return 0
+    if a.list_playbooks:
+        for p in load("playbooks.json")["playbooks"]:
+            print(f"{p['id']:36} {short(p['description'], 110)}")
+        return 0
+    if a.endpoint:
+        return cmd_endpoint(a.endpoint, a.json)
+    if not a.query:
+        ap.print_help()
+        return 1
+    return cmd_search(" ".join(a.query), a.n, a.kind, a.json)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

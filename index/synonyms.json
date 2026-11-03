@@ -1,0 +1,537 @@
+{
+ "_comment": "Hand-written query expansion for bin/devrev-find. `terms` maps a word people say to API resource / object names the endpoint index uses; `verbs` maps a canonical verb to the words that mean it; `phrases` maps a multi-word phrase to endpoint names or a canonical verb. Edit this file when a real request fails to find the right endpoint, then run scripts/build_index.py.",
+ "terms": {
+  "ticket": [
+   "works",
+   "ticket"
+  ],
+  "tickets": [
+   "works",
+   "ticket"
+  ],
+  "issue": [
+   "works",
+   "issue"
+  ],
+  "issues": [
+   "works",
+   "issue"
+  ],
+  "bug": [
+   "works",
+   "issue"
+  ],
+  "bugs": [
+   "works",
+   "issue"
+  ],
+  "task": [
+   "works",
+   "task"
+  ],
+  "tasks": [
+   "works",
+   "task"
+  ],
+  "incident": [
+   "works",
+   "incident"
+  ],
+  "opportunity": [
+   "works",
+   "opportunity"
+  ],
+  "deal": [
+   "works",
+   "opportunity"
+  ],
+  "work": [
+   "works"
+  ],
+  "item": [
+   "works"
+  ],
+  "request": [
+   "works"
+  ],
+  "customer": [
+   "rev-orgs",
+   "accounts",
+   "rev-users"
+  ],
+  "customers": [
+   "rev-orgs",
+   "accounts",
+   "rev-users"
+  ],
+  "client": [
+   "rev-orgs",
+   "accounts"
+  ],
+  "company": [
+   "accounts",
+   "rev-orgs"
+  ],
+  "account": [
+   "accounts"
+  ],
+  "organization": [
+   "rev-orgs",
+   "accounts",
+   "dev-orgs"
+  ],
+  "org": [
+   "rev-orgs",
+   "dev-orgs"
+  ],
+  "contact": [
+   "rev-users"
+  ],
+  "contacts": [
+   "rev-users"
+  ],
+  "requester": [
+   "rev-users"
+  ],
+  "user": [
+   "rev-users",
+   "dev-users"
+  ],
+  "users": [
+   "rev-users",
+   "dev-users"
+  ],
+  "teammate": [
+   "dev-users"
+  ],
+  "employee": [
+   "dev-users"
+  ],
+  "owner": [
+   "dev-users"
+  ],
+  "assignee": [
+   "dev-users"
+  ],
+  "whoami": [
+   "dev-users"
+  ],
+  "me": [
+   "dev-users"
+  ],
+  "myself": [
+   "dev-users"
+  ],
+  "comment": [
+   "timeline-entries"
+  ],
+  "reply": [
+   "timeline-entries"
+  ],
+  "note": [
+   "timeline-entries"
+  ],
+  "history": [
+   "timeline-entries"
+  ],
+  "message": [
+   "timeline-entries",
+   "conversations"
+  ],
+  "conversation": [
+   "conversations"
+  ],
+  "conversations": [
+   "conversations"
+  ],
+  "chat": [
+   "chats",
+   "conversations"
+  ],
+  "kb": [
+   "articles"
+  ],
+  "knowledge": [
+   "articles",
+   "directories"
+  ],
+  "article": [
+   "articles"
+  ],
+  "articles": [
+   "articles"
+  ],
+  "help": [
+   "articles",
+   "directories"
+  ],
+  "collection": [
+   "directories"
+  ],
+  "directory": [
+   "directories"
+  ],
+  "sla": [
+   "slas",
+   "sla-trackers",
+   "metric-definitions"
+  ],
+  "slas": [
+   "slas",
+   "sla-trackers",
+   "metric-definitions"
+  ],
+  "response-time": [
+   "slas",
+   "metric-definitions"
+  ],
+  "tag": [
+   "tags"
+  ],
+  "tags": [
+   "tags"
+  ],
+  "label": [
+   "tags"
+  ],
+  "link": [
+   "links"
+  ],
+  "links": [
+   "links"
+  ],
+  "relate": [
+   "links"
+  ],
+  "related": [
+   "links"
+  ],
+  "dependency": [
+   "links"
+  ],
+  "duplicate": [
+   "links"
+  ],
+  "parent": [
+   "links"
+  ],
+  "attachment": [
+   "artifacts"
+  ],
+  "attachments": [
+   "artifacts"
+  ],
+  "file": [
+   "artifacts"
+  ],
+  "files": [
+   "artifacts"
+  ],
+  "upload": [
+   "artifacts"
+  ],
+  "artifact": [
+   "artifacts"
+  ],
+  "download": [
+   "artifacts"
+  ],
+  "webhook": [
+   "webhooks"
+  ],
+  "webhooks": [
+   "webhooks"
+  ],
+  "event": [
+   "webhooks"
+  ],
+  "notify": [
+   "webhooks"
+  ],
+  "callback": [
+   "webhooks"
+  ],
+  "field": [
+   "schemas",
+   "custom_fields"
+  ],
+  "fields": [
+   "schemas",
+   "custom_fields"
+  ],
+  "schema": [
+   "schemas"
+  ],
+  "subtype": [
+   "schemas"
+  ],
+  "custom": [
+   "schemas",
+   "custom-objects"
+  ],
+  "stage": [
+   "stages",
+   "states",
+   "stage-diagrams"
+  ],
+  "stages": [
+   "stages",
+   "states",
+   "stage-diagrams"
+  ],
+  "state": [
+   "states"
+  ],
+  "lifecycle": [
+   "stage-diagrams",
+   "stages",
+   "states"
+  ],
+  "status": [
+   "stages",
+   "states"
+  ],
+  "workflow": [
+   "stage-diagrams"
+  ],
+  "part": [
+   "parts"
+  ],
+  "parts": [
+   "parts"
+  ],
+  "product": [
+   "parts"
+  ],
+  "feature": [
+   "parts"
+  ],
+  "capability": [
+   "parts"
+  ],
+  "survey": [
+   "surveys"
+  ],
+  "meeting": [
+   "meetings"
+  ],
+  "group": [
+   "groups"
+  ],
+  "groups": [
+   "groups"
+  ],
+  "team": [
+   "groups"
+  ],
+  "dashboard": [
+   "vistas"
+  ],
+  "view": [
+   "vistas"
+  ],
+  "views": [
+   "vistas"
+  ],
+  "token": [
+   "auth-tokens",
+   "dev-users"
+  ],
+  "pat": [
+   "auth-tokens",
+   "dev-users"
+  ],
+  "schedule": [
+   "schedules",
+   "org-schedules"
+  ],
+  "calendar": [
+   "schedules"
+  ],
+  "hours": [
+   "schedules"
+  ],
+  "code": [
+   "code-changes"
+  ],
+  "pr": [
+   "code-changes"
+  ],
+  "commit": [
+   "code-changes"
+  ],
+  "snap": [
+   "snap-widgets",
+   "snap-kit-execution"
+  ],
+  "widget": [
+   "snap-widgets"
+  ],
+  "crawl": [
+   "web-crawler-jobs"
+  ],
+  "crawler": [
+   "web-crawler-jobs"
+  ],
+  "job": [
+   "jobs"
+  ],
+  "jobs": [
+   "jobs"
+  ],
+  "keyring": [
+   "keyrings"
+  ],
+  "oauth": [
+   "keyrings",
+   "auth-connections"
+  ],
+  "sso": [
+   "auth-connections"
+  ],
+  "login": [
+   "auth-connections"
+  ],
+  "session": [
+   "observability"
+  ],
+  "sessions": [
+   "observability"
+  ],
+  "link-type": [
+   "link-types"
+  ],
+  "link-types": [
+   "link-types"
+  ],
+  "attach": [
+   "artifacts"
+  ]
+ },
+ "verbs": {
+  "create": [
+   "add",
+   "associate",
+   "build",
+   "connect",
+   "create",
+   "link",
+   "make",
+   "new",
+   "raise",
+   "register",
+   "relate",
+   "submit"
+  ],
+  "update": [
+   "assign",
+   "attach",
+   "change",
+   "close",
+   "edit",
+   "label",
+   "modify",
+   "move",
+   "patch",
+   "reassign",
+   "rename",
+   "resolve",
+   "set",
+   "tag",
+   "toggle",
+   "update"
+  ],
+  "delete": [
+   "delete",
+   "remove",
+   "drop",
+   "destroy",
+   "erase",
+   "unregister",
+   "purge"
+  ],
+  "list": [
+   "list",
+   "show",
+   "find",
+   "search",
+   "browse",
+   "enumerate",
+   "lookup",
+   "query",
+   "see",
+   "view",
+   "filter",
+   "all"
+  ],
+  "get": [
+   "get",
+   "fetch",
+   "read",
+   "retrieve",
+   "details",
+   "info",
+   "inspect",
+   "check"
+  ],
+  "count": [
+   "count",
+   "how many",
+   "total",
+   "number"
+  ],
+  "merge": [
+   "merge",
+   "combine",
+   "dedupe",
+   "deduplicate",
+   "consolidate"
+  ],
+  "export": [
+   "export",
+   "dump",
+   "extract"
+  ],
+  "prepare": [
+   "attach",
+   "upload",
+   "prepare"
+  ]
+ },
+ "phrases": {
+  "set up": [
+   "create"
+  ],
+  "how many": [
+   "count"
+  ],
+  "check my token": [
+   "ping",
+   "dev-users.self"
+  ],
+  "token work": [
+   "ping",
+   "dev-users.self"
+  ],
+  "token valid": [
+   "ping",
+   "dev-users.self"
+  ],
+  "who am i": [
+   "dev-users.self"
+  ],
+  "am i authenticated": [
+   "dev-users.self"
+  ],
+  "authenticated as": [
+   "dev-users.self"
+  ],
+  "knowledge base": [
+   "articles",
+   "search.hybrid"
+  ],
+  "kb article": [
+   "articles"
+  ]
+ }
+}

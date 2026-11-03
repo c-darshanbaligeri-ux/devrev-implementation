@@ -1,0 +1,1030 @@
+{
+ "learnings": [
+  {
+   "date": "2026-07-24",
+   "endpoints": [
+    "works.count",
+    "works.list"
+   ],
+   "files": "",
+   "kind": "standing",
+   "line": 26,
+   "text": "· A `works.count`/`.list`-based deletion target can be actively growing under live automation** — before running a bulk delete filtered by count/list, snapshot the full matching id set into a manifest file first, then delete exactly that manifest. Don't re-derive \"what to delete\" from a live count/list call partway through, since a service-account workflow (or any other automation) can be creating new matching records faster than you can delete old ones, turning a one-time cleanup into a chase that never converges. Originated from a PDP-issue-subtype bulk delete where the count grew from 21,877 to 25,349 in ~15 minutes mid-task. This is a cross-cutting operational lesson, not tied to one API"
+  },
+  {
+   "date": "2026-11-03",
+   "endpoints": [],
+   "files": "",
+   "kind": "standing",
+   "line": 27,
+   "text": "· Customer and org identifiers are redacted in this public repo.** Real org ids appear as `devo/<ORG_ID>`, customer names as \"a customer\", and local workspace paths as `<workspace>/`. Never record a real org id, customer name or local path in a skill, reference or journal row (see `.claude/skills/capture-learnings`). Git history from before this date still contains the originals."
+  },
+  {
+   "date": "2026-11-03",
+   "endpoints": [],
+   "files": "",
+   "kind": "standing",
+   "line": 28,
+   "text": "· Reference copies consolidated.** The duplicated reference files formerly under `skills/{1,2,3}-*/references/` now exist once, in `skills/8-devrev-api/references/` (same filenames). Older journal rows whose \"Files updated\" cell names a `skills/{1,2,3}-*/references/<file>` path mean that file in skill 8. The skill 1 and skill 2 copies (newer, live-verified) became the canonical `Custom_Objects_and_Links_API.md` and `Stages_States_and_StageDiagrams_API.md`."
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "—",
+   "kind": "row",
+   "line": 32,
+   "text": "Repo built; journal initialized —"
+  },
+  {
+   "date": "2026-09-09",
+   "endpoints": [],
+   "files": "`skills/7-agent-building/references/toolkit-guide.md` (Field notes under SQL syntax rules)",
+   "kind": "row",
+   "line": 33,
+   "text": "Live (a customer's PEx org), re-verifying whether ExecuteSQL can read `raw_test_case` content for the ai-buddy-conversion skill: `POST /internal/tables.query.execute` works with a plain PAT (`{\"query\":…}`, result base64 under `data`; tables via `/internal/tables.schemas.list`/`.get` — the endpoints `devrev/auto-annotations`' devrev.py uses). With the mandatory `(t).column` syntax, `title`/`precondition`/`expected_result`/`objective` on the `raw_test_case` dataset bind and return whole (3,908-char field intact) — the earlier \"don't bind\" finding was partly the un-parenthesized syntax and partly a since-updated dataset schema; `test_steps`/`test_case_scenario` genuinely have no column. `devrev"
+  },
+  {
+   "date": "2026-09-09",
+   "endpoints": [
+    "articles.list",
+    "custom-objects.list",
+    "parts.list",
+    "search.hybrid",
+    "timeline-entries.list",
+    "works.list"
+   ],
+   "files": "`skills/7-agent-building/references/api-contracts.md` (search.hybrid notes), `skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md` (Field notes — timeline pagination)",
+   "kind": "row",
+   "line": 34,
+   "text": "Live (a customer's PEx org) while auditing the agent tools' limits: (1) `search.hybrid` — `limit` 51 and a 1,000-char query both `400 value_not_permitted`; `part` results carry `display_id`/`id`/`name`/`owned_by`/`type` and a ~500-char `snippet`, no `description`; `enhancement` namespace empty on this org, `custom_object`/`ticket` return records. (2) `timeline-entries.list` on an `ai_job` with 104 entries: page 1 was 100 `timeline_change_event` rows; the two internal manifest comments (12–21 KB, `visibility: internal`) were entries 101–104 — the 2026-09-03 conclusion that the endpoint \"hides internal comments\" was wrong. (3) `custom-objects.list` / `articles.list` / `works.list` clamp `limit"
+  },
+  {
+   "date": "2026-09-09",
+   "endpoints": [
+    "articles.get",
+    "custom-objects.get",
+    "parts.get",
+    "works.get"
+   ],
+   "files": "`skills/7-agent-building/references/toolkit-guide.md` (Field note under FetchObjectContext), `skills/7-agent-building/SKILL.md` (principle 2 caveat)",
+   "kind": "row",
+   "line": 35,
+   "text": "Live (a customer's PEx org, intake run C-AIJOB-156 and a follow-up analysis by the user): an agent grounded on `FetchObjectContext` reads of Trail part descriptions missed the whole \"Modify\" family of FEAT-30 — the tool's response carried the first 2,000 characters of `description` with `is_truncated: true` and a literal `[truncated to 2000 characters]` marker. Re-measured 2026-09-09 via `parts.get`: all 117 Trail nodes exceed 2,000 characters (FEAT-30 = 9,550), and 17/100 `raw_test_case.tnt__test_steps`, 16/100 `tnt__expected_result` do too. The native `FetchObjectContext` agent tool truncates long text fields at 2,000 characters; \"all fields + relationships\" in the retrieval-strategy guide"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/2-*/SKILL.md`",
+   "kind": "row",
+   "line": 36,
+   "text": "Build audit: skill 2 frontmatter had an unquoted `: ` in description — YAML parse failure would break skill loading Quote SKILL.md descriptions containing colons"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "parts.create"
+   ],
+   "files": "`skills/8-*/references/00_API_Catalog.md`, `skills/8-*/SKILL.md` (routing row)",
+   "kind": "row",
+   "line": 37,
+   "text": "Build audit: API catalog claimed full endpoint coverage but had no Parts section; `parts.create/list` + per-type scopes were invisible to catalog-first lookup Catalog must cover parts; scope tracks part type (product/capability/feature)"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/2-*/SKILL.md`, `CLAUDE.md` safety list",
+   "kind": "row",
+   "line": 38,
+   "text": "Build audit: references document `is_deprecated` only on stage nodes INSIDE a diagram — whole-diagram and state deprecation are not documented anywhere Don't claim diagram/state deprecation; verify against live API before attempting"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/3-*/SKILL.md` (+ copied Customers reference), `skills/7-*/commands/*`, `skills/7-*/references/*`",
+   "kind": "row",
+   "line": 39,
+   "text": "Build audit: several citations pointed at wrong sections/files (customer build order lives in Customers doc §8, not the org-build doc; `unique_key` is §1.5 not §1.2; toolkit commands cited a CLAUDE.md that no longer carries those sections) Citations must be verified against the actual reference text, not assumed"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`README.md` (self-configures table)",
+   "kind": "row",
+   "line": 40,
+   "text": "Build audit: `${VAR}` in `.mcp.json` reads the process environment, not `.env` — MCP auth can fail even with a correct `.env` Export DEVREV_PAT (or source .env) in the shell launching Claude Code for MCP"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`.gitignore` (anchored all 4 with a leading `/`)",
+   "kind": "row",
+   "line": 41,
+   "text": "Solution-architecture merge: adding `skills/0-solution-architecture/templates/solution-blueprint.md` silently failed `git add` — the file never appeared staged Root `.gitignore` had bare (unanchored) patterns `templates/`, `dashboards/`, `datasets/`, `plans/` meant only for the repo-root workspace dirs the bootstrap hook creates; unanchored, they match at ANY depth and swallowed the new skill's own `templates/` folder"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`docs/ARCHITECTURE.md` (\"A known upstream gap\"), `skills/9-*/SKILL.md`",
+   "kind": "row",
+   "line": 42,
+   "text": "Snap-in merge: `repos/aai-skills/.claude-plugin/marketplace.json` (already-cloned SHA 57b8a5f) declares a `connector-dev` plugin at `./plugins/connector-dev`, but that directory does not exist in the clone Upstream `devrev/aai-skills` drift — a plugin can be listed in the marketplace manifest without its source existing at a given pinned commit; don't trust manifest listings without confirming the directory"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/9-*/SKILL.md` (\"Self-learning is plugin-scoped\"), `.claude/skills/capture-learnings/SKILL.md` (routing row)",
+   "kind": "row",
+   "line": 43,
+   "text": "Snap-in merge: the `devrev-qk-agents` plugin's `/devrev:improve-skill` self-learning command patches files under what becomes `repos/devrev-qk-agents/` once cloned here — this repo's own rule says never edit `repos/` A third-party plugin's self-improvement design can conflict with a host repo's clone-hygiene rule; resolve by treating the in-`repos/` patch as disposable and duplicating the same fact into the host skill's own Field notes"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 44,
+   "text": "Live regression P2-04: `schemas.custom.set` returned HTTP 400 `value_not_permitted` on `id_prefix=RGT639` — pattern `^[A-Z]{2,10}$` Custom-object `id_prefix` must be 2–10 **uppercase letters only** (no digits, no length beyond 10). Reference examples showed `LOAN` but never named the constraint"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 45,
+   "text": "Live regression P2-04: `schemas.custom.set` returned HTTP 400 on `leaf_type=regression_test_1784390513` — accepted only after removing the digit suffix `leaf_type` for a new custom leaf type must be lowercase letters + underscores; digits are rejected. Unnamed in reference docs."
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.get"
+   ],
+   "files": "`skills/1-object-schema-customization/references/*` (add response-shape column), `skills/8-*/references/Stock_Object_Modification_and_Schemas_API.md`",
+   "kind": "row",
+   "line": 46,
+   "text": "Live regression P2-04: `schemas.custom.get` response wraps the schema under key `fragment`, not `schema` (parser assumed the latter and returned nulls) Response wrapper for the get is `fragment`; for `.list` it's `result` (paginated). `.create/.set` returns `{id}`. Document the wrapper for each op."
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/references/Stock_Object_Modification_and_Schemas_API.md` (correct \"full replacement\" wording), `CLAUDE.md` Safety list",
+   "kind": "row",
+   "line": 47,
+   "text": "Live regression P2-04: `schemas.custom.set` called twice with the same `leaf_type` created a NEW `tenant_fragment/N+1` each time instead of updating the first — despite reference doc saying \"full replacement\" `.set` behaves like a new-version create; the previous fragment stays. There is no `schemas.custom.delete`. Existing fragments must be soft-deprecated (mechanism TBD) or ignored. Reference doc language \"full replacement — always list all existing fields\" is misleading."
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "custom-objects.create"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 48,
+   "text": "Live regression P2-04c: `custom-objects.create` returned HTTP 403 Forbidden on a fragment I had just created — no role granted by default Confirms the \"custom objects start with zero access by default; grant roles explicitly after creation\" rule in `CLAUDE.md`. Add a matching Field note in skill 1 with the exact error message so users don't waste time debugging."
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "stages.custom.update"
+   ],
+   "files": "`skills/2-stage-lifecycle-customization/SKILL.md` (Field notes + safety warning), `CLAUDE.md` Safety list",
+   "kind": "row",
+   "line": 49,
+   "text": "Live regression P2-05: `stages.custom.delete` and `states.custom.delete` both return HTTP 404 \"route not found\". `stages.custom.update` rejects `is_deprecated`, `deprecated`, `archived`, `active`, `is_active`, `enabled`, `is_enabled`, `status` at top level Standalone custom stages/states are **permanent** once created — no delete endpoint, no top-level deprecation field. `is_deprecated` lives only on a stage node inside a stage-diagram. Two orphans now exist in `devo/1139FmGETi`: `custom_stage/44` and `custom_state/6` (both renamed to `zzz_ORPHAN_REGRESSION_DELETE_ME`)."
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/8-devrev-api/references/00_API_Catalog.md` (add /internal/ note), `skills/7-agent-building/references/api-contracts.md`",
+   "kind": "row",
+   "line": 50,
+   "text": "Live regression P2-11: `ai-agents.list` returned HTTP 404 on the base path but worked at `/internal/ai-agents.list` Agent Studio agent endpoints live under `/internal/`, not the public root. Confirms skill 7's routing but wasn't captured in the API catalog under skill 8."
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/4-dashboards-and-widgets/references/plugin-and-toolchain-overview.md` (add MCP capabilities note)",
+   "kind": "row",
+   "line": 51,
+   "text": "Live regression P2-13: hosted MCP at `api.devrev.ai/mcp/v1` responded HTTP 200 to `initialize` with a `Bearer <PAT>` header. Full DevRev object-model instructions returned in the response. Confirms `.mcp.json` wiring works; also gives us the canonical MCP-side object-model instructions (worth mirroring into the `references/plugin-and-toolchain-overview.md` for context)"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "webhooks.list"
+   ],
+   "files": "`skills/8-devrev-api/references/00_API_Catalog.md` (add \"required params\" callout)",
+   "kind": "row",
+   "line": 52,
+   "text": "Live regression P2-15: `webhooks.list` returned HTTP 400 without a required filter param that isn't specified in the catalog Some `.list` endpoints require filter params beyond `limit`; catalog should note \"required params\" per row rather than just endpoint+scope"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "artifacts.get",
+    "artifacts.prepare"
+   ],
+   "files": "`skills/3-data-upload-and-org-build/SKILL.md` (Field notes), `skills/8-*/references/Platform_and_Admin_API.md`",
+   "kind": "row",
+   "line": 53,
+   "text": "Phase 2b P2b-01/02: `artifacts.prepare` returns pre-signed S3 form; POST with multipart to that URL uploads with HTTP 204; `artifacts.get` immediately shows file name + size. **No delete endpoint exists** (`artifacts.delete`, `artifact-versions.delete`, `artifact-versions.delete-one` all 404) Artifact upload path works end-to-end; artifacts persist by design (content-hash addressable). Skill 3 doc should call out \"no artifact delete\" so users know"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/6-workflows/references/manage-workflows-api.md`, `skills/6-workflows/SKILL.md`",
+   "kind": "row",
+   "line": 54,
+   "text": "Phase 2b P2b-06: `workflows.create` requires `title` (not `name`); accepts empty body otherwise. Rejects `state` field at create time Reference doc calls the field `name` in prose but the API accepts `title`. Update: SKILL.md + refs must say `title`"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/7-agent-building/references/api-contracts.md`",
+   "kind": "row",
+   "line": 55,
+   "text": "Phase 2b P2b-10: `ai-agents.delete` on internal endpoint returns HTTP 201 (not 200 or 204) with the deleted agent's body. `.get` afterwards 404s `.delete` returns 201, not 200. Not called out in api-contracts.md. Add note"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes), `skills/2-stage-lifecycle-customization/SKILL.md` (cross-ref)",
+   "kind": "row",
+   "line": 56,
+   "text": "Phase 2b P2b-16: creating a custom leaf type via `schemas.custom.set` **auto-generates a \"Custom Object Reporting for <leaf_type>\" workflow**. Undocumented side effect Cleanup after custom-object schema tests must include deleting the auto-generated workflow (or it stays forever). List workflows with `.list` after any schema.custom.set and check"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "(no doc change needed — behavior matches skill)",
+   "kind": "row",
+   "line": 57,
+   "text": "Phase 2b P2b-15: `bash .claude/skills/update-repos/update_repos.sh` correctly cloned the 3 new repos (`devrev-qk-agents`, `aai-custom-computer-capabilities`, `computer-skill`) and fast-forwarded the 3 existing ones. All 6 URLs reachable update-repos skill verified live end-to-end"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "(no doc change)",
+   "kind": "row",
+   "line": 58,
+   "text": "Phase 2b P2b-17: `gcloud`, `bq`, `kubectl` all missing on the test machine — only `aws` present. Skill 5 Ponos vertical would prompt for these Confirms skill 5's design assumption: Ponos tools require interactive login and are correctly NOT auto-installed"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/5-datasets/SKILL.md` (add \"raw API endpoints are plugin-internal\" note)",
+   "kind": "row",
+   "line": 59,
+   "text": "Phase 2b P2b-18: `internal/datasets.list`, `internal/sources.list`, `internal/datasets.summary` all 404 — dataset endpoints live elsewhere (serengeti API) per plugin Skill 5 correctly routes to the plugin rather than exposing raw dataset endpoints; direct API testing needs the plugin's own paths"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "webhooks.list"
+   ],
+   "files": "`skills/8-devrev-api/references/00_API_Catalog.md` (corrected in place), `skills/8-devrev-api/references/Platform_and_Admin_API.md`",
+   "kind": "row",
+   "line": 60,
+   "text": "E2E spot check: `webhooks.list` prior claim (\"needs at least one filter param\") was backward — `POST webhooks.list {}` returns `200 {\"webhooks\":[]}`; adding ANY field (`limit`, `cursor`, `id`, `name`, `event_types`) returns `400 {\"type\":\"invalid_field\",\"field_name\":\"<field>\"}` `webhooks.list` accepts zero fields, not \"at least one\" — the fix for a prior 400 was to remove params, not add them"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "works.create",
+    "works.update"
+   ],
+   "files": "`skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md` (corrected in place)",
+   "kind": "row",
+   "line": 61,
+   "text": "E2E spot check: `works.update {\"id\":..., \"severity\":\"medium\"}` (no `type` field, matching the doc's own example) returned `400 {\"type\":\"invalid_field\",\"field_name\":\"severity\"}`; adding `\"type\":\"ticket\"` succeeded `type` is required on `works.update`, not just `works.create` — the server can't resolve type-specific fields without it. Doc example was missing it"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "links.create"
+   ],
+   "files": "`skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md` (Field note added)",
+   "kind": "row",
+   "line": 62,
+   "text": "E2E spot check: `links.create {\"link_type\":\"is_related_to\", source:<ticket>, target:<issue>}` and `is_part_of` both returned `400 {\"type\":\"bad_request\"}` (no field_name); `is_dependent_on` ticket→issue succeeded; `is_related_to` issue→issue (same type both ends) succeeded Built-in `link_type` values are restricted per (source type, target type) pair, not universally applicable — a bare `bad_request` from `links.create` likely means an unsupported type/object-type combo, not a malformed request"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "links.delete",
+    "links.get",
+    "tags.delete",
+    "tags.get"
+   ],
+   "files": "`skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md` (both sections)",
+   "kind": "row",
+   "line": 63,
+   "text": "E2E spot check: `links.delete {\"id\":<link_id>}` on a real built-in link returned `200 {}`; follow-up `links.get` returned `404`. `tags.delete {\"id\":<tag_id>}` likewise returned `200 {}` and `tags.get` afterward 404'd Both `links.delete` and `tags.delete` are genuinely destructive and working — not deprecate-only like custom link types, and not missing like stages/states/custom-object-schema deletes"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "timeline-entries.list"
+   ],
+   "files": "`skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md` (Field note added)",
+   "kind": "row",
+   "line": 64,
+   "text": "E2E spot check: `timeline-entries.list {\"object\":<ticket_id>}` wrapper is `{\"timeline_entries\":[...]}` (not generic `{\"result\":...,\"cursor\":...}`), and includes auto-generated `timeline_change_event` entries (creation, field-change deltas) interleaved with posted `timeline_comment` entries `.list` on a timeline returns more than what you posted via `.create` — creation/update events appear automatically"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "articles.list"
+   ],
+   "files": "`skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md` (Field note added)",
+   "kind": "row",
+   "line": 65,
+   "text": "E2E spot check: `articles.list {}` returned `{\"articles\":[],\"total\":0}` — an extra top-level `total` count not present on most other `.list` responses tested (accounts, rev-orgs, rev-users, sla-trackers all returned only the array, no count) `articles.list` is unusual in exposing a `total` field directly, saving a separate `.count` call"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "artifacts.get",
+    "artifacts.prepare"
+   ],
+   "files": "(no doc change)",
+   "kind": "row",
+   "line": 66,
+   "text": "Phase 3 P3-01: re-verified artifact upload end-to-end (`artifacts.prepare` → 204 multipart upload → `artifacts.get` confirms) — behaves exactly as documented, no new facts Re-confirms Phase 2b's finding; no doc change needed"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "timeline-entries.create",
+    "works.create"
+   ],
+   "files": "`skills/8-devrev-api/references/Platform_and_Admin_API.md` §1, `skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md` §1, `skills/8-devrev-api/references/00_API_Catalog.md`, `skills/3-",
+   "kind": "row",
+   "line": 67,
+   "text": "Phase 3 P3-02: `works.create` with `\"artifacts\":[\"<ARTIFACT_DON>\"]` attaches a file at ticket-creation time (HTTP 201, artifact renders fully in response). Re-attaching that SAME artifact id to a second parent (a `timeline-entries.create` comment) returned HTTP 400 `artifact_already_attached_to_a_parent` An artifact can have exactly ONE parent, ever — undocumented exclusivity constraint. Uploading a fresh artifact and attaching it via `timeline-entries.create` (`{\"type\":\"timeline_comment\",\"object\":...,\"artifacts\":[...]}`) then succeeded (HTTP 201, wrapper key `timeline_entry`)"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "works.create",
+    "works.list"
+   ],
+   "files": "`skills/3-data-upload-and-org-build/SKILL.md` (Playbook 3 + Field notes), `skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md`, `skills/8-devrev-api/references/00_API_Catalog.md`",
+   "kind": "row",
+   "line": 68,
+   "text": "Phase 3 P3-03: created 3 test works (`E2E-ORGBUILD-TEST-1/2/3`) via `works.create` with a stable `external_ref` each. Re-running `works.create` with the SAME `external_ref` returned HTTP 409 `{\"type\":\"conflict\"}` (not a duplicate, not a silent no-op) `external_ref` is a real idempotency key for `works.create`, stronger than the SKILL.md's documented \"check-before-create\" fallback. Recovery lookup requires `works.list` field `external_ref` (singular, array value) — `external_refs` (plural, tried first) returned HTTP 400 `invalid_field`"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "links.create",
+    "links.list",
+    "parts.create",
+    "parts.list"
+   ],
+   "files": "`skills/3-data-upload-and-org-build/SKILL.md` (Field notes), `skills/3-data-upload-and-org-build/references/DevRev_Building_Org_Using_API_v1.md`, `skills/8-devrev-api/references/DevRev_Building_Org_Us",
+   "kind": "row",
+   "line": 69,
+   "text": "Phase 3 P3-04: `parts.create` (feature under an existing capability, `parent_part` as an array of DONs) worked exactly as documented — HTTP 201, and `links.list?object=<new_part>` showed an auto-created `is_part_of` link to the parent (no manual `links.create` needed for the parent_part relationship). `parts.list` with `{\"parent_part\":[\"<DON>\"]}` (bare array, as the reference examples imply) returned HTTP 400 `unexpected_json_type` `parts.list`'s `parent_part` filter is an OBJECT `{\"parts\":[...], \"level\": N}`, not a bare array — only the create-time `parent_part` field is a plain array. `trails.create`/`trails.list` confirmed 404 at both root and `/internal/` — no Trail API exists, consisten"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "jobs.get"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Playbook 2 + Field notes + Safety), `skills/3-data-upload-and-org-build/SKILL.md` (Safety), `skills/3-data-upload-and-org-build/references/DevRev_Build",
+   "kind": "row",
+   "line": 70,
+   "text": "Phase 3 P3-05: **CLOSES Phase 2's open question** — `objects.bulk-upgrade` at public root (`POST /objects.bulk-upgrade`) returns HTTP 404, but `POST /internal/objects.bulk-upgrade` with `{\"type\":\"ticket\"}` returns HTTP 200 `{\"id\":\"<job_don>\"}`; `jobs.get` on that id shows `job_category:\"bulk_upgrade\"`, `state:\"completed\"`, `progress:100`, and a `metadata_list` \"Count\" entry `objects.bulk-upgrade` is real, follows the same `/internal/`-only pattern already seen with `ai-agents.*` — prior \"not in public catalog\" reports were checking the public-root path only. Async job semantics apply; affects all records of the given type org-wide"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.get",
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes + Playbook 2), `skills/1-object-schema-customization/references/Stock_Object_Modification_and_Schemas_API.md` §4a",
+   "kind": "row",
+   "line": 71,
+   "text": "Phase 3 P3-06: `schemas.custom.set` on a leaf type that ALREADY has a `tenant_fragment` (e.g. stock `ticket`/`issue`) returns generic HTTP 400 `bad_request` (no `field_name`) unless the request's `fields` array replays the **complete** existing field list plus the new field — a partial replay (even one existing field + the new one) also 400s. Leaf types with NO prior tenant_fragment (e.g. `account`) accept a minimal `fields` array containing just the new field. Also: `schemas.custom.set` requires a top-level `description` string even though some reference examples omit it (`missing_required_field: description`) The \"versioned create\" behavior documented from Phase 2 actually has a stricter r"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.aggregated.get",
+    "schemas.custom.set",
+    "schemas.subtypes.list"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes, flagged as open question — not yet root-caused)",
+   "kind": "row",
+   "line": 72,
+   "text": "Phase 3 P3-07: `schemas.subtypes.list` returned `{\"subtypes\":[]}` immediately after successfully creating a new subtype (`custom_type_fragment.create` with `subtype: \"regression_test_bug\"` on `issue`, confirmed created via the returned id and via `schemas.aggregated.get` showing the merged `ctype__` field) `schemas.subtypes.list` does not reflect subtypes created via `schemas.custom.set` with a bare `type: \"custom_type_fragment\"` + `subtype` field — either it needs a different creation path, a different query filter, or has an indexing delay. `schemas.aggregated.get` with `custom_schema_spec: {\"subtype\": \"<name>\"}` is the reliable way to confirm a subtype's fields landed; don't trust `schema"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "custom-objects.create",
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes, cross-ref to Playbook 3/4 as the testable alternative)",
+   "kind": "row",
+   "line": 73,
+   "text": "Phase 3 P3-08: end-to-end custom object playbook (Playbook 1) is NOT fully testable via the public API alone — `schemas.custom.set` (create schema) succeeds, but the immediately-following `custom-objects.create` returns HTTP 403 Forbidden (re-confirms Phase 2's zero-access finding) with no API-level role-grant endpoint found anywhere in skills/1 or skills/8's reference docs; role grant is UI-only (Settings > Object customization + Settings > User Management > Roles) Any future live regression of Playbook 1 should skip straight from schema creation to subtype/link-type testing (which don't have the zero-access restriction) rather than repeatedly retrying `custom-objects.create` — it will alwa"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/4-dashboards-and-widgets/SKILL.md` (Field notes — new), `repos/aai-skills/plugins/dashboard-dev/commands/create-dashboard.md` is upstream (cannot edit; note the correct sequence in skill 4's o",
+   "kind": "row",
+   "line": 74,
+   "text": "Phase 3 P3-09 (skill 4, dashboards): ran the full `/create-dashboard` pipeline live for the first time in this repo's history (skill 4's Field notes were previously empty) — plan file → `widget-generator` agent → `dashboard-generator` agent → `dashboard-sync widget create` → `dashboard-sync dashboard create <file>` → confirmed via raw `POST /internal/dashboards.get`. Everything passed validation on the first attempt, no fix iterations Confirms the pipeline works end-to-end against a live org. Also surfaced: (1) `dashboard-sync dashboard validate` takes a **slug** (dashboards/<slug>/ dir name), while `dashboard-sync dashboard create` takes a **file path** — inconsistent argument shape between"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/4-dashboards-and-widgets/SKILL.md` (Field notes), `skills/5-datasets/SKILL.md` (Field notes cross-ref, since dataset-builder also shells out to related discovery)",
+   "kind": "row",
+   "line": 75,
+   "text": "Phase 3 P3-10 (skill 4/5, tooling): `dashboard-sync dataset list` on first run (no cache) took ~6 minutes to validate availability of 142 known datasets sequentially (~1.8s/dataset, no parallelism, no network stall — pure sequential per-dataset validation calls) and exceeded a 120s command timeout, appearing hung. A re-run after the cache (`.cache/dataset_availability.json`) was populated completed in ~2 seconds Not a bug — a real, reproducible first-run performance characteristic. Anyone driving `dashboard-sync dataset list` non-interactively (e.g. from a script or an agent with a short timeout) should either raise the timeout well above 120s for the first call, or pre-warm the cache once p"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/5-datasets/SKILL.md` (Preconditions or Field notes)",
+   "kind": "row",
+   "line": 76,
+   "text": "Phase 3 P3-11 (skill 5, tooling): `dataset-builder`'s `scripts/check_prerequisites.sh` reports the Python `requests` library as MISSING on a from-scratch machine, in addition to the already-known-missing `gcloud`/`bq`/`kubectl` Minor, previously unflagged prerequisite gap — `pip install requests` needed alongside the Ponos tool installs `/dataset-builder:setup` already guides users through"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/6-workflows/references/manage-workflows-api.md` (DON ID formats + endpoint table), `skills/6-workflows/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 77,
+   "text": "Skill 6 E2E test: built two full workflows via raw step-by-step CRUD (`workflows.create`→`workflow-steps.create`×N→`workflow-steps.update`×N→`workflow-versions.get`/`workflows.get` verify→`workflows.delete`→`workflows.get` 404), a 4-step generic workflow and the 4-block AI-agent-skill shape from `default-ai-agent-skill-template.json` `workflow-steps.create`'s `operation` field is a DON **string** (`don:integration:<shard>:operation/devrev.<slug>`), not the `{namespace,slug}` object used in template JSON — sending the object 400s. The doc's example shard `dvrv-in-1` isn't universal; substitute the target org's own shard"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/6-workflows/references/manage-workflows-api.md`, `skills/6-workflows/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 78,
+   "text": "Same E2E session Wiring `next_steps` between raw CRUD steps uses key `next_step` (a full step DON), not `next_step_reference_key` (which is template-JSON-only and 400s at the raw API); nesting a step inside an `ai_agent_skill` block uses `block_step` (a DON), not `block_step_reference_key` (same 400 at the raw API)"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/6-workflows/references/manage-workflows-api.md`, `skills/6-workflows/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 79,
+   "text": "Same E2E session `invoke_code`'s `input_ports`/`output_ports` must NOT be sent on `workflow-steps.update` — the op auto-populates its own static schema; sending them 400s (`invalid_field: type` or `dynamic input ports are not supported`). Sending only `input_values` + `next_steps` succeeds and yields a correctly-shaped step"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/6-workflows/references/manage-workflows-api.md`, `skills/6-workflows/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 80,
+   "text": "Same E2E session `workflows.update` accepts `labels` (array) and `description` (string) at top level — usable to mark `labels:[\"skill\"]` on a workflow built via raw CRUD without recreating it; rejects `status`/`state` (400) — confirms no API path exists to move a workflow out of draft (only `workflow-versions.publish` was tried before; now also ruled out `workflows.deploy`/`.activate`, `workflow-versions.deploy`/`.publish`, all 404)"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/6-workflows/references/manage-workflows-api.md` (error table + trigger section), `skills/6-workflows/SKILL.md` (Field notes), `skills/6-workflows/scripts/trigger_manual_workflow.py` (status-co",
+   "kind": "row",
+   "line": 81,
+   "text": "Same E2E session **Correction, not just confirmation**: triggering a still-draft workflow returns `HTTP 400` (\"... is not active\" in `debug_message`), NOT `HTTP 404` as previously documented in `manage-workflows-api.md` and assumed in prior test phases. A nonexistent/deleted workflow ID passed to `workflows.trigger` returned `HTTP 500 internal_error` in one observation, not a clean 404 either"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "(no schema file changes needed — confirms accuracy)",
+   "kind": "row",
+   "line": 82,
+   "text": "Same E2E session Spot-checked `operations/schemas/enhancement_updated.md`, `update_enhancement.md`, `if_else.md`, `invoke_code.md` against live API behavior — all matched exactly (field names, types, required flags). No drift found in the 130 op schema files themselves; all drift found this round was in the raw CRUD field-naming layer (`manage-workflows-api.md`), not the op schemas"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "(no doc change — clean test hygiene, recorded for audit trail)",
+   "kind": "row",
+   "line": 83,
+   "text": "Same E2E session Cleanup fully verified: both test workflows (`workflow-15` \"E2E-WORKFLOW-TEST — working-enhancement-replace-agent\", `workflow-17` \"E2E-WORKFLOW-TEST — default-ai-agent-skill-template\") and one throwaway probe workflow (`workflow-16`, manual_trigger-only, used to isolate the trigger-on-draft status code precisely) were deleted via `workflows.delete` (all returned `HTTP 200 {}`) and confirmed gone via a follow-up `workflows.get` (`HTTP 404 not_found` each time). Final `workflows.list` on the org shows no leftover `E2E` titles"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.aggregated.get",
+    "schemas.custom.set",
+    "schemas.subtypes.prepare-update",
+    "stage-diagrams.create"
+   ],
+   "files": "`skills/2-stage-lifecycle-customization/SKILL.md` (Field notes + Step 4 + Safety/pitfalls), `skills/2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md` (§5)",
+   "kind": "row",
+   "line": 84,
+   "text": "Skill 2 E2E pass: tried every field-name variant (`stage_diagram_id`, `stage_diagram`, `diagram_id`, `stagediagram_id`, `stage_diagram_ref`, `lifecycle_id`, `workflow_diagram_id`, nested `{\"stage_diagram\":{\"id\":...}}`) on `schemas.custom.set` to attach a stage diagram to a subtype/custom leaf type — all rejected `HTTP 400 invalid_field`. Also tried `stage-diagrams.create` with a top-level `subtype` field (`invalid_field`) and `schemas.subtypes.prepare-update` with `subtype`/`stage_diagram_id` (`invalid_field`; it only accepts `leaf_type` and previews a bulk-upgrade) The documented \"attach a stage diagram to a subtype via `stage_diagram_id`\" mechanism (skill 2 §5, mirrored in skill 1's `Custo"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.aggregated.get"
+   ],
+   "files": "`skills/2-stage-lifecycle-customization/SKILL.md` (Field notes + Step 4), `skills/2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md` (§5 note); skill 1 files not yet fi",
+   "kind": "row",
+   "line": 85,
+   "text": "Skill 2 E2E pass: `POST schemas.aggregated.get` with the documented body `{\"leaf_type\":\"ticket\",\"custom_schema_spec\":{\"tenant_fragment\":true}}` → `HTTP 400 invalid_field (field_name: tenant_fragment)`, reproduced on both a stock leaf type and a custom one. `GET schemas.aggregated.get?leaf_type=<type>` (add `&is_custom_leaf_type=true` for custom leaf types), no body, → `HTTP 200 {\"schema\": {...}}` with the full merged field set The documented POST+`custom_schema_spec` call shape for `schemas.aggregated.get` is wrong; the correct call is a GET with plain query params. Affects skill 2's SKILL.md/reference and skill 1's SKILL.md (same wrong shape documented there)"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "stage-diagrams.create",
+    "stage-diagrams.update"
+   ],
+   "files": "`skills/2-stage-lifecycle-customization/SKILL.md` (Field notes + Safety + Common pitfalls), `skills/2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md` (§4, §8)",
+   "kind": "row",
+   "line": 86,
+   "text": "Skill 2 E2E pass: `stage-diagrams.update` and `stage-diagrams.create` both rejected `is_deprecated: true` on a stage node with `HTTP 400 {\"type\":\"bad_request\"}`, isolated on the start stage, a middle stage, and a terminal stage with no dependents, and reproduced on a brand-new diagram never touched by `.update`. Identical payload with the field omitted succeeds (`201`/`200`); `is_deprecated: false` is accepted as a no-op The documented stage-retirement mechanism (`is_deprecated: true` on a stage node inside a diagram) does not work via the public API at all — not create, not update. No known working retirement path exists; every stage added to a diagram must be treated as permanent for that "
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "stage-diagrams.list"
+   ],
+   "files": "`skills/2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md` (§4 Read)",
+   "kind": "row",
+   "line": 87,
+   "text": "Skill 2 E2E pass: `stage-diagrams.list?leaf_type=regression_test_asset` (a custom leaf type) alone → `{\"result\":[]}`; adding `&is_custom_leaf_type=true` to the same query returned the diagrams correctly For custom leaf types, `stage-diagrams.list`'s `leaf_type` and `is_custom_leaf_type` filters are not independent — both must be passed together to match. `name` filter confirmed working correctly on its own"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.set",
+    "works.update"
+   ],
+   "files": "(no file change — confirms `skills/2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md` §6 is accurate)",
+   "kind": "row",
+   "line": 88,
+   "text": "Skill 2 E2E pass: added a `conditions` block (`require` effect on `custom_fields.impacted_environments` when `stage == <completed-stage-DON>`) to an existing subtype fragment via `schemas.custom.set`, then on a live record (`issue/12`, subtype `regression_test_bug`) in the `completed` stage, cleared the field via `works.update` → `HTTP 400 {\"type\":\"customization_validation_error\",\"reason\":\"required field ctype__impacted_environments cannot be set to an empty array\",\"subtype\":\"field_required\"}`. Moved the same record to `triage` (not named in the condition) and cleared the field again → `HTTP 200` succeeded Dependent-field stage conditions (§6) are CONFIRMED working end-to-end exactly as docu"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "stage-diagrams.update"
+   ],
+   "files": "(no file change — confirms existing docs)",
+   "kind": "row",
+   "line": 89,
+   "text": "Skill 2 E2E pass: `stage-diagrams.update` with `is_default: true` or a different `leaf_type` than at creation both → `HTTP 400 invalid_field` Confirms the documented immutability of `is_default`/`leaf_type` on a stage diagram after creation, exactly as described (§4, §8) — no doc fix needed, just corroboration"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.aggregated.get"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Playbook 2 step 4), `skills/2-stage-lifecycle-customization/SKILL.md` (Field notes + Step 4), `skills/2-stage-lifecycle-customization/references/Stages",
+   "kind": "row",
+   "line": 90,
+   "text": "Synthesis pass: **CORRECTS row 63 above** — re-tested `schemas.aggregated.get` myself and found the prior row overgeneralized. `POST` with `custom_schema_spec: {\"tenant_fragment\": true}` is indeed rejected (`HTTP 400 invalid_field field_name: tenant_fragment`, confirmed again), but `POST` with `custom_schema_spec` **omitted entirely** (`{\"leaf_type\":\"ticket\"}`) returns `HTTP 200` just fine, and `POST` with `custom_schema_spec: {\"subtype\": \"<name>\"}` (no `tenant_fragment` key) also works via POST The fix for that 400 is \"omit the `tenant_fragment` key\" (or omit `custom_schema_spec` altogether when you just want the default merged view), NOT \"switch from POST to GET\" — POST itself was never th"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "custom-objects.create",
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes, corrected in place)",
+   "kind": "row",
+   "line": 91,
+   "text": "Synthesis pass: **the skill-1 Field note claiming `custom-objects.create` 403s and \"the fix is to grant a role in DevRev Settings\" was incomplete** — retested the exact same leaf type (`regression_test_asset`) ~35 minutes after the original 403, with zero UI interaction in between, and `custom-objects.create` succeeded twice (`custom_object/regression_test_asset/1` and `/2`). Skill 2's agent independently hit the same success creating `custom_object/regression_test_asset/1` mid-session The zero-access 403 immediately after `schemas.custom.set` may be a propagation/indexing delay rather than a hard access-control gate requiring a manual UI role grant — \"wait ~20-35 min and retry\" resolved it "
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/9-snapin-development/SKILL.md` (Field notes + Preconditions, workaround documented)",
+   "kind": "row",
+   "line": 92,
+   "text": "Skill 9 install attempt: the upstream `QK-SnapIn/devrev-qk-agents` repo has NO `.claude-plugin/marketplace.json` anywhere in its git history (checked `main` and all refs) — only `.claude-plugin/plugin.json` exists (at repo root and under `devrev-agents/`) The documented install command `/plugin install devrev@devrev-qk-agents` cannot work as written: `claude plugin marketplace add QK-SnapIn/devrev-qk-agents` (and every local-path variant tried) fails with \"Marketplace file not found.\" This is a real upstream packaging gap in the third-party plugin repo, not something introduced or fixable in `devrev-implementation`"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/9-snapin-development/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 93,
+   "text": "Skill 9 install attempt (continued): worked around the missing marketplace.json by hand-authoring a local shim `marketplace.json` outside `repos/` with a plugin `source` of `\"./devrev-agents\"` (relative path, copied alongside it) — an absolute path in `source` was tried first and rejected with \"source type your Claude Code version does not support\" Marketplace `source` fields for a plugin entry must be relative to the marketplace.json's own location, not absolute filesystem paths, at least for this Claude Code version"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/9-snapin-development/SKILL.md` (Field notes)",
+   "kind": "row",
+   "line": 94,
+   "text": "Skill 9 install attempt (continued): after the marketplace shim resolved, `claude plugin install devrev@devrev-qk-agents` initially failed to LOAD (not install) with 7 repeated errors: `skills load failed from ./skills/<name>/SKILL.md: path is a file; skills entries must be directories`. The upstream `plugin.json`'s `skills` array lists each skill's `SKILL.md` file path directly instead of its parent directory A second real upstream packaging bug, independent of the missing marketplace.json. Fixed by editing the `skills` array in the local shim copy of `plugin.json` to strip the `/SKILL.md` suffix from each of the 7 entries, then `claude plugin marketplace update` + disable/enable to reload "
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`skills/9-snapin-development/SKILL.md` (Field notes, flagged as needing fresh-session re-verification)",
+   "kind": "row",
+   "line": 95,
+   "text": "Skill 9 install attempt (continued): even after both upstream bugs were worked around and `claude plugin list`/`details` reported the plugin enabled with 7 skills, NONE of its 7 skills, 7 agents, or 11 commands were reachable in the SAME session where install/enable happened — `Agent({subagent_type:\"devrev-imp-pm\"})` → \"Agent type not found\" (not in the tool's own available-agents list); `Skill({skill:\"devrev-imp-pm\"})` → \"Unknown skill\" (not in the tool's own available-skills list) Strongly suspected same root cause as this repo's already-documented `dashboard-sync` CLI PATH issue (\"a hook can't refresh the shell PATH of its own already-running session... start a new session\") — plugin comp"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`.claude/skills/capture-learnings/SKILL.md` (Field note added inline)",
+   "kind": "row",
+   "line": 96,
+   "text": "`.claude/skills` E2E pass: re-ran `update-repos/update_repos.sh` (already verified live in Phase 2b) — idempotent second run confirmed, all 6 repos \"already up to date,\" no drift. Reviewed `implementation-router/SKILL.md`'s routing table against the actual `skills/` directory structure — accurate, no stale references. Reviewed `capture-learnings/SKILL.md`'s own protocol against how this entire multi-hour test pass actually used it: every correction across skills 1–9 used a dated, bolded \"Field notes\" bullet (often with an explicit \"CORRECTED\" lead-in) but NONE used the separately-documented `<!-- corrected YYYY-MM-DD: was \"...\" -->` inline HTML-comment convention this file's own §\"How to wri"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [
+    "schemas.custom.set"
+   ],
+   "files": "`CLAUDE.md` (Global API rules + Safety sections)",
+   "kind": "row",
+   "line": 97,
+   "text": "Synthesis pass: promoted 3 findings from this whole test pass into `CLAUDE.md`'s Global API rules / Safety sections, since the capture-learnings routing table reserves that file for \"a truly global rule (affects every call)\" — (1) `objects.bulk-upgrade` is now confirmed real at `/internal/objects.bulk-upgrade` (previously flagged there as unconfirmed/verify-before-use); (2) stage-node `is_deprecated: true` (the alternative CLAUDE.md's Safety list used to point to for lifecycle retirement) is now ALSO confirmed rejected, not just standalone stage/state delete — so there is no working stage-retirement mechanism anywhere in the public API; (3) `schemas.custom.set`'s full-field-replay requiremen"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`.gitignore` (added `/.cache/`)",
+   "kind": "row",
+   "line": 98,
+   "text": "Synthesis pass: the `dashboard-sync` CLI writes its own cache to `.cache/dataset_availability.json` at the workspace root, and that directory was NOT in `.gitignore` (unlike `dashboards/`, `datasets/`, `plans/`, `templates/`, `config.yaml`, all of which the bootstrap hook or CLI generates and which ARE already ignored) A gap in the root `.gitignore`'s coverage of CLI-generated local state, same class of issue as the earlier \"unanchored `templates/` pattern swallowed a real skill folder\" learning (row 19) but the opposite direction — this one was simply missing, not overly broad"
+  },
+  {
+   "date": "2026-07-18",
+   "endpoints": [],
+   "files": "`documentation/05-troubleshooting-and-safety.md` (both rows corrected in place)",
+   "kind": "row",
+   "line": 99,
+   "text": "Synthesis pass: found two stale claims in the user-facing `documentation/05-troubleshooting-and-safety.md` that this whole test pass's findings directly contradict but that hadn't been touched by any individual skill-test agent (each stayed within its own skill's SKILL.md/references, correctly, but the user-doc mirror was missed) — (1) \"Workflow trigger returns 404 [on a draft]\" (actually HTTP 400 `\"...is not active\"`, per skill 6's finding); (2) the Safety table's `is_deprecated` bullet described diagram-level stage deprecation as merely \"undocumented,\" not confirmed-rejected User-facing docs under `documentation/` mirror facts from the skill files and need the same corrections propagated t"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [],
+   "files": "(multiple files — see rows below)",
+   "kind": "row",
+   "line": 100,
+   "text": "Second full from-scratch E2E pass (11 parallel agents, one per skill 0-9 + repo infra) re-verified every prior finding independently rather than trusting this journal, per explicit user instruction. Most facts held; several did not — see the rows below for each contradiction found and corrected. This pass exists specifically because live API behavior can drift or be discovered more precisely on a second look — re-verification found real corrections even though the repo had already been through one full pass"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [
+    "custom-objects.update",
+    "schemas.aggregated.get",
+    "schemas.custom.set",
+    "stage-diagrams.create",
+    "works.update"
+   ],
+   "files": "`skills/2-stage-lifecycle-customization/SKILL.md`, `skills/2-stage-lifecycle-customization/references/Stages_States_and_StageDiagrams_API.md` (§5), `skills/1-object-schema-customization/references/Cus",
+   "kind": "row",
+   "line": 101,
+   "text": "**MAJOR CORRECTION**: attaching a stage diagram to a subtype/custom leaf type DOES work via the public API — overturns the 2026-07-18 \"no known working mechanism\" conclusion. Root cause of the original miss: `stage_diagram` (bare DON-id **string**) was never tried as its own field — only `stage_diagram_id` and a **nested** `{\"stage_diagram\":{\"id\":...}}` object were tried, and both are genuinely rejected. `schemas.custom.set` with `\"stage_diagram\": \"<don>\"` (bare string) → HTTP 201, persists, confirmed via `schemas.aggregated.get`. Separately, `stage-diagrams.create` with `is_default: true` attaches a diagram at the leaf-type level (one-shot, immutable after creation, 409s if a default alread"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [],
+   "files": "`skills/7-agent-building/references/api-contracts.md`, `skills/7-agent-building/SKILL.md`, `skills/0-solution-architecture/references/agents.md`, `<workspace>/CLAUDE.md` (outer project, not this repo)",
+   "kind": "row",
+   "line": 102,
+   "text": "**CORRECTION**: `ai-agents.plans.get`/`.plans.list` (dotted) genuinely don't exist, but `ai-agents-plans.get`/`ai-agents-plans.list` (hyphen before `plans`) DO exist and work, `/internal/`-only, returning real `ai_agent_plan` objects with `guidance` runbook text. This overturns the repo-root `CLAUDE.md`'s \"confirmed NOT to exist\" claim and the outer `devrev-solution-architect` project CLAUDE.md's folded-in copy of the same claim. The dotted spelling was a naming-convention trap, not evidence the capability was missing — the create/update side (`ai-agents-plans.create/.update`) was already correctly hyphenated in skill 0's `agents.md`, only the read-side claim was stale"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [
+    "custom-objects.delete",
+    "works.create",
+    "works.delete"
+   ],
+   "files": "`skills/3-data-upload-and-org-build/SKILL.md`, `skills/1-object-schema-customization/references/Custom_Objects_and_Links_API.md`, `skills/8-devrev-api/references/00_API_Catalog.md`, `documentation/05-",
+   "kind": "row",
+   "line": 103,
+   "text": "**CORRECTION**: `works.delete` and `custom-objects.delete` are both confirmed genuinely working (`HTTP 200 {}`, then `.get` 404s) — not stubs, not previously live-verified. Also: `applies_to_part` is actually a required field on `works.create` (400 if omitted), not merely a documented \"common field.\" Both facts affect cleanup strategy for any future live testing — throwaway test tickets and custom-object records CAN now be deleted rather than left permanent"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [],
+   "files": "`skills/5-datasets/SKILL.md`",
+   "kind": "row",
+   "line": 104,
+   "text": "**CORRECTION**: skill 5's claim that dataset/serengeti APIs are \"plugin-internal, no direct REST access\" was wrong — the *specific endpoint names* tried (`datasets.list`, `sources.list`, `datasets.summary`) don't exist, but the real ones do: `/internal/oasis.dataset.list/.get/.create/.update/.delete` and `/internal/serengeti.jobs.list/.get` all work fine over raw REST with the same PAT. `oasis.dataset.delete` needs `id` (full DON), not `name`/`dataset_id` (both 400). Same \"wrong endpoint name, not a real API-surface restriction\" pattern already seen with `ai-agents.plans.*` above and `objects.bulk-upgrade` in a prior pass"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [
+    "schemas.subtypes.list"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md`, `skills/8-devrev-api/references/00_API_Catalog.md`",
+   "kind": "row",
+   "line": 105,
+   "text": "**CORRECTION**: `schemas.subtypes.list` DOES reflect new subtypes immediately (no indexing delay) — but only when called WITH a `leaf_type` filter. Called bare (`{}`) it always returns `{\"subtypes\":[]}` regardless of what exists, which is almost certainly what the original 2026-07-18 \"doesn't reflect new subtypes\" finding actually hit. Overturns a finding that had been flagged as an open, unresolved question"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [
+    "custom-objects.create"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md`",
+   "kind": "row",
+   "line": 106,
+   "text": "**CORRECTION**: the `custom-objects.create` 403-then-auto-resolves-in-20-35-minutes timing claim is not reliably reproducible. A fresh leaf type retried at +6/+16/+20/+22 minutes was still 403 every time in this session, even though the original leaf type from the prior finding (and a different fresh one, in a separate concurrent test) did resolve on a similar timescale. Treat resolution timing as inconsistent, not a fixed window. Don't promise a user a specific wait time; \"wait and retry\" is still reasonable advice but without a guaranteed window"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [
+    "custom-objects.list",
+    "link-types.custom.list",
+    "link-types.custom.update",
+    "schemas.aggregated.get",
+    "schemas.custom.get",
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md`, `skills/2-stage-lifecycle-customization/SKILL.md` and its reference doc",
+   "kind": "row",
+   "line": 107,
+   "text": "New facts (not corrections, net-new): `custom-objects.list`/`.count` require `leaf_type` (400 if omitted); `schemas.custom.get` requires `id`, rejects `leaf_type` alone; `id_prefix` is globally unique per org, not just per leaf type; full-field-replay on `schemas.custom.set` applies to subtype fragments too, not just stock tenant fragments; `deleted_fields` on `schemas.custom.set` confirmed working live; `link-types.custom.update` accepts both `deprecated` and `is_deprecated` as input aliases; `link-types.custom.list` showed staleness (didn't reflect 2 fresh link types 15+ min later, `.get` did); dependent-field stage conditions enforce only on explicit field-touch, not as a standing invaria"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [
+    "articles.create",
+    "custom-objects.list",
+    "link-types.custom.list",
+    "schemas.custom.list",
+    "webhooks.create"
+   ],
+   "files": "`skills/8-devrev-api/references/00_API_Catalog.md`, `skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md`",
+   "kind": "row",
+   "line": 108,
+   "text": "New facts (skill 8, API catalog breadth pass): the catalog's \"Response-wrapper drift\" line overgeneralized — most typed/stock `.list` endpoints wrap under the plural type name (`{\"accounts\":[...]}` etc.), not a generic `{\"result\":[...]}`; that generic wrapper is used only by the customization family (`link-types.custom.list`, `custom-objects.list`, `schemas.custom.list`). Pagination cursor field is `next_cursor`, not `cursor`. `POST /ping` 400s with `Content-Type: application/json` set but a zero-length body — a header/body-length interaction, not a `/ping`-specific quirk. `articles.create`'s documented example payload doesn't actually work (`owned_by` required; `content_format:\"rt\"` + `owne"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [],
+   "files": "`skills/9-snapin-development/SKILL.md`",
+   "kind": "row",
+   "line": 109,
+   "text": "Skill 9 (snap-in plugin loading): upgraded the \"strongly suspected session-timing issue\" from the prior pass to a CONFIRMED root cause with process-level evidence — the running Claude Code process's own PID predates the plugin shim/config files by hours (per `ps -o lstart`), proving the in-memory plugin registry is built once at process start and never re-read by spawning new agents mid-session; only quitting and relaunching (or a genuinely new terminal session) reloads it. Both upstream packaging bugs (`devrev-qk-agents` missing `marketplace.json`; `plugin.json`'s `skills` array pointing at files not directories) reproduce identically, unchanged upstream. Confirms rather than contradicts th"
+  },
+  {
+   "date": "2026-07-19",
+   "endpoints": [],
+   "files": "(no further file changes)",
+   "kind": "row",
+   "line": 110,
+   "text": "Everything else re-tested clean, no changes needed: skill 4's `/create-dashboard` pipeline (ran fresh end-to-end, created a real test dashboard + 2 widgets — left in place pending user cleanup decision since `dashboard-sync delete` requires an interactive y/N confirmation this session correctly declined to bypass); skill 6's workflow CRUD/wiring/draft-trigger/publish-blocked findings; skill 0's methodology walkthrough and cross-references (except the 2 issues above); repo-level infra (`.gitignore`, routing tables, MCP config, `update-repos`, `documentation/`) — all independently reconfirmed accurate against fresh live evidence, not the journal. Most of the repo's knowledge base was already a"
+  },
+  {
+   "date": "2026-07-20",
+   "endpoints": [
+    "links.list",
+    "parts.delete",
+    "parts.get",
+    "parts.list"
+   ],
+   "files": "`skills/3-data-upload-and-org-build/SKILL.md` (Field notes), `skills/3-data-upload-and-org-build/references/DevRev_Building_Org_Using_API_v1.md`, `skills/8-devrev-api/references/DevRev_Building_Org_Us",
+   "kind": "row",
+   "line": 111,
+   "text": "Built a real customer Trail (product \"Payment Exchange\" + 4 capabilities + 19 features + 92 sub-features, 116 parts total) from a menu CSV. A verification re-run's own idempotency check (`parts.list` filtered by `name` + `parent_part`) matched the wrong node because the CSV had a submodule and one of its own child features sharing an identical name (\"Maintain FX Profiles\" under International Services), and `parent_part` matches descendants at any depth — this cascaded into 6 stray duplicate parts nested one level too deep, created by the verification re-runs themselves (not the original build). Caught by an independent `links.list`-based tree walk (exact `is_part_of` edges only), which confi"
+  },
+  {
+   "date": "2026-07-21",
+   "endpoints": [
+    "parts.create",
+    "parts.update"
+   ],
+   "files": "`skills/3-data-upload-and-org-build/SKILL.md` (Field notes), `skills/8-devrev-api/references/00_API_Catalog.md`",
+   "kind": "row",
+   "line": 112,
+   "text": "Added descriptions (sourced from a customer's Payments Exchange knowledge-document PDF and its companion Fields spreadsheet) to all 116 parts in the Payment Exchange Trail via `parts.update`. First call sent only `{\"id\":..., \"description\":...}` and got HTTP 400 `bad_request` with no diagnostic field name; adding `\"type\":\"product\"` (or the correct part type) alongside `id` made every subsequent call succeed. Re-ran the whole 116-part update a second time afterward and confirmed full idempotency (every part skipped, 0 changes) via a get-before-update check comparing the live `description` to the intended value. `parts.update` requires `type` in the payload, not just `id` + the changed fields —"
+  },
+  {
+   "date": "2026-07-21",
+   "endpoints": [
+    "articles.create",
+    "articles.delete",
+    "artifacts.prepare",
+    "directories.create"
+   ],
+   "files": "`skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md` (§3a new, §3b new), `skills/8-devrev-api/references/00_API_Catalog.md`, `skills/8-devrev-api/references/Directories_Collections_API.m",
+   "kind": "row",
+   "line": 113,
+   "text": "Extended the PEx knowledge base with DevRev Articles + a \"PEx Module\" collection. No `collections.*`/`article-collections.*` endpoint exists in this repo's docs or live (probed several plausible names, all 404 route-not-found) — user supplied external documentation identifying the real object as `directory` (`directories.*`). Verified live: `directories.create` works (creates a real Help Center collection, `don:core:...:directory/1`, \"PEx Module\"); an article joins it via the article's own `parent` field (confirmed both at `articles.create` time and via `.update`), not from the directory side. Separately, spent significant live testing determining how an Article's body content actually works"
+  },
+  {
+   "date": "2026-07-23",
+   "endpoints": [
+    "custom-objects.list",
+    "schemas.custom.set",
+    "schemas.subtypes.prepare-update"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes, Playbook 1 optional enhancements, Playbook 3 steps 2/5/6 + new UI-alternative note), `skills/1-object-schema-customization/references/Cust",
+   "kind": "row",
+   "line": 114,
+   "text": "User asked whether custom objects support subtypes and supplied a detailed writeup (sourced from DevRev's public object-customization/custom-objects guides) confirming yes — a subtype on a custom leaf type is the same `custom_type_fragment` mechanism used on stock leaf types, just with `is_custom_leaf_type: true` set to match the parent. Folded that material into the owning skill-1 files as new documentation, NOT as live-verified fact (none of it was tested against a real API call this session). While integrating, found the new material conflicts with two things this repo already confirmed live: (1) it shows `stage_diagram_id` attaching a stage diagram to a subtype fragment — this repo confi"
+  },
+  {
+   "date": "2026-07-26",
+   "endpoints": [
+    "custom-objects.create",
+    "link-types.custom.update",
+    "schemas.custom.get",
+    "schemas.custom.set",
+    "schemas.subtypes.list",
+    "works.create"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes — new 2026-07-26 row + corrections to the 2026-07-23 and 2026-07-18 rows), `skills/1-object-schema-customization/references/Custom_Objects_",
+   "kind": "row",
+   "line": 115,
+   "text": "While retiring a duplicate `defect` subtype of `raw_test_case` (`custom_type_fragment/5`, a leftover that duplicated the real standalone `defect` custom object), attempted the previously-unresolved fragment-deprecation question from the 2026-07-23 row above. Full-field-replay `schemas.custom.set` with `is_deprecated: true` → HTTP 400 `bad_request`, no diagnostic field name. Same payload with `deprecated: true` instead → HTTP 200 `{\"id\":...}`, `object_version` bumped 2→3, and a follow-up `schemas.custom.get` echoed it back as `is_deprecated: true` (output name differs from input name — same asymmetry already known for `link-types.custom.update`). Verified real suppression, not cosmetic: `sche"
+  },
+  {
+   "date": "2026-07-31",
+   "endpoints": [
+    "links.list"
+   ],
+   "files": "`skills/3-data-upload-and-org-build/SKILL.md` (Field notes), `skills/3-data-upload-and-org-build/references/DevRev_Building_Org_Using_API_v1.md`, `skills/8-devrev-api/references/DevRev_Building_Org_Us",
+   "kind": "row",
+   "line": 116,
+   "text": "Reviewed `developer.devrev.ai/beta/api-reference/parts/list` while mapping DevRev's public documentation to this repo. The 2026-07-20 gotcha \"`parent_part` filter matches descendants at ANY depth\" is really just the API's default when `level` is omitted — the filter object accepts `parts` (array of DONs, required) AND `level` (int, ≥1, \"Number of levels to fetch the part hierarchy up to\"). So `{\"parent_part\": {\"parts\": [<CAP_DON>], \"level\": 1}}` cleanly restricts to direct children. `links.list` for `is_part_of` is still the safer per-node parent check, but for a direct-children listing (name-based idempotency, tree drawing) `level: 1` avoids the deep-descendant false-positive that produced "
+  },
+  {
+   "date": "2026-07-31",
+   "endpoints": [
+    "links.create",
+    "links.list"
+   ],
+   "files": "`skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md` (§4 modernized)",
+   "kind": "row",
+   "line": 117,
+   "text": "Reviewed `developer.devrev.ai/beta/guides/links` while mapping DevRev's public documentation to this repo. The `link_type` enum field on `links.create` is officially deprecated — new integrations should pass a **link-type id** in `custom_link_type` for BOTH built-in and custom link types (they share the same `link-types.custom.*` management endpoints). Backward compatibility is preserved. Same guide also confirms the request shape uses **flat DON strings** for `source`/`target` (never nested objects), while the response wraps them as objects — mirrors an already-live-verified gotcha on `links.list`. Doc-cited (2026-07-31 fetch), not re-tested live this session. Consolidates two things previo"
+  },
+  {
+   "date": "2026-07-31",
+   "endpoints": [
+    "articles.get",
+    "artifacts.locate"
+   ],
+   "files": "`skills/8-devrev-api/references/Platform_and_Admin_API.md` (§1 new `.locate` block)",
+   "kind": "row",
+   "line": 118,
+   "text": "Reviewed `developer.devrev.ai/beta/api-reference/artifacts/locate` while mapping DevRev's public documentation to this repo. `artifacts.locate` had zero coverage in this repo's references beyond a scope-table row — no shape, no example, no expiry semantics. Documented shape: `GET /artifacts.locate?id=<don>[&version=<v>]` → `{\"url\":\"<presigned S3 URL>\", \"expires_at\":\"<ISO-8601>\"}`. Scope is `artifact:read` PLUS parent-object read (an artifact behind a parent the caller can't read returns 403). TTL is per-response via the `expires_at` timestamp — no fixed duration is documented. This is the same locate → presigned-URL → GET chain that `articles.get`'s `extracted_content[0]` uses to expose an a"
+  },
+  {
+   "date": "2026-07-31",
+   "endpoints": [],
+   "files": "`skills/7-agent-building/references/api-contracts.md` (new HybridSearch namespace enum block)",
+   "kind": "row",
+   "line": 119,
+   "text": "Reviewed `developer.devrev.ai/beta/api-reference/search/hybrid` while mapping DevRev's public documentation to this repo. The full `namespace` enum for HybridSearch (37 values including `article`, `question_answer`, `directory`, `part`+per-type `product`/`capability`/`feature`, `custom_object`, `work`+per-type `ticket`/`issue`/`opportunity`/`task`, plus admin/domain types) was previously undocumented in `skills/7-agent-building/references/api-contracts.md` — it only showed the trigger DON, never what `namespace` values are legal. Also documented: `namespace` is REQUIRED, `query` optional (400-char cap; search phrases truncated at 50 chars, filter clauses not truncated), `limit` capped at 50."
+  },
+  {
+   "date": "2026-07-31",
+   "endpoints": [],
+   "files": "`rate limits.md` (§Rate Limit Specifications — added doc-vs-reality clarification)",
+   "kind": "row",
+   "line": 120,
+   "text": "Reviewed `developer.devrev.ai/about/rate-limits` while mapping DevRev's public documentation to this repo. The public doc says the rate-limit window \"resets every five minutes\" and treats all APIs as equal-weight against a single per-token pool. The 2026-07-24 live observation on this repo's own token was a clean **60-second** rolling window (5× shorter), 8000 requests/window — very different both from the public policy statement AND from the \"Standard 600/min\" table this file used to claim. Neither doc-cited nor observed number was overwritten; both are recorded, with clear guidance to trust response headers (`X-Ratelimit-Reset` timestamp, `Retry-After` seconds on 429) over either figure. D"
+  },
+  {
+   "date": "2026-07-31",
+   "endpoints": [
+    "articles.list"
+   ],
+   "files": "`skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md` (§3 new filter table + doctrine + HybridSearch cross-reference)",
+   "kind": "row",
+   "line": 121,
+   "text": "Reviewed `developer.devrev.ai/beta/api-reference/articles/list-articles` while mapping DevRev's public documentation to this repo. The full server-side filter set for `articles.list` was previously undocumented in `Support_Knowledge_and_SLAs_API.md` beyond a passing `applies_to_parts` mention — no coverage of `parent` (directory), `status`, `article_type`, `brands`, sync-metadata, sharing, or pagination cursor/mode. Added the full filter table with a doctrine note: `applies_to_parts` is the retrieval axis (Trail attachment) and `parent` (directory) is the editorial axis. For agent-grounding / test-case work, prefer `applies_to_parts`; for \"everything on a shelf\" use `parent`. Also cross-link"
+  },
+  {
+   "date": "2026-07-31",
+   "endpoints": [
+    "articles.list",
+    "artifacts.locate",
+    "directories.list"
+   ],
+   "files": "`skills/8-devrev-api/references/Trail_Articles_Directories_Model.md` (new), `skills/8-devrev-api/references/00_API_Catalog.md` (cross-reference), `skills/8-devrev-api/SKILL.md` (reference table row)",
+   "kind": "row",
+   "line": 122,
+   "text": "New cross-cutting reference: `skills/8-devrev-api/references/Trail_Articles_Directories_Model.md` — a consolidated summary of how Parts (Trail), Articles (KB), and Directories (collections) wire together, sourced from live probes against a production org (2026-07-30 pull) and reconciled against `developer.devrev.ai/beta/api-reference` pages (2026-07-31 fetch). Covers: field-by-field shape of each object; the `is_part_of` link mechanism vs the `parent_part` null field; article body-artifact chain (`extracted_content[0]` → `artifacts.locate` → GET); server-side filters on `articles.list` (`applies_to_parts` retrieval axis, `parent` editorial axis); server-side filter absence on `directories.li"
+  },
+  {
+   "date": "2026-08-02",
+   "endpoints": [
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/references/Custom_Objects_and_Links_API.md` (Field notes cross-link), `skills/8-devrev-api/references/Custom_Objects_and_Links_API.md` (mirror)",
+   "kind": "row",
+   "line": 123,
+   "text": "Live: `id`-typed custom fields on `schemas.custom.set` — attempted `referenced_id_types: [\"part\"]` (guessed from generic REST terminology); got `HTTP 400 invalid_field field_name:\"referenced_id_types\"`. Correct key is `id_type` (array), matching the reference doc's already-cited example `{\"field_type\":\"id\",\"id_type\":[\"product\",\"capability\",\"feature\"]}`. Subtype-scoped values like `capability` / `article` are accepted; no need to pass the parent leaf-type name. Confirmed live on `lov_value` schema creation (tenant_fragment/107). The reference doc had it right; memory-derived guesses will drift toward generic REST vocabulary. Whenever an `invalid_field` error names a plausible-sounding alterna"
+  },
+  {
+   "date": "2026-08-02",
+   "endpoints": [],
+   "files": "`skills/1-object-schema-customization/references/Stock_Object_Modification_and_Schemas_API.md` (Field notes: enum-array shape)",
+   "kind": "row",
+   "line": 124,
+   "text": "Live: enum-array custom fields — attempted `{\"field_type\":\"enum\",\"is_array\":true,\"allowed_values\":[…]}`; got `HTTP 400 invalid_field field_name:\"is_array\"`. Correct shape is `{\"field_type\":\"array\",\"base_type\":\"enum\",\"allowed_values\":[…]}`, matching the reference doc's `Custom_Objects_and_Links_API.md:200` and `:267` (array shape for id-typed too). Confirmed live on `part` tenant_fragment/108 (43 enum-array LOV fields). `is_array` is a plausible but wrong convention borrowed from generic ORM/SQL. DevRev uses `field_type:\"array\"` + `base_type:<primitive>` for every list-shaped custom field."
+  },
+  {
+   "date": "2026-08-02",
+   "endpoints": [
+    "custom-objects.create",
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes: 403 workaround retest 2026-08-02)",
+   "kind": "row",
+   "line": 125,
+   "text": "Live: fresh custom leaf type (`lov_value`) → 403 Forbidden on `custom-objects.create` until roles granted in DevRev UI (Settings → Object Customization → the leaf type). After the UI role grant, `custom-objects.create` returned HTTP 201 within seconds — no observable propagation delay this time. Reconfirms the LEARNINGS 2026-07-18/2026-07-19 finding (custom-object writes gated behind a manual UI role, timing inconsistent) and updates it: role-grant-then-immediate-retry works reliably, so the \"wait 20-35 min\" alternative is not needed if a UI grant is available. Any batch loader for a brand-new custom leaf type must anticipate one UI step from the operator between `schemas.custom.set` and the"
+  },
+  {
+   "date": "2026-08-02",
+   "endpoints": [
+    "custom-objects.list",
+    "parts.update"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes: parts.update+custom_fields blocked without confirmed fragment adoption), `skills/3-data-upload-and-org-build/SKILL.md` (Field notes cross-",
+   "kind": "row",
+   "line": 126,
+   "text": "Live: `parts.update` on a stock `part` leaf type (subtype `capability`) rejects `custom_fields` payloads even after a matching `tenant_fragment` exists on `part`. `HTTP 400 bad_request`, no diagnostic `field_name`. Tried both `{\"tenant_fragment\":true}` and `{\"tenant_fragment\":true,\"validate_required_fields\":true}` in `custom_schema_spec`; tried both `id`-typed fields (artifact refs) and `array<enum>` fields (populated lists). Descriptive-only `parts.update` (setting `description`) succeeds on the same record, so the endpoint isn't broken generically. `POST /internal/objects.bulk-upgrade {\"type\":\"part\"}` was fired to force fragment adoption; job (JOB-36) went to `state:\"failed\"` after ~2 min "
+  },
+  {
+   "date": "2026-08-02",
+   "endpoints": [
+    "custom-objects.count",
+    "custom-objects.list"
+   ],
+   "files": "`skills/1-object-schema-customization/references/Custom_Objects_and_Links_API.md` (upgrade the \"not independently live-tested\" caveat to a confirmed 2026-08-02 negative result), `skills/8-devrev-api/r",
+   "kind": "row",
+   "line": 127,
+   "text": "Live: `custom-objects.list` filter shape from `Custom_Objects_and_Links_API.md:82-94` returns `HTTP 200 {\"result\":[]}` (zero rows) when a matching-value filter is applied to a `tnt__` custom field, even when the org has 406 records that should match. `custom-objects.count` with the same filter rejects it outright: `HTTP 400 invalid_field field_name:\"filter\"`. Filter-less `custom-objects.list` returns everything as expected. Root cause not established this session — could be a `$custom_fields.` path-syntax version, could be that beta filter support requires enabling a flag. **Workaround** used by `ai-buddy-conversion/scripts/lov_lookup.py` and `test-corpus-intake/scripts/lov_lookup.py`: pagin"
+  },
+  {
+   "date": "2026-08-02",
+   "endpoints": [],
+   "files": "`plans/lov_promotion/load_lov_values.py` (patched in this session), `.claude/skills/capture-learnings/SKILL.md` (Field notes: token-leak-via-CalledProcessError as a repeat-risk pattern)",
+   "kind": "row",
+   "line": 128,
+   "text": "Security: `subprocess.run(cmd, check=True)` where `cmd` contains `-H \"Authorization: Bearer $TOKEN\"` will include the full token in the `CalledProcessError` traceback if the command fails. Reproduced this session with a curl `exit 28` (timeout) — the entire PAT appeared in the transcript. Fix in the affected script: `check=False` + explicit exit-code branching. Do not log or re-raise a CalledProcessError from a subprocess that had a secret in `argv`. Applies to any subprocess wrapper for a DevRev API call using PAT-in-header. Every script under `plans/` that shells to curl should use the same defensive pattern that `ai-buddy-conversion/scripts/devrev_client.py` uses (no `check=True`, manual "
+  },
+  {
+   "date": "2026-08-02",
+   "endpoints": [],
+   "files": "`plans/lov_promotion/*` (new), `ai-buddy-conversion/scripts/lov_lookup.py` (new), `ai-buddy-conversion/scripts/run_context.py` (added `pex_lov_catalog`), `ai-buddy-conversion/scripts/trail_lookup.py` ",
+   "kind": "row",
+   "line": 129,
+   "text": "Live: end-to-end LOV promotion for a customer's Payment Exchange — created `lov_value` custom leaf type (tenant_fragment/107), loaded 406 records (298 Wire Transfer + 24 International Services + 84 Security Admin), created `part` tenant_fragment/108 with 44 enum-array + id fields, uploaded Country (249) and Currency (122) as artifacts (art/1485, art/1486). Two skills (`ai-buddy-conversion`, `test-corpus-intake`) wired to consume the catalog via a new `lov_lookup.py` in each `scripts/` folder plus `trail_lookup.enrich_with_lovs(part_id)` in each. `run_context.load()` in ai-buddy pre-populates `ctx.pex_lov_catalog` (45 fields cached per run). Verification: 9/9 assertions PASS via `plans/lov_pr"
+  },
+  {
+   "date": "2026-08-04",
+   "endpoints": [
+    "schemas.aggregated.get",
+    "schemas.custom.list",
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes: two 2026-08-04 bullets; Playbook 1 step 3 verify step corrected to pass the flag), `skills/1-object-schema-customization/references/Stock_",
+   "kind": "row",
+   "line": 130,
+   "text": "Live, while auditing an org after retiring a custom leaf type: two read endpoints silently return \"nothing found\" instead of an error when called the intuitive way. (1) `schemas.aggregated.get` — the returned schema object's full key set is `custom_composite_schemas`, `custom_fields`, `description`, `is_custom_leaf_type`, `leaf_type`, `stock_composite_schemas`, `stock_fields`, `title`; there is **no `fields` key**, so `schema.get(\"fields\", [])` → 0 while `schema[\"custom_fields\"]` → 46 on the same `test_data` leaf type. (2) `schemas.custom.list` — `{}` → 9 rows, all stock (`comment`/`conversation`/`ext_comm_channel_instance`/`issue`/`part`/`ticket`); `{\"leaf_type\":\"test_data\"}` → **0 rows**; "
+  },
+  {
+   "date": "2026-08-04",
+   "endpoints": [
+    "custom-objects.create",
+    "link-types.custom.list",
+    "schemas.custom.get",
+    "schemas.custom.list",
+    "schemas.custom.set"
+   ],
+   "files": "`skills/1-object-schema-customization/SKILL.md` (Field notes: two 2026-08-04 bullets), `skills/1-object-schema-customization/references/Custom_Objects_and_Links_API.md` (§3 link-type deprecation note:",
+   "kind": "row",
+   "line": 131,
+   "text": "Live, retiring the `validation_point` custom leaf type end-to-end for a user (delete records → deprecate fragment → verify nothing can re-create): **(1) deprecating a custom leaf type's tenant fragment is a hard write barrier, closing the \"does deprecation block record creation?\" question left open by the 2026-07-26 row.** `schemas.custom.set {deprecated:true}` + full field replay → HTTP 201; the following `custom-objects.create` on that leaf type → `HTTP 400 {\"type\":\"customization_validation_error\",\"reason\":\"no tenant fragment found. Make sure the custom object leaf type validation_point has an associated tenant fragment.\"}`. Sub-findings: the deprecation `.set` updated `tenant_fragment/110"
+  },
+  {
+   "date": "2026-10-22",
+   "endpoints": [
+    "articles.get",
+    "articles.update"
+   ],
+   "files": "`skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md` (§3a scope bullet corrected in place, §3c new, §7 pitfall)",
+   "kind": "row",
+   "line": 132,
+   "text": "Live, making 41 internal-scope KB articles public and visible to all for a user: `articles.update {\"access_level\":\"public\"}` on an Internal (`scope` 1) article → opaque `400 bad_request`; `shared_with` as a plain array → `400 unexpected_json_type` (expected object); `{\"set\":[{member,role}]}` works but an Internal article accepts only dev-user groups (`All Users`) and refuses every customer group (`Customers`/`Customer Admins`/`Verified Customers`) with an opaque 400. `articles.update {\"scope\":2}` succeeded in place (same id/body/parts/tags), contradicting the reference's \"scope is immutable\" (which was schema-inferred, never tested; the live stock schema has no immutable flag on `scope`), an"
+  }
+ ],
+ "meta": {
+  "count": 104
+ }
+}

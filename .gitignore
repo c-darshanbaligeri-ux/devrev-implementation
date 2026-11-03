@@ -16,3 +16,7 @@ __pycache__/
 /plans/
 /.cache/
 docs/CLONE_RESULTS.local.md
+
+# Python bytecode
+__pycache__/
+*.pyc

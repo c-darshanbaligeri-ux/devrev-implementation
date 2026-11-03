@@ -1022,9 +1022,17 @@
    "kind": "row",
    "line": 132,
    "text": "Live, making 41 internal-scope KB articles public and visible to all for a user: `articles.update {\"access_level\":\"public\"}` on an Internal (`scope` 1) article → opaque `400 bad_request`; `shared_with` as a plain array → `400 unexpected_json_type` (expected object); `{\"set\":[{member,role}]}` works but an Internal article accepts only dev-user groups (`All Users`) and refuses every customer group (`Customers`/`Customer Admins`/`Verified Customers`) with an opaque 400. `articles.update {\"scope\":2}` succeeded in place (same id/body/parts/tags), contradicting the reference's \"scope is immutable\" (which was schema-inferred, never tested; the live stock schema has no immutable flag on `scope`), an"
+  },
+  {
+   "date": "2026-11-03",
+   "endpoints": [],
+   "files": "`skills/6-workflows/references/manage-workflows-api.md` (auth note, endpoint table: 8 new rows and the corrected `workflows.update` and `workflow-versions.publish` rows, new \"Process: importing a temp",
+   "kind": "row",
+   "line": 133,
+   "text": "User-reported live run (a dummy template imported, validated and published as a new workflow), cross-checked against the same calls in DevRev's own MIT-licensed `workflow-skill` `scripts/api.py`: `POST /internal/workflows.templates.instantiate` with `{\"template_version\":\"2.0.0\",\"workflow_template_v2\":<the file's data field, parsed to an object>}` created the workflow in draft; `workflow-versions.list` returned its draft version; `workflows.components.validate` with `{\"components\":[{\"type\":\"workflow\",\"workflow_version_id\":\"<version DON>\"}]}` returned `{\"valid\": true}` (`errors`/`warnings` lists otherwise); `workflows.update-status` with `{\"id\":\"<workflow DON>\",\"status\":\"active\"}` published th"
   }
  ],
  "meta": {
-  "count": 104
+  "count": 105
  }
 }

@@ -218,7 +218,7 @@
     "Field notes (live-learned; see ${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md)"
    ],
    "id": "6-workflows",
-   "lines": 200,
+   "lines": 203,
    "name": "workflows",
    "path": "skills/6-workflows/SKILL.md",
    "when_to_use": []

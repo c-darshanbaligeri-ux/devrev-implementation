@@ -66,7 +66,7 @@ the default template rather than composing from operation lookups):
    ```
 4. **Build the full JSON** following `references/template-json-format.md` — this covers the wrapper envelope, step/port structure, all `input_values` value types, trigger filters, loops and variables, sleep/wait, Ask AI, HTTP, and the Code node, plus a full validation checklist. Read it now if you haven't already; don't try to reconstruct the format from memory or from the examples alone — several field-type rules (`uenum` needing `allowed_values`, `array` needing `base_type`, etc.) are import-breaking if missed and aren't obvious from looking at examples alone.
 5. **Write the output** to `templates/<workflow_name>.json` in the user's working directory, and show them a summary of what it does (trigger, steps, branches) — not the raw JSON, unless they ask for it.
-6. **Tell the user how to get it live**: import it via **Workflows → Import** in the DevRev app (`https://app.devrev.ai/?view=workflows`), or hand it to `references/manage-workflows-api.md`'s create/publish flow if they specifically want it built up through API calls instead.
+6. **Get it into the org**: either the user imports it via **Workflows → Import** in the DevRev app (`https://app.devrev.ai/?view=workflows`), or you do it through the API with "Process: importing a template via the API" in `references/manage-workflows-api.md` (instantiate → find the draft version → validate → publish). Run the validate call before publishing, and publish only after the user has said yes in this session: publishing a new workflow switches it on. Building the graph step by step through the CRUD calls is the fallback, not the default.
 7. **After the user confirms it imported/worked**, copy the template into `${CLAUDE_PLUGIN_ROOT}/skills/6-workflows/examples/working-<descriptive-name>.json` and add a row to the table in `references/template-json-format.md`'s example list. This is how the skill gets better over time — every confirmed-working template becomes a pattern the next request can study.
 
 ## Debugging a failed import
@@ -174,10 +174,13 @@ In all cases also append a row to `${CLAUDE_PLUGIN_ROOT}/docs/LEARNINGS.md` and 
   be published"` — this is the *workflow's* status (`draft`), not just the version's. No
   `workflows.deploy`/`workflows.activate`/`workflow-versions.deploy`/`workflows.publish` endpoint
   exists (all 404 `route not found`), and `workflows.update` rejects both `status` and `state` as
-  top-level fields (`HTTP 400 invalid_field`). Confirms there is genuinely no API path to move a
-  workflow out of draft — the DevRev UI's Deploy action is the only route, exactly as the existing
-  doc says, but now with the exact error strings for both the publish attempt and the blocked
-  update attempts.
+  top-level fields (`HTTP 400 invalid_field`). **Superseded 2026-11-03:** that probe never tried
+  `workflows.update-status`, which is the API route out of draft for a brand-new workflow
+  (`{"id":"<workflow DON>","status":"active"}` publishes it and switches it on; user-reported live
+  run, and the same call is in DevRev's own `workflow-skill`). `workflow-versions.publish` is for
+  an already-published workflow, so the 400 above is still the right result for a new draft. The
+  exact error strings stay valid. Full procedure: `references/manage-workflows-api.md`, "Process:
+  importing a template via the API".
 
 - **Triggering a still-draft workflow returns `HTTP 400`, not `HTTP 404` as previously
   documented.** Built a minimal single-step `manual_trigger` workflow specifically to test this

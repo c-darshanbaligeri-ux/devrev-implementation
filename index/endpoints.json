@@ -3739,6 +3739,16 @@
    "name": "dev-users.self",
    "notes": [
     {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 39,
+     "snippet": "| `dev-orgs.self` / `dev-users.self` | POST | `/internal/dev-orgs.self`, `/dev-users.self` | Read-only: which "
+    },
+    {
+     "file": "skills/6-workflows/references/manage-workflows-api.md",
+     "line": 39,
+     "snippet": "| `dev-orgs.self` / `dev-users.self` | POST | `/internal/dev-orgs.self`, `/dev-users.self` | Read-only: which "
+    },
+    {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
      "line": 89,
      "snippet": "curl -X POST 'https://api.devrev.ai/dev-users.self' \\"
@@ -13565,7 +13575,7 @@
   }
  ],
  "meta": {
-  "core_hash": "4a176b809b9176f4",
+  "core_hash": "d6d3b75b16ea52e4",
   "count": 302
  }
 }

@@ -12,7 +12,7 @@ Facts an agent needs that used to live only in the human README. Fix the cause; 
 | A list stops after one page | Reading only `next_cursor` | Some operations return `cursor` instead; follow whichever is present (`skills/10-api-conventions`). |
 | 429 Too Many Requests | Rate limit | Back off for `Retry-After` seconds; pace from the live `X-Ratelimit-*` headers, not a static number. |
 | Workflow import fails | Almost always one of four causes: `uenum` missing `allowed_values`; `array` missing `base_type`; `for_each` used where a dedicated `loop_over_*` operation exists; `invoke_code` value-type mismatch | Full checklist in `skills/6-workflows/SKILL.md`. |
-| Workflow trigger returns 400 "is not active" | The workflow is still a draft | Publish (Deploy) it first. |
+| Workflow trigger returns 400 "is not active" | The workflow is still a draft | Publish it first: `workflows.update-status` with `status: active` (or the UI's Deploy). See skill 6. |
 | MCP shows unauthorized although `.env` is correct | `${DEVREV_PAT}` in `.mcp.json` is read from the **process environment**, not `.env` | Export `DEVREV_PAT` (or source `.env`) in the shell that launches Claude Code. |
 | `dashboard-dev` / `dataset-builder` plugin commands missing | Plugin marketplace not trusted or not loaded | The user runs `/plugin marketplace update devrev-aai-plugins`; if the GitHub source cannot authenticate, register the local clone once with `/plugin marketplace add ./repos/aai-skills`. |
 | `/create-dashboard` does not resolve | The plugin command is named `dashboard-create` | Use `/dashboard-dev:dashboard-create` (same for `/modify-dashboard` → `/dashboard-dev:modify-dashboard`). `/dashboard-planner` is a plugin **skill**, not a slash command. |

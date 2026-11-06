@@ -1,6 +1,6 @@
 ---
 name: agent-building
-description: Builds, debugs, improves and tests DevRev AI agents in Agent Studio, covering prompting, retrieval strategy (FetchObjectContext, HybridSearch, NL2SQL), skills configuration, guardrails and knowledge sync. Use for "configure the agent", "add a skill to the agent", "test the agent guardrails", "why is the agent answering wrong". Not for authoring the workflow that an agent-callable skill wraps (use 6-workflows).
+description: Builds, debugs, improves and tests DevRev AI agents in Agent Studio, covering prompting, retrieval strategy (FetchObjectContext, HybridSearch, NL2SQL), skills configuration, guardrails and knowledge sync, plus the DevRev Computer agent (API prompts, desktop session traces, its SQL data tools). Use for "configure the agent", "add a skill to the agent", "test the agent guardrails", "why is the agent answering wrong", "send Computer a prompt via the API", "trace a Computer session". Not for authoring the workflow that an agent-callable skill wraps (use 6-workflows).
 ---
 
 # DevRev Agent Building Toolkit
@@ -63,6 +63,17 @@ Each workflow has a command file with the step-by-step procedure; the long-form 
 | Answer questions about agents | `commands/agent-ask.md` |
 | Fix broken NL2SQL annotations (6-phase workflow) | `references/nl2sql-annotation-workflow.md` |
 | Check a payload before calling the API (create vs update schemas, flat guardrails, string trigger ids) | `references/api-contract-quickref.md` |
+
+## DevRev Computer
+
+Computer, the in-app assistant, is an ordinary AI agent, so it lives in this skill.
+
+| Goal | Open |
+| --- | --- |
+| Find Computer's agent id, read its skills and system prompt, send it a prompt (with a file) through the API, poll and read the reply, stop a run, download its full step log | `references/computer-agent-api.md` (captured `/internal/` calls, as of 2026-10-28) |
+| Export a Computer **desktop-app** chat as an audit bundle (every prompt, tool call, output, subagent and runtime log, with a SHA-256 manifest) | `references/computer-session-trace.md` + `scripts/computer_trace.py` |
+| Run Computer's data tools (`ExecuteSQL`, `SearchKGSchema`) as a local MCP server to evaluate or debug its data answers | `references/computer-data-tools.md` + `scripts/computer-data-mcp/` |
+| Run an agent against a dataset at scale and score it with metrics | `commands/agent-test.md` (the `agent-evals` harness) |
 
 ## Guardrails Configuration
 
@@ -135,6 +146,8 @@ All scripts are in `scripts/` directory:
   - `list` — Show all custom object types in org
   - `describe <type>` — Show schema fields for a type
   - `check <type> <payload>` — Validate payload against schema
+- `computer_trace.py` — Export a DevRev Computer desktop chat as a traceability bundle (`list`, `watch`, `export`; reads local files only, no token; always pass `--out`). See `references/computer-session-trace.md`
+- `computer-data-mcp/` — `mcp_devrev.py` (stdio MCP server exposing `ExecuteSQL` and `SearchKGSchema`) and `devrev_client.py` (its API client); uses `DEVREV_PAT`. See `references/computer-data-tools.md`
 
 ## Verified API Facts (Live-Tested 2026-06-01)
 
@@ -160,6 +173,9 @@ Use this skill when:
 - Questions about DevRev Agent Studio
 - Working with NL2SQL and schema annotations
 - Implementing retrieval strategies
+- Sending DevRev Computer a prompt through the API, or reading its skills and system prompt
+- Tracing or auditing what DevRev Computer did in a desktop-app chat
+- Evaluating Computer's data (SQL) answers, or running an agent against a dataset at scale
 
 ## Additional Resources
 
@@ -168,6 +184,9 @@ Use this skill when:
 - [Guardrails API Reference](references/guardrails-api.md)
 - [Feature Flags Reference](references/feature-flags.md)
 - [API Specs and Safety](references/api-specs-and-api-safety.md)
+- [DevRev Computer through the API](references/computer-agent-api.md)
+- [Tracing a DevRev Computer desktop session](references/computer-session-trace.md)
+- [Computer data tools as a local MCP server](references/computer-data-tools.md)
 
 ---
 

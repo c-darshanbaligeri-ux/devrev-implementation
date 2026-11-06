@@ -14,7 +14,7 @@ requests start at 0):
 | 4 | `4-dashboards-and-widgets` | Routes into the `dashboard-dev` plugin (`/create-dashboard`, `/modify-dashboard`) | Router (knowledge lives in `repos/aai-skills`) |
 | 5 | `5-datasets` | Routes into the `dataset-builder` plugin; PaaS vs Ponos decision | Router |
 | 6 | `6-workflows` | WorkflowTemplateV2 authoring, import debugging, agent-callable skills (four-block pattern), workflow CRUD/trigger | Knowledge-owner (130 op schemas, working examples) |
-| 7 | `7-agent-building` | Agent Studio create/debug/improve/test, guardrails, feature flags, NL2SQL annotations | Knowledge-owner (8 commands, 10 KB articles) |
+| 7 | `7-agent-building` | Agent Studio create/debug/improve/test, guardrails, feature flags, NL2SQL annotations; DevRev Computer through the API, desktop session traces (`computer_trace.py`) and its data tools as a local MCP server | Knowledge-owner (8 commands, 10 KB articles) |
 | 8 | `8-devrev-api` | Every public REST endpoint — catalog + per-domain payload docs | Knowledge-owner (horizontal foundation) |
 | 9 | `9-snapin-development` | Routes into the third-party `devrev` (`devrev-qk-agents`) plugin's snap-in vertical (PM/Architect/Tester); excludes that plugin's dashboard vertical | Router (knowledge lives in `repos/devrev-qk-agents`; plugin NOT auto-enabled — manual install) |
 | 10 | `10-api-conventions` | Cross-cutting API rules from `developer.devrev.ai/about/*` — auth tokens, cursor pagination, versioning header, rate-limit headers + 429, standard error JSON shape. Sits underneath every domain skill 1–9; defines no endpoint payloads of its own. | Knowledge-owner (scraped from developer.devrev.ai 2026-08-02) |

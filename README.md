@@ -25,6 +25,7 @@ Then just ask. The toolkit installs disabled nowhere and enabled only where you 
 - **`devrev-find`**, a command Claude runs to search 300+ API endpoints, 400 workflow operations, 12 domain playbooks and the notes of what was verified live. It prints the risk of each call and the exact files to read.
 - **Workflow tools**: `devrev-validate-workflow` checks a workflow template offline, and `devrev-import-workflow` imports it as a draft, validates it in your org and, only when you agree, publishes it.
 - **Twelve playbooks**: solution design, custom fields and objects, stages, data loading, dashboards, datasets, workflows, AI agents, the REST API, snap-ins and AirSync, API conventions, and an offline copy of the official developer docs.
+- **DevRev Computer tools** (skill 7): send Computer a prompt through the API and read its reply and step log, export a desktop-app session as an audit bundle with `computer_trace.py`, and run Computer's SQL data tools as a local MCP server for evaluation.
 - **A safety hook.** Read-only DevRev calls run without a prompt. Anything that writes asks you first, destructive calls (deletes, merges, bulk upgrades, permanent schema changes) ask loudly, and publishing a workflow is flagged as high impact because it switches live automation on.
 
 ## Optional plugins

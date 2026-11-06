@@ -1281,6 +1281,16 @@
    "name": "artifacts.locate",
    "notes": [
     {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 119,
+     "snippet": "2. `GET /internal/artifacts.locate?id=<artifact id>&prefer_download=true`; it returns a short-lived `url`."
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 199,
+     "snippet": "Download any of them with `GET /internal/artifacts.locate?id=<artifact_id>&prefer_download=true`, then fetch t"
+    },
+    {
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
      "line": 64,
      "snippet": "**`artifacts.locate` — download URL retrieval (doc-cited 2026-07-31 from"
@@ -1347,6 +1357,16 @@
      "snippet": "1. **Prepare an upload** — `artifacts.prepare` (scope: `artifact:create`) returns a URL + form fields."
     },
     {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 141,
+     "snippet": "1. `POST /internal/artifacts.prepare` with `{\"file_name\": \"spec.pdf\", \"file_type\": \"application/pdf\", \"configu"
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 253,
+     "snippet": "| 4b | Prepare a file upload | `POST /internal/artifacts.prepare` |"
+    },
+    {
      "file": "skills/8-devrev-api/SKILL.md",
      "line": 65,
      "snippet": "| Artifacts / files | `references/Platform_and_Admin_API.md` | artifacts.prepare/download/get/list |"
@@ -1365,16 +1385,6 @@
      "file": "skills/8-devrev-api/references/Platform_and_Admin_API.md",
      "line": 51,
      "snippet": "| `artifacts.prepare` | `artifact:create` |"
-    },
-    {
-     "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 127,
-     "snippet": "array of artifact DONs (same `artifacts.prepare` → upload → reference pattern used for"
-    },
-    {
-     "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
-     "line": 132,
-     "snippet": "curl -X POST 'https://api.devrev.ai/artifacts.prepare' -H 'Authorization: Bearer <TOKEN>' \\"
     }
    ],
    "required": [
@@ -1666,7 +1676,18 @@
     "POST"
    ],
    "name": "auth-tokens.info",
-   "notes": [],
+   "notes": [
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 44,
+     "snippet": "`GET /auth-tokens.info` returns both:"
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 244,
+     "snippet": "| 1 | Your org and user ids | `GET /auth-tokens.info` |"
+    }
+   ],
    "required": [],
    "resource": "auth-tokens",
    "risk": "read",
@@ -1927,6 +1948,16 @@
    ],
    "name": "chats.create",
    "notes": [
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 130,
+     "snippet": "**4a. Open a chat** — `POST /internal/chats.create`:"
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 217,
+     "snippet": "(`https://app.devrev.ai/api/gateway/internal/chats.create` → `https://api.devrev.ai/internal/chats.create`) an"
+    },
     {
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 54,
@@ -3747,6 +3778,16 @@
      "file": "skills/6-workflows/references/manage-workflows-api.md",
      "line": 39,
      "snippet": "| `dev-orgs.self` / `dev-users.self` | POST | `/internal/dev-orgs.self`, `/dev-users.self` | Read-only: which "
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 32,
+     "snippet": "- **Check it.** `GET /dev-users.self` must return your user."
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 55,
+     "snippet": "| `<my user id>` | your dev-user id | `user.id` (also `dev_user.id` from `dev-users.self`) |"
     },
     {
      "file": "skills/8-devrev-api/references/Customers_Users_and_Orgs_API.md",
@@ -11648,6 +11689,16 @@
      "snippet": "- **2026-07-18 · `timeline-entries.create` (comment) also accepts an `artifacts` array and works end-to-end.**"
     },
     {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 146,
+     "snippet": "**4c. Send the prompt** — `POST /internal/timeline-entries.create`:"
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 254,
+     "snippet": "| 4c | Send a prompt | `POST /internal/timeline-entries.create` |"
+    },
+    {
      "file": "skills/8-devrev-api/SKILL.md",
      "line": 83,
      "snippet": "`timeline-entries.create` for context → `links.create` to relate to an issue."
@@ -11666,16 +11717,6 @@
      "file": "skills/8-devrev-api/references/Support_Knowledge_and_SLAs_API.md",
      "line": 333,
      "snippet": "- Posting a message: there is no `messages.create` — use `timeline-entries.create`"
-    },
-    {
-     "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 10,
-     "snippet": "- [Add a comment — `timeline-entries.create`](#add-a-comment--timeline-entriescreate)"
-    },
-    {
-     "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
-     "line": 129,
-     "snippet": "### Add a comment — `timeline-entries.create`"
     }
    ],
    "required": [
@@ -11788,6 +11829,16 @@
    ],
    "name": "timeline-entries.list",
    "notes": [
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 164,
+     "snippet": "2. `POST /internal/timeline-entries.list` with `{\"object\": \"<chat id>\", \"limit\": 50}`, following `next_cursor`"
+    },
+    {
+     "file": "skills/7-agent-building/references/computer-agent-api.md",
+     "line": 256,
+     "snippet": "| 4d | Find the reply | `POST /internal/timeline-entries.list` |"
+    },
     {
      "file": "skills/8-devrev-api/references/Work_Items_Timeline_Tags_Links_API.md",
      "line": 146,
@@ -14472,7 +14523,7 @@
   }
  ],
  "meta": {
-  "core_hash": "b8663038059b4216",
+  "core_hash": "f660272708cef799",
   "count": 321
  }
 }

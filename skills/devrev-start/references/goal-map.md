@@ -45,6 +45,7 @@
 | Create a reporting dataset | `skills/5-datasets` |
 | Automate something, or give an AI agent a skill | `skills/6-workflows` |
 | Build, debug or test an AI agent | `skills/7-agent-building` |
+| Send DevRev Computer a prompt through the API, read its skills, or trace and audit a Computer session | `skills/7-agent-building` (section "DevRev Computer") |
 | Build a snap-in or AirSync connector | `skills/9-snapin-development` |
 | Auth, pagination, rate limits, error shapes | `skills/10-api-conventions` |
 | "What does the official doc say…", SDK setup, beta endpoints | `skills/11-developer-docs` |

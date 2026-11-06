@@ -224,12 +224,13 @@
    "when_to_use": []
   },
   {
-   "description": "Builds, debugs, improves and tests DevRev AI agents in Agent Studio, covering prompting, retrieval strategy (FetchObjectContext, HybridSearch, NL2SQL), skills configuration, guardrails and knowledge sync. Use for \"configure the agent\", \"add a skill to the agent\", \"test the agent guardrails\", \"why is the agent answering wrong\". Not for authoring the workflow that an agent-callable skill wraps (use 6-workflows).",
+   "description": "Builds, debugs, improves and tests DevRev AI agents in Agent Studio, covering prompting, retrieval strategy (FetchObjectContext, HybridSearch, NL2SQL), skills configuration, guardrails and knowledge sync, plus the DevRev Computer agent (API prompts, desktop session traces, its SQL data tools). Use for \"configure the agent\", \"add a skill to the agent\", \"test the agent guardrails\", \"why is the agent answering wrong\", \"send Computer a prompt via the API\", \"trace a Computer session\". Not for authoring the workflow that an agent-callable skill wraps (use 6-workflows).",
    "headings": [
     "Overview",
     "API Tokens Setup",
     "Core Principles",
     "Workflows",
+    "DevRev Computer",
     "Guardrails Configuration",
     "Feature Flags",
     "API Safety",
@@ -243,7 +244,7 @@
     "Capturing new learnings"
    ],
    "id": "7-agent-building",
-   "lines": 193,
+   "lines": 212,
    "name": "agent-building",
    "path": "skills/7-agent-building/SKILL.md",
    "when_to_use": []

@@ -20,3 +20,7 @@ docs/CLONE_RESULTS.local.md
 # Python bytecode
 __pycache__/
 *.pyc
+
+# computer_trace.py default output folders (bundles hold full chat content; always pass --out)
+/skills/7-agent-building/scripts/exports/
+/skills/7-agent-building/scripts/watch/

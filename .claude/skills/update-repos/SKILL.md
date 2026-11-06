@@ -57,6 +57,10 @@ skills), no plugin/marketplace refresh is needed. It's grounding material only. 
 and the repo has no licence file, so copy nothing from it; skim `deal-review-meddpicc` or the sales-agent recipes
 only for `skills/0-solution-architecture` ideas.
 
+If `repos/agent-evals` changed (DevRev's agent evaluation harness), no plugin refresh is needed: skill 7 only routes
+to it. If its run modes or CLI flags changed, update the short description in
+`skills/7-agent-building/commands/agent-test.md`; it has no licence file, so copy nothing from it.
+
 ## Non-git references (not touched by this skill)
 
 The Google Doc "Agent Skills Marketplace"

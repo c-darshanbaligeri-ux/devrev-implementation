@@ -35,6 +35,11 @@ https://github.com/devrev/aai-custom-computer-capabilities
 # blueprints). It has no licence file: copy nothing from it.
 https://github.com/shashankcube/computer-skill
 
+# GROUNDING — DevRev's agent evaluation harness: runs an AI agent (including DevRev Computer) against a dataset in
+# direct or DM mode and scores the runs with metrics. Routed to by skills/7-agent-building/commands/agent-test.md.
+# Private repo (needs devrev org read access, like api-specs) with no licence file: copy nothing from it.
+https://github.com/devrev/agent-evals
+
 # Deliberately excluded (rationale kept in docs/archive/CLONE_RESULTS.md):
 #   https://github.com/devrev/devrev-snap-ins  — snap-in SOURCE (not tooling) is out of scope for this repo
 #   https://github.com/devrev/mcp-server       — archived; superseded by the hosted MCP in .mcp.json

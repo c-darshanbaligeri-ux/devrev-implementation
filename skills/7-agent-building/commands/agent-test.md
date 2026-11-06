@@ -70,6 +70,22 @@ You are an expert DevRev Agent Studio consultant. Create a comprehensive test se
 
 6. **Output a ready-to-use format** — Produce the test set in a format that can be pasted directly into Agent Studio's Bulk Tests, plus a summary of coverage gaps.
 
+## Running the test set at scale (agent-evals)
+
+Agent Studio's Bulk Tests cover one agent in the UI. To run a dataset against an agent from the command line, repeat
+runs, and score them with metrics (for example skill recall or LLM-as-judge checks), use DevRev's `agent-evals`
+harness (`repos/agent-evals`, cloned from `repos.txt`; private, needs read access to the devrev GitHub org, no
+licence, so copy nothing from it into this repo). Follow its own `AGENTS.md` for setup and commands. It has two
+ways to reach the agent:
+
+- **Direct mode** calls the agent's sync execution endpoint and streams the response, so the run records which skills
+  fired with their full arguments and outputs.
+- **DM mode** opens a DM chat with the agent, posts each message as a timeline comment and polls the timeline for
+  the reply: the same path a user takes in the app, but only skill names are recorded.
+
+Its benchmarks include DevRev Computer datasets. To evaluate Computer's data answers with full query visibility, see
+`references/computer-data-tools.md`; to audit one Computer desktop session, `references/computer-session-trace.md`.
+
 ## Agent to Test
 
 $ARGUMENTS

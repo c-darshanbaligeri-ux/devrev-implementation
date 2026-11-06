@@ -57,7 +57,7 @@ USE AS A LIBRARY
 ----------------
     from devrev_client import api, sql, load_token
     resp = api("dashboards.get", {"id": don})       # /internal/ by default
-    rows = sql("SELECT COUNT(1) AS n FROM drad_opro AS x")
+    rows = sql("SELECT COUNT(1) AS n FROM <table> AS x")
 
 USE AS A CLI (handy for probing)
 --------------------------------

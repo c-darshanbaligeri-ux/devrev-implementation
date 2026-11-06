@@ -152,9 +152,9 @@ Keep `chat.id` as `<chat id>` and send follow-ups in the same chat.
 ```
 
 - Leave out `artifacts` when there is no file.
-- Keep `execution_runtime: "container"`: it lets Computer run skills in its remote sandbox. A prompt sent this way
-  runs in DevRev's remote container, not in anyone's Computer desktop app (which is why the desktop app cannot be
-  "driven" from outside: API prompts never run there).
+- Keep `execution_runtime: "container"`: it lets Computer run skills in its remote sandbox. In the org checked,
+  prompts sent this way ran in DevRev's remote container and the Computer desktop app did not pick them up, so the
+  API is not a way to drive someone's desktop app.
 - Save your `client_ref` and the response's `timeline_entry.id`; you need them to find the reply and to stop the run.
 
 **4d. Wait for the reply.** Poll about every 20 seconds:
